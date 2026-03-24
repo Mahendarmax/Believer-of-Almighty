@@ -1,0 +1,49 @@
+/* ===== AUDIO PLAYER (per-verse) ===== */
+.verse-audio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.audio-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(45, 212, 168, 0.1);
+  color: var(--emerald);
+  transition: all 0.25s ease;
+}
+
+.audio-btn:hover {
+  background: rgba(45, 212, 168, 0.18);
+  transform: scale(1.08);
+}
+
+.audio-btn.active {
+  background: var(--emerald);
+  color: var(--bg-primary);
+  animation: audio_pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes audio_pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 168, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(45, 212, 168, 0); }
+}
+
+.audio-progress-bar {
+  width: 48px;
+  height: 3px;
+  background: rgba(45, 212, 168, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.audio-progress-fill {
+  height: 100%;
+  background: var(--emerald);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}

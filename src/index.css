@@ -1,0 +1,75 @@
+/* ===== GLOBAL STYLES ===== */
+:root {
+  /* Primary Palette — Deep Islamic elegance */
+  --bg-primary: #0c1b2a;
+  --bg-secondary: #112240;
+  --bg-card: #1a2f4a;
+  --bg-card-hover: #213a5c;
+  --bg-surface: #162b44;
+  
+  /* Gold Accents */
+  --gold: #d4a853;
+  --gold-light: #e8c875;
+  --gold-dim: #a07d3a;
+  
+  /* Emerald Accents */
+  --emerald: #2dd4a8;
+  --emerald-dim: #1a9a78;
+  
+  /* Text */
+  --text-primary: #e6edf3;
+  --text-secondary: #8b9dc3;
+  --text-muted: #5a6f8c;
+  --text-arabic: #f0e6d2;
+  
+  /* Borders */
+  --border: rgba(212, 168, 83, 0.15);
+  --border-strong: rgba(212, 168, 83, 0.3);
+  
+  /* Misc */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
+  --transition: 0.2s ease;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }

@@ -1,0 +1,186 @@
+/* ===== SURAH LIST PAGE ===== */
+.surah-list-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+}
+
+/* Header */
+.sl-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-primary);
+}
+
+.sl-back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--gold);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.sl-back:hover {
+  background: var(--bg-card);
+}
+
+.sl-title-group {
+  flex: 1;
+}
+
+.sl-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sl-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Search */
+.sl-search-wrap {
+  margin-bottom: 12px;
+}
+
+/* Meta */
+.sl-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  padding-left: 4px;
+}
+
+/* Empty */
+.sl-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+/* Surah Grid */
+.surah-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.surah-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.surah-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  transform: translateX(4px);
+}
+
+.sc-number {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 168, 83, 0.1);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transform: rotate(45deg);
+}
+
+.sc-number span {
+  transform: rotate(-45deg);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.sc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sc-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1px;
+}
+
+.sc-english {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-bottom: 1px;
+}
+
+.sc-telugu {
+  font-family: 'Noto Sans Telugu', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.sc-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.sc-ayahs {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.sc-type {
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.sc-type.meccan {
+  background: rgba(212, 168, 83, 0.12);
+  color: var(--gold);
+}
+
+.sc-type.medinan {
+  background: rgba(45, 212, 168, 0.12);
+  color: var(--emerald);
+}
+
+/* Responsive — tablet+ grid */
+@media (min-width: 640px) {
+  .surah-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (min-width: 900px) {
+  .surah-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
