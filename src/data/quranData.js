@@ -119,8 +119,13 @@ export const surahs = [
 // Verse cache to prevent redundant API calls
 const verseCache = {}
 
+// In-flight request deduplication — prevents duplicate fetches for same surah
+const pendingRequests = {}
+
+// Bismillah cache — only fetched once across entire session
+let bismillahCache = null
+
 // Build verse audio URL using the global ayah number
-// API: Islamic Network CDN - Mishary Rashid Alafasy recitation
 export const getVerseAudioUrl = (globalAyahNumber) => {
   return `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalAyahNumber}.mp3`
 }
@@ -130,22 +135,44 @@ export const getSurahAudioUrl = (surahNumber) => {
   return `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
 }
 
-// Strip HTML tags from translation text (Quran.com API sometimes returns HTML)
+// Strip HTML tags from translation text
 const stripHtml = (html) => {
   if (!html) return ''
   return html.replace(/<[^>]*>/g, '').trim()
 }
 
-// Fetch complete surah data from APIs
-// Arabic + English (Sahih International) + Transliteration + Telugu + Global Ayah Numbers for audio
-export const fetchSurahFromAPI = async (surahNumber) => {
+// Fetch with timeout and abort support
+const fetchWithTimeout = (url, signal, timeoutMs = 15000) => {
+  const controller = signal ? null : new AbortController()
+  const fetchSignal = signal || controller?.signal
+  const timeout = setTimeout(() => controller?.abort(), timeoutMs)
+  return fetch(url, { signal: fetchSignal }).finally(() => clearTimeout(timeout))
+}
+
+// Internal bismillah text fetch (for stripping from verse 1)
+const getBismillahText = async () => {
+  if (bismillahCache?._rawText) return bismillahCache._rawText
   try {
-    // Fetch all data in parallel for speed
+    const res = await fetchWithTimeout('https://api.alquran.cloud/v1/surah/1')
+    const data = await res.json()
+    if (data.code === 200 && data.data?.ayahs?.[0]) {
+      const text = data.data.ayahs[0].text.trim()
+      if (!bismillahCache) bismillahCache = {}
+      bismillahCache._rawText = text
+      return text
+    }
+  } catch (_) { /* continue without */ }
+  return ''
+}
+
+// Fetch complete surah data from APIs
+export const fetchSurahFromAPI = async (surahNumber, signal) => {
+  try {
     const [arabicRes, englishRes, romanRes, teluguRes] = await Promise.all([
-      fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`),
-      fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.sahih`),
-      fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.transliteration`),
-      fetch(`https://api.quran.com/api/v4/quran/translations/227?chapter_number=${surahNumber}`)
+      fetchWithTimeout(`https://api.alquran.cloud/v1/surah/${surahNumber}`, signal),
+      fetchWithTimeout(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.sahih`, signal),
+      fetchWithTimeout(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.transliteration`, signal),
+      fetchWithTimeout(`https://api.quran.com/api/v4/quran/translations/227?chapter_number=${surahNumber}`, signal)
     ])
 
     const [arabicData, englishData, romanData] = await Promise.all([
@@ -170,28 +197,24 @@ export const fetchSurahFromAPI = async (surahNumber) => {
     const englishAyahs = englishData.code === 200 ? englishData.data?.ayahs || [] : []
     const romanAyahs = romanData.code === 200 ? romanData.data?.ayahs || [] : []
 
+    // Build O(1) lookup maps instead of O(n) find() per verse
+    const englishMap = Object.fromEntries(englishAyahs.map(v => [v.numberInSurah, v]))
+    const romanMap = Object.fromEntries(romanAyahs.map(v => [v.numberInSurah, v]))
+    const teluguMap = Object.fromEntries(teluguTranslations.map(v => [v.numberInSurah, v]))
+
     // Get Bismillah text for removal from verse 1
     let bismillahText = ''
     if (surahNumber !== 1 && surahNumber !== 9) {
-      const firstVerseArabic = arabicData.data.ayahs[0]?.text?.trim() || ''
-      // Al-Fatiha verse 1 IS the Bismillah — for other surahs, it's prepended
-      try {
-        const bRes = await fetch('https://api.alquran.cloud/v1/surah/1')
-        const bData = await bRes.json()
-        if (bData.code === 200 && bData.data?.ayahs?.[0]) {
-          bismillahText = bData.data.ayahs[0].text.trim()
-        }
-      } catch (_) { /* continue without */ }
+      bismillahText = await getBismillahText()
     }
 
     const verses = arabicData.data.ayahs.map((ayah) => {
-      const engVerse = englishAyahs.find(v => v.numberInSurah === ayah.numberInSurah)
-      const romVerse = romanAyahs.find(v => v.numberInSurah === ayah.numberInSurah)
-      const telVerse = teluguTranslations.find(v => v.numberInSurah === ayah.numberInSurah)
+      const engVerse = englishMap[ayah.numberInSurah]
+      const romVerse = romanMap[ayah.numberInSurah]
+      const telVerse = teluguMap[ayah.numberInSurah]
 
       let arabicText = ayah.text.trim()
 
-      // Remove Bismillah from verse 1 (displayed separately) — not for Surah 1 or 9
       if (surahNumber !== 1 && surahNumber !== 9 && ayah.numberInSurah === 1 && bismillahText) {
         const normalized = arabicText.replace(/\s+/g, ' ').trim()
         const normalizedBismillah = bismillahText.replace(/\s+/g, ' ').trim()
@@ -202,7 +225,7 @@ export const fetchSurahFromAPI = async (surahNumber) => {
 
       return {
         number: ayah.numberInSurah,
-        globalNumber: ayah.number, // Global ayah number (1-6236) for audio
+        globalNumber: ayah.number,
         arabic: arabicText,
         roman: romVerse?.text?.trim() || '',
         telugu: telVerse?.text || '',
@@ -214,30 +237,86 @@ export const fetchSurahFromAPI = async (surahNumber) => {
     verseCache[surahNumber] = verses
     return verses
   } catch (error) {
+    if (error.name === 'AbortError') throw error
     console.error('Error fetching surah:', error)
     return []
   }
 }
 
-// Get verses with caching
-export const getSurahVerses = async (surahNumber) => {
+// Get verses with caching + dedup
+export const getSurahVerses = async (surahNumber, signal) => {
   if (verseCache[surahNumber]) return verseCache[surahNumber]
-  return await fetchSurahFromAPI(surahNumber)
+  // Dedup: if a request is already in-flight, reuse it
+  if (pendingRequests[surahNumber]) return pendingRequests[surahNumber]
+  const promise = fetchSurahFromAPI(surahNumber, signal).finally(() => {
+    delete pendingRequests[surahNumber]
+  })
+  pendingRequests[surahNumber] = promise
+  return promise
 }
 
-// Fetch Bismillah data for display
+// Tafsir cache + in-flight dedup for revelation context
+const tafsirCache = {}
+const pendingTafsirRequests = {}
+
+export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
+  const key = `${surahNumber}:${verseNumber}`
+  if (tafsirCache[key]) return tafsirCache[key]
+  if (pendingTafsirRequests[key]) return pendingTafsirRequests[key]
+
+  const promise = (async () => {
+    const surah = surahs.find(s => s.number === surahNumber)
+    const result = {
+      revelationType: surah?.revelationType || null,
+      context: null,
+      detailed: null,
+    }
+
+    try {
+      // Fetch both: Tazkirul Quran (concise context) + Ibn Kathir (detailed)
+      const [ctxRes, detRes] = await Promise.all([
+        fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/817/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
+        fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/169/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
+      ])
+
+      if (ctxRes?.ok) {
+        const ctxData = await ctxRes.json()
+        if (ctxData?.tafsir?.text) result.context = stripHtml(ctxData.tafsir.text)
+      }
+      if (detRes?.ok) {
+        const detData = await detRes.json()
+        if (detData?.tafsir?.text) result.detailed = stripHtml(detData.tafsir.text)
+      }
+    } catch (_) { /* silent fail */ }
+
+    if (result.context || result.detailed) {
+      tafsirCache[key] = result
+      return result
+    }
+    return null
+  })().finally(() => { delete pendingTafsirRequests[key] })
+
+  pendingTafsirRequests[key] = promise
+  return promise
+}
+
+// Fetch Bismillah data for display (cached)
 export const fetchBismillah = async () => {
+  if (bismillahCache?.arabic) return bismillahCache
   try {
     const [arabicRes, romanRes] = await Promise.all([
-      fetch('https://api.alquran.cloud/v1/surah/1'),
-      fetch('https://api.alquran.cloud/v1/surah/1/en.transliteration')
+      fetchWithTimeout('https://api.alquran.cloud/v1/surah/1'),
+      fetchWithTimeout('https://api.alquran.cloud/v1/surah/1/en.transliteration')
     ])
     const [arabicData, romanData] = await Promise.all([arabicRes.json(), romanRes.json()])
     if (arabicData.code === 200 && romanData.code === 200) {
-      return {
+      const result = {
         arabic: arabicData.data.ayahs[0].text.trim(),
-        roman: romanData.data.ayahs[0].text.trim()
+        roman: romanData.data.ayahs[0].text.trim(),
+        _rawText: arabicData.data.ayahs[0].text.trim()
       }
+      bismillahCache = result
+      return result
     }
   } catch (_) { /* silent fail */ }
   return null

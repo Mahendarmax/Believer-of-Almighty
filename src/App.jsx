@@ -1,26 +1,48 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { lazy, Suspense } from 'react'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { SettingsProvider } from './context/SettingsContext'
-import Home from './pages/Home'
-import SurahList from './pages/SurahList'
-import VerseView from './pages/VerseView'
-import Settings from './pages/Settings'
+import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
+
+// Lazy-load route components for code splitting
+const Home = lazy(() => import('./pages/Home'))
+const SurahList = lazy(() => import('./pages/SurahList'))
+const VerseView = lazy(() => import('./pages/VerseView'))
+const Settings = lazy(() => import('./pages/Settings'))
+const Favorites = lazy(() => import('./pages/Favorites'))
+
+const PageLoader = () => (
+  <div style={{
+    display: 'flex', flexDirection: 'column', alignItems: 'center',
+    justifyContent: 'center', minHeight: '60vh', gap: '12px', color: '#94a3b8'
+  }}>
+    <div style={{
+      width: 40, height: 40, border: '3px solid rgba(212,164,74,0.15)',
+      borderTopColor: '#d4a44a', borderRadius: '50%',
+      animation: 'spin 0.7s linear infinite'
+    }} />
+  </div>
+)
 
 function App() {
   return (
-    <SettingsProvider>
-      <BrowserRouter>
-        <div className="app">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/surahs" element={<SurahList />} />
-            <Route path="/surah/:number" element={<VerseView />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </SettingsProvider>
+    <ErrorBoundary>
+      <SettingsProvider>
+        <HashRouter>
+          <div className="app">
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/surahs" element={<SurahList />} />
+                <Route path="/surah/:number" element={<VerseView />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/favorites" element={<Favorites />} />
+              </Routes>
+            </Suspense>
+          </div>
+        </HashRouter>
+      </SettingsProvider>
+    </ErrorBoundary>
   )
 }
 

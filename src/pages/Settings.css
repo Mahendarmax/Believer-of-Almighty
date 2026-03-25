@@ -1,8 +1,9 @@
 /* ===== SETTINGS PAGE ===== */
 .settings-page {
-  max-width: 600px;
+  width: 100%;
+  max-width: 700px;
   margin: 0 auto;
-  padding: 0 16px 40px;
+  padding: 0 20px 60px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -23,7 +24,7 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
-  color: var(--gold);
+  color: var(--accent);
   transition: var(--transition);
 }
 
@@ -48,17 +49,22 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 20px;
-  background: var(--bg-card);
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   gap: 16px;
+  transition: var(--transition);
+}
+
+.set-item:hover {
+  border-color: var(--border-strong);
 }
 
 .set-item-info {
   display: flex;
   align-items: center;
   gap: 14px;
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .set-item-info > div h3 {
@@ -110,13 +116,13 @@
 }
 
 .toggle input:checked + .toggle-track {
-  background: rgba(212, 168, 83, 0.2);
-  border-color: var(--gold);
+  background: rgba(212, 164, 74, 0.2);
+  border-color: var(--accent);
 }
 
 .toggle input:checked + .toggle-track::after {
   transform: translateX(22px);
-  background: var(--gold);
+  background: var(--accent);
 }
 
 /* Font Controls */
@@ -136,7 +142,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  color: var(--gold);
+  color: var(--accent);
   transition: var(--transition);
 }
 
@@ -157,14 +163,14 @@
 .set-preview {
   margin-top: 20px;
   padding: 20px;
-  background: var(--bg-card);
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
 }
 
 .set-preview h4 {
   font-size: 0.78rem;
-  color: var(--gold-dim);
+  color: var(--accent-dim);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 14px;

@@ -12,38 +12,38 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(45, 212, 168, 0.1);
+  background: rgba(52, 211, 153, 0.08);
   color: var(--emerald);
-  transition: all 0.25s ease;
+  transition: var(--transition);
 }
 
 .audio-btn:hover {
-  background: rgba(45, 212, 168, 0.18);
-  transform: scale(1.08);
+  background: rgba(52, 211, 153, 0.16);
+  transform: scale(1.1);
 }
 
 .audio-btn.active {
   background: var(--emerald);
-  color: var(--bg-primary);
+  color: #000;
   animation: audio_pulse 1.8s ease-in-out infinite;
 }
 
 @keyframes audio_pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 168, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(45, 212, 168, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.35); }
+  50% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
 }
 
 .audio-progress-bar {
-  width: 48px;
+  width: 52px;
   height: 3px;
-  background: rgba(45, 212, 168, 0.15);
+  background: rgba(52, 211, 153, 0.12);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .audio-progress-fill {
   height: 100%;
-  background: var(--emerald);
+  background: linear-gradient(90deg, var(--emerald), #6ee7b7);
   border-radius: 2px;
   transition: width 0.1s linear;
 }

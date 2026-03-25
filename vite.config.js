@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/',
+  base: './',
   plugins: [react()],
   server: {
     port: 3000,
@@ -11,5 +11,18 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-  }
+    target: 'es2018',
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'router': ['react-router-dom'],
+        },
+      },
+    },
+    cssMinify: true,
+    reportCompressedSize: true,
+    chunkSizeWarningLimit: 300,
+  },
 })

@@ -6,12 +6,14 @@ import './Home.css'
 
 function Home() {
   const navigate = useNavigate()
-  const { lastRead } = useSettings()
+  const { lastRead, favorites, transliteration, setTransliteration } = useSettings()
 
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
-  const handleSettings = useCallback(() => navigate('/settings'), [navigate])
+  const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
-    if (lastRead) navigate(`/surah/${lastRead.surahNumber}`)
+    if (lastRead) {
+      navigate(`/surah/${lastRead.surahNumber}?verse=${lastRead.verseNumber || 1}`)
+    }
   }, [navigate, lastRead])
 
   return (
@@ -57,6 +59,7 @@ function Home() {
             <div className="continue-info">
               <span className="continue-label">Continue Reading</span>
               <span className="continue-surah">{lastRead.surahName}</span>
+              <span className="continue-verse">Verse {lastRead.verseNumber || 1}</span>
             </div>
             <svg className="continue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -78,17 +81,50 @@ function Home() {
           <span className="action-meta">All 114 Surahs</span>
         </button>
 
-        <button className="action-card settings-card" onClick={handleSettings}>
+        <button className="action-card fav-card" onClick={handleFavorites}>
           <div className="action-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-              <circle cx="12" cy="12" r="3"/>
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
           </div>
-          <h3>Settings</h3>
-          <p>సెట్టింగ్స్</p>
-          <span className="action-meta">Customize display</span>
+          <h3>Favorites</h3>
+          <p>ఇష్టమైనవి</p>
+          <span className="action-meta">{favorites.length} Saved</span>
         </button>
+      </section>
+
+      {/* Transliteration Preference */}
+      <section className="translit-section">
+        <h3 className="translit-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
+            <path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          </svg>
+          Transliteration Style
+        </h3>
+        <p className="translit-desc">Choose how to display Quranic pronunciation</p>
+        <div className="translit-options">
+          <button
+            className={`translit-btn ${transliteration === 'english' ? 'active' : ''}`}
+            onClick={() => setTransliteration('english')}
+          >
+            <span className="translit-btn-label">Roman English</span>
+            <span className="translit-btn-example">Bismillaahir Rahmaanir Raheem</span>
+          </button>
+          <button
+            className={`translit-btn ${transliteration === 'telugu' ? 'active' : ''}`}
+            onClick={() => setTransliteration('telugu')}
+          >
+            <span className="translit-btn-label">Roman Telugu</span>
+            <span className="translit-btn-example">బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్</span>
+          </button>
+          <button
+            className={`translit-btn ${transliteration === 'both' ? 'active' : ''}`}
+            onClick={() => setTransliteration('both')}
+          >
+            <span className="translit-btn-label">Both</span>
+            <span className="translit-btn-example">English + Telugu side by side</span>
+          </button>
+        </div>
       </section>
 
       {/* Features */}

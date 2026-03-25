@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { getSurahVerses, surahs, fetchBismillah, getSurahAudioUrl } from '../data/quranData'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
+import { getSurahVerses, surahs, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
+import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
 import './VerseView.css'
 
@@ -31,20 +32,59 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, showArabic, fontSize, playingVerse, onPlay }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration }) => {
+  const [tafsir, setTafsir] = useState(null)
+  const [tafsirLoading, setTafsirLoading] = useState(false)
+  const [showTafsir, setShowTafsir] = useState(false)
+
+  // Memoize Telugu transliteration to avoid recomputing on every render
+  const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
+
+  const handleShowTafsir = useCallback(async () => {
+    if (showTafsir) { setShowTafsir(false); return }
+    if (tafsir) { setShowTafsir(true); return }
+    setTafsirLoading(true)
+    const text = await fetchVerseTafsir(surahNumber, verse.number)
+    setTafsir(text)
+    setTafsirLoading(false)
+    setShowTafsir(true)
+  }, [showTafsir, tafsir, surahNumber, verse.number])
+
   return (
     <div className="verse-card" id={`verse-${verse.number}`}>
-      {/* Verse header with number and audio */}
+      {/* Verse header with number, bookmark, favorite, and audio */}
       <div className="vc-header">
         <div className="vc-number">
           <span>{verse.number}</span>
         </div>
-        <AudioPlayer
-          audioUrl={verse.audioUrl}
-          verseNumber={verse.number}
-          isGlobalPlaying={playingVerse}
-          onPlay={onPlay}
-        />
+        <div className="vc-actions">
+          <button
+            className="vc-action-btn bookmark-btn"
+            onClick={() => onBookmark(verse.number)}
+            title="Save reading position"
+            aria-label={`Bookmark verse ${verse.number}`}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </button>
+          <button
+            className={`vc-action-btn fav-btn ${isFav ? 'active' : ''}`}
+            onClick={() => onToggleFav(verse.number, verse.arabic, verse.translation)}
+            title={isFav ? 'Remove from favorites' : 'Add to favorites'}
+            aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            <svg viewBox="0 0 24 24" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" width="16" height="16">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          <AudioPlayer
+            audioUrl={verse.audioUrl}
+            verseNumber={verse.number}
+            isGlobalPlaying={playingVerse}
+            onPlay={onPlay}
+          />
+        </div>
       </div>
 
       {/* Arabic text */}
@@ -54,14 +94,28 @@ const VerseCard = memo(({ verse, showArabic, fontSize, playingVerse, onPlay }) =
         </div>
       )}
 
-      {/* Transliteration + Telugu side by side */}
+      {/* Transliteration columns based on preference */}
       <div className="vc-columns">
-        <div className="vc-col">
-          <span className="vc-label">Transliteration</span>
-          <p className="vc-roman" style={{ fontSize: `${fontSize}px` }}>
-            {verse.roman || '—'}
-          </p>
-        </div>
+        {(transliteration === 'english' || transliteration === 'both') && (
+          <div className="vc-col">
+            <span className="vc-label">Transliteration</span>
+            <p className="vc-roman" style={{ fontSize: `${fontSize}px` }}>
+              {verse.roman || '\u2014'}
+            </p>
+          </div>
+        )}
+        {(transliteration === 'telugu' || transliteration === 'both') && (
+          <div className="vc-col">
+            <span className="vc-label">{transliteration === 'both' ? 'తెలుగు లిప్యంతరీకరణ' : 'Telugu Transliteration'}</span>
+            <p className="vc-telugu" style={{ fontSize: `${fontSize}px` }}>
+              {teluguTranslit || '\u2014'}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Telugu meaning */}
+      <div className="vc-columns">
         <div className="vc-col">
           <span className="vc-label">తెలుగు</span>
           <p className="vc-telugu" style={{ fontSize: `${fontSize}px` }}>
@@ -72,10 +126,47 @@ const VerseCard = memo(({ verse, showArabic, fontSize, playingVerse, onPlay }) =
 
       {/* English translation */}
       <div className="vc-translation">
-        <span className="vc-label">English — Sahih International</span>
+        <span className="vc-label">English</span>
         <p style={{ fontSize: `${fontSize - 1}px` }}>
           {verse.translation || '—'}
         </p>
+      </div>
+
+      {/* Revelation Context / Tafsir */}
+      <div className="vc-context">
+        <button className="vc-context-btn" onClick={handleShowTafsir}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+          </svg>
+          {showTafsir ? 'Hide Context' : 'Show Revelation Context'}
+        </button>
+        {tafsirLoading && <p className="vc-context-loading">Loading...</p>}
+        {showTafsir && tafsir && (
+          <div className="vc-context-text">
+            {tafsir.revelationType && (
+              <div className="vc-revelation-badge">
+                <span className={`vc-badge ${tafsir.revelationType === 'Meccan' ? 'meccan' : 'medinan'}`}>
+                  {tafsir.revelationType === 'Meccan' ? '🕋' : '🕌'} Revealed in {tafsir.revelationType === 'Meccan' ? 'Makkah' : 'Madinah'}
+                </span>
+              </div>
+            )}
+            {tafsir.context && (
+              <div className="vc-context-section">
+                <span className="vc-label">📖 Revelation Context</span>
+                <p style={{ fontSize: `${fontSize - 1}px` }}>{tafsir.context}</p>
+              </div>
+            )}
+            {tafsir.detailed && (
+              <details className="vc-detailed-tafsir">
+                <summary>📚 Detailed Tafsir (Ibn Kathir)</summary>
+                <p style={{ fontSize: `${fontSize - 1}px` }}>{tafsir.detailed}</p>
+              </details>
+            )}
+          </div>
+        )}
+        {showTafsir && !tafsir && !tafsirLoading && (
+          <p className="vc-context-none">No revelation context available for this verse</p>
+        )}
       </div>
     </div>
   )
@@ -84,8 +175,9 @@ VerseCard.displayName = 'VerseCard'
 
 function VerseView() {
   const { number } = useParams()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead } = useSettings()
+  const { showArabic, fontSize, updateLastRead, isFavorite, toggleFavorite, transliteration } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -93,14 +185,36 @@ function VerseView() {
   const [bismillah, setBismillah] = useState(null)
   const [playingVerse, setPlayingVerse] = useState(null)
   const [isSurahPlaying, setIsSurahPlaying] = useState(false)
+  const [bookmarkToast, setBookmarkToast] = useState(null)
+  const [visibleCount, setVisibleCount] = useState(30)
   const surahAudioRef = useRef(null)
+  const scrolledToVerse = useRef(false)
+  const sentinelRef = useRef(null)
 
   const surahNumber = parseInt(number)
   const surah = useMemo(() => surahs.find(s => s.number === surahNumber), [surahNumber])
 
-  // Load verses
+  // Progressive rendering: load more verses as user scrolls
   useEffect(() => {
-    let cancelled = false
+    if (verses.length <= 30) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleCount(prev => Math.min(prev + 30, verses.length))
+        }
+      },
+      { rootMargin: '300px' }
+    )
+    const el = sentinelRef.current
+    if (el) observer.observe(el)
+    return () => { if (el) observer.unobserve(el) }
+  }, [verses.length, visibleCount])
+
+  // Load verses with AbortController
+  useEffect(() => {
+    const controller = new AbortController()
+    scrolledToVerse.current = false
+    setVisibleCount(30)
     const load = async () => {
       setLoading(true)
       setError(false)
@@ -115,29 +229,44 @@ function VerseView() {
       setIsSurahPlaying(false)
 
       try {
-        // Fetch Bismillah for non-Fatiha, non-Tawbah surahs
-        if (surahNumber !== 1 && surahNumber !== 9) {
-          const bData = await fetchBismillah()
-          if (!cancelled) setBismillah(bData)
-        } else {
-          if (!cancelled) setBismillah(null)
-        }
-
-        const data = await getSurahVerses(surahNumber)
-        if (!cancelled) {
+        // Fetch verses + Bismillah in parallel (non-blocking)
+        const needsBismillah = surahNumber !== 1 && surahNumber !== 9
+        const [data, bData] = await Promise.all([
+          getSurahVerses(surahNumber, controller.signal),
+          needsBismillah ? fetchBismillah() : Promise.resolve(null),
+        ])
+        if (!controller.signal.aborted) setBismillah(bData)
+        if (!controller.signal.aborted) {
           setVerses(data)
+          // If navigating to a specific verse, ensure enough are visible
+          const targetVerse = parseInt(searchParams.get('verse'))
+          if (targetVerse > 30) setVisibleCount(targetVerse + 10)
           setLoading(false)
-          if (surah) updateLastRead(surahNumber, surah.name)
         }
-      } catch {
-        if (!cancelled) { setError(true); setLoading(false) }
+      } catch (err) {
+        if (err?.name === 'AbortError') return
+        if (!controller.signal.aborted) { setError(true); setLoading(false) }
       }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
     load()
-    return () => { cancelled = true }
-  }, [surahNumber, surah, updateLastRead])
+    return () => { controller.abort() }
+  }, [surahNumber])
+
+  // Scroll to specific verse after loading
+  useEffect(() => {
+    if (!loading && verses.length > 0 && !scrolledToVerse.current) {
+      scrolledToVerse.current = true
+      const targetVerse = parseInt(searchParams.get('verse'))
+      if (targetVerse && targetVerse > 1) {
+        setTimeout(() => {
+          const el = document.getElementById(`verse-${targetVerse}`)
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 300)
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }
+  }, [loading, verses, searchParams])
 
   // Cleanup surah audio on unmount
   useEffect(() => {
@@ -166,6 +295,18 @@ function VerseView() {
     }
     setPlayingVerse(verseNum)
   }, [])
+
+  const handleBookmark = useCallback((verseNum) => {
+    if (surah) {
+      updateLastRead(surahNumber, surah.name, verseNum)
+      setBookmarkToast(`Bookmarked: ${surah.name}, Verse ${verseNum}`)
+      setTimeout(() => setBookmarkToast(null), 2000)
+    }
+  }, [surah, surahNumber, updateLastRead])
+
+  const handleToggleFav = useCallback((verseNum, arabic, translation) => {
+    if (surah) toggleFavorite(surahNumber, surah.name, verseNum, arabic, translation)
+  }, [surah, surahNumber, toggleFavorite])
 
   const handleSurahPlay = useCallback(async () => {
     if (isSurahPlaying) {
@@ -261,7 +402,7 @@ function VerseView() {
         </div>
       )}
 
-      {/* Verses */}
+      {/* Verses — progressively rendered */}
       <div className="vv-verses">
         {verses.length === 0 ? (
           <div className="vv-empty">
@@ -269,16 +410,30 @@ function VerseView() {
             <button onClick={() => window.location.reload()}>Retry</button>
           </div>
         ) : (
-          verses.map((verse, i) => (
-            <VerseCard
-              key={verse.number}
-              verse={verse}
-              showArabic={showArabic}
-              fontSize={fontSize}
-              playingVerse={playingVerse}
-              onPlay={handleVersePlay}
-            />
-          ))
+          <>
+            {verses.slice(0, visibleCount).map((verse) => (
+              <VerseCard
+                key={verse.number}
+                verse={verse}
+                surahNumber={surahNumber}
+                surahName={surah?.name}
+                showArabic={showArabic}
+                fontSize={fontSize}
+                playingVerse={playingVerse}
+                onPlay={handleVersePlay}
+                onBookmark={handleBookmark}
+                isFav={isFavorite(surahNumber, verse.number)}
+                onToggleFav={handleToggleFav}
+                transliteration={transliteration}
+              />
+            ))}
+            {visibleCount < verses.length && (
+              <div ref={sentinelRef} className="vv-loading-more">
+                <div className="vv-spinner" style={{ width: 28, height: 28 }} />
+                <span>{visibleCount} of {verses.length} verses</span>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -291,6 +446,11 @@ function VerseView() {
           Next Surah →
         </button>
       </div>
+
+      {/* Bookmark toast */}
+      {bookmarkToast && (
+        <div className="vv-toast">{bookmarkToast}</div>
+      )}
 
       <ScrollToTop />
     </div>
