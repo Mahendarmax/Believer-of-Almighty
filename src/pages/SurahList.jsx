@@ -1,7 +1,31 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { surahs } from '../data/quranData'
 import './SurahList.css'
+
+// Memoized surah card — prevents re-rendering unchanged cards during search
+const SurahCard = memo(({ surah, onClick }) => (
+  <button
+    className="surah-card"
+    onClick={() => onClick(surah.number)}
+  >
+    <div className="sc-number">
+      <span>{surah.number}</span>
+    </div>
+    <div className="sc-info">
+      <h3 className="sc-name">{surah.name}</h3>
+      <p className="sc-english">{surah.nameEnglish}</p>
+      <p className="sc-telugu">{surah.nameTelugu}</p>
+    </div>
+    <div className="sc-meta">
+      <span className="sc-ayahs">{surah.ayahs} Ayahs</span>
+      <span className={`sc-type ${surah.revelationType.toLowerCase()}`}>
+        {surah.revelationType}
+      </span>
+    </div>
+  </button>
+))
+SurahCard.displayName = 'SurahCard'
 
 function SurahList() {
   const navigate = useNavigate()
@@ -126,26 +150,11 @@ function SurahList() {
       ) : (
         <div className="surah-grid">
           {filteredSurahs.map((surah) => (
-            <button
+            <SurahCard
               key={surah.id}
-              className="surah-card"
-              onClick={() => handleSurahClick(surah.number)}
-            >
-              <div className="sc-number">
-                <span>{surah.number}</span>
-              </div>
-              <div className="sc-info">
-                <h3 className="sc-name">{surah.name}</h3>
-                <p className="sc-english">{surah.nameEnglish}</p>
-                <p className="sc-telugu">{surah.nameTelugu}</p>
-              </div>
-              <div className="sc-meta">
-                <span className="sc-ayahs">{surah.ayahs} Ayahs</span>
-                <span className={`sc-type ${surah.revelationType.toLowerCase()}`}>
-                  {surah.revelationType}
-                </span>
-              </div>
-            </button>
+              surah={surah}
+              onClick={handleSurahClick}
+            />
           ))}
         </div>
       )}

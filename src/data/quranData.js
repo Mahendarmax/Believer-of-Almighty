@@ -116,6 +116,10 @@ export const surahs = [
   { id: 114, number: 114, name: 'An-Nas', nameEnglish: 'The Mankind', nameTelugu: 'అన్-నాస్', ayahs: 6, revelationType: 'Meccan' },
 ]
 
+// O(1) surah lookup by number (avoids Array.find() on every call)
+const surahMap = Object.fromEntries(surahs.map(s => [s.number, s]))
+export const getSurahByNumber = (num) => surahMap[num] || null
+
 // Verse cache to prevent redundant API calls
 const verseCache = {}
 
@@ -265,7 +269,7 @@ export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
   if (pendingTafsirRequests[key]) return pendingTafsirRequests[key]
 
   const promise = (async () => {
-    const surah = surahs.find(s => s.number === surahNumber)
+    const surah = surahMap[surahNumber]
     const result = {
       revelationType: surah?.revelationType || null,
       context: null,

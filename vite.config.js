@@ -13,6 +13,7 @@ export default defineConfig({
     assetsDir: 'assets',
     target: 'es2018',
     minify: 'esbuild',
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -24,5 +25,8 @@ export default defineConfig({
     cssMinify: true,
     reportCompressedSize: true,
     chunkSizeWarningLimit: 300,
+    modulePreload: {
+      polyfill: false,  // Drop polyfill for modern browsers — saves ~2KB
+    },
   },
 })

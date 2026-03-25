@@ -3,10 +3,11 @@
 // into Telugu script (e.g. "బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్")
 
 const VIRAMA = '\u0C4D' // Telugu halant (్)
+const ANUSVARA = '\u0C02' // Telugu anusvara (ం) — natural nasal before consonants
 
 // Consonant mappings — longest match first
 const CONSONANTS = [
-  ['shh', 'ష'], ['sh', 'ష'], ['zh', 'ళ'],
+  ['shh', 'ష'], ['sh', 'ష'], ['zh', 'జ'],
   ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'ఝ'],
   ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'భ'],
   ['nh', 'న\u0C4Dహ'],
@@ -19,20 +20,29 @@ const CONSONANTS = [
   ['x', 'క\u0C4Dస'],
 ]
 
+// Single-char nasals that become anusvara (ం) before a different consonant
+const NASALS = new Set(['n', 'm'])
+
 // Vowel mappings — [roman, standalone, matra (after consonant)]
-// Longest match first to avoid partial matches
+// Longest match first to avoid partial matches.
+// null standalone = only valid as a matra after a consonant (not word-initial).
 const VOWELS = [
-  ['aa', 'ఆ', '\u0C3E'],   // ా
-  ['ee', 'ఈ', '\u0C40'],   // ీ
-  ['oo', 'ఊ', '\u0C42'],   // ూ
-  ['ai', 'ఐ', '\u0C48'],   // ై
-  ['au', 'ఔ', '\u0C4C'],   // ౌ
-  ['ou', 'ఔ', '\u0C4C'],   // ౌ
-  ['a', 'అ', ''],           // inherent vowel (no matra needed)
-  ['i', 'ఇ', '\u0C3F'],    // ి
-  ['u', 'ఉ', '\u0C41'],    // ు
-  ['e', 'ఎ', '\u0C46'],    // ె
-  ['o', 'ఓ', '\u0C4B'],    // ో
+  ['aaa', 'ఆ', '\u0C3E'],    // Extended triple-a → long ā (e.g. "daaalleen")
+  ['eee', 'ఈ', '\u0C40'],    // Extended triple-e → long ī
+  ['ooo', 'ఊ', '\u0C42'],    // Extended triple-o → long ū
+  ['aa', 'ఆ', '\u0C3E'],     // ా  long aa
+  ['ee', 'ఈ', '\u0C40'],     // ీ  long ee
+  ['oo', 'ఊ', '\u0C42'],     // ూ  long oo
+  ['ai', 'ఐ', '\u0C48'],     // ై  diphthong
+  ['ay', null, '\u0C48'],     // ై  diphthong after consonant (e.g. "bayn"→బైన్, "layl"→లైల్)
+  ['au', 'ఔ', '\u0C4C'],     // ౌ  diphthong
+  ['aw', null, '\u0C4C'],     // ౌ  diphthong after consonant (e.g. "yawm"→యౌమ్, "tawba"→తౌబ)
+  ['ou', 'ఔ', '\u0C4C'],     // ౌ  diphthong
+  ['a', 'అ', ''],             // inherent vowel (no matra needed)
+  ['i', 'ఇ', '\u0C3F'],      // ి
+  ['u', 'ఉ', '\u0C41'],      // ు
+  ['e', 'ఎ', '\u0C46'],      // ె
+  ['o', 'ఓ', '\u0C4B'],      // ో
 ]
 
 const isLetter = (ch) => /[a-z]/i.test(ch)
@@ -68,7 +78,7 @@ export function romanToTelugu(text) {
       if (lower.startsWith(roman, i)) {
         i += roman.length
 
-        // Try matching a following vowel
+        // Try matching a following vowel (all vowels valid as matras)
         let vowelMatched = false
         for (const [vRoman, , vMatra] of VOWELS) {
           if (lower.startsWith(vRoman, i)) {
@@ -79,9 +89,15 @@ export function romanToTelugu(text) {
           }
         }
 
-        // No vowel follows — add virama
+        // No vowel follows
         if (!vowelMatched) {
-          result += telugu + VIRAMA
+          // Nasal before a different consonant → use anusvara (ం) for natural Telugu flow
+          // e.g. "Anfal"→అంఫాల్, "ambiya"→అంబియ  (but "anna"→అన్న stays halant)
+          if (NASALS.has(roman) && i < lower.length && isLetter(lower[i]) && lower[i] !== roman[0]) {
+            result += ANUSVARA
+          } else {
+            result += telugu + VIRAMA
+          }
         }
 
         matched = true
@@ -90,10 +106,10 @@ export function romanToTelugu(text) {
     }
     if (matched) continue
 
-    // Try matching a standalone vowel
+    // Try matching a standalone vowel (skip entries with null standalone — those are consonant-only matras)
     let vowelMatched = false
     for (const [vRoman, vStandalone] of VOWELS) {
-      if (lower.startsWith(vRoman, i)) {
+      if (vStandalone !== null && lower.startsWith(vRoman, i)) {
         result += vStandalone
         i += vRoman.length
         vowelMatched = true

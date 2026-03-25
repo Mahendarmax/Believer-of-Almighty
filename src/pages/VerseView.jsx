@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { getSurahVerses, surahs, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir } from '../data/quranData'
+import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
 import './VerseView.css'
 
-// Scroll to top button
+// Scroll to top button — throttled scroll handler to reduce layout thrashing
 const ScrollToTop = memo(() => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 400)
+    let ticking = false
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(() => {
+          setShow(window.scrollY > 400)
+          ticking = false
+        })
+      }
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -177,7 +186,7 @@ function VerseView() {
   const { number } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead, isFavorite, toggleFavorite, transliteration } = useSettings()
+  const { showArabic, fontSize, updateLastRead, favorites, isFavorite, toggleFavorite, transliteration } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -192,7 +201,14 @@ function VerseView() {
   const sentinelRef = useRef(null)
 
   const surahNumber = parseInt(number)
-  const surah = useMemo(() => surahs.find(s => s.number === surahNumber), [surahNumber])
+  const surah = useMemo(() => getSurahByNumber(surahNumber), [surahNumber])
+
+  // O(1) favorites lookup — avoids calling isFavorite(n) per verse in render loop
+  const favSet = useMemo(() => {
+    const set = new Set()
+    for (const f of favorites) set.add(f.key)
+    return set
+  }, [favorites])
 
   // Progressive rendering: load more verses as user scrolls
   useEffect(() => {
@@ -242,6 +258,10 @@ function VerseView() {
           const targetVerse = parseInt(searchParams.get('verse'))
           if (targetVerse > 30) setVisibleCount(targetVerse + 10)
           setLoading(false)
+
+          // Prefetch adjacent surahs in background for instant navigation
+          if (surahNumber < 114) getSurahVerses(surahNumber + 1).catch(() => {})
+          if (surahNumber > 1) getSurahVerses(surahNumber - 1).catch(() => {})
         }
       } catch (err) {
         if (err?.name === 'AbortError') return
@@ -422,7 +442,7 @@ function VerseView() {
                 playingVerse={playingVerse}
                 onPlay={handleVersePlay}
                 onBookmark={handleBookmark}
-                isFav={isFavorite(surahNumber, verse.number)}
+                isFav={favSet.has(`${surahNumber}:${verse.number}`)}
                 onToggleFav={handleToggleFav}
                 transliteration={transliteration}
               />

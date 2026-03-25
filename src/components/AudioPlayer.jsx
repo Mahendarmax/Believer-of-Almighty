@@ -18,12 +18,13 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
     }
   }, [isGlobalPlaying, verseNumber, isPlaying])
 
-  // Cleanup on unmount
+  // Cleanup on unmount — remove event listeners to prevent memory leaks
   useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause()
-        audioRef.current.src = ''
+        audioRef.current.removeAttribute('src')
+        audioRef.current.load() // release network resources
       }
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
     }
@@ -75,13 +76,6 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
       setIsPlaying(false)
     }
   }, [isPlaying, audioUrl, verseNumber, onPlay, updateProgress])
-
-  const formatTime = (s) => {
-    if (!s || isNaN(s)) return '0:00'
-    const m = Math.floor(s / 60)
-    const sec = Math.floor(s % 60)
-    return `${m}:${sec.toString().padStart(2, '0')}`
-  }
 
   return (
     <div className={`verse-audio ${isPlaying ? 'playing' : ''}`}>

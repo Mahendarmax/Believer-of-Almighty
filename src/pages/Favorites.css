@@ -93,13 +93,13 @@
   padding: 20px;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   animation: favCardIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+  contain: layout style paint;
 }
 
 .fav-card:nth-child(1) { animation-delay: 0s; }
-.fav-card:nth-child(2) { animation-delay: 0.06s; }
-.fav-card:nth-child(3) { animation-delay: 0.12s; }
-.fav-card:nth-child(4) { animation-delay: 0.18s; }
-.fav-card:nth-child(n+5) { animation-delay: 0.24s; }
+.fav-card:nth-child(2) { animation-delay: 0.05s; }
+.fav-card:nth-child(3) { animation-delay: 0.1s; }
+.fav-card:nth-child(n+4) { animation: none; }
 
 @keyframes favCardIn {
   from { opacity: 0; transform: translateY(14px); }

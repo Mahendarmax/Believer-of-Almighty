@@ -252,8 +252,9 @@
   transition: border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   animation: verseSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
   scroll-margin-top: 80px;
-  will-change: transform;
-  contain: layout style;
+  contain: layout style paint;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
 }
 
 .verse-card:hover {
@@ -266,13 +267,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Stagger animations */
+/* Stagger animations — only first few visible cards */
 .verse-card:nth-child(1) { animation-delay: 0s; }
-.verse-card:nth-child(2) { animation-delay: 0.04s; }
-.verse-card:nth-child(3) { animation-delay: 0.08s; }
-.verse-card:nth-child(4) { animation-delay: 0.12s; }
-.verse-card:nth-child(5) { animation-delay: 0.16s; }
-.verse-card:nth-child(n+6) { animation-delay: 0.2s; }
+.verse-card:nth-child(2) { animation-delay: 0.03s; }
+.verse-card:nth-child(3) { animation-delay: 0.06s; }
+.verse-card:nth-child(n+4) { animation: none; }
 
 /* Verse header */
 .vc-header {
