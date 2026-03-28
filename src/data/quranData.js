@@ -288,13 +288,15 @@ export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
       revelationType: surah?.revelationType || null,
       context: null,
       detailed: null,
+      historical: null,
     }
 
     try {
-      // Fetch both: Tazkirul Quran (concise context) + Ibn Kathir (detailed)
-      const [ctxRes, detRes] = await Promise.all([
+      // Fetch: Tazkirul Quran (concise context) + Ibn Kathir (detailed) + Ma'arif al-Qur'an (historical background)
+      const [ctxRes, detRes, histRes] = await Promise.all([
         fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/817/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
         fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/169/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
+        fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/168/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
       ])
 
       if (ctxRes?.ok) {
@@ -305,9 +307,13 @@ export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
         const detData = await detRes.json()
         if (detData?.tafsir?.text) result.detailed = stripHtml(detData.tafsir.text)
       }
+      if (histRes?.ok) {
+        const histData = await histRes.json()
+        if (histData?.tafsir?.text) result.historical = stripHtml(histData.tafsir.text)
+      }
     } catch (_) { /* silent fail */ }
 
-    if (result.context || result.detailed) {
+    if (result.context || result.detailed || result.historical) {
       tafsirCache[key] = result
       tafsirCacheOrder.push(key)
       if (tafsirCacheOrder.length > MAX_TAFSIR_CACHE) {
