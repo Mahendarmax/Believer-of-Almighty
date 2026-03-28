@@ -59,9 +59,7 @@ function NamazSurahs() {
                     <p className="namaz-verse-telugu">{v.telugu}</p>
                   </div>
                 ))}
-                <button className="namaz-goto-btn" onClick={() => navigate(`/surah/${s.number}`)}>
-                  Read full Surah →
-                </button>
+
               </div>
             )}
           </div>

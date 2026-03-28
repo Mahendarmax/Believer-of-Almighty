@@ -95,7 +95,7 @@ const Home = React.memo(function Home() {
         <button className="action-card duas-action-card" onClick={() => navigate('/duas')}>
           <div className="action-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M7 11c-1.5 0-3-1-3-3s1.5-3 3-3c.5 0 1 .1 1.4.4M17 11c1.5 0 3-1 3-3s-1.5-3-3-3c-.5 0-1 .1-1.4.4M8.5 11c0 0-1 4 0 7s3.5 4 3.5 4M15.5 11c0 0 1 4 0 7s-3.5 4-3.5 4M6 11h12"/>
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </div>
           <h3>Duas</h3>
