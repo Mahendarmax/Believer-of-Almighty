@@ -276,18 +276,22 @@ function VerseView() {
   // Scroll to specific verse after loading
   useEffect(() => {
     if (!loading && verses.length > 0 && !scrolledToVerse.current) {
-      scrolledToVerse.current = true
       const targetVerse = parseInt(searchParams.get('verse'))
       if (targetVerse && targetVerse > 1) {
-        setTimeout(() => {
-          const el = document.getElementById(`verse-${targetVerse}`)
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }, 300)
+        const el = document.getElementById(`verse-${targetVerse}`)
+        if (el) {
+          scrolledToVerse.current = true
+          setTimeout(() => {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 100)
+        }
+        // el not in DOM yet (visibleCount not high enough) — effect will retry when visibleCount updates
       } else {
+        scrolledToVerse.current = true
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
     }
-  }, [loading, verses, searchParams])
+  }, [loading, verses, searchParams, visibleCount])
 
   // Track reading position — observe which verse is at the top of the viewport
   useEffect(() => {
