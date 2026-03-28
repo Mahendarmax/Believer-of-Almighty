@@ -21,11 +21,16 @@ const Home = React.memo(function Home() {
 
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
+  const handleSettings = useCallback(() => navigate('/settings'), [navigate])
   const handleContinue = useCallback(() => {
     if (lastRead) {
       navigate(`/surah/${lastRead.surahNumber}?verse=${lastRead.verseNumber || 1}`)
     }
   }, [navigate, lastRead])
+
+  const scrollToSection = useCallback((id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [])
 
   const handleGoToVerse = useCallback(() => {
     if (!selectedSurah) return
@@ -135,7 +140,7 @@ const Home = React.memo(function Home() {
         </div>
       </section>
 
-      {/* Action Cards */}
+      {/* Action Cards — 2x2 Grid */}
       <section className="action-cards">
         <button className="action-card read-card" onClick={handleReadQuran}>
           <div className="action-icon-wrap">
@@ -146,6 +151,28 @@ const Home = React.memo(function Home() {
           <h3>Read Quran</h3>
           <p>ఖురాన్ చదవండి</p>
           <span className="action-meta">All 114 Surahs</span>
+        </button>
+
+        <button className="action-card namaz-action-card" onClick={() => scrollToSection('namaz-section')}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/>
+            </svg>
+          </div>
+          <h3>Namaz Surahs</h3>
+          <p>నమాజ్ సూరాలు</p>
+          <span className="action-meta">{namazSurahs.length} Surahs</span>
+        </button>
+
+        <button className="action-card duas-action-card" onClick={() => scrollToSection('duas-section')}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <path d="M7 11c-1.5 0-3-1-3-3s1.5-3 3-3c.5 0 1 .1 1.4.4M17 11c1.5 0 3-1 3-3s-1.5-3-3-3c-.5 0-1 .1-1.4.4M8.5 11c0 0-1 4 0 7s3.5 4 3.5 4M15.5 11c0 0 1 4 0 7s-3.5 4-3.5 4M6 11h12"/>
+            </svg>
+          </div>
+          <h3>Duas</h3>
+          <p>దుఆలు</p>
+          <span className="action-meta">{prophetDuas.length} Duas</span>
         </button>
 
         <button className="action-card fav-card" onClick={handleFavorites}>
@@ -160,42 +187,8 @@ const Home = React.memo(function Home() {
         </button>
       </section>
 
-      {/* Transliteration Preference */}
-      <section className="translit-section">
-        <h3 className="translit-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
-            <path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-          </svg>
-          Transliteration Style
-        </h3>
-        <p className="translit-desc">Choose how to display Quranic pronunciation</p>
-        <div className="translit-options">
-          <button
-            className={`translit-btn ${transliteration === 'english' ? 'active' : ''}`}
-            onClick={() => setTransliteration('english')}
-          >
-            <span className="translit-btn-label">Roman English</span>
-            <span className="translit-btn-example">Bismillaahir Rahmaanir Raheem</span>
-          </button>
-          <button
-            className={`translit-btn ${transliteration === 'telugu' ? 'active' : ''}`}
-            onClick={() => setTransliteration('telugu')}
-          >
-            <span className="translit-btn-label">Roman Telugu</span>
-            <span className="translit-btn-example">బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్</span>
-          </button>
-          <button
-            className={`translit-btn ${transliteration === 'both' ? 'active' : ''}`}
-            onClick={() => setTransliteration('both')}
-          >
-            <span className="translit-btn-label">Both</span>
-            <span className="translit-btn-example">English + Telugu side by side</span>
-          </button>
-        </div>
-      </section>
-
       {/* Namaz Surahs */}
-      <section className="namaz-section">
+      <section className="namaz-section" id="namaz-section">
         <h3 className="namaz-title">
           <span className="namaz-title-icon">🕌</span>
           Namaz Surahs
@@ -241,7 +234,7 @@ const Home = React.memo(function Home() {
       </section>
 
       {/* Duas */}
-      <section className="duas-section">
+      <section className="duas-section" id="duas-section">
         <h3 className="duas-title">
           <span className="duas-title-icon">🤲</span>
           Recommended Duas
@@ -249,10 +242,10 @@ const Home = React.memo(function Home() {
         <p className="duas-desc">Most recommended supplications by Prophet Muhammad ﷺ</p>
         <div className="duas-list">
           {prophetDuas.map((d, idx) => (
-            <div key={idx} className={`dua-card ${expandedDua === idx ? 'expanded' : ''}`}>
+            <div key={idx} className={`dua-card ${expandedDua === idx ? 'expanded' : ''} ${d.category === 'Evil Eye' ? 'dua-evil-eye' : ''}`}>
               <button className="dua-card-header" onClick={() => setExpandedDua(expandedDua === idx ? null : idx)}>
                 <div className="dua-card-info">
-                  <span className="dua-card-category">{d.category}</span>
+                  <span className={`dua-card-category ${d.category === 'Evil Eye' ? 'cat-evil-eye' : ''}`}>{d.category}</span>
                   <div>
                     <span className="dua-card-title">{d.title}</span>
                     <span className="dua-card-title-telugu">{d.titleTelugu}</span>
@@ -287,6 +280,55 @@ const Home = React.memo(function Home() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Transliteration Preference */}
+      <section className="translit-section">
+        <h3 className="translit-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
+            <path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          </svg>
+          Transliteration Style
+        </h3>
+        <p className="translit-desc">Choose how to display Quranic pronunciation</p>
+        <div className="translit-options">
+          <button
+            className={`translit-btn ${transliteration === 'english' ? 'active' : ''}`}
+            onClick={() => setTransliteration('english')}
+          >
+            <span className="translit-btn-label">Roman English</span>
+            <span className="translit-btn-example">Bismillaahir Rahmaanir Raheem</span>
+          </button>
+          <button
+            className={`translit-btn ${transliteration === 'telugu' ? 'active' : ''}`}
+            onClick={() => setTransliteration('telugu')}
+          >
+            <span className="translit-btn-label">Roman Telugu</span>
+            <span className="translit-btn-example">బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్</span>
+          </button>
+          <button
+            className={`translit-btn ${transliteration === 'both' ? 'active' : ''}`}
+            onClick={() => setTransliteration('both')}
+          >
+            <span className="translit-btn-label">Both</span>
+            <span className="translit-btn-example">English + Telugu side by side</span>
+          </button>
+        </div>
+      </section>
+
+      {/* Settings */}
+      <section className="action-cards" style={{ marginTop: 0 }}>
+        <button className="action-card settings-card" onClick={handleSettings}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <h3>Settings</h3>
+          <p>సెట్టింగ్స్</p>
+          <span className="action-meta">Customize App</span>
+        </button>
       </section>
 
       {/* Features */}
