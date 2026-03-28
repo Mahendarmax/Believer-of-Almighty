@@ -54,8 +54,8 @@
 
 /* ===== Navigator — Surah + Verse selector ===== */
 .sl-navigator {
-  background: linear-gradient(160deg, rgba(212,164,74,0.08) 0%, rgba(212,164,74,0.03) 100%);
-  border: 1.5px solid rgba(212,164,74,0.35);
+  background: linear-gradient(160deg, #131b2e 0%, #0f1520 100%);
+  border: 1.5px solid rgba(212,164,74,0.3);
   border-radius: var(--radius-lg);
   padding: 16px 18px;
   margin-bottom: 14px;
@@ -91,10 +91,10 @@
   width: 100%;
   height: 100%;
   padding: 10px 32px 10px 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1.5px solid rgba(212,164,74,0.25);
+  background: #111827;
+  border: 1.5px solid rgba(148,163,184,0.25);
   border-radius: var(--radius-sm);
-  color: #e0d6c2;
+  color: #f1f5f9;
   font-size: 0.84rem;
   font-family: inherit;
   cursor: pointer;
@@ -103,10 +103,16 @@
   transition: var(--transition);
 }
 
+.sl-nav-select option {
+  background: #1a2332;
+  color: #f1f5f9;
+  padding: 8px;
+}
+
 .sl-nav-select:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(212,164,74,0.12);
+  border-color: #d4a44a;
+  box-shadow: 0 0 0 3px rgba(212,164,74,0.15);
 }
 
 .sl-nav-chevron {
@@ -114,17 +120,17 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(212,164,74,0.6);
+  color: #94a3b8;
   pointer-events: none;
 }
 
 .sl-nav-verse {
   width: 100px;
   padding: 10px 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1.5px solid rgba(212,164,74,0.25);
+  background: #111827;
+  border: 1.5px solid rgba(148,163,184,0.25);
   border-radius: var(--radius-sm);
-  color: #e0d6c2;
+  color: #f1f5f9;
   font-size: 0.84rem;
   font-family: inherit;
   transition: var(--transition);
@@ -132,8 +138,8 @@
 
 .sl-nav-verse:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(212,164,74,0.12);
+  border-color: #d4a44a;
+  box-shadow: 0 0 0 3px rgba(212,164,74,0.15);
 }
 
 .sl-nav-verse:disabled {
@@ -142,7 +148,7 @@
 }
 
 .sl-nav-verse::placeholder {
-  color: rgba(255,255,255,0.4);
+  color: #94a3b8;
   font-size: 0.75rem;
 }
 
