@@ -120,8 +120,20 @@ export const surahs = [
 const surahMap = Object.fromEntries(surahs.map(s => [s.number, s]))
 export const getSurahByNumber = (num) => surahMap[num] || null
 
-// Verse cache to prevent redundant API calls
+// Verse cache to prevent redundant API calls (max 20 surahs to limit memory)
 const verseCache = {}
+const verseCacheOrder = []
+const MAX_VERSE_CACHE = 20
+
+const addToVerseCache = (surahNumber, verses) => {
+  if (verseCache[surahNumber]) return
+  verseCache[surahNumber] = verses
+  verseCacheOrder.push(surahNumber)
+  if (verseCacheOrder.length > MAX_VERSE_CACHE) {
+    const oldest = verseCacheOrder.shift()
+    delete verseCache[oldest]
+  }
+}
 
 // In-flight request deduplication — prevents duplicate fetches for same surah
 const pendingRequests = {}
@@ -238,7 +250,7 @@ export const fetchSurahFromAPI = async (surahNumber, signal) => {
       }
     })
 
-    verseCache[surahNumber] = verses
+    addToVerseCache(surahNumber, verses)
     return verses
   } catch (error) {
     if (error.name === 'AbortError') throw error
@@ -259,8 +271,10 @@ export const getSurahVerses = async (surahNumber, signal) => {
   return promise
 }
 
-// Tafsir cache + in-flight dedup for revelation context
+// Tafsir cache + in-flight dedup for revelation context (max 50 entries)
 const tafsirCache = {}
+const tafsirCacheOrder = []
+const MAX_TAFSIR_CACHE = 50
 const pendingTafsirRequests = {}
 
 export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
@@ -295,6 +309,11 @@ export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
 
     if (result.context || result.detailed) {
       tafsirCache[key] = result
+      tafsirCacheOrder.push(key)
+      if (tafsirCacheOrder.length > MAX_TAFSIR_CACHE) {
+        const oldest = tafsirCacheOrder.shift()
+        delete tafsirCache[oldest]
+      }
       return result
     }
     return null

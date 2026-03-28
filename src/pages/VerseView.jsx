@@ -199,6 +199,7 @@ function VerseView() {
   const surahAudioRef = useRef(null)
   const scrolledToVerse = useRef(false)
   const sentinelRef = useRef(null)
+  const lastVisibleVerseRef = useRef(null)
 
   const surahNumber = parseInt(number)
   const surah = useMemo(() => getSurahByNumber(surahNumber), [surahNumber])
@@ -287,6 +288,53 @@ function VerseView() {
       }
     }
   }, [loading, verses, searchParams])
+
+  // Track reading position — observe which verse is at the top of the viewport
+  useEffect(() => {
+    if (loading || verses.length === 0) return
+
+    const visibleVerses = new Set()
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const num = parseInt(entry.target.id.replace('verse-', ''))
+          if (isNaN(num)) continue
+          if (entry.isIntersecting) visibleVerses.add(num)
+          else visibleVerses.delete(num)
+        }
+        if (visibleVerses.size > 0) {
+          lastVisibleVerseRef.current = Math.min(...visibleVerses)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    document.querySelectorAll('.verse-card[id^="verse-"]').forEach(el => observer.observe(el))
+    return () => observer.disconnect()
+  }, [loading, verses.length, visibleCount])
+
+  // Auto-save reading position on unmount or surah change
+  useEffect(() => {
+    return () => {
+      if (surah && lastVisibleVerseRef.current) {
+        updateLastRead(surahNumber, surah.name, lastVisibleVerseRef.current)
+      }
+    }
+  }, [surahNumber, surah, updateLastRead])
+
+  // Save reading position on tab/browser close
+  useEffect(() => {
+    const onUnload = () => {
+      if (surah && lastVisibleVerseRef.current) {
+        localStorage.setItem('quran_lastRead', JSON.stringify({
+          surahNumber, surahName: surah.name,
+          verseNumber: lastVisibleVerseRef.current, timestamp: Date.now()
+        }))
+      }
+    }
+    window.addEventListener('beforeunload', onUnload)
+    return () => window.removeEventListener('beforeunload', onUnload)
+  }, [surahNumber, surah])
 
   // Cleanup surah audio on unmount
   useEffect(() => {

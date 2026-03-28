@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import './SearchBar.css'
 
-function SearchBar({ onSearch, placeholder = "Search surahs..." }) {
+const SearchBar = React.memo(function SearchBar({ onSearch, placeholder = "Search surahs..." }) {
   const [value, setValue] = useState('')
 
   const handleChange = useCallback((e) => {
@@ -36,6 +36,7 @@ function SearchBar({ onSearch, placeholder = "Search surahs..." }) {
       )}
     </div>
   )
-}
+})
+SearchBar.displayName = 'SearchBar'
 
 export default SearchBar

@@ -1,12 +1,23 @@
-import React, { useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
 import { surahs } from '../data/quranData'
+import { namazSurahs, prophetDuas } from '../data/namazAndDuas'
 import './Home.css'
 
-function Home() {
+const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration } = useSettings()
+
+  const [selectedSurah, setSelectedSurah] = useState('')
+  const [verseNumber, setVerseNumber] = useState('')
+  const [expandedNamaz, setExpandedNamaz] = useState(null)
+  const [expandedDua, setExpandedDua] = useState(null)
+
+  const selectedSurahData = useMemo(() => {
+    if (!selectedSurah) return null
+    return surahs.find(s => s.number === parseInt(selectedSurah))
+  }, [selectedSurah])
 
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
@@ -15,6 +26,12 @@ function Home() {
       navigate(`/surah/${lastRead.surahNumber}?verse=${lastRead.verseNumber || 1}`)
     }
   }, [navigate, lastRead])
+
+  const handleGoToVerse = useCallback(() => {
+    if (!selectedSurah) return
+    const verse = parseInt(verseNumber) || 1
+    navigate(`/surah/${selectedSurah}?verse=${verse}`)
+  }, [navigate, selectedSurah, verseNumber])
 
   return (
     <div className="home">
@@ -67,6 +84,56 @@ function Home() {
           </button>
         </section>
       )}
+
+      {/* Go to Verse */}
+      <section className="goto-section">
+        <h3 className="goto-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          Go to Verse
+        </h3>
+        <p className="goto-desc">Jump to any surah and verse directly</p>
+        <div className="goto-controls">
+          <div className="goto-select-wrap">
+            <select
+              className="goto-select"
+              value={selectedSurah}
+              onChange={e => { setSelectedSurah(e.target.value); setVerseNumber('') }}
+            >
+              <option value="">Select Surah</option>
+              {surahs.map(s => (
+                <option key={s.number} value={s.number}>
+                  {s.number}. {s.name} ({s.nameEnglish})
+                </option>
+              ))}
+            </select>
+            <svg className="goto-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </div>
+          <input
+            type="number"
+            className="goto-verse-input"
+            placeholder={selectedSurahData ? `Verse (1-${selectedSurahData.ayahs})` : 'Verse'}
+            value={verseNumber}
+            onChange={e => setVerseNumber(e.target.value)}
+            min="1"
+            max={selectedSurahData?.ayahs || 286}
+            disabled={!selectedSurah}
+          />
+          <button
+            className="goto-btn"
+            onClick={handleGoToVerse}
+            disabled={!selectedSurah}
+          >
+            Go
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="16" height="16">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </section>
 
       {/* Action Cards */}
       <section className="action-cards">
@@ -127,6 +194,101 @@ function Home() {
         </div>
       </section>
 
+      {/* Namaz Surahs */}
+      <section className="namaz-section">
+        <h3 className="namaz-title">
+          <span className="namaz-title-icon">🕌</span>
+          Namaz Surahs
+        </h3>
+        <p className="namaz-desc">Surahs commonly recited during Salah (Prayer)</p>
+        <div className="namaz-list">
+          {namazSurahs.map(s => (
+            <div key={s.number} className={`namaz-card ${expandedNamaz === s.number ? 'expanded' : ''}`}>
+              <button className="namaz-card-header" onClick={() => setExpandedNamaz(expandedNamaz === s.number ? null : s.number)}>
+                <div className="namaz-card-info">
+                  <span className="namaz-card-num">{s.number}</span>
+                  <div>
+                    <span className="namaz-card-name">{s.name}</span>
+                    <span className="namaz-card-arabic">{s.nameArabic}</span>
+                  </div>
+                </div>
+                <div className="namaz-card-right">
+                  <span className="namaz-card-note">{s.note}</span>
+                  <svg className={`namaz-chevron ${expandedNamaz === s.number ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </div>
+              </button>
+              {expandedNamaz === s.number && (
+                <div className="namaz-card-body">
+                  {s.verses.map((v, i) => (
+                    <div key={i} className="namaz-verse">
+                      <p className="namaz-verse-arabic" dir="rtl">{v.arabic}</p>
+                      <p className="namaz-verse-roman">{v.roman}</p>
+                      <p className="namaz-verse-telugu-translit">{v.romanTelugu}</p>
+                      <p className="namaz-verse-english">{v.english}</p>
+                      <p className="namaz-verse-telugu">{v.telugu}</p>
+                    </div>
+                  ))}
+                  <button className="namaz-goto-btn" onClick={() => navigate(`/surah/${s.number}`)}>
+                    Read full Surah →
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Duas */}
+      <section className="duas-section">
+        <h3 className="duas-title">
+          <span className="duas-title-icon">🤲</span>
+          Recommended Duas
+        </h3>
+        <p className="duas-desc">Most recommended supplications by Prophet Muhammad ﷺ</p>
+        <div className="duas-list">
+          {prophetDuas.map((d, idx) => (
+            <div key={idx} className={`dua-card ${expandedDua === idx ? 'expanded' : ''}`}>
+              <button className="dua-card-header" onClick={() => setExpandedDua(expandedDua === idx ? null : idx)}>
+                <div className="dua-card-info">
+                  <span className="dua-card-category">{d.category}</span>
+                  <div>
+                    <span className="dua-card-title">{d.title}</span>
+                    <span className="dua-card-title-telugu">{d.titleTelugu}</span>
+                  </div>
+                </div>
+                <svg className={`dua-chevron ${expandedDua === idx ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </button>
+              {expandedDua === idx && (
+                <div className="dua-card-body">
+                  <p className="dua-arabic" dir="rtl">{d.arabic}</p>
+                  <div className="dua-text-block">
+                    <span className="dua-label">Transliteration</span>
+                    <p className="dua-roman">{d.roman}</p>
+                  </div>
+                  <div className="dua-text-block">
+                    <span className="dua-label">తెలుగు లిప్యంతరీకరణ</span>
+                    <p className="dua-telugu-translit">{d.romanTelugu}</p>
+                  </div>
+                  <div className="dua-text-block">
+                    <span className="dua-label">English</span>
+                    <p className="dua-english">{d.english}</p>
+                  </div>
+                  <div className="dua-text-block">
+                    <span className="dua-label">తెలుగు</span>
+                    <p className="dua-telugu">{d.telugu}</p>
+                  </div>
+                  <span className="dua-reference">📖 {d.reference}</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Features */}
       <section className="features">
         <div className="feature">
@@ -152,6 +314,7 @@ function Home() {
       </footer>
     </div>
   )
-}
+})
+Home.displayName = 'Home'
 
 export default Home

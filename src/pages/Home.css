@@ -344,6 +344,148 @@
   z-index: 1;
 }
 
+/* Go to Verse */
+.goto-section {
+  padding: 0 24px;
+  max-width: 720px;
+  margin: 0 auto 28px;
+  width: 100%;
+}
+
+.goto-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.goto-title svg {
+  color: var(--accent);
+}
+
+.goto-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.goto-controls {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.goto-select-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.goto-select {
+  width: 100%;
+  height: 100%;
+  padding: 12px 36px 12px 14px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: var(--transition);
+}
+
+.goto-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212,164,74,0.12);
+}
+
+.goto-chevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.goto-verse-input {
+  width: 110px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  transition: var(--transition);
+}
+
+.goto-verse-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212,164,74,0.12);
+}
+
+.goto-verse-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.goto-verse-input::placeholder {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+/* Hide number input spinners */
+.goto-verse-input::-webkit-outer-spin-button,
+.goto-verse-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.goto-verse-input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.goto-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--accent) 0%, #c4943a 100%);
+  border: none;
+  border-radius: var(--radius-lg);
+  color: #0a0e17;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.goto-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(212,164,74,0.3);
+}
+
+.goto-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .goto-controls {
+    flex-direction: column;
+  }
+  .goto-verse-input {
+    width: 100%;
+  }
+}
+
 /* Transliteration Selection */
 .translit-section {
   padding: 0 24px;
@@ -420,6 +562,375 @@
   line-height: 1.4;
 }
 
+/* ===== NAMAZ SURAHS ===== */
+.namaz-section {
+  padding: 0 24px;
+  max-width: 720px;
+  margin: 0 auto 32px;
+  width: 100%;
+}
+
+.namaz-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.namaz-title-icon {
+  font-size: 1.2rem;
+}
+
+.namaz-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.namaz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.namaz-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.namaz-card.expanded {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.08);
+}
+
+.namaz-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.namaz-card-header:hover {
+  background: rgba(212,164,74,0.04);
+}
+
+.namaz-card-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.namaz-card-num {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(212,164,74,0.15) 0%, rgba(212,164,74,0.05) 100%);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.namaz-card-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+}
+
+.namaz-card-arabic {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-left: 8px;
+  font-family: 'Scheherazade New', 'Amiri', serif;
+}
+
+.namaz-card-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.namaz-card-note {
+  font-size: 0.68rem;
+  color: var(--accent-dim);
+  background: rgba(212,164,74,0.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.namaz-chevron {
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.namaz-chevron.open {
+  transform: rotate(180deg);
+}
+
+.namaz-card-body {
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.namaz-verse {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(148,163,184,0.06);
+}
+
+.namaz-verse:last-of-type {
+  border-bottom: none;
+}
+
+.namaz-verse-arabic {
+  font-size: 1.35rem;
+  line-height: 2;
+  color: var(--text-primary);
+  font-family: 'Scheherazade New', 'Amiri', serif;
+  margin-bottom: 8px;
+}
+
+.namaz-verse-roman {
+  font-size: 0.82rem;
+  color: var(--accent);
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.namaz-verse-telugu-translit {
+  font-size: 0.82rem;
+  color: #8b9dc3;
+  margin-bottom: 6px;
+}
+
+.namaz-verse-english {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.namaz-verse-telugu {
+  font-size: 0.82rem;
+  color: #a3b8d0;
+}
+
+.namaz-goto-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: rgba(212,164,74,0.1);
+  border: 1px solid rgba(212,164,74,0.2);
+  border-radius: var(--radius-lg);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.namaz-goto-btn:hover {
+  background: rgba(212,164,74,0.18);
+  transform: translateY(-1px);
+}
+
+/* ===== DUAS ===== */
+.duas-section {
+  padding: 0 24px;
+  max-width: 720px;
+  margin: 0 auto 32px;
+  width: 100%;
+}
+
+.duas-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.duas-title-icon {
+  font-size: 1.2rem;
+}
+
+.duas-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.duas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dua-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.dua-card.expanded {
+  border-color: #52d19a;
+  box-shadow: 0 0 20px rgba(52,211,153,0.08);
+}
+
+.dua-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.dua-card-header:hover {
+  background: rgba(52,211,153,0.04);
+}
+
+.dua-card-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dua-card-category {
+  padding: 3px 10px;
+  background: rgba(52,211,153,0.1);
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #52d19a;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dua-card-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+}
+
+.dua-card-title-telugu {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.dua-chevron {
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.dua-chevron.open {
+  transform: rotate(180deg);
+}
+
+.dua-card-body {
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.dua-arabic {
+  font-size: 1.35rem;
+  line-height: 2;
+  color: var(--text-primary);
+  font-family: 'Scheherazade New', 'Amiri', serif;
+  margin: 14px 0;
+  padding: 16px;
+  background: rgba(52,211,153,0.03);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(52,211,153,0.08);
+}
+
+.dua-text-block {
+  margin-bottom: 12px;
+}
+
+.dua-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.dua-roman {
+  font-size: 0.82rem;
+  color: var(--accent);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.dua-telugu-translit {
+  font-size: 0.82rem;
+  color: #8b9dc3;
+  line-height: 1.6;
+}
+
+.dua-english {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.dua-telugu {
+  font-size: 0.82rem;
+  color: #a3b8d0;
+  line-height: 1.6;
+}
+
+.dua-reference {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(148,163,184,0.06);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+  .namaz-card-note { display: none; }
+  .dua-card-category { font-size: 0.62rem; }
+  .namaz-verse-arabic, .dua-arabic { font-size: 1.15rem; }
+}
+
 /* Features */
 .features {
   display: flex;
@@ -491,5 +1002,6 @@
   .stats-row { max-width: 800px; }
   .action-cards { max-width: 800px; }
   .continue-section { max-width: 800px; }
+  .goto-section { max-width: 800px; }
   .translit-section { max-width: 800px; }
 }

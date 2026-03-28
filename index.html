@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="Holy Quran - Complete Quran with Arabic, English, Telugu translations, verse-by-verse audio, bookmarks and favorites" />
     <meta name="theme-color" content="#06090f" />
+    <meta name="color-scheme" content="dark" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Holy Quran" />
     <meta property="og:title" content="Holy Quran | القرآن الكريم" />
     <meta property="og:description" content="Read, listen & understand the Holy Quran with Arabic, English, Telugu translations and verse-by-verse audio" />
     <meta property="og:type" content="website" />
+    <meta name="robots" content="index, follow" />
     <title>Holy Quran | القرآن الكريم</title>
     <link rel="manifest" href="./manifest.json" />
     <!-- Preconnect to API domains for faster fetches -->
@@ -19,11 +21,40 @@
     <link rel="dns-prefetch" href="https://cdn.islamic.network" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600&display=swap" as="style" />
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Structured data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Holy Quran",
+      "description": "Read, listen & understand the Holy Quran with Arabic, English, Telugu translations and verse-by-verse audio",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+    <!-- Critical inline CSS for instant first paint -->
+    <style>
+      body { margin: 0; background: #06090f; }
+      #root { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+      .app-preloader { display: flex; flex-direction: column; align-items: center; gap: 12px; color: #94a3b8; }
+      .app-preloader-spinner { width: 40px; height: 40px; border: 3px solid rgba(212,164,74,0.15); border-top-color: #d4a44a; border-radius: 50%; animation: spin 0.7s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Pre-render loading state for faster perceived load -->
+      <div class="app-preloader">
+        <div class="app-preloader-spinner"></div>
+      </div>
+    </div>
+    <noscript>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#06090f;color:#94a3b8;font-family:sans-serif;text-align:center;padding:20px;">
+        <p>Please enable JavaScript to use Holy Quran App.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -91,9 +91,14 @@ export function romanToTelugu(text) {
 
         // No vowel follows
         if (!vowelMatched) {
-          // Nasal before a different consonant → use anusvara (ం) for natural Telugu flow
-          // e.g. "Anfal"→అంఫాల్, "ambiya"→అంబియ  (but "anna"→అన్న stays halant)
-          if (NASALS.has(roman) && i < lower.length && isLetter(lower[i]) && lower[i] !== roman[0]) {
+          // Handle tanween: 'nw' at word boundary (e.g. "qaleelanw", "shai'anw")
+          // The API uses trailing 'nw' for Arabic tanween — just output న్ and skip 'w'
+          if (roman === 'n' && i < lower.length && lower[i] === 'w' && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
+            result += telugu + VIRAMA
+            i++ // skip the silent trailing 'w'
+          } else if (NASALS.has(roman) && i < lower.length && isLetter(lower[i]) && lower[i] !== roman[0]) {
+            // Nasal before a different consonant → use anusvara (ం) for natural Telugu flow
+            // e.g. "Anfal"→అంఫాల్, "ambiya"→అంబియ  (but "anna"→అన్న stays halant)
             result += ANUSVARA
           } else {
             result += telugu + VIRAMA

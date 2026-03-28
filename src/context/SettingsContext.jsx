@@ -17,6 +17,11 @@ const loadSetting = (key, fallback) => {
   } catch { return fallback }
 }
 
+const saveSetting = (key, value) => {
+  try { localStorage.setItem(`quran_${key}`, JSON.stringify(value)) }
+  catch { /* quota exceeded — silent fail */ }
+}
+
 export const SettingsProvider = ({ children }) => {
   const [showArabic, setShowArabic] = useState(() => loadSetting('showArabic', true))
   const [fontSize, setFontSize] = useState(() => loadSetting('fontSize', 16))
@@ -25,11 +30,11 @@ export const SettingsProvider = ({ children }) => {
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'both'))
 
   // Save to localStorage on change
-  useEffect(() => { localStorage.setItem('quran_showArabic', JSON.stringify(showArabic)) }, [showArabic])
-  useEffect(() => { localStorage.setItem('quran_fontSize', JSON.stringify(fontSize)) }, [fontSize])
-  useEffect(() => { if (lastRead) localStorage.setItem('quran_lastRead', JSON.stringify(lastRead)) }, [lastRead])
-  useEffect(() => { localStorage.setItem('quran_favorites', JSON.stringify(favorites)) }, [favorites])
-  useEffect(() => { localStorage.setItem('quran_transliteration', JSON.stringify(transliteration)) }, [transliteration])
+  useEffect(() => { saveSetting('showArabic', showArabic) }, [showArabic])
+  useEffect(() => { saveSetting('fontSize', fontSize) }, [fontSize])
+  useEffect(() => { if (lastRead) saveSetting('lastRead', lastRead) }, [lastRead])
+  useEffect(() => { saveSetting('favorites', favorites) }, [favorites])
+  useEffect(() => { saveSetting('transliteration', transliteration) }, [transliteration])
 
   const toggleArabic = useCallback(() => setShowArabic(prev => !prev), [])
   const increaseFontSize = useCallback(() => setFontSize(prev => Math.min(28, prev + 1)), [])
