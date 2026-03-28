@@ -1,0 +1,59 @@
+/* Namaz Surahs Page — reuses Home.css namaz styles, adds page-level layout */
+.namaz-page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.namaz-page-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(180deg, var(--bg-primary) 80%, transparent 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.namaz-page-back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.namaz-page-back:hover {
+  background: var(--bg-card);
+  transform: translateX(-2px);
+}
+
+.namaz-page-title-group {
+  flex: 1;
+}
+
+.namaz-page-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.namaz-page-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.namaz-page-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

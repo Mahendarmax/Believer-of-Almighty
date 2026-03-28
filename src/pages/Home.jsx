@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
 import { namazSurahs, prophetDuas } from '../data/namazAndDuas'
@@ -7,11 +7,6 @@ import './Home.css'
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration } = useSettings()
-
-  const [expandedNamaz, setExpandedNamaz] = useState(null)
-  const [expandedDua, setExpandedDua] = useState(null)
-  const [showNamaz, setShowNamaz] = useState(false)
-  const [showDuas, setShowDuas] = useState(false)
 
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
@@ -86,7 +81,7 @@ const Home = React.memo(function Home() {
           <span className="action-meta">All 114 Surahs</span>
         </button>
 
-        <button className="action-card namaz-action-card" onClick={() => setShowNamaz(!showNamaz)}>
+        <button className="action-card namaz-action-card" onClick={() => navigate('/namaz')}>
           <div className="action-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
               <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/>
@@ -95,12 +90,9 @@ const Home = React.memo(function Home() {
           <h3>Namaz Surahs</h3>
           <p>నమాజ్ సూరాలు</p>
           <span className="action-meta">{namazSurahs.length} Surahs</span>
-          <svg className={`action-card-chevron ${showNamaz ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
         </button>
 
-        <button className="action-card duas-action-card" onClick={() => setShowDuas(!showDuas)}>
+        <button className="action-card duas-action-card" onClick={() => navigate('/duas')}>
           <div className="action-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
               <path d="M7 11c-1.5 0-3-1-3-3s1.5-3 3-3c.5 0 1 .1 1.4.4M17 11c1.5 0 3-1 3-3s-1.5-3-3-3c-.5 0-1 .1-1.4.4M8.5 11c0 0-1 4 0 7s3.5 4 3.5 4M15.5 11c0 0 1 4 0 7s-3.5 4-3.5 4M6 11h12"/>
@@ -109,9 +101,6 @@ const Home = React.memo(function Home() {
           <h3>Duas</h3>
           <p>దుఆలు</p>
           <span className="action-meta">{prophetDuas.length} Duas</span>
-          <svg className={`action-card-chevron ${showDuas ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
         </button>
 
         <button className="action-card fav-card" onClick={handleFavorites}>
@@ -125,95 +114,6 @@ const Home = React.memo(function Home() {
           <span className="action-meta">{favorites.length} Saved</span>
         </button>
       </section>
-
-      {/* Namaz Surahs — expandable from card */}
-      {showNamaz && (
-        <section className="namaz-section">
-          <div className="namaz-list">
-            {namazSurahs.map(s => (
-              <div key={s.number} className={`namaz-card ${expandedNamaz === s.number ? 'expanded' : ''}`}>
-                <button className="namaz-card-header" onClick={() => setExpandedNamaz(expandedNamaz === s.number ? null : s.number)}>
-                  <div className="namaz-card-info">
-                    <span className="namaz-card-num">{s.number}</span>
-                    <div>
-                      <span className="namaz-card-name">{s.name}</span>
-                      <span className="namaz-card-arabic">{s.nameArabic}</span>
-                    </div>
-                  </div>
-                  <div className="namaz-card-right">
-                    <span className="namaz-card-note">{s.note}</span>
-                    <svg className={`namaz-chevron ${expandedNamaz === s.number ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                      <path d="M6 9l6 6 6-6"/>
-                    </svg>
-                  </div>
-                </button>
-                {expandedNamaz === s.number && (
-                  <div className="namaz-card-body">
-                    {s.verses.map((v, i) => (
-                      <div key={i} className="namaz-verse">
-                        <p className="namaz-verse-arabic" dir="rtl">{v.arabic}</p>
-                        <p className="namaz-verse-roman">{v.roman}</p>
-                        <p className="namaz-verse-telugu-translit">{v.romanTelugu}</p>
-                        <p className="namaz-verse-english">{v.english}</p>
-                        <p className="namaz-verse-telugu">{v.telugu}</p>
-                      </div>
-                    ))}
-                    <button className="namaz-goto-btn" onClick={() => navigate(`/surah/${s.number}`)}>
-                      Read full Surah →
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Duas — expandable from card */}
-      {showDuas && (
-        <section className="duas-section">
-          <div className="duas-list">
-            {prophetDuas.map((d, idx) => (
-              <div key={idx} className={`dua-card ${expandedDua === idx ? 'expanded' : ''} ${d.category === 'Evil Eye' ? 'dua-evil-eye' : ''}`}>
-                <button className="dua-card-header" onClick={() => setExpandedDua(expandedDua === idx ? null : idx)}>
-                  <div className="dua-card-info">
-                    <span className={`dua-card-category ${d.category === 'Evil Eye' ? 'cat-evil-eye' : ''}`}>{d.category}</span>
-                    <div>
-                      <span className="dua-card-title">{d.title}</span>
-                      <span className="dua-card-title-telugu">{d.titleTelugu}</span>
-                    </div>
-                  </div>
-                  <svg className={`dua-chevron ${expandedDua === idx ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                    <path d="M6 9l6 6 6-6"/>
-                  </svg>
-                </button>
-                {expandedDua === idx && (
-                  <div className="dua-card-body">
-                    <p className="dua-arabic" dir="rtl">{d.arabic}</p>
-                    <div className="dua-text-block">
-                      <span className="dua-label">Transliteration</span>
-                      <p className="dua-roman">{d.roman}</p>
-                    </div>
-                    <div className="dua-text-block">
-                      <span className="dua-label">తెలుగు లిప్యంతరీకరణ</span>
-                      <p className="dua-telugu-translit">{d.romanTelugu}</p>
-                    </div>
-                    <div className="dua-text-block">
-                      <span className="dua-label">English</span>
-                      <p className="dua-english">{d.english}</p>
-                    </div>
-                    <div className="dua-text-block">
-                      <span className="dua-label">తెలుగు</span>
-                      <p className="dua-telugu">{d.telugu}</p>
-                    </div>
-                    <span className="dua-reference">📖 {d.reference}</span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* Transliteration Preference */}
       <section className="translit-section">

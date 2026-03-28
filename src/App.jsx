@@ -10,6 +10,8 @@ const SurahList = lazy(() => import('./pages/SurahList'))
 const VerseView = lazy(() => import('./pages/VerseView'))
 const Settings = lazy(() => import('./pages/Settings'))
 const Favorites = lazy(() => import('./pages/Favorites'))
+const NamazSurahs = lazy(() => import('./pages/NamazSurahs'))
+const Duas = lazy(() => import('./pages/Duas'))
 
 const PageLoader = () => (
   <div style={{
@@ -37,6 +39,8 @@ function App() {
                 <Route path="/surah/:number" element={<VerseView />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/favorites" element={<Favorites />} />
+                <Route path="/namaz" element={<NamazSurahs />} />
+                <Route path="/duas" element={<Duas />} />
               </Routes>
             </Suspense>
           </div>
