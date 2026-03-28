@@ -222,3 +222,10 @@
   font-size: 0.8rem !important;
   color: var(--text-muted) !important;
 }
+
+@media (max-width: 480px) {
+  .settings-page { padding: 0 14px 50px; }
+  .set-title { font-size: 1.15rem; }
+  .set-item { padding: 18px; }
+  .preview-arabic { font-size: 1.25rem; }
+}

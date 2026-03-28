@@ -973,6 +973,12 @@
   .namaz-card-note { display: none; }
   .dua-card-category { font-size: 0.62rem; }
   .namaz-verse-arabic, .dua-arabic { font-size: 1.15rem; }
+  .namaz-card-header { padding: 14px; }
+  .namaz-card-body { padding: 14px; }
+  .dua-card-header { padding: 14px; }
+  .dua-card-body { padding: 14px; }
+  .namaz-verse-roman, .namaz-verse-english, .namaz-verse-telugu, .namaz-verse-telugu-translit { font-size: 0.82rem; }
+  .dua-roman, .dua-english, .dua-telugu, .dua-telugu-translit { font-size: 0.82rem; }
 }
 
 /* Footer */
@@ -1003,23 +1009,60 @@
 /* Responsive */
 @media (max-width: 480px) {
   .home-hero { padding: 60px 16px 50px; }
-  .hero-title { font-size: 2.1rem; }
-  .hero-subtitle { font-size: 1.7rem; }
-  .features { gap: 18px; }
-  .feature { font-size: 0.78rem; }
-  .stats-row { margin-top: -24px; gap: 10px; }
-  .action-cards { gap: 10px; }
+  .hero-icon { font-size: 44px; margin-bottom: 16px; }
+  .hero-title { font-size: 1.9rem; }
+  .hero-subtitle { font-size: 1.5rem; }
+  .hero-telugu { font-size: 0.95rem; }
+  .hero-desc { font-size: 0.88rem; }
+  .stats-row { margin-top: -24px; gap: 8px; padding: 0 16px; }
+  .stat-card { padding: 16px 8px; }
+  .stat-num { font-size: 1.35rem; }
+  .stat-label { font-size: 0.65rem; }
+  .continue-section { padding: 0 16px; }
+  .continue-card { padding: 16px 18px; gap: 12px; }
+  .continue-icon { font-size: 24px; }
+  .continue-surah { font-size: 1rem; }
+  .action-cards { gap: 10px; padding: 0 16px; }
+  .action-card { padding: 24px 12px 20px; }
+  .action-icon-wrap { width: 52px; height: 52px; margin-bottom: 12px; }
+  .action-icon-wrap svg { width: 26px !important; height: 26px !important; }
+  .action-card h3 { font-size: 0.88rem; }
+  .action-card p { font-size: 0.68rem; }
+  .action-meta { font-size: 0.62rem; }
+  .translit-section { padding: 0 16px; }
   .translit-options { flex-direction: column; }
+  .translit-btn { padding: 14px 12px; }
+  .home-footer { padding: 32px 16px 48px; }
+  .footer-quote { font-size: 0.85rem; }
+}
+
+@media (max-width: 360px) {
+  .hero-title { font-size: 1.65rem; }
+  .hero-subtitle { font-size: 1.3rem; }
+  .action-cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .action-card { padding: 20px 10px 16px; }
 }
 
 @media (min-width: 768px) {
   .hero-title { font-size: 3.8rem; }
   .hero-subtitle { font-size: 2.6rem; }
+  .hero-desc { font-size: 1.15rem; }
   .stats-row { max-width: 800px; }
-  .action-cards { max-width: 800px; }
+  .stat-num { font-size: 2rem; }
+  .action-cards { max-width: 800px; gap: 18px; }
+  .action-card { padding: 40px 20px 30px; }
+  .action-icon-wrap { width: 72px; height: 72px; }
+  .action-card h3 { font-size: 1.15rem; }
   .continue-section { max-width: 800px; }
-  .goto-section { max-width: 800px; }
+  .continue-card { padding: 24px 28px; }
   .translit-section { max-width: 800px; }
   .namaz-section { max-width: 800px; }
   .duas-section { max-width: 800px; }
+}
+
+@media (min-width: 1200px) {
+  .home-hero { padding: 120px 24px 100px; }
+  .hero-title { font-size: 4.2rem; }
+  .action-cards { max-width: 900px; }
+  .action-card { padding: 44px 24px 34px; }
 }

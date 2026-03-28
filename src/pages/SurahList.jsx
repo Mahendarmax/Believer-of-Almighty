@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, memo } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { surahs } from '../data/quranData'
 import './SurahList.css'
@@ -29,7 +29,6 @@ SurahCard.displayName = 'SurahCard'
 
 function SurahList() {
   const navigate = useNavigate()
-  const [searchTerm, setSearchTerm] = useState('')
   const [navSurah, setNavSurah] = useState('')
   const [navVerse, setNavVerse] = useState('')
 
@@ -51,17 +50,6 @@ function SurahList() {
     if (v > maxVerse) v = maxVerse
     navigate(`/surah/${s}?verse=${v}&t=${Date.now()}`)
   }, [navSurah, navVerse, navigate])
-
-  const filteredSurahs = useMemo(() => {
-    if (!searchTerm) return surahs
-    const t = searchTerm.toLowerCase()
-    return surahs.filter(s =>
-      s.name.toLowerCase().includes(t) ||
-      s.nameEnglish.toLowerCase().includes(t) ||
-      s.nameTelugu.includes(searchTerm) ||
-      s.number.toString().includes(t)
-    )
-  }, [searchTerm])
 
   return (
     <div className="surah-list-page">
@@ -127,54 +115,18 @@ function SurahList() {
         </div>
       </div>
 
-      {/* Search / Filter */}
-      <div className="sl-search-wrap">
-        <div className="sl-search-bar">
-          <svg className="sl-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
-          <input
-            type="text"
-            className="sl-search-input"
-            placeholder="Filter surahs by name or number..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-          />
-          {searchTerm && (
-            <button className="sl-search-clear" onClick={() => setSearchTerm('')} aria-label="Clear">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-                <path d="M18 6 6 18M6 6l12 12"/>
-              </svg>
-            </button>
-          )}
-        </div>
-      </div>
 
-      {/* Result count */}
-      <div className="sl-meta">
-        {searchTerm ? (
-          <span>{filteredSurahs.length} result{filteredSurahs.length !== 1 ? 's' : ''}</span>
-        ) : (
-          <span>Showing all 114 surahs</span>
-        )}
-      </div>
 
       {/* Surah grid */}
-      {filteredSurahs.length === 0 ? (
-        <div className="sl-empty">
-          <p>No surahs found for "{searchTerm}"</p>
-        </div>
-      ) : (
-        <div className="surah-grid">
-          {filteredSurahs.map((surah) => (
-            <SurahCard
-              key={surah.id}
-              surah={surah}
-              onClick={handleSurahClick}
-            />
-          ))}
-        </div>
-      )}
+      <div className="surah-grid">
+        {surahs.map((surah) => (
+          <SurahCard
+            key={surah.id}
+            surah={surah}
+            onClick={handleSurahClick}
+          />
+        ))}
+      </div>
     </div>
   )
 }

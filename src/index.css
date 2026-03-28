@@ -67,6 +67,7 @@ body {
 
 #root {
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
 }
 
@@ -116,4 +117,21 @@ a {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Touch devices — remove hover effects that feel laggy on mobile */
+@media (hover: none) and (pointer: coarse) {
+  button:hover, a:hover { transform: none !important; }
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+}
+
+/* Small mobile — tighter spacing */
+@media (max-width: 360px) {
+  html { font-size: 14px; }
+}
+
+/* Large desktop — comfortable reading */
+@media (min-width: 1400px) {
+  body { font-size: 17px; }
 }

@@ -207,6 +207,7 @@ function VerseView() {
   const scrolledToVerse = useRef(false)
   const sentinelRef = useRef(null)
   const lastVisibleVerseRef = useRef(null)
+  const manualBookmarkRef = useRef(false)
 
   const surahNumber = parseInt(number)
   const surah = useMemo(() => getSurahByNumber(surahNumber), [surahNumber])
@@ -308,10 +309,12 @@ function VerseView() {
     const el = document.getElementById(`verse-${targetVerse}`)
     if (el) {
       scrolledToVerse.current = true
-      // Double-rAF ensures the DOM has fully painted before scrolling
+      // Manual offset scroll — scrollIntoView doesn't reliably account for sticky header
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          const rect = el.getBoundingClientRect()
+          const scrollTop = window.pageYOffset + rect.top - 100
+          window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' })
         })
       })
     }
@@ -331,29 +334,31 @@ function VerseView() {
           else visibleVerses.delete(num)
         }
         if (visibleVerses.size > 0) {
-          lastVisibleVerseRef.current = Math.min(...visibleVerses)
+          // Pick the smallest fully visible verse (not the one hidden behind header)
+          const sorted = [...visibleVerses].sort((a, b) => a - b)
+          lastVisibleVerseRef.current = sorted.length > 1 ? sorted[1] : sorted[0]
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.5 }
     )
 
     document.querySelectorAll('.verse-card[id^="verse-"]').forEach(el => observer.observe(el))
     return () => observer.disconnect()
   }, [loading, verses.length, visibleCount])
 
-  // Auto-save reading position on unmount or surah change
+  // Auto-save reading position on unmount or surah change (skip if user manually bookmarked)
   useEffect(() => {
     return () => {
-      if (surah && lastVisibleVerseRef.current) {
+      if (surah && lastVisibleVerseRef.current && !manualBookmarkRef.current) {
         updateLastRead(surahNumber, surah.name, lastVisibleVerseRef.current)
       }
     }
   }, [surahNumber, surah, updateLastRead])
 
-  // Save reading position on tab/browser close
+  // Save reading position on tab/browser close (skip if user manually bookmarked)
   useEffect(() => {
     const onUnload = () => {
-      if (surah && lastVisibleVerseRef.current) {
+      if (surah && lastVisibleVerseRef.current && !manualBookmarkRef.current) {
         localStorage.setItem('quran_lastRead', JSON.stringify({
           surahNumber, surahName: surah.name,
           verseNumber: lastVisibleVerseRef.current, timestamp: Date.now()
@@ -394,6 +399,7 @@ function VerseView() {
 
   const handleBookmark = useCallback((verseNum) => {
     if (surah) {
+      manualBookmarkRef.current = true
       updateLastRead(surahNumber, surah.name, verseNum)
       setBookmarkToast(`📌 Saved: ${surah.name}, Verse ${verseNum} — Use "Continue Reading" on Home page`)
       setTimeout(() => setBookmarkToast(null), 3000)

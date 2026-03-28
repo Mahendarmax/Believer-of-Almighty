@@ -57,3 +57,19 @@
   flex-direction: column;
   gap: 10px;
 }
+
+@media (max-width: 480px) {
+  .namaz-page { padding: 0 14px 70px; }
+  .namaz-page-header { gap: 10px; padding: 16px 0 14px; }
+  .namaz-page-back { width: 36px; height: 36px; }
+  .namaz-page-title { font-size: 1.15rem; }
+  .namaz-page-subtitle { font-size: 0.7rem; }
+}
+
+@media (min-width: 768px) {
+  .namaz-page-title { font-size: 1.6rem; }
+}
+
+@media (min-width: 1200px) {
+  .namaz-page { max-width: 900px; }
+}

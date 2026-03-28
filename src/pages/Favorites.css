@@ -192,10 +192,21 @@
   font-style: italic;
 }
 
+@media (max-width: 480px) {
+  .favorites-page { padding: 0 14px 70px; }
+  .fav-title { font-size: 1.15rem; }
+  .fav-card { padding: 16px; }
+  .fav-card-arabic { font-size: 1.1rem; }
+}
+
 @media (min-width: 640px) {
   .fav-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
   }
+}
+
+@media (min-width: 1200px) {
+  .favorites-page { max-width: 1000px; }
 }

@@ -57,3 +57,19 @@
   flex-direction: column;
   gap: 10px;
 }
+
+@media (max-width: 480px) {
+  .duas-page { padding: 0 14px 70px; }
+  .duas-page-header { gap: 10px; padding: 16px 0 14px; }
+  .duas-page-back { width: 36px; height: 36px; }
+  .duas-page-title { font-size: 1.15rem; }
+  .duas-page-subtitle { font-size: 0.7rem; }
+}
+
+@media (min-width: 768px) {
+  .duas-page-title { font-size: 1.6rem; }
+}
+
+@media (min-width: 1200px) {
+  .duas-page { max-width: 900px; }
+}

@@ -645,12 +645,15 @@
 
 /* Responsive */
 @media (max-width: 540px) {
+  .verse-view { padding: 0 14px 80px; }
+
   .vc-columns {
     grid-template-columns: 1fr;
   }
   
   .vc-arabic p {
     font-size: 1.4rem;
+    word-spacing: 4px;
   }
   
   .vv-bismillah-arabic {
@@ -664,5 +667,42 @@
 
   .vv-header {
     padding: 10px 0;
+    gap: 10px;
   }
+
+  .vv-surah-name { font-size: 1.05rem; }
+  .vv-surah-sub { font-size: 0.65rem; }
+
+  .vv-play-surah { width: 36px; height: 36px; }
+
+  .vc-header { flex-wrap: wrap; }
+  .vc-number { width: 32px; height: 32px; }
+  .vc-number span { font-size: 0.72rem; }
+  .vc-action-btn { width: 30px; height: 30px; }
+
+  .vc-context-btn { padding: 6px 12px; font-size: 0.72rem; }
+
+  .vv-nav-btn, .vv-bottom-nav .vv-nav-btn { font-size: 0.78rem; padding: 8px 12px; }
+  .vv-nav-label { font-size: 0.72rem; }
+
+  .vv-toast { font-size: 0.75rem; padding: 10px 18px; bottom: 70px; }
+}
+
+@media (max-width: 360px) {
+  .verse-view { padding: 0 10px 70px; }
+  .vc-arabic p { font-size: 1.2rem; }
+  .verse-card { padding: 14px; }
+  .vc-actions { gap: 4px; }
+}
+
+@media (min-width: 768px) {
+  .verse-view { max-width: 850px; }
+  .verse-card { padding: 28px; }
+  .vc-arabic p { font-size: 2rem; }
+  .vv-surah-name { font-size: 1.4rem; }
+}
+
+@media (min-width: 1200px) {
+  .verse-view { max-width: 960px; }
+  .vc-columns { gap: 24px; }
 }

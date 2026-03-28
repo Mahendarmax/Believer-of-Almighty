@@ -54,8 +54,8 @@
 
 /* ===== Navigator — Surah + Verse selector ===== */
 .sl-navigator {
-  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(212,164,74,0.08) 0%, rgba(212,164,74,0.03) 100%);
+  border: 1.5px solid rgba(212,164,74,0.35);
   border-radius: var(--radius-lg);
   padding: 16px 18px;
   margin-bottom: 14px;
@@ -65,14 +65,15 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  color: var(--accent);
+  color: #e8c46a;
   margin-bottom: 12px;
+  text-shadow: 0 0 8px rgba(212,164,74,0.25);
 }
 
 .sl-nav-title svg {
-  color: var(--accent);
+  color: #e8c46a;
 }
 
 .sl-nav-controls {
@@ -90,11 +91,11 @@
   width: 100%;
   height: 100%;
   padding: 10px 32px 10px 12px;
-  background: var(--bg-surface);
-  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(212,164,74,0.25);
   border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-size: 0.82rem;
+  color: #e0d6c2;
+  font-size: 0.84rem;
   font-family: inherit;
   cursor: pointer;
   appearance: none;
@@ -113,18 +114,18 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: rgba(212,164,74,0.6);
   pointer-events: none;
 }
 
 .sl-nav-verse {
   width: 100px;
   padding: 10px 12px;
-  background: var(--bg-surface);
-  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(212,164,74,0.25);
   border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-size: 0.82rem;
+  color: #e0d6c2;
+  font-size: 0.84rem;
   font-family: inherit;
   transition: var(--transition);
 }
@@ -141,7 +142,7 @@
 }
 
 .sl-nav-verse::placeholder {
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.4);
   font-size: 0.75rem;
 }
 
@@ -196,76 +197,6 @@
   .sl-nav-go {
     justify-content: center;
   }
-}
-
-/* Compact inline search */
-.sl-search-wrap {
-  margin-bottom: 12px;
-}
-
-.sl-search-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  transition: border-color 0.2s ease;
-}
-
-.sl-search-bar:focus-within {
-  border-color: var(--accent-dim);
-}
-
-.sl-search-icon {
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.sl-search-input {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  font-size: 0.88rem;
-  color: var(--text-primary);
-  font-family: inherit;
-}
-
-.sl-search-input::placeholder {
-  color: var(--text-muted);
-}
-
-.sl-search-clear {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  color: var(--text-muted);
-  transition: var(--transition);
-}
-
-.sl-search-clear:hover {
-  background: var(--bg-card-hover);
-  color: var(--text-primary);
-}
-
-/* Meta */
-.sl-meta {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-  padding-left: 4px;
-}
-
-/* Empty */
-.sl-empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text-secondary);
 }
 
 /* Surah Grid */
@@ -381,6 +312,20 @@
 }
 
 /* Responsive — tablet+ grid */
+@media (max-width: 480px) {
+  .surah-list-page { padding: 0 14px 70px; }
+  .sl-title { font-size: 1.2rem; }
+  .sl-nav-title { font-size: 0.82rem; }
+  .sl-nav-select { font-size: 0.8rem; }
+  .sl-nav-verse { font-size: 0.8rem; }
+  .surah-card { padding: 14px 12px; }
+  .sc-name { font-size: 0.92rem; }
+  .sc-number { width: 36px; height: 36px; }
+  .sc-number span { font-size: 0.72rem; }
+  .sc-ayahs { font-size: 0.65rem; }
+  .sc-type { font-size: 0.58rem; }
+}
+
 @media (min-width: 640px) {
   .surah-grid {
     display: grid;
@@ -392,5 +337,13 @@
 @media (min-width: 900px) {
   .surah-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .surah-list-page { max-width: 1200px; }
+  .surah-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
   }
 }
