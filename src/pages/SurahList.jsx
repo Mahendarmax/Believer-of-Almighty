@@ -44,8 +44,12 @@ function SurahList() {
   const handleNavigate = useCallback(() => {
     const s = parseInt(navSurah)
     if (!s || s < 1 || s > 114) return
-    const v = parseInt(navVerse) || 1
-    navigate(`/surah/${s}?verse=${v}`)
+    const surahData = surahs.find(su => su.number === s)
+    const maxVerse = surahData?.ayahs || 286
+    let v = parseInt(navVerse) || 1
+    if (v < 1) v = 1
+    if (v > maxVerse) v = maxVerse
+    navigate(`/surah/${s}?verse=${v}&t=${Date.now()}`)
   }, [navSurah, navVerse, navigate])
 
   const filteredSurahs = useMemo(() => {

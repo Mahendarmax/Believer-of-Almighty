@@ -41,10 +41,17 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked }) => {
   const [tafsir, setTafsir] = useState(null)
   const [tafsirLoading, setTafsirLoading] = useState(false)
   const [showTafsir, setShowTafsir] = useState(false)
+  const [justBookmarked, setJustBookmarked] = useState(false)
+
+  const handleBookmarkClick = useCallback(() => {
+    onBookmark(verse.number)
+    setJustBookmarked(true)
+    setTimeout(() => setJustBookmarked(false), 1500)
+  }, [onBookmark, verse.number])
 
   // Memoize Telugu transliteration to avoid recomputing on every render
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
@@ -60,7 +67,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
   }, [showTafsir, tafsir, surahNumber, verse.number])
 
   return (
-    <div className="verse-card" id={`verse-${verse.number}`}>
+    <div className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''}`} id={`verse-${verse.number}`}>
       {/* Verse header with number, bookmark, favorite, and audio */}
       <div className="vc-header">
         <div className="vc-number">
@@ -68,12 +75,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
         </div>
         <div className="vc-actions">
           <button
-            className="vc-action-btn bookmark-btn"
-            onClick={() => onBookmark(verse.number)}
-            title="Save reading position"
+            className={`vc-action-btn bookmark-btn ${isBookmarked ? 'active' : ''}`}
+            onClick={handleBookmarkClick}
+            title={isBookmarked ? 'Reading position saved' : 'Save reading position'}
             aria-label={`Bookmark verse ${verse.number}`}
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+            <svg viewBox="0 0 24 24" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" width="16" height="16">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
             </svg>
           </button>
@@ -186,7 +193,7 @@ function VerseView() {
   const { number } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead, favorites, isFavorite, toggleFavorite, transliteration } = useSettings()
+  const { showArabic, fontSize, updateLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -226,6 +233,17 @@ function VerseView() {
     if (el) observer.observe(el)
     return () => { if (el) observer.unobserve(el) }
   }, [verses.length, visibleCount])
+
+  // Reset scroll flag + expand visibleCount when verse param changes (even for same surah)
+  useEffect(() => {
+    scrolledToVerse.current = false
+    const targetVerse = parseInt(searchParams.get('verse'))
+    if (targetVerse > 1 && verses.length > 0) {
+      if (targetVerse > visibleCount) {
+        setVisibleCount(targetVerse + 10)
+      }
+    }
+  }, [searchParams, verses.length, visibleCount])
 
   // Load verses with AbortController
   useEffect(() => {
@@ -275,21 +293,27 @@ function VerseView() {
 
   // Scroll to specific verse after loading
   useEffect(() => {
-    if (!loading && verses.length > 0 && !scrolledToVerse.current) {
-      const targetVerse = parseInt(searchParams.get('verse'))
-      if (targetVerse && targetVerse > 1) {
-        const el = document.getElementById(`verse-${targetVerse}`)
-        if (el) {
-          scrolledToVerse.current = true
-          setTimeout(() => {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }, 100)
-        }
-        // el not in DOM yet (visibleCount not high enough) — effect will retry when visibleCount updates
-      } else {
-        scrolledToVerse.current = true
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }
+    if (loading || verses.length === 0 || scrolledToVerse.current) return
+    const targetVerse = parseInt(searchParams.get('verse'))
+    if (!targetVerse || targetVerse <= 1) {
+      scrolledToVerse.current = true
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      return
+    }
+    // Expand visible window first if needed
+    if (targetVerse > visibleCount) {
+      setVisibleCount(targetVerse + 10)
+      return // wait for re-render with more verses
+    }
+    const el = document.getElementById(`verse-${targetVerse}`)
+    if (el) {
+      scrolledToVerse.current = true
+      // Double-rAF ensures the DOM has fully painted before scrolling
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        })
+      })
     }
   }, [loading, verses, searchParams, visibleCount])
 
@@ -371,8 +395,8 @@ function VerseView() {
   const handleBookmark = useCallback((verseNum) => {
     if (surah) {
       updateLastRead(surahNumber, surah.name, verseNum)
-      setBookmarkToast(`Bookmarked: ${surah.name}, Verse ${verseNum}`)
-      setTimeout(() => setBookmarkToast(null), 2000)
+      setBookmarkToast(`📌 Saved: ${surah.name}, Verse ${verseNum} — Use "Continue Reading" on Home page`)
+      setTimeout(() => setBookmarkToast(null), 3000)
     }
   }, [surah, surahNumber, updateLastRead])
 
@@ -495,6 +519,7 @@ function VerseView() {
                 onPlay={handleVersePlay}
                 onBookmark={handleBookmark}
                 isFav={favSet.has(`${surahNumber}:${verse.number}`)}
+                isBookmarked={lastRead?.surahNumber === surahNumber && lastRead?.verseNumber === verse.number}
                 onToggleFav={handleToggleFav}
                 transliteration={transliteration}
               />

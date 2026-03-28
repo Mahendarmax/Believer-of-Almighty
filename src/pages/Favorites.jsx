@@ -9,7 +9,7 @@ function Favorites() {
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
   const handleGoToVerse = useCallback((surahNumber, verseNumber) => {
-    navigate(`/surah/${surahNumber}?verse=${verseNumber}`)
+    navigate(`/surah/${surahNumber}?verse=${verseNumber}&t=${Date.now()}`)
   }, [navigate])
 
   const sortedFavorites = useMemo(() => [...favorites].sort((a, b) => b.timestamp - a.timestamp), [favorites])

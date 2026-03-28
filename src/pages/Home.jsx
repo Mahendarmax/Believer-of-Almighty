@@ -12,7 +12,7 @@ const Home = React.memo(function Home() {
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
     if (lastRead) {
-      navigate(`/surah/${lastRead.surahNumber}?verse=${lastRead.verseNumber || 1}`)
+      navigate(`/surah/${lastRead.surahNumber}?verse=${lastRead.verseNumber || 1}&t=${Date.now()}`)
     }
   }, [navigate, lastRead])
 
