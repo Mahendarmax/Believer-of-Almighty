@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react'
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import React, { lazy, Suspense, useEffect } from 'react'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { SettingsProvider } from './context/SettingsContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
@@ -26,11 +26,20 @@ const PageLoader = () => (
   </div>
 )
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <SettingsProvider>
         <HashRouter>
+          <ScrollToTop />
           <div className="app">
             <Suspense fallback={<PageLoader />}>
               <Routes>
