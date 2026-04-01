@@ -3,7 +3,7 @@
 // into Telugu script (e.g. "బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్")
 
 const VIRAMA = '\u0C4D' // Telugu halant (్)
-const ANUSVARA = '\u0C02' // Telugu anusvara (ం) — natural nasal before consonants
+const ANUSVARA = '\u0C02' // Telugu anusvara (ం)
 
 // Consonant mappings — longest match first
 const CONSONANTS = [
@@ -20,8 +20,25 @@ const CONSONANTS = [
   ['x', 'క\u0C4Dస'],
 ]
 
-// Single-char nasals that become anusvara (ం) before a different consonant
-const NASALS = new Set(['n', 'm'])
+// Word-level overrides for cases where automatic transliteration is inaccurate
+// (e.g. the API Roman English doesn't fully capture the Arabic phonetics)
+const WORD_OVERRIDES = {
+  'walmunfiqeena': 'వల్‌మున్ఫిఖీనా',
+  // API uses 'z' for Arabic ذ (dhaal) — correct Telugu is ధ not జ
+  'allazeena': 'అల్లధీన',
+  'allazee': 'అల్లధీ',
+  'wallazeena': 'వల్లధీన',
+  'lazeena': 'లధీన',
+}
+
+// Nasals that use anusvara (ం) before a different consonant in natural Telugu.
+// Maps nasal letter → set of following consonants where anusvara is used.
+// n before: t, d, th, dh, s, k, j, y, b, p, f, g, ch, kh, gh, sh
+// m before: d, t, th, dh, b, h, p, s, k, j, y, f, g, ch, kh, gh, sh
+// NOT when the same consonant follows (nn→న్న, mm→మ్మ stay halant for geminate)
+// NOT for 'nf' — Arabic nun+fa should stay halant న్ఫ (e.g. munfiqeena → మున్ఫిఖీన)
+const ANUSVARA_N_BEFORE = new Set(['t', 'd', 's', 'k', 'j', 'y', 'b', 'p', 'g', 'c', 'q', 'z', 'v', 'w', 'h', 'l', 'r', 'm'])
+const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'j', 'y', 'f', 'g', 'c', 'q', 'z', 'v', 'w', 'l', 'r', 'n'])
 
 // Vowel mappings — [roman, standalone, matra (after consonant)]
 // Longest match first to avoid partial matches.
@@ -46,6 +63,7 @@ const VOWELS = [
 ]
 
 const isLetter = (ch) => /[a-z]/i.test(ch)
+const isApostrophe = (ch) => ch === "'" || ch === '\u2018' || ch === '\u2019' || ch === '\u02BB' || ch === '\u02BC'
 
 /**
  * Convert Roman English transliteration to Telugu script
@@ -55,6 +73,16 @@ const isLetter = (ch) => /[a-z]/i.test(ch)
 export function romanToTelugu(text) {
   if (!text) return ''
 
+  // Split into words and whitespace, check overrides per word
+  return text.split(/(\s+)/).map(segment => {
+    if (!segment || /^\s+$/.test(segment)) return segment
+    const override = WORD_OVERRIDES[segment.toLowerCase()]
+    if (override) return override
+    return transliterateSegment(segment)
+  }).join('')
+}
+
+function transliterateSegment(text) {
   const lower = text.toLowerCase()
   let result = ''
   let i = 0
@@ -62,10 +90,19 @@ export function romanToTelugu(text) {
   while (i < lower.length) {
     // Skip non-letter characters (spaces, punctuation, numbers)
     if (!isLetter(lower[i])) {
-      // Apostrophe/ain (') before a vowel — skip it, the vowel handles it
-      if ((lower[i] === "'" || lower[i] === '\u2018' || lower[i] === '\u2019' || lower[i] === '\u02BB' || lower[i] === '\u02BC') && i + 1 < lower.length && isLetter(lower[i + 1])) {
-        i++
-        continue
+      // Apostrophe/ain (') before 'ay'/'a' vowels — check for diphthong first
+      if (isApostrophe(lower[i]) && i + 1 < lower.length) {
+        // 'ay after apostrophe → treat as standalone ఐ diphthong (e.g. "'ayni" → ఐని)
+        if (lower.startsWith('ay', i + 1)) {
+          result += 'ఐ'
+          i += 3 // skip apostrophe + 'ay'
+          continue
+        }
+        // Apostrophe before other vowels — skip it
+        if (isLetter(lower[i + 1])) {
+          i++
+          continue
+        }
       }
       result += text[i]
       i++
@@ -82,6 +119,16 @@ export function romanToTelugu(text) {
         let vowelMatched = false
         for (const [vRoman, , vMatra] of VOWELS) {
           if (lower.startsWith(vRoman, i)) {
+            // 'ay'/'aw' is a diphthong ONLY when the y/w is NOT followed by a vowel.
+            // If y/w is followed by a vowel, it's a consonant with its own vowel —
+            // use inherent 'a' instead. e.g. "bayaan" → బయాన్ (not బైఆన్),
+            // "hayaata" → హయాత (not హైఆత), but "bayna" → బైన ✓
+            if ((vRoman === 'ay' || vRoman === 'aw') && i + vRoman.length < lower.length) {
+              const afterDiphthong = lower[i + vRoman.length]
+              if ('aeiou'.includes(afterDiphthong)) {
+                continue // skip diphthong, fall through to 'a' (inherent vowel)
+              }
+            }
             result += telugu + vMatra
             i += vRoman.length
             vowelMatched = true
@@ -91,17 +138,22 @@ export function romanToTelugu(text) {
 
         // No vowel follows
         if (!vowelMatched) {
-          // Handle tanween: 'nw' at word boundary (e.g. "qaleelanw", "shai'anw")
-          // The API uses trailing 'nw' for Arabic tanween — just output న్ and skip 'w'
-          if (roman === 'n' && i < lower.length && lower[i] === 'w' && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
-            result += telugu + VIRAMA
-            i++ // skip the silent trailing 'w'
-          } else if (NASALS.has(roman) && i < lower.length && isLetter(lower[i]) && lower[i] !== roman[0]) {
-            // Nasal before a different consonant → use anusvara (ం) for natural Telugu flow
-            // e.g. "Anfal"→అంఫాల్, "ambiya"→అంబియ  (but "anna"→అన్న stays halant)
+          // Decide: anusvara (ం) or halant (్)?
+          const nextChar = i < lower.length ? lower[i] : ''
+          const useAnusvara = (
+            roman === 'n' && nextChar && isLetter(nextChar) && nextChar !== 'n' && nextChar !== 'f' && ANUSVARA_N_BEFORE.has(nextChar)
+          ) || (
+            roman === 'm' && nextChar && isLetter(nextChar) && nextChar !== 'm' && ANUSVARA_M_BEFORE.has(nextChar)
+          )
+
+          if (useAnusvara) {
             result += ANUSVARA
           } else {
             result += telugu + VIRAMA
+            // Handle tanween: 'nw' at word boundary (e.g. "qaleelanw", "shai'anw")
+            if (roman === 'n' && i < lower.length && lower[i] === 'w' && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
+              i++ // skip the silent trailing 'w'
+            }
           }
         }
 
