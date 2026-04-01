@@ -151,6 +151,26 @@ export const namazSurahs = [
       { arabic: 'فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ تَوَّابًا', roman: 'Fasabbih bihamdi Rabbika wastaghfirh, innahoo kaana tawwaabaa', romanTelugu: 'ఫసబ్బిహ్ బిహంది రబ్బిక వస్తఘ్ఫిర్హ్, ఇన్నహూ కాన తౌవాబా', english: 'Then exalt with praise of your Lord and ask forgiveness of Him. Indeed, He is ever Accepting of repentance.', telugu: 'నీ ప్రభువు స్తోత్రంతో స్తుతించు, ఆయనను క్షమాపణ వేడుకో. నిశ్చయంగా, ఆయన పశ్చాత్తాపాన్ని స్వీకరించేవాడు.' },
     ],
   },
+  {
+    number: 93,
+    name: 'Ad-Duha',
+    nameArabic: 'الضحى',
+    nameTelugu: 'అద్-దుహా',
+    note: 'The Morning Hours',
+    verses: [
+      { arabic: 'وَالضُّحَىٰ', roman: 'Wad-duhaa', romanTelugu: 'వద్-దుహా', english: 'By the morning brightness.', telugu: 'ఉదయపు వెలుతురు సాక్షిగా.' },
+      { arabic: 'وَاللَّيْلِ إِذَا سَجَىٰ', roman: 'Wal-layli izaa sajaa', romanTelugu: 'వల్-లైలి ఇజా సజా', english: 'And by the night when it covers with darkness.', telugu: 'చీకటి కమ్ముకున్న రాత్రి సాక్షిగా.' },
+      { arabic: 'مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ', roman: 'Maa wadda-aka Rabbuka wa maa qalaa', romanTelugu: 'మా వద్ద-అక రబ్బుక వ మా ఖలా', english: 'Your Lord has not taken leave of you, nor has He detested you.', telugu: 'నీ ప్రభువు నిన్ను విడిచిపెట్టలేదు, నిన్ను అసహ్యించుకోలేదు.' },
+      { arabic: 'وَلَلْآخِرَةُ خَيْرٌ لَّكَ مِنَ الْأُولَىٰ', roman: 'Walal-aakhiratu khayrun laka minal-oolaa', romanTelugu: 'వలల్-ఆఖిరతు ఖైరున్ లక మినల్-ఊలా', english: 'And the Hereafter is better for you than the first life.', telugu: 'పరలోకం నీకు ఈ లోకం కంటే మంచిది.' },
+      { arabic: 'وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ', roman: 'Wa lasawfa yu-teeka Rabbuka fatardaa', romanTelugu: 'వ లసౌఫ యుతీక రబ్బుక ఫతర్దా', english: 'And your Lord is going to give you, and you will be satisfied.', telugu: 'నీ ప్రభువు నీకు ఇస్తాడు, నీవు సంతోషిస్తావు.' },
+      { arabic: 'أَلَمْ يَجِدْكَ يَتِيمًا فَآوَىٰ', roman: 'Alam yajidka yateeman fa-aawaa', romanTelugu: 'అలమ్ యజిద్క యతీమన్ ఫ-ఆవా', english: 'Did He not find you an orphan and give you refuge?', telugu: 'ఆయన నిన్ను అనాథగా కనుక్కొని ఆశ్రయం ఇవ్వలేదా?' },
+      { arabic: 'وَوَجَدَكَ ضَالًّا فَهَدَىٰ', roman: 'Wa wajadaka daallan fahadaa', romanTelugu: 'వ వజదక దాల్లన్ ఫహదా', english: 'And He found you lost and guided you.', telugu: 'ఆయన నిన్ను దారి తప్పినవాడిగా కనుక్కొని మార్గదర్శకత్వం ఇచ్చాడు.' },
+      { arabic: 'وَوَجَدَكَ عَائِلًا فَأَغْنَىٰ', roman: 'Wa wajadaka aaa-ilan fa-aghnaa', romanTelugu: 'వ వజదక ఆఇలన్ ఫ-అఘ్నా', english: 'And He found you poor and made you self-sufficient.', telugu: 'ఆయన నిన్ను పేదవాడిగా కనుక్కొని సంపన్నుడిగా చేశాడు.' },
+      { arabic: 'فَأَمَّا الْيَتِيمَ فَلَا تَقْهَرْ', roman: 'Fa-ammal yateema falaa taqhar', romanTelugu: 'ఫ-అమ్మల్ యతీమ ఫలా తఖ్హర్', english: 'So as for the orphan, do not oppress him.', telugu: 'కావున అనాథను హింసించవద్దు.' },
+      { arabic: 'وَأَمَّا السَّائِلَ فَلَا تَنْهَرْ', roman: 'Wa ammas-saaa-ila falaa tanhar', romanTelugu: 'వ అమ్మస్-సాఇల ఫలా తన్హర్', english: 'And as for the petitioner, do not repel him.', telugu: 'అడిగేవాడిని తోసివేయవద్దు.' },
+      { arabic: 'وَأَمَّا بِنِعْمَةِ رَبِّكَ فَحَدِّثْ', roman: 'Wa ammaa bini-mati Rabbika fahaddith', romanTelugu: 'వ అమ్మా బిని-మతి రబ్బిక ఫహద్దిథ్', english: 'But as for the favor of your Lord, report it.', telugu: 'నీ ప్రభువు అనుగ్రహాన్ని గూర్చి చెప్పు.' },
+    ],
+  },
 ]
 
 // Most recommended Duas by Prophet Muhammad (SAW)
