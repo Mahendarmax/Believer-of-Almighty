@@ -16,6 +16,7 @@ const DosAndDonts = lazy(() => import('./pages/DosAndDonts'))
 const AsmaUlHusna = lazy(() => import('./pages/AsmaUlHusna'))
 const TasbihCounter = lazy(() => import('./pages/TasbihCounter'))
 const Adhkar = lazy(() => import('./pages/Adhkar'))
+const ProphetIsa = lazy(() => import('./pages/ProphetIsa'))
 
 const PageLoader = () => (
   <div style={{
@@ -58,6 +59,7 @@ function App() {
                 <Route path="/names-of-allah" element={<AsmaUlHusna />} />
                 <Route path="/tasbih" element={<TasbihCounter />} />
                 <Route path="/adhkar" element={<Adhkar />} />
+                <Route path="/prophet-isa" element={<ProphetIsa />} />
               </Routes>
             </Suspense>
           </div>

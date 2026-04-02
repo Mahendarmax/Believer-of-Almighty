@@ -1,0 +1,217 @@
+// Prophet Isa (Jesus) — Verses from the Bible & Quran proving he is a Prophet of Allah, not God
+// All Bible references are from commonly accepted translations (KJV, NIV, ESV)
+
+export const prophetIsaData = [
+  {
+    category: 'Jesus Declared There is Only ONE God',
+    categoryTelugu: 'ఈసా (అ) ఒక్క దేవుడు మాత్రమే ఉన్నాడని ప్రకటించారు',
+    icon: '☝️',
+    items: [
+      {
+        verse: 'Hear, O Israel: The Lord our God, the Lord is ONE.',
+        telugu: 'ఓ ఇస్రాయెలూ వినుము: మన దేవుడైన ప్రభువు ఒక్కడే ప్రభువు.',
+        reference: 'Bible — Mark 12:29',
+        context: 'Jesus was asked "Which commandment is the most important?" and he answered with pure monotheism — exactly what Islam teaches.',
+        contextTelugu: 'ఈసా (అ) ను "అత్యంత ముఖ్యమైన ఆజ్ఞ ఏమిటి?" అని అడిగినప్పుడు, ఆయన స్వచ్ఛమైన ఏకదైవారాధన తో సమాధానమిచ్చారు.',
+      },
+      {
+        verse: 'And this is eternal life, that they know You, the ONLY TRUE GOD, and Jesus Christ whom You have SENT.',
+        telugu: 'నిత్యజీవము అనగా, ఒక్క నిజమైన దేవుడివైన నిన్ను, నీవు పంపిన యేసుక్రీస్తును ఎరుగుటయే.',
+        reference: 'Bible — John 17:3',
+        context: 'Jesus himself called God "the ONLY true God" and referred to himself as one who was "sent" — a messenger.',
+        contextTelugu: 'ఈసా (అ) స్వయంగా దేవుడిని "ఒక్క నిజమైన దేవుడు" అని పిలిచి, తనను "పంపబడిన వాడు" అని చెప్పుకున్నారు — అంటే ఒక ప్రవక్త.',
+      },
+      {
+        verse: 'Why do you call me good? No one is good — except God ALONE.',
+        telugu: 'నన్ను మంచివాడని ఎందుకు అంటావు? దేవుడు ఒక్కడు తప్ప ఎవడును మంచివాడు కాడు.',
+        reference: 'Bible — Mark 10:18',
+        context: 'When someone called Jesus "Good Teacher," he rejected the title and pointed to God alone as good — clearly separating himself from God.',
+        contextTelugu: 'ఎవరో ఈసా (అ) ను "మంచి బోధకుడా" అని పిలిచినప్పుడు, ఆయన ఆ బిరుదును తిరస్కరించి దేవుడు మాత్రమే మంచివాడని చెప్పారు.',
+      },
+      {
+        verse: 'I am ascending to my Father and your Father, to MY GOD and YOUR GOD.',
+        telugu: 'నేను నా తండ్రియొద్దకు మీ తండ్రియొద్దకు, నా దేవునియొద్దకు మీ దేవునియొద్దకు వెళ్లుచున్నాను.',
+        reference: 'Bible — John 20:17',
+        context: 'Jesus said "MY God" — if he were God, he would not have a God above him. He put himself on the same level as other humans before God.',
+        contextTelugu: 'ఈసా (అ) "నా దేవుడు" అని చెప్పారు — ఆయన దేవుడే అయితే, ఆయనపై మరో దేవుడు ఉండేవాడు కాదు.',
+      },
+      {
+        verse: 'The Father is GREATER than I.',
+        telugu: 'తండ్రి నాకంటే గొప్పవాడు.',
+        reference: 'Bible — John 14:28',
+        context: 'Jesus clearly said God is greater than him. If they were equal or the same, this statement would be meaningless.',
+        contextTelugu: 'ఈసా (అ) స్పష్టంగా దేవుడు తనకంటే గొప్పవాడని చెప్పారు. వారు సమానమైతే ఈ మాటకు అర్థం ఉండదు.',
+      },
+    ],
+  },
+  {
+    category: 'Jesus Said He is a Prophet Sent by God',
+    categoryTelugu: 'ఈసా (అ) తాను దేవుడు పంపిన ప్రవక్తనని చెప్పారు',
+    icon: '📖',
+    items: [
+      {
+        verse: 'I must preach the good news of the kingdom of God to the other towns as well; for I was SENT for this purpose.',
+        telugu: 'నేను ఇతర పట్టణములకు కూడా దేవుని రాజ్య సువార్తను ప్రకటింపవలెను; ఈ కార్యమునకే నేను పంపబడితిని.',
+        reference: 'Bible — Luke 4:43',
+        context: 'Jesus described himself as someone who was "sent" — the role of a messenger/prophet, not God.',
+        contextTelugu: 'ఈసా (అ) తనను "పంపబడినవాడు" అని వర్ణించుకున్నారు — ఇది ప్రవక్త పాత్ర, దేవుని పాత్ర కాదు.',
+      },
+      {
+        verse: 'I was sent ONLY to the lost sheep of the house of Israel.',
+        telugu: 'ఇశ్రాయేలు ఇంటివారిలో తప్పిపోయిన గొర్రెల యొద్దకు మాత్రమే నేను పంపబడితిని.',
+        reference: 'Bible — Matthew 15:24',
+        context: 'Jesus limited his mission to Israel — proof he was a prophet sent to a specific nation, just like prophets before him.',
+        contextTelugu: 'ఈసా (అ) తన మిషన్‌ను ఇస్రాయెల్‌కు పరిమితం చేశారు — ఆయన ఒక నిర్దిష్ట జాతికి పంపబడిన ప్రవక్త అనడానికి రుజువు.',
+      },
+      {
+        verse: 'A prophet is not without honor except in his own town, among his relatives and in his own home.',
+        telugu: 'ప్రవక్త తన స్వంత ఊరిలో, తన బంధువులలో, తన ఇంట్లో తప్ప గౌరవహీనుడు కాడు.',
+        reference: 'Bible — Mark 6:4',
+        context: 'Jesus referred to HIMSELF as a prophet when his own people rejected him.',
+        contextTelugu: 'ఈసా (అ) తన స్వంత ప్రజలు తిరస్కరించినప్పుడు తనను తాను ప్రవక్తగా సూచించుకున్నారు.',
+      },
+      {
+        verse: 'This is the prophet Jesus, from Nazareth of Galilee.',
+        telugu: 'ఈయన గలిలయలోని నజరేతు నుండి వచ్చిన ప్రవక్త యేసు.',
+        reference: 'Bible — Matthew 21:11',
+        context: 'The crowds who witnessed Jesus identified him as "the prophet" — not God, not son of God, but a prophet.',
+        contextTelugu: 'ఈసా (అ) ను చూసిన జనసమూహం ఆయనను "ప్రవక్త" గా గుర్తించారు — దేవుడుగా కాదు.',
+      },
+      {
+        verse: 'Jesus of Nazareth, a MAN attested to you by God with mighty works and wonders and signs that God did through him.',
+        telugu: 'నజరేతు యేసు, దేవుడు ఆయన ద్వారా చేసిన అద్భుతకార్యాల ద్వారా మీకు ధ్రువీకరించబడిన మనిషి.',
+        reference: 'Bible — Acts 2:22',
+        context: 'Even after Jesus left, his disciple Peter called him "a MAN" approved by God — not God himself.',
+        contextTelugu: 'ఈసా (అ) వెళ్ళిన తర్వాత కూడా, శిష్యుడు పేతురు ఆయనను దేవునిచే ఆమోదించబడిన "మనిషి" అని పిలిచాడు.',
+      },
+      {
+        verse: 'My teaching is NOT mine, but His who SENT me.',
+        telugu: 'నా బోధ నాది కాదు, నన్ను పంపిన వాని బోధ.',
+        reference: 'Bible — John 7:16',
+        context: 'Jesus admitted his message came from God, not from himself — the definition of a prophet receiving revelation.',
+        contextTelugu: 'ఈసా (అ) తన సందేశం దేవుని నుండి వచ్చిందని, తన నుండి కాదని అంగీకరించారు — వహీ అందుకునే ప్రవక్త నిర్వచనం ఇదే.',
+      },
+      {
+        verse: 'I can do NOTHING on my own. As I hear, I judge... I seek not my own will but the will of Him who sent me.',
+        telugu: 'నేను నా అంతట నేను ఏమియు చేయలేను. నేను విన్నట్లు తీర్పు తీర్చుచున్నాను... నన్ను పంపిన వాని చిత్తమును నెరవేర్చుటకు కోరుచున్నాను.',
+        reference: 'Bible — John 5:30',
+        context: 'Jesus said he can do nothing by himself and only follows the will of God — words of an obedient servant, not God.',
+        contextTelugu: 'ఈసా (అ) తాను స్వయంగా ఏమీ చేయలేనని, దేవుని ఆజ్ఞను మాత్రమే అనుసరిస్తానని చెప్పారు — విధేయ సేవకుని మాటలు.',
+      },
+    ],
+  },
+  {
+    category: 'Jesus Prayed to God (A God Does Not Pray)',
+    categoryTelugu: 'ఈసా (అ) దేవుని ప్రార్థించారు (దేవుడు ప్రార్థన చేయడు)',
+    icon: '🤲',
+    items: [
+      {
+        verse: 'He fell with his FACE to the ground and prayed, "My Father, if it is possible, let this cup pass from me; yet not as I will, but as YOU will."',
+        telugu: 'ఆయన నేలపై సాష్టాంగపడి ప్రార్థించెను, "నా తండ్రీ, సాధ్యమైతే ఈ గిన్నె నా నుండి తొలగించుము; అయినను నా ఇష్టం కాదు, నీ ఇష్టం జరుగును గాక."',
+        reference: 'Bible — Matthew 26:39',
+        context: 'Jesus prostrated on his face to pray to God — exactly like Muslims pray (Sajdah). If Jesus were God, who was he praying to?',
+        contextTelugu: 'ఈసా (అ) దేవుని ప్రార్థించడానికి నేలపై సాష్టాంగపడ్డారు — ముస్లింలు నమాజ్ చేసినట్లే (సజ్దా). ఆయన దేవుడే అయితే ఎవరిని ప్రార్థిస్తున్నారు?',
+      },
+      {
+        verse: 'Very early in the morning, while it was still dark, Jesus got up, left the house and went off to a solitary place, where he prayed.',
+        telugu: 'తెల్లవారకముందే, ఇంకా చీకటిగా ఉన్నప్పుడే, యేసు లేచి ఇంటి నుండి బయలుదేరి ఏకాంత ప్రదేశమునకు వెళ్ళి అక్కడ ప్రార్థించెను.',
+        reference: 'Bible — Mark 1:35',
+        context: 'Jesus regularly woke before dawn to pray — like Fajr prayer in Islam. A god does not need to pray to another god.',
+        contextTelugu: 'ఈసా (అ) ప్రార్థన కోసం తెల్లవారుజామున లేచేవారు — ఇస్లాంలో ఫజ్ర్ నమాజ్ లాగా. దేవుడు మరో దేవుడిని ప్రార్థించాల్సిన అవసరం లేదు.',
+      },
+      {
+        verse: 'And he withdrew from them about a stone\'s throw, and knelt down and prayed.',
+        telugu: 'ఆయన వారి నుండి రాయి విసిరినంత దూరము వెళ్ళి, మోకాళ్ళ మీద ఊని ప్రార్థించెను.',
+        reference: 'Bible — Luke 22:41',
+        context: 'Jesus knelt and prayed to God. Every act of Jesus demonstrates submission to God — the very meaning of the word "Muslim" (one who submits).',
+        contextTelugu: 'ఈసా (అ) మోకాళ్ళ మీద ఊని దేవుని ప్రార్థించారు. ఈసా (అ) యొక్క ప్రతి చర్య దేవునికి విధేయతను చూపిస్తుంది — "ముస్లిం" అనే పదానికి అర్థం ఇదే.',
+      },
+      {
+        verse: 'After he had dismissed the crowds, he went up on the mountain by himself to pray.',
+        telugu: 'జనసమూహాలను పంపిన తర్వాత, ఆయన ప్రార్థన కోసం ఒంటరిగా కొండ ఎక్కెను.',
+        reference: 'Bible — Matthew 14:23',
+        context: 'Jesus prayed alone on mountains — showing deep devotion to God. If he were God, this would make no sense.',
+        contextTelugu: 'ఈసా (అ) పర్వతాలపై ఒంటరిగా ప్రార్థించారు — దేవునిపై గాఢ భక్తి. ఆయన దేవుడే అయితే ఇది అర్థరహితం.',
+      },
+    ],
+  },
+  {
+    category: 'Jesus Did Not Know the Future (Only God Knows)',
+    categoryTelugu: 'ఈసా (అ) కి భవిష్యత్తు తెలియదు (దేవునికి మాత్రమే తెలుసు)',
+    icon: '🔮',
+    items: [
+      {
+        verse: 'But about that day or hour NO ONE knows, not even the angels in heaven, NOR THE SON, but only the Father.',
+        telugu: 'ఆ దినము గాని ఆ గడియ గాని ఎవరికిని తెలియదు, పరలోకంలో ఉన్న దూతలకు కాని, కుమారునికి కాని తెలియదు, తండ్రికి మాత్రమే తెలియును.',
+        reference: 'Bible — Mark 13:32',
+        context: 'Jesus admitted he does NOT know when the Day of Judgment will come — only God knows. If Jesus were God, he would know everything.',
+        contextTelugu: 'ఈసా (అ) తీర్పు దినం ఎప్పుడు వస్తుందో తనకు తెలియదని అంగీకరించారు — దేవునికి మాత్రమే తెలుసు. ఆయన దేవుడే అయితే అన్నీ తెలిసి ఉండాలి.',
+      },
+      {
+        verse: 'But to sit at my right hand or at my left is not mine to grant. These places belong to those for whom they have been prepared by my Father.',
+        telugu: 'నా కుడి వైపున లేదా ఎడమ వైపున కూర్చోవడం నేను ఇవ్వగలిగేది కాదు. ఈ స్థానాలు నా తండ్రి ఎవరి కొరకు సిద్ధపరిచాడో వారివే.',
+        reference: 'Bible — Matthew 20:23',
+        context: 'Jesus said he has no authority to grant positions in the afterlife — only God decides. This proves limited authority, not divine power.',
+        contextTelugu: 'ఈసా (అ) పరలోకంలో స్థానాలు ఇచ్చే అధికారం తనకు లేదని చెప్పారు — దేవుడు మాత్రమే నిర్ణయిస్తాడు.',
+      },
+      {
+        verse: 'You are trying to kill me, a MAN who has told you the truth that I heard from GOD.',
+        telugu: 'మీరు నన్ను చంపాలని చూస్తున్నారు, నేను దేవుని నుండి విన్న సత్యాన్ని మీకు చెప్పిన మనిషిని.',
+        reference: 'Bible — John 8:40',
+        context: 'Jesus called himself "a man" who received truth "from God" — two separate beings, not one.',
+        contextTelugu: 'ఈసా (అ) తనను "దేవుని నుండి" సత్యం అందుకున్న "మనిషి" అని పిలుచుకున్నారు — ఇద్దరు వేర్వేరు, ఒకరు కాదు.',
+      },
+    ],
+  },
+  {
+    category: 'What the Quran Says About Prophet Isa (عيسى عليه السلام)',
+    categoryTelugu: 'ప్రవక్త ఈసా (అ) గురించి ఖురాన్ ఏం చెబుతుంది',
+    icon: '☪️',
+    items: [
+      {
+        verse: '"Indeed, I am the servant of Allah. He has given me the Scripture and made me a prophet."',
+        telugu: '"నిశ్చయంగా నేను అల్లాహ్ దాసుడను. ఆయన నాకు గ్రంథాన్ని ఇచ్చాడు మరియు నన్ను ప్రవక్తగా చేశాడు."',
+        reference: 'Quran — Surah Maryam 19:30',
+        context: 'Baby Isa spoke from the cradle — his very first words declared he is a servant and prophet of Allah, NOT God.',
+        contextTelugu: 'శిశువు ఈసా (అ) ఊయలలో నుండి మాట్లాడారు — ఆయన మొదటి మాటలే తాను అల్లాహ్ దాసుడని, ప్రవక్తనని ప్రకటించాయి.',
+      },
+      {
+        verse: '"O Children of Israel, worship Allah, my Lord and your Lord."',
+        telugu: '"ఓ ఇస్రాయెల్ సంతానమా, నా ప్రభువు మరియు మీ ప్రభువు అయిన అల్లాహ్‌ను ఆరాధించండి."',
+        reference: 'Quran — Surah Al-Ma\'idah 5:72',
+        context: 'The Quran confirms that Isa himself told his people to worship Allah — calling Allah "MY Lord" just like he said in the Bible.',
+        contextTelugu: 'ఈసా (అ) స్వయంగా తన ప్రజలకు అల్లాహ్‌ను ఆరాధించమని చెప్పారని ఖురాన్ ధృవీకరిస్తుంది.',
+      },
+      {
+        verse: '"The Messiah, son of Mary, was not but a messenger; other messengers have passed on before him. And his mother was a supporter of truth. They both used to eat food."',
+        telugu: '"మర్యం కుమారుడైన మసీహ్ ఒక ప్రవక్త తప్ప మరేమీ కాదు; ఆయనకు ముందు ఇతర ప్రవక్తలు గడిచిపోయారు. ఆయన తల్లి సత్యవంతురాలు. వారిద్దరూ ఆహారం తినేవారు."',
+        reference: 'Quran — Surah Al-Ma\'idah 5:75',
+        context: '"They both used to eat food" — Allah\'s powerful proof: a God does not need food. Isa and Maryam were human.',
+        contextTelugu: '"వారిద్దరూ ఆహారం తినేవారు" — దేవునికి ఆహారం అవసరం లేదు. ఈసా (అ) మరియు మర్యం మానవులు.',
+      },
+      {
+        verse: '"Indeed, Allah is my Lord and your Lord, so worship Him. That is the straight path."',
+        telugu: '"నిశ్చయంగా అల్లాహ్ నా ప్రభువు మరియు మీ ప్రభువు, కాబట్టి ఆయనను ఆరాధించండి. అదే సరైన మార్గం."',
+        reference: 'Quran — Surah Ali \'Imran 3:51',
+        context: 'Isa\'s message in the Quran is identical to his message in the Bible: one God, worship Him alone.',
+        contextTelugu: 'ఖురాన్‌లో ఈసా (అ) సందేశం బైబిల్‌లో ఆయన సందేశంతో సమానం: ఒక్క దేవుడు, ఆయనను మాత్రమే ఆరాధించండి.',
+      },
+      {
+        verse: '"And when Allah will say, \'O Isa, son of Maryam, did you say to the people: Take me and my mother as two gods besides Allah?\' He will say, \'Glory be to You! It was not for me to say what I had no right to say.\'"',
+        telugu: '"అల్లాహ్ అడుగుతాడు, \'ఓ ఈసా, మర్యం కుమారుడా, అల్లాహ్‌ను కాకుండా నన్ను మరియు నా తల్లిని దేవుళ్ళుగా తీసుకోమని నీవు ప్రజలతో చెప్పావా?\' ఆయన అంటాడు, \'నీకు మహిమ! నాకు హక్కు లేని విషయం చెప్పడం నాకు తగదు.\'"',
+        reference: 'Quran — Surah Al-Ma\'idah 5:116',
+        context: 'On the Day of Judgment, Isa will deny ever claiming divinity. He will confirm he only taught worship of Allah alone.',
+        contextTelugu: 'తీర్పు దినాన, ఈసా (అ) తాను ఎన్నడూ దైవత్వాన్ని చెప్పుకోలేదని తిరస్కరిస్తారు.',
+      },
+      {
+        verse: '"Do not say \'Three\'; desist — it is better for you. Indeed, Allah is but ONE God. Exalted is He above having a son."',
+        telugu: '"\'ముగ్గురు\' అని చెప్పకండి; ఆపండి — అది మీకు మేలు. నిశ్చయంగా అల్లాహ్ ఒక్క దేవుడు మాత్రమే. ఆయనకు కుమారుడు ఉన్నాడనడం ఆయన ఘనతకు తగదు."',
+        reference: 'Quran — Surah An-Nisa 4:171',
+        context: 'Allah directly commands: do not say Trinity. God is ONE. This is the same message Jesus taught in the Bible (Mark 12:29).',
+        contextTelugu: 'అల్లాహ్ నేరుగా ఆజ్ఞాపిస్తాడు: త్రిత్వం అనకండి. దేవుడు ఒక్కడే. ఈసా (అ) బైబిల్‌లో బోధించిన సందేశం కూడా ఇదే.',
+      },
+    ],
+  },
+]
+
+Object.freeze(prophetIsaData)

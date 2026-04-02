@@ -1,0 +1,282 @@
+.isa-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+.isa-page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-primary);
+}
+
+.isa-page-back {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.isa-page-back:hover { background: var(--accent); color: #fff; }
+
+.isa-page-title-group { display: flex; flex-direction: column; }
+.isa-page-title { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.isa-page-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+/* Intro banner */
+.isa-intro {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(99, 179, 237, 0.06) 100%);
+  border: 1px solid var(--border);
+  border-left: 3px solid #63b3ed;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.isa-intro-text {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.65;
+  margin: 0 0 0.5rem;
+}
+.isa-intro-text strong { color: #63b3ed; }
+.isa-intro-telugu {
+  font-size: 0.82rem;
+  color: #34d399;
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+.isa-intro-telugu strong { color: #34d399; }
+.isa-intro-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.isa-intro-stat-num {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.isa-intro-stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Category cards */
+.isa-page-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.isa-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition);
+}
+.isa-card.expanded {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-color: rgba(99, 179, 237, 0.2);
+}
+
+.isa-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  text-align: left;
+}
+.isa-card-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.isa-card-icon { font-size: 1.5rem; }
+.isa-card-category {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.isa-card-category-telugu {
+  display: block;
+  font-size: 0.78rem;
+  color: #34d399;
+  font-weight: 500;
+}
+.isa-card-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.isa-card-count {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+.isa-chevron {
+  transition: transform 0.25s ease;
+  color: var(--text-muted);
+}
+.isa-chevron.open { transform: rotate(180deg); }
+
+/* Body */
+.isa-card-body {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Verse item */
+.isa-verse {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  background: var(--bg-primary);
+  transition: var(--transition);
+}
+.isa-verse.verse-expanded {
+  border-color: rgba(99, 179, 237, 0.25);
+}
+
+.isa-verse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+.isa-verse-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #63b3ed;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.isa-verse-ref {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(212, 164, 74, 0.1);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+}
+
+.isa-verse-text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-style: italic;
+  line-height: 1.65;
+  margin: 0 0 0.4rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid rgba(99, 179, 237, 0.3);
+}
+.isa-verse-telugu {
+  font-size: 0.85rem;
+  color: #34d399;
+  font-weight: 500;
+  line-height: 1.55;
+  margin: 0 0 0.6rem;
+  padding-left: 0.75rem;
+}
+
+/* Context toggle */
+.isa-context-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #63b3ed;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0;
+  transition: var(--transition);
+}
+.isa-context-toggle:hover { color: #90cdf4; }
+
+.isa-context-box {
+  margin-top: 0.6rem;
+  padding: 0.85rem;
+  background: rgba(99, 179, 237, 0.05);
+  border: 1px solid rgba(99, 179, 237, 0.12);
+  border-radius: var(--radius-sm);
+  animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.isa-context-english {
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin: 0 0 0.3rem;
+}
+.isa-context-telugu {
+  font-size: 0.78rem;
+  color: #34d399;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Footer */
+.isa-footer {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+.isa-footer-quote {
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  font-style: italic;
+  line-height: 1.65;
+  margin: 0 0 0.35rem;
+}
+.isa-footer-ref {
+  font-size: 0.75rem;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.isa-footer-telugu {
+  font-size: 0.82rem;
+  color: #34d399;
+  line-height: 1.55;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .isa-verse-text { font-size: 0.88rem; }
+  .isa-card-header { padding: 0.8rem; }
+  .isa-page-title { font-size: 1.15rem; }
+}
