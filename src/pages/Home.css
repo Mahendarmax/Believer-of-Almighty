@@ -330,6 +330,30 @@
   box-shadow: 0 0 20px rgba(99,179,237,0.06);
 }
 
+.dosdonts-action-card .action-icon-wrap {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245,158,11,0.06);
+}
+
+.asma-action-card .action-icon-wrap {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+  box-shadow: 0 0 20px rgba(168,85,247,0.06);
+}
+
+.tasbih-action-card .action-icon-wrap {
+  background: rgba(236, 72, 153, 0.1);
+  color: #ec4899;
+  box-shadow: 0 0 20px rgba(236,72,153,0.06);
+}
+
+.adhkar-action-card .action-icon-wrap {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+  box-shadow: 0 0 20px rgba(251,191,36,0.06);
+}
+
 .action-card-chevron {
   position: absolute;
   bottom: 10px;

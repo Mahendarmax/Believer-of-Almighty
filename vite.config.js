@@ -19,6 +19,8 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'router': ['react-router-dom'],
+          'quran-data': ['./src/data/quranData.js'],
+          'islamic-data': ['./src/data/namazAndDuas.js'],
         },
         // Deterministic chunk filenames for better caching
         chunkFileNames: 'assets/[name]-[hash].js',

@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
-import { namazSurahs, prophetDuas } from '../data/namazAndDuas'
 import './Home.css'
+
+// Static counts — avoid importing large data modules on the home page
+const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14 }
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
@@ -89,7 +91,7 @@ const Home = React.memo(function Home() {
           </div>
           <h3>Namaz Surahs</h3>
           <p>నమాజ్ సూరాలు</p>
-          <span className="action-meta">{namazSurahs.length} Surahs</span>
+          <span className="action-meta">{COUNTS.namaz} Surahs</span>
         </button>
 
         <button className="action-card duas-action-card" onClick={() => navigate('/duas')}>
@@ -100,7 +102,52 @@ const Home = React.memo(function Home() {
           </div>
           <h3>Duas</h3>
           <p>దుఆలు</p>
-          <span className="action-meta">{prophetDuas.length} Duas</span>
+          <span className="action-meta">{COUNTS.duas} Duas</span>
+        </button>
+
+        <button className="action-card dosdonts-action-card" onClick={() => navigate('/dos-and-donts')}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6M9 14l2 2 4-4"/>
+            </svg>
+          </div>
+          <h3>Dos and Don'ts in Islam</h3>
+          <p>ఆదేశాలు & నిషేధాలు</p>
+          <span className="action-meta">{COUNTS.dosdonts} Items</span>
+        </button>
+
+        <button className="action-card asma-action-card" onClick={() => navigate('/names-of-allah')}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h3>99 Names of Allah</h3>
+          <p>అల్లాహ్ 99 నామాలు</p>
+          <span className="action-meta">{COUNTS.asma} Names</span>
+        </button>
+
+        <button className="action-card tasbih-action-card" onClick={() => navigate('/tasbih')}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+          </div>
+          <h3>Tasbih Counter</h3>
+          <p>తస్బీహ్ కౌంటర్</p>
+          <span className="action-meta">Digital Dhikr</span>
+        </button>
+
+        <button className="action-card adhkar-action-card" onClick={() => navigate('/adhkar')}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </div>
+          <h3>Morning & Evening Adhkar</h3>
+          <p>ఉదయ సాయంత్ర అధ్కార్</p>
+          <span className="action-meta">{COUNTS.adhkar} Adhkar</span>
         </button>
 
         <button className="action-card fav-card" onClick={handleFavorites}>

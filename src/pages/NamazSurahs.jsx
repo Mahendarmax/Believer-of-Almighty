@@ -1,7 +1,18 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { namazSurahs } from '../data/namazAndDuas'
 import './NamazSurahs.css'
+
+const NamazVerse = memo(({ v }) => (
+  <div className="namaz-verse">
+    <p className="namaz-verse-arabic" dir="rtl">{v.arabic}</p>
+    <p className="namaz-verse-roman">{v.roman}</p>
+    <p className="namaz-verse-telugu-translit">{v.romanTelugu}</p>
+    <p className="namaz-verse-english">{v.english}</p>
+    <p className="namaz-verse-telugu">{v.telugu}</p>
+  </div>
+))
+NamazVerse.displayName = 'NamazVerse'
 
 function NamazSurahs() {
   const navigate = useNavigate()
@@ -51,13 +62,7 @@ function NamazSurahs() {
             {expandedNamaz === s.number && (
               <div className="namaz-card-body">
                 {s.verses.map((v, i) => (
-                  <div key={i} className="namaz-verse">
-                    <p className="namaz-verse-arabic" dir="rtl">{v.arabic}</p>
-                    <p className="namaz-verse-roman">{v.roman}</p>
-                    <p className="namaz-verse-telugu-translit">{v.romanTelugu}</p>
-                    <p className="namaz-verse-english">{v.english}</p>
-                    <p className="namaz-verse-telugu">{v.telugu}</p>
-                  </div>
+                  <NamazVerse key={i} v={v} />
                 ))}
 
               </div>

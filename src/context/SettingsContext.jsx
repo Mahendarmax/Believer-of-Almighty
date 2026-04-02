@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useCallback, useMemo, useEffect } from 'react'
+import React, { createContext, useState, useContext, useCallback, useMemo, useEffect, useRef } from 'react'
 
 const SettingsContext = createContext()
 
@@ -29,12 +29,19 @@ export const SettingsProvider = ({ children }) => {
   const [favorites, setFavorites] = useState(() => loadSetting('favorites', []))
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'both'))
 
-  // Save to localStorage on change
-  useEffect(() => { saveSetting('showArabic', showArabic) }, [showArabic])
-  useEffect(() => { saveSetting('fontSize', fontSize) }, [fontSize])
-  useEffect(() => { if (lastRead) saveSetting('lastRead', lastRead) }, [lastRead])
-  useEffect(() => { saveSetting('favorites', favorites) }, [favorites])
-  useEffect(() => { saveSetting('transliteration', transliteration) }, [transliteration])
+  // Debounced localStorage writes — batch rapid changes (e.g. font size)
+  const saveTimers = useRef({})
+  const debouncedSave = useCallback((key, value, delay = 300) => {
+    clearTimeout(saveTimers.current[key])
+    saveTimers.current[key] = setTimeout(() => saveSetting(key, value), delay)
+  }, [])
+
+  // Save to localStorage on change (debounced to reduce IO)
+  useEffect(() => { debouncedSave('showArabic', showArabic, 0) }, [showArabic, debouncedSave])
+  useEffect(() => { debouncedSave('fontSize', fontSize) }, [fontSize, debouncedSave])
+  useEffect(() => { if (lastRead) debouncedSave('lastRead', lastRead, 0) }, [lastRead, debouncedSave])
+  useEffect(() => { debouncedSave('favorites', favorites, 500) }, [favorites, debouncedSave])
+  useEffect(() => { debouncedSave('transliteration', transliteration, 0) }, [transliteration, debouncedSave])
 
   const toggleArabic = useCallback(() => setShowArabic(prev => !prev), [])
   const increaseFontSize = useCallback(() => setFontSize(prev => Math.min(28, prev + 1)), [])

@@ -157,12 +157,23 @@ const stripHtml = (html) => {
   return html.replace(/<[^>]*>/g, '').trim()
 }
 
-// Fetch with timeout and abort support
-const fetchWithTimeout = (url, signal, timeoutMs = 15000) => {
-  const controller = signal ? null : new AbortController()
-  const fetchSignal = signal || controller?.signal
-  const timeout = setTimeout(() => controller?.abort(), timeoutMs)
-  return fetch(url, { signal: fetchSignal }).finally(() => clearTimeout(timeout))
+// Fetch with timeout, abort support, and retry
+const fetchWithTimeout = async (url, signal, timeoutMs = 15000, retries = 1) => {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const controller = signal ? null : new AbortController()
+    const fetchSignal = signal || controller?.signal
+    const timeout = setTimeout(() => controller?.abort(), timeoutMs)
+    try {
+      const res = await fetch(url, { signal: fetchSignal })
+      clearTimeout(timeout)
+      return res
+    } catch (err) {
+      clearTimeout(timeout)
+      if (attempt === retries || err.name === 'AbortError') throw err
+      // Brief delay before retry
+      await new Promise(r => setTimeout(r, 500))
+    }
+  }
 }
 
 // Internal bismillah text fetch (for stripping from verse 1)
