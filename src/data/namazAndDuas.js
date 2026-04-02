@@ -52,7 +52,7 @@ export const namazSurahs = [
       {
         arabic: 'صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ',
         roman: "Siraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen",
-        romanTelugu: 'సిరాతల్-లజీన అన్అంత అలైహిమ్ ఘైరిల్-మఘ్దూబి అలైహిమ్ వ లద్-దాల్లీన్',
+        romanTelugu: 'సిరాతల్-లధీన అన్అంత అలైహిమ్ ఘైరిల్-మఘ్దూబి అలైహిమ్ వ లద్-దాల్లీన్',
         english: 'The path of those upon whom You have bestowed favor, not of those who have earned anger nor of those who are astray.',
         telugu: 'నీవు అనుగ్రహించిన వారి మార్గం, కోపానికి గురైన వారి మార్గం కాదు, మార్గభ్రష్టులది కాదు.',
       },
@@ -96,7 +96,7 @@ export const namazSurahs = [
       { arabic: 'مَلِكِ ٱلنَّاسِ', roman: 'Malikin-naas', romanTelugu: 'మలికిన్-నాస్', english: 'The Sovereign of mankind.', telugu: 'మానవుల రాజు.' },
       { arabic: 'إِلَـٰهِ ٱلنَّاسِ', roman: 'Ilaahin-naas', romanTelugu: 'ఇలాహిన్-నాస్', english: 'The God of mankind.', telugu: 'మానవుల ఆరాధ్యుడు.' },
       { arabic: 'مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ', roman: 'Min sharril waswaasil khannaas', romanTelugu: 'మిన్ షర్రిల్ వస్వాసిల్ ఖన్నాస్', english: 'From the evil of the retreating whisperer.', telugu: 'వెనక్కి తగ్గే దుష్ప్రేరేపకుని కీడు నుండి.' },
-      { arabic: 'ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ', roman: 'Allazee yuwaswisu fee sudoorin-naas', romanTelugu: 'అల్లజీ యువస్విసు ఫీ సుదూరిన్-నాస్', english: 'Who whispers in the breasts of mankind.', telugu: 'మానవుల హృదయాలలో దుష్ప్రేరణ చేసేవాడు.' },
+      { arabic: 'ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ', roman: 'Allazee yuwaswisu fee sudoorin-naas', romanTelugu: 'అల్లధీ యువస్విసు ఫీ సుదూరిన్-నాస్', english: 'Who whispers in the breasts of mankind.', telugu: 'మానవుల హృదయాలలో దుష్ప్రేరణ చేసేవాడు.' },
       { arabic: 'مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ', roman: 'Minal jinnati wan-naas', romanTelugu: 'మినల్ జిన్నతి వన్-నాస్', english: 'From among the jinn and mankind.', telugu: 'జిన్నాతులలో మరియు మానవులలో నుండి.' },
     ],
   },
@@ -136,7 +136,7 @@ export const namazSurahs = [
     verses: [
       { arabic: 'وَٱلْعَصْرِ', roman: "Wal 'Asr", romanTelugu: 'వల్ అస్ర్', english: 'By time.', telugu: 'కాలం సాక్షిగా.' },
       { arabic: 'إِنَّ ٱلْإِنسَـٰنَ لَفِى خُسْرٍ', roman: 'Innal insaana lafee khusr', romanTelugu: 'ఇన్నల్ ఇంసాన లఫీ ఖుస్ర్', english: 'Indeed, mankind is in loss.', telugu: 'నిశ్చయంగా, మానవుడు నష్టంలో ఉన్నాడు.' },
-      { arabic: 'إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ', roman: "Illal lazeena aamanoo wa 'amilus saalihaati wa tawaasw bil haqqi wa tawaasw bis-sabr", romanTelugu: 'ఇల్లల్ లజీన ఆమనూ వ అమిలుస్ సాలిహాతి వ తౌఆస్వ్ బిల్ హఖ్ఖి వ తౌఆస్వ్ బిస్-సబ్ర్', english: 'Except for those who believe, do righteous deeds, and advise each other to truth and patience.', telugu: 'విశ్వసించి, సత్కార్యాలు చేసి, సత్యాన్ని బోధించుకుని, సహనాన్ని బోధించుకునే వారు తప్ప.' },
+      { arabic: 'إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ', roman: "Illal lazeena aamanoo wa 'amilus saalihaati wa tawaasw bil haqqi wa tawaasw bis-sabr", romanTelugu: 'ఇల్లల్ లధీన ఆమనూ వ అమిలుస్ సాలిహాతి వ తౌఆస్వ్ బిల్ హఖ్ఖి వ తౌఆస్వ్ బిస్-సబ్ర్', english: 'Except for those who believe, do righteous deeds, and advise each other to truth and patience.', telugu: 'విశ్వసించి, సత్కార్యాలు చేసి, సత్యాన్ని బోధించుకుని, సహనాన్ని బోధించుకునే వారు తప్ప.' },
     ],
   },
   {
@@ -181,7 +181,7 @@ export const prophetDuas = [
     category: 'Daily',
     arabic: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
     roman: 'Rabbanaaa aatinaa fid-dunyaa hasanataw wa fil-aakhirati hasanataw wa qinaa azaaban-naar',
-    romanTelugu: 'రబ్బనా ఆతినా ఫిద్-దుంయా హసనతౌ వ ఫిల్-ఆఖిరతి హసనతౌ వ ఖినా అజాబన్-నార్',
+    romanTelugu: 'రబ్బనా ఆతినా ఫిద్-దున్యా హసనతౌ వ ఫిల్-ఆఖిరతి హసనతౌ వ ఖినా అజాబన్-నార్',
     english: 'Our Lord, give us in this world that which is good and in the Hereafter that which is good and protect us from the punishment of the Fire.',
     telugu: 'మా ప్రభూ, ఈ లోకంలో మాకు మంచిని ప్రసాదించు, పరలోకంలో మంచిని ప్రసాదించు, అగ్ని శిక్ష నుండి మమ్మల్ని కాపాడు.',
     reference: 'Quran 2:201',

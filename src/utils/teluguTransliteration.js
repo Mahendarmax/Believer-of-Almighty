@@ -8,8 +8,8 @@ const ANUSVARA = '\u0C02' // Telugu anusvara (ం)
 // Consonant mappings — longest match first
 const CONSONANTS = [
   ['shh', 'ష'], ['sh', 'ష'], ['zh', 'జ'],
-  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'ఝ'],
-  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'భ'],
+  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'జ\u0C4Dహ'],
+  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'బ\u0C4Dహ'],
   ['nh', 'న\u0C4Dహ'],
   ['k', 'క'], ['g', 'గ'], ['c', 'చ'], ['j', 'జ'],
   ['t', 'త'], ['d', 'ద'], ['n', 'న'],
@@ -33,12 +33,13 @@ const WORD_OVERRIDES = {
 
 // Nasals that use anusvara (ం) before a different consonant in natural Telugu.
 // Maps nasal letter → set of following consonants where anusvara is used.
-// n before: t, d, th, dh, s, k, j, y, b, p, f, g, ch, kh, gh, sh
-// m before: d, t, th, dh, b, h, p, s, k, j, y, f, g, ch, kh, gh, sh
+// n before: t, d, th, dh, s, k, j, b, p, f, g, ch, kh, gh, sh
+// m before: d, t, th, dh, b, h, p, s, k, j, f, g, ch, kh, gh, sh
 // NOT when the same consonant follows (nn→న్న, mm→మ్మ stay halant for geminate)
 // NOT for 'nf' — Arabic nun+fa should stay halant న్ఫ (e.g. munfiqeena → మున్ఫిఖీన)
-const ANUSVARA_N_BEFORE = new Set(['t', 'd', 's', 'k', 'j', 'y', 'b', 'p', 'g', 'c', 'q', 'z', 'v', 'w', 'h', 'l', 'r', 'm'])
-const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'j', 'y', 'f', 'g', 'c', 'q', 'z', 'v', 'w', 'l', 'r', 'n'])
+// NOT before 'y' — Telugu uses halant న్య/మ్య not anusvara ంయ (e.g. dunyaa → దున్యా)
+const ANUSVARA_N_BEFORE = new Set(['t', 'd', 's', 'k', 'j', 'b', 'p', 'g', 'c', 'q', 'z', 'v', 'w', 'h', 'l', 'r', 'm'])
+const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'j', 'f', 'g', 'c', 'q', 'z', 'v', 'w', 'l', 'r', 'n'])
 
 // Vowel mappings — [roman, standalone, matra (after consonant)]
 // Longest match first to avoid partial matches.
