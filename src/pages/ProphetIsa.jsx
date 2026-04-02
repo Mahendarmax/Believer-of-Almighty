@@ -22,23 +22,21 @@ function ProphetIsa() {
         </button>
         <div className="isa-page-title-group">
           <h1 className="isa-page-title">✝️☪️ Prophet Isa (Jesus)</h1>
-          <span className="isa-page-subtitle">عيسى عليه السلام — What Jesus really said</span>
+          <span className="isa-page-subtitle">عيسى عليه السلام — ONE God in Every Scripture</span>
         </div>
       </header>
 
       {/* Intro banner */}
       <div className="isa-intro">
         <p className="isa-intro-text">
-          Muslims love and honor Prophet Isa (Jesus, peace be upon him). The Quran and the Bible both confirm: 
-          <strong> Jesus worshipped ONE God, called himself a prophet, and never claimed to be God.</strong>
+          The Bible, Quran, Vedas, and Mahabharata ALL confirm: <strong>God is ONE. Worship Him alone. Jesus was a prophet, not God.</strong> Every scripture declares the same truth.
         </p>
         <p className="isa-intro-telugu">
-          ముస్లింలు ప్రవక్త ఈసా (యేసు, శాంతి ఆయనపై ఉండుగాక) ను ప్రేమిస్తారు మరియు గౌరవిస్తారు. ఖురాన్ మరియు బైబిల్ రెండూ ధృవీకరిస్తాయి: 
-          <strong> ఈసా (అ) ఒక్క దేవుడిని ఆరాధించారు, తనను ప్రవక్తగా చెప్పుకున్నారు, ఎన్నడూ దేవుడినని చెప్పలేదు.</strong>
+          బైబిల్, ఖురాన్, వేదాలు, మహాభారతం అన్నీ ధృవీకరిస్తాయి: <strong>దేవుడు ఒక్కడే. ఆయనను మాత్రమే ఆరాధించండి. యేసు ప్రవక్త, దేవుడు కాదు.</strong> ప్రతి గ్రంథం ఒకే సత్యాన్ని ప్రకటిస్తుంది.
         </p>
         <div className="isa-intro-stat">
           <span className="isa-intro-stat-num">{totalVerses}</span>
-          <span className="isa-intro-stat-label">Verses from Bible & Quran</span>
+          <span className="isa-intro-stat-label">Verses from Bible, Quran, Vedas & Mahabharata</span>
         </div>
       </div>
 

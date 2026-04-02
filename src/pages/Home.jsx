@@ -4,7 +4,7 @@ import { useSettings } from '../context/SettingsContext'
 import './Home.css'
 
 // Static counts — avoid importing large data modules on the home page
-const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60 }
+const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 92 }
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
