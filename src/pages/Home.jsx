@@ -4,7 +4,7 @@ import { useSettings } from '../context/SettingsContext'
 import './Home.css'
 
 // Static counts — avoid importing large data modules on the home page
-const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 92 }
+const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, vedas: 32 }
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
@@ -159,6 +159,17 @@ const Home = React.memo(function Home() {
           <h3>Prophet Isa (Jesus)</h3>
           <p>ప్రవక్త ఈసా (అ)</p>
           <span className="action-meta">{COUNTS.isa} Verses</span>
+        </button>
+
+        <button className="action-card vedas-action-card" onClick={() => navigate('/vedas')}>
+          <div className="action-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
+              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+          <h3>Vedas & Mahabharata</h3>
+          <p>వేదాలు & మహాభారతం</p>
+          <span className="action-meta">{COUNTS.vedas} Verses</span>
         </button>
 
         <button className="action-card fav-card" onClick={handleFavorites}>
