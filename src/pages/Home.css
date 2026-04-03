@@ -360,10 +360,10 @@
   box-shadow: 0 0 20px rgba(99,179,237,0.06);
 }
 
-.vedas-action-card .action-icon-wrap {
-  background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
-  box-shadow: 0 0 20px rgba(245,158,11,0.06);
+.seerah-action-card .action-icon-wrap {
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .action-card-chevron {
