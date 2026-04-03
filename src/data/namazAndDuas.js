@@ -176,8 +176,8 @@ export const namazSurahs = [
 // Most recommended Duas by Prophet Muhammad (SAW)
 export const prophetDuas = [
   {
-    title: 'Dua for Guidance (Istikhaara)',
-    titleTelugu: 'మార్గదర్శకత్వం కోసం దుఆ',
+    title: 'Best Dua from the Quran (Good in Both Worlds)',
+    titleTelugu: 'ఖురాన్ నుండి ఉత్తమ దుఆ (ఇహపర మేలు)',
     category: 'Daily',
     arabic: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
     roman: 'Rabbanaaa aatinaa fid-dunyaa hasanataw wa fil-aakhirati hasanataw wa qinaa azaaban-naar',
