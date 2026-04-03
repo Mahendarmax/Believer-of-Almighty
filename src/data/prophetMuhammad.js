@@ -417,4 +417,196 @@ export const prophetMuhammadData = [
       },
     ],
   },
+
+  // ══════════════════════════════════════════════════════
+  // CHAPTER 13 — GREAT CONVERSIONS & BOYCOTT
+  // ══════════════════════════════════════════════════════
+  {
+    chapter: 13,
+    era: 'గొప్ప మతాంతరం & బహిష్కరణ',
+    eraEn: 'Great Conversions & The Boycott',
+    period: '615–619 CE',
+    icon: '💪',
+    color: '#f97316',
+    events: [
+      {
+        title: 'హంజా (రా) ఇస్లాం స్వీకరణ',
+        titleEn: 'Hamza (RA) Embraces Islam',
+        year: '615 CE (6th year of Prophethood)',
+        arabic: 'إِسْلَامُ حَمْزَةَ بْنِ عَبْدِ الْمُطَّلِبِ سَيِّدُ الشُّهَدَاء',
+        telugu: `హంజా ఇబ్న్ అబ్దుల్ ముత్తలిబ్ (రా) ముహమ్మద్ ﷺ మేనమామ మరియు సోదరుడు వంటివారు. ఆయన మక్కాలో అత్యంత శక్తివంతమైన వేటగాడు, నిర్భయమైన యోధుడు. ఒక రోజు అబూ జహల్ ముహమ్మద్ ﷺ కి అవమానకరంగా మాట్లాడాడు. హంజా (రా) వేటనుండి తిరిగి వస్తూ ఈ విషయం విన్నారు. వెంటనే అబూ జహల్ దగ్గరకు వెళ్ళి తన విల్లుతో కొట్టి అన్నారు: "నువ్వు నా మేనల్లుడుని అవమానించావు — నేను అతని దీన్‌లో ఉన్నాను, అతను చెప్పేది నిజమే!" ఇది హఠాత్ ప్రకటన ఆయనను ఇస్లాంలోకి తెచ్చింది. హంజా (రా) ఇస్లాం స్వీకరణ ముస్లింలకు అత్యంత శక్తినిచ్చింది. ఉహద్ యుద్ధంలో వీరోచితంగా పోరాడి అమరులైన ఆయన "సయ్యిదుష్ షుహదా — అమరులకు నాయకుడు" అనే బిరుదు పొందారు.`,
+        english: `Hamza ibn Abd al-Muttalib (RA), the Prophet's ﷺ uncle, was the most powerful warrior and hunter in Mecca. One day while returning from a hunt, he heard that Abu Jahl had verbally abused Muhammad ﷺ. Hamza (RA) strode directly to Abu Jahl and struck him with his bow, saying: "You have insulted my nephew — I follow his religion and affirm what he says!" This spontaneous declaration brought him into Islam. Hamza's (RA) embrace of Islam gave the Muslims tremendous strength and moral courage. He would later fight heroically at Badr and Uhud, where he was martyred, earning the eternal title "Sayyid al-Shuhada — Master of the Martyrs."`,
+      },
+      {
+        title: 'ఉమర్ ఇబ్న్ అల్-ఖత్తాబ్ (రా) ఇస్లాం స్వీకరణ',
+        titleEn: 'Umar ibn al-Khattab (RA) Embraces Islam',
+        year: '616 CE (6th year of Prophethood)',
+        arabic: 'إِسْلَامُ عُمَرَ بْنِ الْخَطَّابِ: اللَّهُمَّ أَعِزَّ الإِسْلَامَ بِعُمَر',
+        telugu: `ఉమర్ ఇబ్న్ అల్-ఖత్తాబ్ (రా) ఇస్లాం స్వీకరించే ముందు దాని అత్యంత తీవ్రమైన శత్రువు. ఆయన ముహమ్మద్ ﷺ ను హత్య చేయడానికి కత్తి తీసుకుని బయలుదేరారు. దారిలో తన సోదరి ఫాతిమా మరియు మరదలు సయీద్ సూరా తాహా చదువుతున్నారని తెలిసి వారి ఇంటికి వెళ్ళారు. లోపల ఖురాన్ వినబడింది. ఉమర్ (రా) లోపల ఉన్న ఖురాన్ పత్రం అడిగి చదివారు: "తాహా — మేము నీపై ఖురాన్ అవతరించలేదు కష్టపడటానికి, భయపడేవారికి స్మరణ మాత్రమే..." ఆ వాక్యాలు చదివి ఆయన హృదయం కదిలిపోయింది. నేరుగా ముహమ్మద్ ﷺ దగ్గరకు వెళ్ళి ఇస్లాం స్వీకరించారు. అది విన్న ముస్లింలు "అల్లాహు అక్బర్!" అని నినాదం చేశారు. ఆ రోజు నుండి ముస్లింలు బహిరంగంగా కాబాలో నమాజ్ చదవగలిగారు.`,
+        english: `Umar ibn al-Khattab (RA) was Islam's most fierce enemy before his conversion. He left home one day with a sword intending to kill Muhammad ﷺ. On the way, he was told his sister Fatimah and brother-in-law Sa'eed were reciting Quran. Entering their home, he heard the words of Surah Ta-Ha and demanded to read the parchment. The words: "Ta-Ha — We have not sent down this Quran to distress you, only as a reminder for those who fear..." pierced his heart. He went directly to Muhammad ﷺ and embraced Islam. The companions shouted "Allahu Akbar!" — so loud it echoed through Mecca. From that day, Muslims were able to offer prayers openly at the Ka'bah. Umar (RA) would become the second Caliph and one of Islam's greatest leaders.`,
+      },
+      {
+        title: 'బను హాషిమ్ యొక్క బహిష్కరణ — షిఆబ్ అబీ తాలిబ్',
+        titleEn: 'Boycott of Banu Hashim — The Valley of Abu Talib',
+        year: '617–619 CE (3 years)',
+        arabic: 'حِصَارُ بَنِي هَاشِمٍ فِي شِعْبِ أَبِي طَالِبٍ ثَلَاثَ سَنَوَات',
+        telugu: `616 CE లో, ఖురైష్ మక్కాలోని గొప్ప నాయకులు ఒక ఒప్పందం రాసి కాబా తలుపుకు వేలాడదీశారు: "బను హాషిమ్ తో ఏ వ్యాపారమూ వద్దు. వారితో వివాహాలు వద్దు. వారికి ఏ ఆహారమూ ఇవ్వవద్దు. ముహమ్మద్‌ ను అప్పగించే వరకు ఈ నిషేధం కొనసాగుతుంది." అబూ తాలిబ్ తన కుటుంబం మొత్తాన్ని మక్కా చుట్టూరా ఉన్న ఒక లోయలో (షిఆబ్ అబీ తాలిబ్) తరిమివేసాడు — ముహమ్మద్ ﷺ తో కలిసి. మూడు సంవత్సరాలు వారికి ఆహారం దుర్లభమైంది — ఆకులు, చర్మం తింటూ జీవించారు. పిల్లలు ఆకలిగొని ఏడ్చేవారు. చివరికి కొందరు ఖురైష్ నాయకులు మనస్సాక్షి చివుక్కుమని ఒప్పందాన్ని రద్దు చేశారు. వారు వెళ్ళి చూస్తే ఆ ఒప్పంద పత్రాన్ని చెదలు తినేశాయి — "అల్లాహ్ పేరు" భాగం తప్ప. ఇది అద్భుతంగా భావించబడింది.`,
+        english: `In 616 CE, the Quraysh leaders drew up a document and hung it on the Ka'bah: "No trade with Banu Hashim. No marriages. No food supplies — until they hand over Muhammad." Abu Talib moved his entire clan into an isolated valley outside Mecca (Shi'b Abi Talib) along with Muhammad ﷺ. For three years they endured severe hardship — eating leaves and leather when food ran out. Children cried from hunger. Their suffering could be heard throughout Mecca. After three years, some Quraysh leaders whose consciences stirred moved to cancel the agreement. When they went to retrieve the parchment, they found that ants had consumed all the text — except the words containing Allah's name. This miracle was witnessed by many.`,
+      },
+      {
+        title: 'ఖదీజా (రా) మరణం & అల్-అఖబా మొదటి ప్రమాణం',
+        titleEn: 'Death of Khadijah (RA) & First Pledge of Aqabah',
+        year: '619–621 CE',
+        arabic: 'بَيْعَةُ الْعَقَبَةِ الأُولَى: بَيْعَةُ النِّسَاء',
+        telugu: `619 CE లో ఖదీజా (రా) మరణం తర్వాత, ముహమ్మద్ ﷺ తాయిఫ్ వెళ్ళారు — ప్రజలతో మాట్లాడి మద్దతు కోరారు. కానీ తాయిఫ్ ప్రజలు ఆయనను అవమానించి, వీధి కుర్రాళ్ళను ఆయన వెనక పెట్టి రాళ్ళు వేయించారు. ఆయన రక్తంలో తడిసిన పాదాలతో గ్రేప్ తోటలో కూర్చుని ప్రార్థించారు. జిబ్రీల్ పర్వతాల దేవదూతను తీసుకువచ్చారు — ఆ దేవదూత అన్నారు: "మీరు ఆదేశిస్తే తాయిఫ్ పై కొండలు కూల్చుతాను." ముహమ్మద్ ﷺ అన్నారు: "వద్దు, వీరి సంతానంలో అల్లాహ్‌ ను ఆరాధించేవారు పుడతారని ఆశిస్తున్నాను." 620 CE లో, మదీనా నుండి 12 మంది ఇస్లాం స్వీకరించి "అల్-అఖబా మొదటి ప్రమాణం" చేశారు — అల్లాహ్‌తో పాటు ఏదీ భాగస్వామ్యం చేయరు, దొంగతనం చేయరు, వ్యభిచారం చేయరు, పిల్లలను చంపరు, అబద్ధకారులు అనుసరించరు.`,
+        english: `After Khadijah (RA) passed in 619 CE, Muhammad ﷺ travelled to Ta'if seeking support. The people mocked him, set street children to pelt him with stones until his feet bled. He sat in a vineyard and prayed. Angel Jibreel came with the Angel of Mountains, who said: "Command me and I will crush them between the two mountain passes." Muhammad ﷺ replied: "No — perhaps from their descendants will come those who worship Allah." In 620 CE, twelve men from Medina embraced Islam and took the First Pledge of Aqabah: they would not associate anything with Allah, would not steal, not commit immorality, not kill children, and would not follow falsehood. This was the first formal alliance that would pave the way for the Hijra.`,
+      },
+      {
+        title: 'రెండవ అఖబా ప్రమాణం — హిజ్రత్ కు మార్గం',
+        titleEn: 'Second Pledge of Aqabah — Gateway to Hijra',
+        year: '621 CE (12th year of Prophethood)',
+        arabic: 'بَيْعَةُ الْعَقَبَةِ الثَّانِيَةُ: بَيْعَةُ الْحَرْبِ وَالنُّصْرَة',
+        telugu: `621 CE హజ్ సీజన్‌లో, మదీనా నుండి 73 పురుషులు మరియు 2 మహిళలు రహస్యంగా మినా లోయలో ముహమ్మద్ ﷺ తో కలిశారు. ఈ రెండవ ప్రమాణంలో వారు ముహమ్మద్ ﷺ కి సంపూర్ణ రక్షణ ఇస్తామని ప్రమాణం చేశారు — తమ భార్యలను, పిల్లలను రక్షించినట్లే. అన్సార్ నాయకుడు అస్ అద్ ఇబ్న్ జురారా (రా) అన్నారు: "ఆయనను అప్పగించుకోవడం అంటే అరబ్ మొత్తాన్ని మనకు శత్రువులుగా మార్చుకోవడం." మరొక నాయకుడు అబ్బాస్ ఇబ్న్ ఉబాదా (రా) అన్నారు: "మీకు తెలుసా మీరు ఎవరికి బయ్అత్ చేస్తున్నారో? ఈ వ్యక్తి కోసం వ్యక్తి మరియు ఆస్తి మరియు మొత్తం ప్రపంచంతో పోరాడటానికి సిద్ధంగా ఉండాలి." అందరూ "అవును!" అన్నారు. ఈ ప్రమాణం జరిగిన వెంటనే హిజ్రత్ కు అనుమతి ఇవ్వబడింది.`,
+        english: `During the Hajj season of 621 CE, seventy-three men and two women from Medina met secretly with Muhammad ﷺ in the valley of Mina at night. In this Second Pledge of Aqabah, they pledged full military protection — that they would defend him as they would defend their own wives and children. Ansar leader As'ad ibn Zurarah (RA) said: "Taking him means making all of Arabia our enemy." Another leader Abbas ibn Ubadah (RA) said: "Do you know what you are pledging? You are pledging to fight against all mankind." All replied: "Yes — and what is our reward?" The Prophet ﷺ answered: "Paradise." With this pledge, the doors opened for the Hijra to Medina.`,
+      },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════
+  // CHAPTER 14 — BATTLES OF KHAYBAR, MU'TAH & HUNAYN
+  // ══════════════════════════════════════════════════════
+  {
+    chapter: 14,
+    era: 'ఖైబర్, ముతా & హునైన్ యుద్ధాలు',
+    eraEn: 'Battles of Khaybar, Mu\'tah & Hunayn',
+    period: '628–630 CE',
+    icon: '🏇',
+    color: '#ef4444',
+    events: [
+      {
+        title: 'ఖైబర్ యుద్ధం — అలీ (రా) విజయం',
+        titleEn: 'Battle of Khaybar — Victory of Ali (RA)',
+        year: '628 CE (Muharram 7 AH)',
+        arabic: 'غَزْوَةُ خَيْبَرَ: لَأُعْطِيَنَّ الرَّايَةَ رَجُلًا يُحِبُّهُ اللَّهُ وَرَسُولُه',
+        telugu: `628 CE లో ముహమ్మద్ ﷺ ఖైబర్ (మదీనా నుండి 150 కి.మీ దూరంలో యూదుల కోటలు) పై దండెత్తారు. వారు ముస్లింలకు వ్యతిరేకంగా శత్రువులను సమావేశపరిచారు. ఒక రాత్రి ముహమ్మద్ ﷺ అన్నారు: "రేపు నేను ఒక వ్యక్తికి జెండా ఇస్తాను — అల్లాహ్ మరియు ఆయన ప్రవక్త అతన్ని ప్రేమిస్తారు, అల్లాహ్ అతని చేతిలో విజయం ఇస్తాడు." అందరూ ఆ రాత్రి నిద్రపోలేదు — "నాకు ఆ జెండా ఇవ్వబడుతుందా?" అని ఆశించారు. తెల్లవారి అలీ (రా) పేరు పిలిచారు. ఆయన అప్పుడు కళ్ళ నొప్పితో ఉన్నారు. ముహమ్మద్ ﷺ తన ముఖ తుపాకు అలీ (రా) కళ్ళపై పూశారు — కళ్ళ నొప్పి వెంటనే తగ్గింది. అలీ (రా) కోటలో గొప్ప యోధుడు మర్హబ్‌ ను ఓడించి ఖైబర్ జయించారు. ఈ యుద్ధంలోనే విషం కలిపిన మేక మాంసం ముహమ్మద్ ﷺ కి పెట్టారు — ఆయన కొంచెం తిన్న వెంటనే అది విషపూరితమని గ్రహించి ఆపారు, కానీ ఆ విష తాకిడి చివరి అనారోగ్యంలో తీవ్రమైంది.`,
+        english: `In Muharram 628 CE, Muhammad ﷺ marched on Khaybar — a cluster of Jewish fortresses 150km from Medina whose chieftains had been coordinating enemies against the Muslims. One night, he said: "Tomorrow I will give the flag to a man whom Allah and His Messenger love, and Allah will grant victory through his hands." Everyone spent that sleepless night hoping. In the morning, Ali ibn Abi Talib (RA) was called — though he was suffering from eye pain. Muhammad ﷺ applied his saliva to Ali's eyes, which were instantly cured. Ali (RA) defeated the champion warrior Marhab of Khaybar and the fortress was conquered. At Khaybar, a Jewish woman placed poisoned meat before the Prophet ﷺ. He took one bite, sensed the poison, and stopped — but the slow-acting poison would resurface years later in his final illness.`,
+      },
+      {
+        title: 'ఉమ్రత్ అల్-ఖదా — మారుపేరు ఉమ్రా',
+        titleEn: "Umrat al-Qada — The Make-up Umrah",
+        year: '629 CE (Dhul Qi\'dah 7 AH)',
+        arabic: 'اعْتَمَرَ النَّبِيُّ ﷺ عُمْرَةَ الْقَضَاءِ وَطَافَ بِالْبَيْتِ مُعَزَّزاً',
+        telugu: `హుదైబియా ఒప్పందం ప్రకారం, 629 CE లో ముహమ్మద్ ﷺ 2,000 మంది అనుచరులతో మక్కాకు ఉమ్రా చేయడానికి వెళ్ళారు. ఖురైష్ ఒప్పందం మేరకు మక్కా ఖాళీ చేసి వెళ్ళిపోయారు. ముస్లింలు మూడు రోజులు మక్కాలో ఉన్నారు. వందలాది మక్కావాసులు తమ ఇళ్ళ కప్పులపైనుండి ముహమ్మద్ ﷺ ను చూశారు. చాలామంది వారి ముఖాలు వెనుకకు తిప్పుకున్నారు — ఎందుకంటే ముస్లింలు శక్తివంతంగా, మెరిసే ముఖాలతో ఉన్నారు. ఈ ఉమ్రా సమయంలో ఖాలిద్ ఇబ్న్ అల్-వాలీద్ (రా) — అరేబియా యొక్క అత్యంత నైపుణ్యవంతమైన జనరల్ — ఇస్లాం స్వీకరించారు. అమ్ర్ ఇబ్న్ అల్-ఆస్ (రా) కూడా ఇస్లాంలోకి వచ్చారు. వీరిద్దరూ తర్వాత ఇస్లాం చరిత్రలో గొప్ప నాయకులయ్యారు.`,
+        english: `In accordance with the Treaty of Hudaybiyyah, in 629 CE Muhammad ﷺ led approximately 2,000 companions to Mecca for the make-up Umrah. The Quraysh evacuated Mecca for three days as agreed. The Muslims performed Tawaf and Sa'i in power. Hundreds of Meccans watched from their rooftops. Many turned their faces away — the dignified, joyful sight of the Muslims was too much to bear. During this Umrah, Khalid ibn al-Walid (RA) — Arabia's most brilliant military commander — embraced Islam along with Amr ibn al-As (RA). These two converts would become among Islam's greatest military leaders, eventually carrying the message of Islam across continents.`,
+      },
+      {
+        title: 'ముతా యుద్ధం — మొదటి రోమన్ సంఘర్షణ',
+        titleEn: "Battle of Mu'tah — First Clash with Romans",
+        year: '629 CE (Jumada I, 8 AH)',
+        arabic: 'غَزْوَةُ مُؤْتَةَ: أَخَذَ الرَّايَةَ زَيْدٌ ثُمَّ جَعْفَرٌ ثُمَّ ابْنُ رَوَاحَة',
+        telugu: `629 CE లో ముహమ్మద్ ﷺ తన దూతను సిరియా పాలకుడు దగ్గరకు పంపారు — దూతను హత్య చేశారు. జవాబుగా 3,000 ముస్లింలు 200,000 రోమన్ మరియు మిత్ర బలగాలకు వ్యతిరేకంగా పోరాడటానికి ముతా (జోర్డాన్ దగ్గర) వెళ్ళారు. ముహమ్మద్ ﷺ మక్కా నుండి అద్భుతంగా ఈ యుద్ధం చూశారు. మూడు నాయకులను నియమించారు: "జైద్ పడిపోతే జఫర్, జఫర్ పడిపోతే ఇబ్న్ రావాహా నాయకత్వం వహించాలి." అదే జరిగింది — ముగ్గురూ ఒకొక్కరుగా అమరులయ్యారు. జఫర్ ఇబ్న్ అబీ తాలిబ్ (రా) — ముహమ్మద్ ﷺ ప్రియమైన సోదరుడి కుమారుడు — రెండు చేతులు నరికిన తర్వాత ఛాతీతో జెండాను పట్టుకున్నారు. అల్లాహ్ ఆయనకు స్వర్గంలో రెండు రెక్కలు ఇచ్చారు — ఆయన "జఫర్ అత్-తయ్యార్ — పక్షుల జఫర్" అయ్యారు. ఖాలిద్ ఇబ్న్ అల్-వాలీద్ (రా) సైన్యాన్ని సురక్షితంగా వెనుకకు తీసుకువచ్చారు.`,
+        english: `In 629 CE, after the Prophet's ﷺ envoy was murdered in Syria, 3,000 Muslims marched to Mu'tah (near modern Jordan) against 200,000 Roman and allied forces. Muhammad ﷺ appointed three successive commanders: "If Zayd falls, then Ja'far; if Ja'far falls, then Ibn Rawahah." All three were martyred — each taking the banner as the previous fell. Ja'far ibn Abi Talib (RA) — the Prophet's dearly loved cousin — continued fighting after both arms were severed, clutching the banner with his chest until he fell, receiving seventy-plus wounds. Allah honoured him with two wings in Paradise — he became known as "Ja'far al-Tayyar — the Flying Ja'far." Khalid ibn al-Walid (RA) took command and executed a brilliant strategic withdrawal, saving the army.`,
+      },
+      {
+        title: 'హునైన్ యుద్ధం — అహంకారం లేకుండా విజయం',
+        titleEn: 'Battle of Hunayn — Victory Without Pride',
+        year: '630 CE (Shawwal 8 AH)',
+        arabic: 'غَزْوَةُ حُنَيْن: وَيَوْمَ حُنَيْن إِذْ أَعْجَبَتْكُمْ كَثْرَتُكُمْ',
+        telugu: `మక్కా జయించిన కొన్ని వారాలకు, హవాజిన్ మరియు సఖీఫ్ తెగలు భారీ సైన్యంతో ముస్లింలపై దాడి చేశారు. 12,000 ముస్లింలు (ఇప్పటికి అతిపెద్ద సైన్యం) మక్కా దాటి హునైన్ లోయలో ఉన్నారు. కొందరు ముస్లింలు గర్వంతో అన్నారు: "ఈ బలంతో మనం ఎన్నటికీ ఓడిపోం!" ఖురాన్ ఈ మాటలు నమోదు చేసింది. శత్రువు అమ్బులతో ఆకస్మికంగా దాడి చేయగా ముస్లిం సైన్యం చెల్లాచెదురైంది. ముహమ్మద్ ﷺ అస్తమైయ్యే ఖచ్చరంపై ముందుకు అడుగు వేసి అన్నారు: "అల్లాహ్ నాకు అబద్ధం చెప్పడు — నేను అబ్దుల్ ముత్తలిబ్ కుమారుడు ముహమ్మద్." ఈ నిర్భయ నిలకడ అనుచరులను తిరిగి సమావేశపరిచింది. చివరికి భారీ విజయం. ఖురాన్ 9:25 చెప్తుంది: "అల్లాహ్ మీకు అనేక ప్రదేశాలలో సహాయం చేశాడు — హునైన్ రోజు మీ సంఖ్య మిమ్మల్ని గర్విష్ఠులుగా చేసింది."`,
+        english: `Weeks after the Conquest of Mecca, the powerful Hawazin and Thaqif tribes launched a massive ambush. 12,000 Muslims — the largest army Islam had ever fielded — marched through the Hunayn valley. Some Muslims remarked with pride: "We cannot be defeated by such numbers!" The Quran recorded these words. The enemy launched a sudden arrow barrage from the hills, and the Muslim army scattered in confusion. Muhammad ﷺ rode forward on his mule into the chaos, calling out: "Where are you going? I am the Prophet ﷺ — it is no lie! I am the son of Abdul Muttalib!" His courageous stand rallied the companions back. The battle ended in a decisive Muslim victory. The Quran (9:25) preserved this lesson: "Allah has aided you on many occasions — on the day of Hunayn, when your great numbers made you proud."`,
+      },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════
+  // CHAPTER 15 — BATTLE OF TABUK & YEAR OF DELEGATIONS
+  // ══════════════════════════════════════════════════════
+  {
+    chapter: 15,
+    era: 'తబూక్ & ప్రతినిధుల సంవత్సరం',
+    eraEn: 'Battle of Tabuk & Year of Delegations',
+    period: '630–631 CE',
+    icon: '🤝',
+    color: '#06b6d4',
+    events: [
+      {
+        title: 'తబూక్ యుద్ధం — ఇమాన్ పరీక్ష',
+        titleEn: 'Battle of Tabuk — The Ultimate Test of Faith',
+        year: '630 CE (Rajab 9 AH)',
+        arabic: 'غَزْوَةُ تَبُوكَ: أَعْظَمُ اخْتِبَارٍ لِلإِيمَان',
+        telugu: `630 CE వేసవిలో — అత్యంత వేడి మరియు కష్టమైన కాలంలో — ముహమ్మద్ ﷺ రోమన్ బైజాంటైన్ సైన్యం నుండి అంబడి విన్నారు. ఆయన 30,000 మంది సైన్యంతో తబూక్ (సిరియా సరిహద్దు) వైపు బయలుదేరారు. ఈ యాత్ర "జైశ్ అల్-ఉస్రా — కష్టాల సైన్యం" అని పిలవబడింది — తినడానికి తక్కువ, నీళ్ళు తక్కువ, ఒంటెలు తక్కువ (కొన్నిసార్లు పదిమంది ఒక ఒంటె పంచుకున్నారు). కానీ ముహమ్మద్ ﷺ మాటపై విశ్వాసంతో వెళ్ళారు. ఉస్మాన్ (రా) ఈ సైన్యానికి తన సంపద యావత్తు ఖర్చుపెట్టారు — 10,000 మంది సైనికులకు ఉపకరణాలు, 1,000 ఒంటెలు, 50 గుర్రాలు ఇచ్చారు. తబూక్ చేరిన తర్వాత రోమన్ సైన్యం యుద్ధం చేయకుండా వెనుతిరింది. ఈ యాత్రలో వెళ్ళని "ముఆఖ్ఖరీన్" ముగ్గురు — కఆబ్ ఇబ్న్ మాలిక్, హిలాల్ ఇబ్న్ ఉమయ్యా, మురారా ఇబ్న్ రబీ — పశ్చాత్తాపం చెంది 50 రోజులు అల్లాహ్ క్షమాపణ కోసం వేచారు. చివరికి ఖురాన్ (9:118) లో వారి క్షమాభిక్షణ అవతరించింది.`,
+        english: `In the intense summer heat of 630 CE, Muhammad ﷺ received intelligence of a Byzantine Roman mobilisation. He assembled 30,000 men and marched to Tabuk on the Syrian border — this was the largest Muslim army ever. The campaign was called "Jaysh al-Usra — Army of Hardship": insufficient food, scarce water, too few camels (sometimes ten men sharing one). Yet they marched on trust in Allah and His Prophet ﷺ. Uthman (RA) personally funded the entire expedition — equipping 10,000 soldiers, donating 1,000 camels and 50 horses. The Byzantine army retreated without battle. Three companions who had failed to join without valid excuse — Ka'b ibn Malik, Hilal ibn Umayyah, Murarah ibn Rabi — repented sincerely and waited 50 days in anguish until their forgiveness was revealed in the Quran (9:118).`,
+      },
+      {
+        title: 'ప్రతినిధుల సంవత్సరం — అరేబియా ఇస్లాం తీసుకుంది',
+        titleEn: 'Year of Delegations — Arabia Embraces Islam',
+        year: '631 CE (9–10 AH)',
+        arabic: 'عَامُ الْوُفُودِ: دَخَلَ النَّاسُ فِي دِينِ اللَّهِ أَفْوَاجَاً',
+        telugu: `మక్కా జయించిన తర్వాత మరియు తబూక్ యాత్ర తర్వాత, 631 CE ని "ఆమ్ అల్-వుఫూద్ — ప్రతినిధుల సంవత్సరం" అంటారు. అరేబియా మొత్తం నుండి తెగలు, వారి ప్రతినిధులు మదీనాకు వచ్చి ఇస్లాం స్వీకరించారు. 60కి పైగా వివిధ ప్రతినిధి బృందాలు వచ్చాయి: బను తమీమ్, బను అబ్స్, బను ముజైనా, బను సులైమ్, థఖీఫ్, నజ్ రాన్ క్రైస్తవులు, హిమ్యార్ రాజులు — అందరూ వచ్చారు. ఖురాన్ సూరా అన్-నస్ర్‌లో అల్లాహ్ ఈ సంఘటనను నమోదు చేశాడు: "అల్లాహ్ సహాయం వచ్చినప్పుడు మరియు విజయం లభించినప్పుడు, ప్రజలు అల్లాహ్ దీన్‌లో గుంపులు గుంపులుగా ప్రవేశించడం చూస్తావు — నీ రబ్బు ప్రశంసతో తస్బీహ్ చేసి క్షమాభిక్షణ వేడుకో, నిశ్చయంగా ఆయన అత్యంత క్షమించేవాడు." ముహమ్మద్ ﷺ ఈ సూరా విన్నప్పుడు ఎక్కువగా కన్నీళ్ళు కార్చారు — అర్థం అర్థమైంది.`,
+        english: `After the Conquest of Mecca and the Tabuk campaign, the year 631 CE became known as "Aam al-Wufud — the Year of Delegations." Tribes from across Arabia came in waves to Medina to embrace Islam. Over sixty delegations arrived: Banu Tamim, Banu Abs, Banu Muzaynah, Banu Sulaym, the Thaqif, the Christians of Najran, the kings of Himyar — all came. Allah recorded this moment in Surah An-Nasr: "When the victory of Allah has come and the conquest, and you see the people entering into the religion of Allah in multitudes, then exalt your Lord and ask His forgiveness — indeed He is ever-Accepting of repentance." When this Surah was revealed, Muhammad ﷺ wept deeply — he understood its full meaning. His mission was nearing completion.`,
+      },
+      {
+        title: 'అజాన్ స్థాపన మరియు ఖిబ్లా మార్పు',
+        titleEn: 'The Adhan Established & Change of Qiblah',
+        year: '622–624 CE (Medina)',
+        arabic: 'تَحْوِيلُ الْقِبْلَةِ إِلَى الْكَعْبَةِ وَتَشْرِيعُ الأَذَان',
+        telugu: `మదీనా చేరిన తొలి నెలల్లో (622 CE), ముస్లింలు జెరూసలెం (మసీదుల్ అఖ్సా) వైపు నమాజ్ చేసేవారు. 624 CE లో మధ్యాహ్నం నమాజ్ చేస్తుండగా, అల్లాహ్ ఖిబ్లా మార్చమని ఆదేశించాడు — "నీ ముఖాన్ని మస్జిదుల్ హరాం వైపు తిప్పు" (సూరా బఖరా 2:144). ముహమ్మద్ ﷺ నమాజ్ మధ్యలోనే తిరిగారు, మొత్తం సఫ్ (వరుసలు) వారితో తిరిగాయి. అజాన్ విషయంలో: 622 CE లో ఒక అనుచరి అబ్దుల్లా ఇబ్న్ జైద్ (రా) కలలో నమాజ్ ఆహ్వాన మాటలు విన్నారు. ముహమ్మద్ ﷺ ఆ కల వినిపించి అన్నారు: "ఇది నిజమైన కల, వెళ్ళి బిలాల్ కు నేర్పు — ఆయన గొంతు మీ కంటే బలమైంది." బిలాల్ (రా) మొదటిసారి అజాన్ ఇచ్చారు. ఆ అజాన్ మాటలు ఈ రోజు కూడా ప్రపంచంలో ప్రతి నిమిషమూ ఎక్కడో ఒక చోట వినబడతాయి.`,
+        english: `In the early months in Medina (622 CE), Muslims prayed towards Jerusalem (Masjid al-Aqsa). In 624 CE, during Dhuhr prayer, Allah commanded the change: "Turn your face towards the Sacred Mosque" (Surah Al-Baqarah 2:144). Muhammad ﷺ turned mid-prayer, and the entire congregation turned with him. For the Adhan (call to prayer): companion Abdullah ibn Zayd (RA) dreamt of someone teaching him specific words to call people to prayer. When he told Muhammad ﷺ, the Prophet ﷺ confirmed: "This is a true dream — go teach it to Bilal, his voice is stronger than yours." Bilal (RA) gave the very first Adhan in Islam from the rooftop of the mosque. Those same words ring out across the world to this day, every minute of every hour, somewhere on Earth.`,
+      },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════
+  // CHAPTER 16 — CHARACTER, MIRACLES & DAILY LIFE
+  // ══════════════════════════════════════════════════════
+  {
+    chapter: 16,
+    era: 'ముహమ్మద్ ﷺ స్వభావం & అద్భుతాలు',
+    eraEn: 'Character, Miracles & Daily Life of the Prophet ﷺ',
+    period: '570–632 CE',
+    icon: '✨',
+    color: '#d4a44a',
+    events: [
+      {
+        title: 'ఆయన శారీరక వర్ణన',
+        titleEn: 'Physical Description of the Prophet ﷺ',
+        year: 'As described by the Companions',
+        arabic: 'وَصْفُ النَّبِيِّ ﷺ: كَانَ رَبْعَةً مِنَ الرِّجَالِ لَا طَوِيلٌ وَلَا قَصِير',
+        telugu: `ఆయనను చూసిన అనుచరులు వివరించారు: ముహమ్మద్ ﷺ మధ్యమ పొడవు — చాలా పొడవు కాదు, చాలా పొట్టి కాదు. ఆయన ముఖం పూర్ణచంద్రుడిలా ప్రకాశించేది. చర్మం తెల్లగా, ఎర్రటి ఛాయతో ఉండేది.జుట్టు సరిగ్గా అలలలో ఉండేది — సంపూర్ణ నల్లగా, చెవి లోపలికి వేళ్ళాడేది. ముఖంపై చిన్న గడ్డం, నుదురు విశాలంగా ఉండేది. నవ్వినప్పుడు దంతాలు మొత్తం ప్రకాశించేవి. ఆయన నడకలో ఒక విలక్షణమైన చురుకుదనం ఉండేది — ముందుకు వంగుతూ, నిర్ణయించుకున్నట్లు నడిచేవారు. ఆయన చేతి స్పర్శ పట్టు కంటే మృదువుగా ఉందని అనవారు. అనస్ ఇబ్న్ మాలిక్ (రా) — 10 సంవత్సరాలు సేవ చేసిన అనుచరుడు — అన్నారు: "ఆయన శరీరం నుండి వచ్చే సువాసన ముషుక్ మరియు అంబర్ కంటే తీయగా ఉండేది. నేను ఆయన చేయి పట్టుకున్నప్పుడు పట్టు కంటే మెత్తగా ఉండేది." ఆయన ముఖం చూసి "ఇది అబద్ధాలకోరు ముఖం కాదు" అని వెంటనే ఇస్లాం స్వీకరించిన సహాబీలు ఉన్నారు.`,
+        english: `Companions who saw him described: Muhammad ﷺ was of medium height — neither very tall nor short, with a face that shone like a full moon. His skin was fair with a rosy hue. His hair was wavy, jet-black, falling between his ear and shoulder. His forehead was broad, his beard trimmed. When he smiled, his teeth shone brilliantly. His walk was purposeful and energetic — leaning slightly forward as if descending a hill. Anas ibn Malik (RA), who served him for ten years, said: "His fragrance was more pleasant than musk and ambergris. When I held his hand it was softer than silk." When Abdullah ibn Salam, a Jewish scholar of Medina, first saw the Prophet's face, he said immediately: "This is not the face of a liar" — and embraced Islam on the spot. His physical appearance radiated an inner light that struck everyone who met him.`,
+      },
+      {
+        title: 'ఆయన అలవాట్లు & మానవతా గుణాలు',
+        titleEn: 'His Habits, Manners & Compassion',
+        year: 'Throughout his life',
+        arabic: 'وَإِنَّكَ لَعَلَى خُلُقٍ عَظِيم — You are truly of a great moral character',
+        telugu: `ఆయిషా (రా) ను "ముహమ్మద్ ﷺ స్వభావం ఏమిటి?" అని అడిగినప్పుడు ఆమె అన్నారు: "ఆయన స్వభావం ఖురాన్ యే." ముహమ్మద్ ﷺ ఏ పని ఎదురుగా ఉన్నా మొదట "బిస్మిల్లాహ్" అనేవారు. పిల్లలతో ఆడుకునేవారు — సజ్దాలో పిల్లలు ఆయన వీపుపై ఎక్కినా ఆయన పిల్లలు దిగే వరకు సజ్దా నుండి తలలేపేవారు కాదు. జంతువులతో అత్యంత దయగా ఉండేవారు — ఒకసారి ఒక పిల్లి ఆయన అంగీపై నిద్రపోతుండగా నమాజ్ కోసం అంగీ వేసుకోవాల్సి వచ్చినప్పుడు, పిల్లిని మేల్కొలపకుండా అంగీ కత్తిరించారు. పేదవారికి, అనాథలకు ఆయన ఇంట్లో ఎప్పుడూ సంతోషంగా ఉంచేవారు. తన అనుచరులను పేర్లతో పిలిచేవారు, కబళించేవారు, కుశల ప్రశ్నలు అడిగేవారు. ఆయన ఎదనుండి వ్యక్తి మాట్లాడే వరకు ముఖం తిప్పేవారు కాదు. గొప్పవారు, పేదవారు — అందరితో ఒకేలా వ్యవహరించేవారు.`,
+        english: `When Aisha (RA) was asked about the Prophet's ﷺ character, she replied: "His character was the Quran itself." Muhammad ﷺ began every action with "Bismillah." He would play with children — once when children climbed on his back during prostration, he extended his sajdah until they dismounted so as not to disturb them. He showed extraordinary kindness to animals — once, rather than disturb a cat sleeping on his cloak when it was time for prayer, he cut the cloak around her. He visited the sick, attended funerals, sat with the poor. He called companions by their names, embraced them, and asked after their families. He never turned his face away while someone was speaking. He treated the powerful and the destitute with equal dignity and warmth. Allah declared in the Quran: "And indeed, you are of a great moral character" (68:4).`,
+      },
+      {
+        title: 'ముహమ్మద్ ﷺ అద్భుతాలు (ముఇజాత్)',
+        titleEn: "Miracles of Prophet Muhammad ﷺ (Mu'jizat)",
+        year: '610–632 CE',
+        arabic: 'مُعْجِزَاتُ النَّبِيِّ ﷺ: الْقُرْآنُ أَعْظَمُهَا وَالشَّقُّ وَالْمَاءِ وَالطَّعَام',
+        telugu: `ముహమ్మద్ ﷺ అద్భుతాలు: 1) **ఖురాన్ — అతిగొప్ప అద్భుతం**: 23 సంవత్సరాలలో అవతరించిన, చదువు రాని ప్రవక్త నుండి వచ్చిన, 1400 సంవత్సరాలయినా మారని దైవ వాక్కు — ఇది అందరి అద్భుతాల కంటే గొప్పది. 2) **చంద్రుని చీరు (శాఖ్ అల్-ఖమర్)**: ఖురైష్ అద్భుతం చూపమని అడిగినప్పుడు, ముహమ్మద్ ﷺ వేలు చూపగా చంద్రుడు రెండు ముక్కలయ్యాడు — మళ్ళీ ఒకటయ్యాడు. ఖురాన్ 54:1 లో: "ఖియామత్ సమీపించింది, చంద్రుడు చీలిపోయాడు." 3) **వేళ్ళ నుండి నీళ్ళు**: ఒకసారి 1,400 మంది అనుచరులకు నీళ్ళు తక్కువయ్యాయి — ముహమ్మద్ ﷺ చేతి వేళ్ళ నుండి నీటి ప్రవాహం వచ్చింది, అందరూ తాగారు, వుళూ చేశారు. 4) **కొంచెం ఆహారం కొందరికి**: తబూక్ లో ఒక పాత్రలో కొంచెం ఆహారం ఉంది — ముహమ్మద్ ﷺ బరకత్ దీవించగా 30,000 మంది తిన్నా ఆహారం తక్కువ కాలేదు. 5) **చెట్టు ఆయన దగ్గరకు నడిచింది**: ఒకసారి ఒక బెడ్విన్ అద్భుతం చూపమని కోరగా, ముహమ్మద్ ﷺ ఒక చెట్టుకు పిలవగా అది నేల చీల్చుకుంటూ ఆయన దగ్గరకు నడిచింది.`,
+        english: `The miracles of Muhammad ﷺ: 1) **The Quran — Greatest Miracle**: Revealed over 23 years through an unlettered man, unchanged for 1,400 years, memorised by millions — its linguistic, scientific, and prophetic dimensions remain unmatched. 2) **Splitting of the Moon (Shaqq al-Qamar)**: When the Quraysh demanded a miracle, Muhammad ﷺ pointed at the moon and it split into two visible halves before rejoining. The Quran records: "The Hour drew near and the moon was split" (54:1). Modern studies have noted ancient references to this in other cultures. 3) **Water from Fingers**: At Hudaybiyyah, 1,400 companions had barely enough water — water flowed from the Prophet's fingers until all had drunk and performed ablution. 4) **Multiplying Food**: On several occasions (Trench, Tabuk), small amounts of food fed thousands. 5) **A Tree Walking Towards Him**: When a Bedouin demanded a miracle, Muhammad ﷺ called to a tree, which uprooted itself and walked towards him before returning to its place.`,
+      },
+      {
+        title: 'ఆయన కుటుంబం & భార్యలు',
+        titleEn: 'His Family — Wives & Children',
+        year: '595–632 CE',
+        arabic: 'أَزْوَاجُ النَّبِيِّ ﷺ أُمَّهَاتُ الْمُؤْمِنِين',
+        telugu: `ముహమ్మద్ ﷺ యొక్క భార్యలు "ఉమ్మహాతుల్ ముమినీన్ — విశ్వాసుల తల్లులు" అని పిలవబడతారు. ముఖ్యమైన వివాహాలు: **ఖదీజా (రా)** — 25 సంవత్సరాల ప్రేమాస్పద వివాహం, ఆమె మరణం వరకు మరే వివాహమూ లేదు; **సవ్దా (రా)** — ఆమె భర్త మరణించిన తర్వాత రక్షణ కోసం; **ఆయిషా (రా)** — అబూ బకర్ (రా) కుమార్తె, అత్యంత జ్ఞానవంతురాలు, 2000 పై హదీస్ ల మూలం; **హఫ్సా (రా)** — ఉమర్ (రా) కుమార్తె, ఖురాన్ మొదటి కాపీ ఆమె దగ్గర భద్రపరిచారు; **జైనబ్ బింత్ ఖుజైమా (రా)** — "ఉమ్ అల్-మసాకీన్ — పేదల తల్లి"; **ఉమ్ సలమా (రా)** — అత్యంత జ్ఞానవంతురాలు, సలహాదారు; **జువైరియా (రా)**, **సఫియ్యా (రా)**, **ఉమ్ హబీబా (రా)**, **మైమూనా (రా)** — రాజకీయ, సామాజిక కారణాలుతో వివాహాలు. ఈ వివాహాలన్నీ ఇస్లాం విస్తరణలో, శత్రు తెగల ఐక్యతలో, లేదా రక్షణలేని వితంతువులకు సహాయంలో భాగంగా జరిగాయి.`,
+        english: `The wives of Muhammad ﷺ are honoured as "Ummahatul Mu'minin — Mothers of the Believers." Key marriages: **Khadijah (RA)** — twenty-five years of devoted marriage, no other wife during her lifetime; **Sawdah (RA)** — widowed companion needing protection; **Aisha (RA)** — daughter of Abu Bakr (RA), most prolific narrator of hadith (over 2,000), the primary source of the Prophet's private life and daily sunnah; **Hafsah (RA)** — Umar's daughter, the first written Quran was entrusted to her; **Zaynab bint Khuzaymah (RA)** — "Umm al-Masakin — Mother of the Poor" for her generosity; **Umm Salamah (RA)** — wise counsellor, present at many key decisions; **Juwayriya (RA), Safiyyah (RA), Umm Habibah (RA), Maymunah (RA)** — marriages serving political alliance, tribal reconciliation, or protection of vulnerable widows. Each marriage served clear social and strategic purposes in building the early Muslim community.`,
+      },
+      {
+        title: 'ఆయన ఇబాదత్ & రాత్రి నమాజ్',
+        titleEn: "His Worship — Qiyam al-Layl (Night Prayer)",
+        year: 'Throughout his life',
+        arabic: 'كَانَ يَقُومُ اللَّيْلَ حَتَّى تَتَفَطَّرَ قَدَمَاهُ',
+        telugu: `ముహమ్మద్ ﷺ రాత్రి ఇబాదత్ చాలా తీవ్రంగా చేసేవారు. ఆయిషా (రా) చెప్పారు: "ఆయన పాదాలు వాచిపోయేంత వరకు రాత్రి నమాజ్ చేసేవారు." ఆయిషా (రా) "అల్లాహ్ మీ పాత మరియు రాబోయే గుహఫ్ అన్నీ క్షమించాడు కదా — అయినా ఎందుకు ఇంత కష్టపడతారు?" అని అడిగినప్పుడు ముహమ్మద్ ﷺ అన్నారు: "అఫలా అకూను అబ్దన్ షకూరా — నేను కృతజ్ఞతాపూర్వకమైన సేవకుడిని కాలేనా?" ఆయన ప్రతిరోజు 70 సార్లు కంటే ఎక్కువ ఇస్తిగ్ఫార్ చేసేవారు. ప్రతి ఉదయ అజాన్ తర్వాత ఫజ్ర్ నమాజ్ జమాతులో చేసేవారు. ఖుర్ఆన్ పఠిస్తూ అనేకసార్లు ఒక ఆయతుపై గంటలు ఉండేవారు. అల్లాహ్ యొక్క 99 పేర్లు జపిస్తూ ఉదయాన్నే బయలుదేరేవారు. ఆయన ఉపవాసాలు — సోమ, గురువారాలు, ప్రతి నెల మూడు రోజులు (అయ్యాం అల్-బీద్) — ఇవి ఈ రోజు కూడా ముస్లింలు పాటిస్తారు.`,
+        english: `Muhammad ﷺ was extraordinary in his personal worship. Aisha (RA) reported: "He would stand in night prayer so long that his feet would swell." When she pointed out that Allah had forgiven all his sins past and future, he replied: "Afala akunu abdan shakura — Should I not be a grateful servant?" He sought forgiveness over seventy times each day. He never missed Fajr prayer in congregation. When reciting the Quran, he would sometimes spend hours on a single verse, weeping. He performed Dhikr of Allah's 99 names regularly throughout his day. His voluntary fasts — Mondays, Thursdays, the three middle days of each month — are Sunnah practiced by millions today. Despite being guaranteed Paradise, his humility and gratitude in worship shamed those around him and remains an eternal model for believers.`,
+      },
+    ],
+  },
 ];
