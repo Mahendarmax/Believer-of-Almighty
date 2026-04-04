@@ -8,6 +8,8 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
   const [duration, setDuration] = useState(0)
   const audioRef = useRef(null)
   const animFrameRef = useRef(null)
+  const audioUrlRef = useRef(audioUrl)
+  audioUrlRef.current = audioUrl
 
   // Stop when another verse starts playing
   useEffect(() => {
@@ -18,27 +20,26 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
     }
   }, [isGlobalPlaying, verseNumber, isPlaying])
 
-  // Reset audio when URL changes (e.g. reciter switch)
+  // Reset audio element when URL changes (e.g. reciter switch)
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause()
-      audioRef.current.removeAttribute('src')
-      audioRef.current.load()
+      audioRef.current.src = ''
       audioRef.current = null
-      setIsPlaying(false)
-      setProgress(0)
-      setDuration(0)
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
     }
+    setIsPlaying(false)
+    setProgress(0)
+    setDuration(0)
+    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
   }, [audioUrl])
 
-  // Cleanup on unmount — remove event listeners to prevent memory leaks
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause()
-        audioRef.current.removeAttribute('src')
-        audioRef.current.load()
+        audioRef.current.src = ''
+        audioRef.current = null
       }
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
     }
@@ -63,8 +64,11 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
     // Notify parent that this verse is now playing
     onPlay(verseNumber)
 
+    // Always use the latest URL from ref
+    const url = audioUrlRef.current
+
     if (!audioRef.current) {
-      const audio = new Audio(audioUrl)
+      const audio = new Audio(url)
       audioRef.current = audio
 
       audio.addEventListener('loadedmetadata', () => {
@@ -89,7 +93,7 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
       console.error('Audio play error:', err)
       setIsPlaying(false)
     }
-  }, [isPlaying, audioUrl, verseNumber, onPlay, updateProgress])
+  }, [isPlaying, verseNumber, onPlay, updateProgress])
 
   return (
     <div className={`verse-audio ${isPlaying ? 'playing' : ''}`}>

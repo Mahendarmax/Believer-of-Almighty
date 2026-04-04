@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir, getVerseAudioUrl, RECITERS } from '../data/quranData'
+import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
@@ -199,7 +199,7 @@ function VerseView() {
   const { number } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter, setReciter } = useSettings()
+  const { showArabic, fontSize, updateLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -495,21 +495,6 @@ function VerseView() {
           )}
         </button>
       </header>
-
-      {/* Current reciter display */}
-      <div className="vv-reciter-bar">
-        <div className="vv-reciter-toggle vv-reciter-display">
-          <span className="vv-reciter-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="15" height="15">
-              <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-            </svg>
-          </span>
-          <span className="vv-reciter-name">
-            <span className="vv-reciter-label">Reciter</span>
-            {RECITERS.find(r => r.id === reciter)?.name || 'Mishary Alafasy'}
-          </span>
-        </div>
-      </div>
 
       {/* Surah nav */}
       <div className="vv-nav">
