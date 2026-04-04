@@ -138,17 +138,41 @@ const addToVerseCache = (surahNumber, verses) => {
 // In-flight request deduplication — prevents duplicate fetches for same surah
 const pendingRequests = {}
 
+// Available Quran reciters from cdn.islamic.network
+export const RECITERS = [
+  { id: 'ar.alafasy', name: 'Mishary Alafasy', nameAr: 'مشاري العفاسي' },
+  { id: 'ar.abdulbasitmurattal', name: 'Abdul Basit (Murattal)', nameAr: 'عبد الباسط عبد الصمد' },
+  { id: 'ar.abdulsamad', name: 'Abdul Samad', nameAr: 'عبدالباسط عبدالصمد' },
+  { id: 'ar.abdullahbasfar', name: 'Abdullah Basfar', nameAr: 'عبد الله بصفر' },
+  { id: 'ar.abdurrahmaansudais', name: 'Abdurrahmaan As-Sudais', nameAr: 'عبدالرحمن السديس' },
+  { id: 'ar.shaatree', name: 'Abu Bakr Ash-Shatree', nameAr: 'أبو بكر الشاطري' },
+  { id: 'ar.ahmedajamy', name: 'Ahmed al-Ajamy', nameAr: 'أحمد بن علي العجمي' },
+  { id: 'ar.aymanswoaid', name: 'Ayman Sowaid', nameAr: 'أيمن سويد' },
+  { id: 'ar.hanirifai', name: 'Hani Rifai', nameAr: 'هاني الرفاعي' },
+  { id: 'ar.hudhaify', name: 'Hudhaify', nameAr: 'علي بن عبدالرحمن الحذيفي' },
+  { id: 'ar.husary', name: 'Husary', nameAr: 'محمود خليل الحصري' },
+  { id: 'ar.husarymujawwad', name: 'Husary (Mujawwad)', nameAr: 'محمود خليل الحصري (المجود)' },
+  { id: 'ar.ibrahimakhbar', name: 'Ibrahim Akhdar', nameAr: 'إبراهيم الأخضر' },
+  { id: 'ar.mahermuaiqly', name: 'Maher Al Muaiqly', nameAr: 'ماهر المعيقلي' },
+  { id: 'ar.minshawi', name: 'Minshawi', nameAr: 'محمد صديق المنشاوي' },
+  { id: 'ar.minshawimujawwad', name: 'Minshawi (Mujawwad)', nameAr: 'محمد صديق المنشاوي (المجود)' },
+  { id: 'ar.muhammadayyoub', name: 'Muhammad Ayyoub', nameAr: 'محمد أيوب' },
+  { id: 'ar.muhammadjibreel', name: 'Muhammad Jibreel', nameAr: 'محمد جبريل' },
+  { id: 'ar.saoodshuraym', name: 'Saood Ash-Shuraym', nameAr: 'سعود الشريم' },
+  { id: 'ar.parhizgar', name: 'Parhizgar', nameAr: 'شهریار پرهیزگار' },
+]
+
 // Bismillah cache — only fetched once across entire session
 let bismillahCache = null
 
 // Build verse audio URL using the global ayah number
-export const getVerseAudioUrl = (globalAyahNumber) => {
-  return `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalAyahNumber}.mp3`
+export const getVerseAudioUrl = (globalAyahNumber, reciterId = 'ar.alafasy') => {
+  return `https://cdn.islamic.network/quran/audio/128/${reciterId}/${globalAyahNumber}.mp3`
 }
 
 // Build surah-level audio URL
-export const getSurahAudioUrl = (surahNumber) => {
-  return `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
+export const getSurahAudioUrl = (surahNumber, reciterId = 'ar.alafasy') => {
+  return `https://cdn.islamic.network/quran/audio-surah/128/${reciterId}/${surahNumber}.mp3`
 }
 
 // Strip HTML tags from translation text

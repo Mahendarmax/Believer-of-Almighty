@@ -143,6 +143,211 @@
   gap: 12px;
 }
 
+/* Reciter selector */
+.vv-reciter-bar {
+  position: relative;
+  padding: 0 0 8px;
+}
+
+.vv-reciter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 14px;
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.vv-reciter-toggle:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-card-hover);
+  box-shadow: 0 2px 12px rgba(212, 164, 74, 0.08);
+}
+
+.vv-reciter-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 164, 74, 0.1);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.vv-reciter-icon svg {
+  color: var(--accent);
+}
+
+.vv-reciter-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+.vv-reciter-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vv-reciter-chevron {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.vv-reciter-chevron.rotated {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+
+.vv-reciter-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 164, 74, 0.05);
+  animation: reciterSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.vv-reciter-search {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.vv-reciter-search input {
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.vv-reciter-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212, 164, 74, 0.1);
+}
+
+.vv-reciter-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.vv-reciter-list {
+  max-height: 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  padding: 4px 0;
+}
+
+.vv-reciter-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.vv-reciter-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vv-reciter-list::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+.vv-reciter-empty {
+  padding: 20px 16px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+@keyframes reciterSlide {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.vv-reciter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-left: 3px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+}
+
+.vv-reciter-option:hover {
+  background: var(--bg-surface);
+}
+
+.vv-reciter-option.active {
+  background: rgba(212, 164, 74, 0.08);
+  border-left-color: var(--accent);
+}
+
+.vv-reciter-option.active .vv-reciter-option-name {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.vv-reciter-option-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.vv-reciter-option-ar {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: 'Amiri', serif;
+  opacity: 0.8;
+}
+
+.vv-reciter-option:hover .vv-reciter-option-ar {
+  opacity: 1;
+}
+
+.vv-reciter-check {
+  color: var(--accent);
+  flex-shrink: 0;
+  animation: checkPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes checkPop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
 .vv-nav-label {
   font-size: 0.78rem;
   color: var(--text-muted);
@@ -684,6 +889,13 @@
 
   .vv-nav-btn, .vv-bottom-nav .vv-nav-btn { font-size: 0.78rem; padding: 8px 12px; }
   .vv-nav-label { font-size: 0.72rem; }
+
+  .vv-reciter-toggle { padding: 9px 12px; gap: 8px; font-size: 0.78rem; }
+  .vv-reciter-icon { width: 26px; height: 26px; border-radius: 6px; }
+  .vv-reciter-label { font-size: 0.6rem; }
+  .vv-reciter-dropdown { border-radius: var(--radius-sm); }
+  .vv-reciter-list { max-height: 250px; }
+  .vv-reciter-option { padding: 9px 12px; font-size: 0.78rem; }
 
   .vv-toast { font-size: 0.75rem; padding: 10px 18px; bottom: 70px; }
 }

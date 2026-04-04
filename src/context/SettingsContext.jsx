@@ -28,6 +28,7 @@ export const SettingsProvider = ({ children }) => {
   const [lastRead, setLastRead] = useState(() => loadSetting('lastRead', null))
   const [favorites, setFavorites] = useState(() => loadSetting('favorites', []))
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'both'))
+  const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.alafasy'))
 
   // Debounced localStorage writes — batch rapid changes (e.g. font size)
   const saveTimers = useRef({})
@@ -42,6 +43,7 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => { if (lastRead) debouncedSave('lastRead', lastRead, 0) }, [lastRead, debouncedSave])
   useEffect(() => { debouncedSave('favorites', favorites, 500) }, [favorites, debouncedSave])
   useEffect(() => { debouncedSave('transliteration', transliteration, 0) }, [transliteration, debouncedSave])
+  useEffect(() => { debouncedSave('reciter', reciter, 0) }, [reciter, debouncedSave])
 
   const toggleArabic = useCallback(() => setShowArabic(prev => !prev), [])
   const increaseFontSize = useCallback(() => setFontSize(prev => Math.min(28, prev + 1)), [])
@@ -70,7 +72,8 @@ export const SettingsProvider = ({ children }) => {
     lastRead, updateLastRead,
     favorites, toggleFavorite, isFavorite,
     transliteration, setTransliteration,
-  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, favorites, toggleFavorite, isFavorite, transliteration])
+    reciter, setReciter,
+  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter])
 
   return (
     <SettingsContext.Provider value={value}>
