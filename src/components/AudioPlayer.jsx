@@ -6,6 +6,7 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
+  const [error, setError] = useState(false)
   const audioRef = useRef(null)
   const animFrameRef = useRef(null)
   const audioUrlRef = useRef(audioUrl)
@@ -30,6 +31,7 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
     setIsPlaying(false)
     setProgress(0)
     setDuration(0)
+    setError(false)
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
   }, [audioUrl])
 
@@ -61,6 +63,8 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
       return
     }
 
+    setError(false)
+
     // Notify parent that this verse is now playing
     onPlay(verseNumber)
 
@@ -82,6 +86,8 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
       audio.addEventListener('error', () => {
         setIsPlaying(false)
         setProgress(0)
+        setError(true)
+        audioRef.current = null
       })
     }
 
@@ -90,20 +96,25 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
       setIsPlaying(true)
       animFrameRef.current = requestAnimationFrame(updateProgress)
     } catch (err) {
-      console.error('Audio play error:', err)
       setIsPlaying(false)
+      setError(true)
+      audioRef.current = null
     }
   }, [isPlaying, verseNumber, onPlay, updateProgress])
 
   return (
-    <div className={`verse-audio ${isPlaying ? 'playing' : ''}`}>
+    <div className={`verse-audio ${isPlaying ? 'playing' : ''} ${error ? 'audio-error' : ''}`}>
       <button
-        className={`audio-btn ${isPlaying ? 'active' : ''}`}
+        className={`audio-btn ${isPlaying ? 'active' : ''} ${error ? 'error' : ''}`}
         onClick={handleToggle}
-        title={isPlaying ? 'Pause' : 'Play verse audio'}
-        aria-label={isPlaying ? `Pause verse ${verseNumber}` : `Play verse ${verseNumber}`}
+        title={error ? 'Audio unavailable — tap to retry' : isPlaying ? 'Pause' : 'Play verse audio'}
+        aria-label={error ? `Retry verse ${verseNumber}` : isPlaying ? `Pause verse ${verseNumber}` : `Play verse ${verseNumber}`}
       >
-        {isPlaying ? (
+        {error ? (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+            <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        ) : isPlaying ? (
           <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
             <rect x="6" y="4" width="4" height="16" rx="1"/>
             <rect x="14" y="4" width="4" height="16" rx="1"/>

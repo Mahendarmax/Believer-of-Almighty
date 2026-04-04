@@ -33,6 +33,15 @@
   50% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
 }
 
+.audio-btn.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.audio-btn.error:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
 .audio-progress-bar {
   width: 52px;
   height: 3px;

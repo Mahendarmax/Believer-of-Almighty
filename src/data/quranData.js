@@ -139,38 +139,41 @@ const addToVerseCache = (surahNumber, verses) => {
 const pendingRequests = {}
 
 // Available Quran reciters from cdn.islamic.network
+// bitrate: 128 = available at 128kbps, 64 = only at 64kbps
 export const RECITERS = [
-  { id: 'ar.alafasy', name: 'Mishary Alafasy', nameAr: 'مشاري العفاسي' },
-  { id: 'ar.abdulbasitmurattal', name: 'Abdul Basit (Murattal)', nameAr: 'عبد الباسط عبد الصمد' },
-  { id: 'ar.abdulsamad', name: 'Abdul Samad', nameAr: 'عبدالباسط عبدالصمد' },
-  { id: 'ar.abdullahbasfar', name: 'Abdullah Basfar', nameAr: 'عبد الله بصفر' },
-  { id: 'ar.abdurrahmaansudais', name: 'Abdurrahmaan As-Sudais', nameAr: 'عبدالرحمن السديس' },
-  { id: 'ar.shaatree', name: 'Abu Bakr Ash-Shatree', nameAr: 'أبو بكر الشاطري' },
-  { id: 'ar.ahmedajamy', name: 'Ahmed al-Ajamy', nameAr: 'أحمد بن علي العجمي' },
-  { id: 'ar.aymanswoaid', name: 'Ayman Sowaid', nameAr: 'أيمن سويد' },
-  { id: 'ar.hanirifai', name: 'Hani Rifai', nameAr: 'هاني الرفاعي' },
-  { id: 'ar.hudhaify', name: 'Hudhaify', nameAr: 'علي بن عبدالرحمن الحذيفي' },
-  { id: 'ar.husary', name: 'Husary', nameAr: 'محمود خليل الحصري' },
-  { id: 'ar.husarymujawwad', name: 'Husary (Mujawwad)', nameAr: 'محمود خليل الحصري (المجود)' },
-  { id: 'ar.ibrahimakhbar', name: 'Ibrahim Akhdar', nameAr: 'إبراهيم الأخضر' },
-  { id: 'ar.mahermuaiqly', name: 'Maher Al Muaiqly', nameAr: 'ماهر المعيقلي' },
-  { id: 'ar.minshawi', name: 'Minshawi', nameAr: 'محمد صديق المنشاوي' },
-  { id: 'ar.minshawimujawwad', name: 'Minshawi (Mujawwad)', nameAr: 'محمد صديق المنشاوي (المجود)' },
-  { id: 'ar.muhammadayyoub', name: 'Muhammad Ayyoub', nameAr: 'محمد أيوب' },
-  { id: 'ar.muhammadjibreel', name: 'Muhammad Jibreel', nameAr: 'محمد جبريل' },
-  { id: 'ar.saoodshuraym', name: 'Saood Ash-Shuraym', nameAr: 'سعود الشريم' },
-  { id: 'ar.parhizgar', name: 'Parhizgar', nameAr: 'شهریار پرهیزگار' },
+  { id: 'ar.alafasy', name: 'Mishary Alafasy', nameAr: 'مشاري العفاسي', bitrate: 128 },
+  { id: 'ar.abdulbasitmurattal', name: 'Abdul Basit (Murattal)', nameAr: 'عبد الباسط عبد الصمد', bitrate: 64 },
+  { id: 'ar.abdulsamad', name: 'Abdul Samad', nameAr: 'عبدالباسط عبدالصمد', bitrate: 64 },
+  { id: 'ar.abdullahbasfar', name: 'Abdullah Basfar', nameAr: 'عبد الله بصفر', bitrate: 64 },
+  { id: 'ar.abdurrahmaansudais', name: 'Abdurrahmaan As-Sudais', nameAr: 'عبدالرحمن السديس', bitrate: 64 },
+  { id: 'ar.shaatree', name: 'Abu Bakr Ash-Shatree', nameAr: 'أبو بكر الشاطري', bitrate: 128 },
+  { id: 'ar.ahmedajamy', name: 'Ahmed al-Ajamy', nameAr: 'أحمد بن علي العجمي', bitrate: 128 },
+  { id: 'ar.aymanswoaid', name: 'Ayman Sowaid', nameAr: 'أيمن سويد', bitrate: 64 },
+  { id: 'ar.hanirifai', name: 'Hani Rifai', nameAr: 'هاني الرفاعي', bitrate: 64 },
+  { id: 'ar.hudhaify', name: 'Hudhaify', nameAr: 'علي بن عبدالرحمن الحذيفي', bitrate: 128 },
+  { id: 'ar.husary', name: 'Husary', nameAr: 'محمود خليل الحصري', bitrate: 128 },
+  { id: 'ar.husarymujawwad', name: 'Husary (Mujawwad)', nameAr: 'محمود خليل الحصري (المجود)', bitrate: 128 },
+  { id: 'ar.mahermuaiqly', name: 'Maher Al Muaiqly', nameAr: 'ماهر المعيقلي', bitrate: 128 },
+  { id: 'ar.minshawi', name: 'Minshawi', nameAr: 'محمد صديق المنشاوي', bitrate: 128 },
+  { id: 'ar.minshawimujawwad', name: 'Minshawi (Mujawwad)', nameAr: 'محمد صديق المنشاوي (المجود)', bitrate: 64 },
+  { id: 'ar.muhammadayyoub', name: 'Muhammad Ayyoub', nameAr: 'محمد أيوب', bitrate: 128 },
+  { id: 'ar.muhammadjibreel', name: 'Muhammad Jibreel', nameAr: 'محمد جبريل', bitrate: 128 },
+  { id: 'ar.saoodshuraym', name: 'Saood Ash-Shuraym', nameAr: 'سعود الشريم', bitrate: 64 },
 ]
+
+// Map reciter ID to supported bitrate
+const reciterBitrateMap = Object.fromEntries(RECITERS.map(r => [r.id, r.bitrate]))
 
 // Bismillah cache — only fetched once across entire session
 let bismillahCache = null
 
 // Build verse audio URL using the global ayah number
 export const getVerseAudioUrl = (globalAyahNumber, reciterId = 'ar.alafasy') => {
-  return `https://cdn.islamic.network/quran/audio/128/${reciterId}/${globalAyahNumber}.mp3`
+  const bitrate = reciterBitrateMap[reciterId] || 128
+  return `https://cdn.islamic.network/quran/audio/${bitrate}/${reciterId}/${globalAyahNumber}.mp3`
 }
 
-// Build surah-level audio URL
+// Build surah-level audio URL (128kbps available for all reciters)
 export const getSurahAudioUrl = (surahNumber, reciterId = 'ar.alafasy') => {
   return `https://cdn.islamic.network/quran/audio-surah/128/${reciterId}/${surahNumber}.mp3`
 }
