@@ -170,15 +170,15 @@ const reciterFolderMap = Object.fromEntries(RECITERS.map(r => [r.id, r.folder]))
 let bismillahCache = null
 
 // Build verse audio URL — uses everyayah.com (surah:ayah format, zero-padded)
-export const getVerseAudioUrl = (surahNumber, ayahNumber, reciterId = 'ar.abdulbasitmurattal') => {
-  const folder = reciterFolderMap[reciterId] || 'Abdul_Basit_Murattal_192kbps'
+export const getVerseAudioUrl = (surahNumber, ayahNumber, reciterId = 'ar.muhammadayyoub') => {
+  const folder = reciterFolderMap[reciterId] || 'Muhammad_Ayyoub_128kbps'
   const s = String(surahNumber).padStart(3, '0')
   const a = String(ayahNumber).padStart(3, '0')
   return `https://everyayah.com/data/${folder}/${s}${a}.mp3`
 }
 
 // Build surah-level audio URL (cdn.islamic.network — 128kbps for all reciters)
-export const getSurahAudioUrl = (surahNumber, reciterId = 'ar.abdulbasitmurattal') => {
+export const getSurahAudioUrl = (surahNumber, reciterId = 'ar.muhammadayyoub') => {
   return `https://cdn.islamic.network/quran/audio-surah/128/${reciterId}/${surahNumber}.mp3`
 }
 
