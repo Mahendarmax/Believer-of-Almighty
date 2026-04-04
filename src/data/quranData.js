@@ -138,42 +138,47 @@ const addToVerseCache = (surahNumber, verses) => {
 // In-flight request deduplication — prevents duplicate fetches for same surah
 const pendingRequests = {}
 
-// Available Quran reciters from cdn.islamic.network
-// bitrate: 128 = available at 128kbps, 64 = only at 64kbps
+// Available Quran reciters — verse audio from everyayah.com, surah audio from cdn.islamic.network
 export const RECITERS = [
-  { id: 'ar.alafasy', name: 'Mishary Alafasy', nameAr: 'مشاري العفاسي', bitrate: 128 },
-  { id: 'ar.abdulbasitmurattal', name: 'Abdul Basit (Murattal)', nameAr: 'عبد الباسط عبد الصمد', bitrate: 64 },
-  { id: 'ar.abdulsamad', name: 'Abdul Samad', nameAr: 'عبدالباسط عبدالصمد', bitrate: 64 },
-  { id: 'ar.abdullahbasfar', name: 'Abdullah Basfar', nameAr: 'عبد الله بصفر', bitrate: 64 },
-  { id: 'ar.abdurrahmaansudais', name: 'Abdurrahmaan As-Sudais', nameAr: 'عبدالرحمن السديس', bitrate: 64 },
-  { id: 'ar.shaatree', name: 'Abu Bakr Ash-Shatree', nameAr: 'أبو بكر الشاطري', bitrate: 128 },
-  { id: 'ar.ahmedajamy', name: 'Ahmed al-Ajamy', nameAr: 'أحمد بن علي العجمي', bitrate: 128 },
-  { id: 'ar.aymanswoaid', name: 'Ayman Sowaid', nameAr: 'أيمن سويد', bitrate: 64 },
-  { id: 'ar.hanirifai', name: 'Hani Rifai', nameAr: 'هاني الرفاعي', bitrate: 64 },
-  { id: 'ar.hudhaify', name: 'Hudhaify', nameAr: 'علي بن عبدالرحمن الحذيفي', bitrate: 128 },
-  { id: 'ar.husary', name: 'Husary', nameAr: 'محمود خليل الحصري', bitrate: 128 },
-  { id: 'ar.husarymujawwad', name: 'Husary (Mujawwad)', nameAr: 'محمود خليل الحصري (المجود)', bitrate: 128 },
-  { id: 'ar.mahermuaiqly', name: 'Maher Al Muaiqly', nameAr: 'ماهر المعيقلي', bitrate: 128 },
-  { id: 'ar.minshawi', name: 'Minshawi', nameAr: 'محمد صديق المنشاوي', bitrate: 128 },
-  { id: 'ar.minshawimujawwad', name: 'Minshawi (Mujawwad)', nameAr: 'محمد صديق المنشاوي (المجود)', bitrate: 64 },
-  { id: 'ar.muhammadayyoub', name: 'Muhammad Ayyoub', nameAr: 'محمد أيوب', bitrate: 128 },
-  { id: 'ar.muhammadjibreel', name: 'Muhammad Jibreel', nameAr: 'محمد جبريل', bitrate: 128 },
-  { id: 'ar.saoodshuraym', name: 'Saood Ash-Shuraym', nameAr: 'سعود الشريم', bitrate: 64 },
+  { id: 'ar.alafasy', name: 'Mishary Alafasy', nameAr: 'مشاري العفاسي', folder: 'Alafasy_128kbps' },
+  { id: 'ar.abdulbasitmurattal', name: 'Abdul Basit (Murattal)', nameAr: 'عبد الباسط عبد الصمد', folder: 'Abdul_Basit_Murattal_192kbps' },
+  { id: 'ar.abdulsamad', name: 'Abdul Basit (Mujawwad)', nameAr: 'عبدالباسط عبدالصمد', folder: 'Abdul_Basit_Mujawwad_128kbps' },
+  { id: 'ar.abdullahbasfar', name: 'Abdullah Basfar', nameAr: 'عبد الله بصفر', folder: 'Abdullah_Basfar_192kbps' },
+  { id: 'ar.abdurrahmaansudais', name: 'Abdurrahmaan As-Sudais', nameAr: 'عبدالرحمن السديس', folder: 'Abdurrahmaan_As-Sudais_192kbps' },
+  { id: 'ar.shaatree', name: 'Abu Bakr Ash-Shatree', nameAr: 'أبو بكر الشاطري', folder: 'Abu_Bakr_Ash-Shaatree_128kbps' },
+  { id: 'ar.ahmedajamy', name: 'Ahmed al-Ajamy', nameAr: 'أحمد بن علي العجمي', folder: 'Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net' },
+  { id: 'ar.aymanswoaid', name: 'Ayman Sowaid', nameAr: 'أيمن سويد', folder: 'Ayman_Sowaid_64kbps' },
+  { id: 'ar.hanirifai', name: 'Hani Rifai', nameAr: 'هاني الرفاعي', folder: 'Hani_Rifai_192kbps' },
+  { id: 'ar.hudhaify', name: 'Hudhaify', nameAr: 'علي بن عبدالرحمن الحذيفي', folder: 'Hudhaify_128kbps' },
+  { id: 'ar.husary', name: 'Husary', nameAr: 'محمود خليل الحصري', folder: 'Husary_128kbps' },
+  { id: 'ar.husarymujawwad', name: 'Husary (Mujawwad)', nameAr: 'محمود خليل الحصري (المجود)', folder: 'Husary_128kbps_Mujawwad' },
+  { id: 'ar.minshawi', name: 'Minshawi (Murattal)', nameAr: 'محمد صديق المنشاوي', folder: 'Minshawy_Murattal_128kbps' },
+  { id: 'ar.minshawimujawwad', name: 'Minshawi (Mujawwad)', nameAr: 'محمد صديق المنشاوي (المجود)', folder: 'Minshawy_Mujawwad_192kbps' },
+  { id: 'ar.muhammadayyoub', name: 'Muhammad Ayyoub', nameAr: 'محمد أيوب', folder: 'Muhammad_Ayyoub_128kbps' },
+  { id: 'ar.muhammadjibreel', name: 'Muhammad Jibreel', nameAr: 'محمد جبريل', folder: 'Muhammad_Jibreel_128kbps' },
+  { id: 'ar.saoodshuraym', name: 'Saood Ash-Shuraym', nameAr: 'سعود الشريم', folder: 'Saood_ash-Shuraym_128kbps' },
+  { id: 'ar.nasseralqatami', name: 'Nasser Al-Qatami', nameAr: 'ناصر القطامي', folder: 'Nasser_Alqatami_128kbps' },
+  { id: 'ar.yasserdussary', name: 'Yasser Ad-Dussary', nameAr: 'ياسر الدوسري', folder: 'Yasser_Ad-Dussary_128kbps' },
+  { id: 'ar.alijaber', name: 'Ali Jaber', nameAr: 'علي جابر', folder: 'Ali_Jaber_64kbps' },
+  { id: 'ar.faresabbad', name: 'Fares Abbad', nameAr: 'فارس عباد', folder: 'Fares_Abbad_64kbps' },
+  { id: 'ar.salahbudair', name: 'Salah Al-Budair', nameAr: 'صلاح البدير', folder: 'Salah_Al_Budair_128kbps' },
 ]
 
-// Map reciter ID to supported bitrate
-const reciterBitrateMap = Object.fromEntries(RECITERS.map(r => [r.id, r.bitrate]))
+// Map reciter ID to everyayah folder
+const reciterFolderMap = Object.fromEntries(RECITERS.map(r => [r.id, r.folder]))
 
 // Bismillah cache — only fetched once across entire session
 let bismillahCache = null
 
-// Build verse audio URL using the global ayah number
-export const getVerseAudioUrl = (globalAyahNumber, reciterId = 'ar.alafasy') => {
-  const bitrate = reciterBitrateMap[reciterId] || 128
-  return `https://cdn.islamic.network/quran/audio/${bitrate}/${reciterId}/${globalAyahNumber}.mp3`
+// Build verse audio URL — uses everyayah.com (surah:ayah format, zero-padded)
+export const getVerseAudioUrl = (surahNumber, ayahNumber, reciterId = 'ar.alafasy') => {
+  const folder = reciterFolderMap[reciterId] || 'Alafasy_128kbps'
+  const s = String(surahNumber).padStart(3, '0')
+  const a = String(ayahNumber).padStart(3, '0')
+  return `https://everyayah.com/data/${folder}/${s}${a}.mp3`
 }
 
-// Build surah-level audio URL (128kbps available for all reciters)
+// Build surah-level audio URL (cdn.islamic.network — 128kbps for all reciters)
 export const getSurahAudioUrl = (surahNumber, reciterId = 'ar.alafasy') => {
   return `https://cdn.islamic.network/quran/audio-surah/128/${reciterId}/${surahNumber}.mp3`
 }
@@ -284,7 +289,6 @@ export const fetchSurahFromAPI = async (surahNumber, signal) => {
         roman: romVerse?.text?.trim() || '',
         telugu: telVerse?.text || '',
         translation: engVerse?.text || '',
-        audioUrl: getVerseAudioUrl(ayah.number),
       }
     })
 

@@ -95,7 +95,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
             </svg>
           </button>
           <AudioPlayer
-            audioUrl={getVerseAudioUrl(verse.globalNumber, reciter)}
+            audioUrl={getVerseAudioUrl(surahNumber, verse.number, reciter)}
             verseNumber={verse.number}
             isGlobalPlaying={playingVerse}
             onPlay={onPlay}
