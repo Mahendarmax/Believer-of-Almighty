@@ -18,13 +18,27 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
     }
   }, [isGlobalPlaying, verseNumber, isPlaying])
 
+  // Reset audio when URL changes (e.g. reciter switch)
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.removeAttribute('src')
+      audioRef.current.load()
+      audioRef.current = null
+      setIsPlaying(false)
+      setProgress(0)
+      setDuration(0)
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+    }
+  }, [audioUrl])
+
   // Cleanup on unmount — remove event listeners to prevent memory leaks
   useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current.removeAttribute('src')
-        audioRef.current.load() // release network resources
+        audioRef.current.load()
       }
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
     }

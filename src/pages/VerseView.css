@@ -204,7 +204,7 @@
   letter-spacing: 0.5px;
 }
 
-.vv-reciter-chevron {
+.vv-reciter-toggle.vv-reciter-display {\n  cursor: default;\n  pointer-events: none;\n  opacity: 0.85;\n}\n\n.vv-reciter-chevron {
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   color: var(--text-muted);

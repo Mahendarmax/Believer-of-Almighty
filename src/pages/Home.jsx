@@ -1,14 +1,113 @@
-import React, { useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
+import { RECITERS } from '../data/quranData'
 import './Home.css'
 
 // Static counts — avoid importing large data modules on the home page
 const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, seerah: 48 }
 
+// Memoized reciter picker for Home page
+const ReciterPicker = memo(({ reciter, onSelect }) => {
+  const [open, setOpen] = useState(false)
+  const [filter, setFilter] = useState('')
+  const barRef = useRef(null)
+  const activeRef = useRef(null)
+
+  const currentName = useMemo(() => RECITERS.find(r => r.id === reciter)?.name || 'Mishary Alafasy', [reciter])
+
+  const filtered = useMemo(() => {
+    if (!filter) return RECITERS
+    const q = filter.toLowerCase()
+    return RECITERS.filter(r => r.name.toLowerCase().includes(q) || r.nameAr.includes(filter))
+  }, [filter])
+
+  useEffect(() => {
+    if (!open) return
+    const handler = (e) => { if (barRef.current && !barRef.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    document.addEventListener('touchstart', handler)
+    return () => { document.removeEventListener('mousedown', handler); document.removeEventListener('touchstart', handler) }
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const handler = (e) => { if (e.key === 'Escape') { setOpen(false); setFilter('') } }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [open])
+
+  useEffect(() => {
+    if (open && activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'center', behavior: 'instant' })
+    }
+  }, [open])
+
+  const handleSelect = useCallback((id) => {
+    onSelect(id)
+    setOpen(false)
+    setFilter('')
+  }, [onSelect])
+
+  return (
+    <div className="home-reciter-bar" ref={barRef}>
+      <button className="home-reciter-toggle" onClick={() => { setOpen(p => !p); setFilter('') }} aria-label="Select reciter" aria-expanded={open}>
+        <span className="home-reciter-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+            <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+          </svg>
+        </span>
+        <span className="home-reciter-info">
+          <span className="home-reciter-label">Quran Reciter</span>
+          <span className="home-reciter-name">{currentName}</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" className={`home-reciter-chevron ${open ? 'rotated' : ''}`}>
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="home-reciter-dropdown" role="listbox" aria-label="Reciters">
+          <div className="home-reciter-search">
+            <input
+              type="text"
+              placeholder="Search reciter..."
+              value={filter}
+              onChange={e => setFilter(e.target.value)}
+              autoFocus
+              aria-label="Search reciters"
+            />
+          </div>
+          <div className="home-reciter-list">
+            {filtered.length === 0 && <div className="home-reciter-empty">No reciters found</div>}
+            {filtered.map(r => (
+              <button
+                key={r.id}
+                ref={reciter === r.id ? activeRef : null}
+                className={`home-reciter-option ${reciter === r.id ? 'active' : ''}`}
+                onClick={() => handleSelect(r.id)}
+                role="option"
+                aria-selected={reciter === r.id}
+              >
+                <span className="home-reciter-option-name">{r.name}</span>
+                <span className="home-reciter-option-ar" dir="rtl">{r.nameAr}</span>
+                {reciter === r.id && (
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" className="home-reciter-check">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+})
+ReciterPicker.displayName = 'ReciterPicker'
+
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration } = useSettings()
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
 
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
@@ -184,6 +283,18 @@ const Home = React.memo(function Home() {
           <p>ఇష్టమైనవి</p>
           <span className="action-meta">{favorites.length} Saved</span>
         </button>
+      </section>
+
+      {/* Reciter Selection */}
+      <section className="home-reciter-section">
+        <h3 className="home-reciter-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
+            <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+          </svg>
+          Quran Reciter
+        </h3>
+        <p className="home-reciter-desc">Choose your preferred Quran reciter for audio playback</p>
+        <ReciterPicker reciter={reciter} onSelect={setReciter} />
       </section>
 
       {/* Transliteration Preference */}
