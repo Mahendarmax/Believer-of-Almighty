@@ -14,7 +14,7 @@ const ReciterPicker = memo(({ reciter, onSelect }) => {
   const barRef = useRef(null)
   const activeRef = useRef(null)
 
-  const currentName = useMemo(() => RECITERS.find(r => r.id === reciter)?.name || 'Muhammad Ayyoub', [reciter])
+  const currentName = useMemo(() => RECITERS.find(r => r.id === reciter)?.name || 'Nasser Al-Qatami', [reciter])
 
   const filtered = useMemo(() => {
     if (!filter) return RECITERS
