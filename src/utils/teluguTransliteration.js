@@ -24,11 +24,6 @@ const CONSONANTS = [
 // (e.g. the API Roman English doesn't fully capture the Arabic phonetics)
 const WORD_OVERRIDES = {
   'walmunfiqeena': 'వల్‌మున్ఫిఖీనా',
-  // API uses 'z' for Arabic ذ (dhaal) — correct Telugu is ధ not జ
-  'allazeena': 'అల్లధీన',
-  'allazee': 'అల్లధీ',
-  'wallazeena': 'వల్లధీన',
-  'lazeena': 'లధీన',
   // API typo: lowercase 'l' instead of 'I' in Surah Fatiha verse 5
   'lyyaaka': 'ఇయ్యాక',
 }

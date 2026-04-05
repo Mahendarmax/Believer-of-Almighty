@@ -195,6 +195,69 @@ const stripHtml = (html) => {
   return html.replace(/<[^>]*>/g, '').trim()
 }
 
+// Fix API's incorrect 'z' for Arabic ذ (dhaal) — should be 'dh'
+// The alquran.cloud transliteration API uses 'z' for both ز (zay) and ذ (dhaal).
+// This map corrects known dhaal words to use 'dh' for accurate Roman English display
+// and correct Telugu transliteration (dh → ధ instead of z → జ).
+const DHAAL_WORDS = {
+  'allazeena': 'alladheena', 'allazee': 'alladhee',
+  'wallazeena': 'walladheena', 'lazeena': 'ladheena',
+  'zaalika': 'dhaalika', 'zaalikal': 'dhaalikal',
+  'kazaalika': 'kadhaalika', 'kazaalikal': 'kadhaalikal',
+  'fazaalika': 'fadhaalika',
+  'azaab': 'adhaab', 'azaaban': 'adhaaban', 'azaabun': 'adhaabun',
+  'azaabi': 'adhaabi', 'azaabal': 'adhabal',
+  'yazlimoon': 'yadhlimoon', 'yazlimoo': 'yadhlimoo',
+  'yazlimuhum': 'yadhlimuhum', 'yazlim': 'yadhlim',
+  'zulm': 'dhulm', 'zulman': 'dhulman',
+  'zulumaat': 'dhulumaat', 'zulumati': 'dhulumati', 'zulumatin': 'dhulumatin',
+  'yazzakkaroon': 'yadhdhakkaroon', 'tazakkaroon': 'tadhakkaroon',
+  'zikr': 'dhikr', 'zikra': 'dhikra', 'zikree': 'dhikree',
+  'zunoob': 'dhunoob', 'zunoobihim': 'dhunoobihim', 'zunoobi': 'dhunoobi',
+  'zanb': 'dhanb', 'zanbi': 'dhanbi', 'zanban': 'dhanban',
+  'iz': 'idh', 'iza': 'idha', 'izaa': 'idhaa',
+  'faiza': 'faidha', 'faizaa': 'faidhaa',
+  'waiza': 'waidha', 'waizaa': 'waidhaa',
+  'hazaa': 'hadhaa', 'haazaa': 'haadhaa', 'haaza': 'haadha',
+  'haazihi': 'haadhihi', 'hazihee': 'hadhihee',
+  'yunziroon': 'yundhiroon', 'anzar': 'andhar', 'anzir': 'andhir',
+  'anzartahum': 'andhartahum', 'tunzirhum': 'tundhirhum',
+  'munzir': 'mundhir', 'nuzur': 'nudhur',
+  'yazhab': 'yadhab', 'zahab': 'dhahab', 'zahaba': 'dhahaba',
+  'zahaban': 'dhahaban',
+  'zurriyyat': 'dhurriyyat', 'zurriyyata': 'dhurriyyata',
+  'zurriyyatan': 'dhurriyyatan', 'zurriyyatee': 'dhurriyyatee',
+  'zunooba': 'dhunooba',
+  'mazhabihim': 'madhhabihim',
+  'tazabbub': 'tadhabbub',
+  'zaaq': 'dhaaq', 'zaaqoo': 'dhaaqoo', 'yazooqu': 'yadhooqu',
+  'yazooqoo': 'yadhooqoo',
+  'zanbihim': 'dhanbihim', 'zanbee': 'dhanbee',
+  'zikraa': 'dhikraa', 'zikran': 'dhikran',
+  'zakaroo': 'dhakaroo', 'yazkuroon': 'yadhkuroon',
+  'yazkuru': 'yadhkuru', 'fazkuroo': 'fadhkuroo',
+  'uzkur': 'udhkur', 'uzkuroo': 'udhkuroo',
+  'zakareen': 'dhakareen', 'zakar': 'dhakar',
+  'azilla': 'adhilla', 'azillatan': 'adhillatan',
+  'zilla': 'dhilla', 'zillatan': 'dhillatan',
+  'zaleel': 'dhaleel', 'zaleela': 'dhaleela',
+  'yuzillu': 'yudhillu', 'zalla': 'dhalla', 'zalloo': 'dhalloo',
+  'zaaleen': 'dhaaleen', 'zaaalleen': 'dhaaalleen',
+  'azzana': 'adhdhana',
+}
+
+const fixRomanText = (text) => {
+  if (!text) return ''
+  return text.replace(/[a-zA-Z']+/g, word => {
+    const lower = word.toLowerCase()
+    const fixed = DHAAL_WORDS[lower]
+    if (!fixed) return word
+    // Preserve original casing of first letter
+    if (word[0] === word[0].toUpperCase()) return fixed[0].toUpperCase() + fixed.slice(1)
+    return fixed
+  })
+}
+
 // Fetch with timeout, abort support, and retry
 const fetchWithTimeout = async (url, signal, timeoutMs = 15000, retries = 1) => {
   for (let attempt = 0; attempt <= retries; attempt++) {
@@ -292,7 +355,7 @@ export const fetchSurahFromAPI = async (surahNumber, signal) => {
         number: ayah.numberInSurah,
         globalNumber: ayah.number,
         arabic: arabicText,
-        roman: romVerse?.text?.trim() || '',
+        roman: fixRomanText(romVerse?.text?.trim() || ''),
         telugu: telVerse?.text || '',
         translation: engVerse?.text || '',
       }
@@ -389,7 +452,7 @@ export const fetchBismillah = async () => {
     if (arabicData.code === 200 && romanData.code === 200) {
       const result = {
         arabic: arabicData.data.ayahs[0].text.trim(),
-        roman: romanData.data.ayahs[0].text.trim(),
+        roman: fixRomanText(romanData.data.ayahs[0].text.trim()),
         _rawText: arabicData.data.ayahs[0].text.trim()
       }
       bismillahCache = result
