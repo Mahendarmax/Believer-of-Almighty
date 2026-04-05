@@ -1390,6 +1390,8 @@
   font-size: 0.78rem;
   color: var(--accent-dim);
   font-style: normal;
+  display: block;
+  margin-bottom: 24px;
 }
 
 /* Responsive */
