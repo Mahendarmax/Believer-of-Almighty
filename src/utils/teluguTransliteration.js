@@ -29,6 +29,8 @@ const WORD_OVERRIDES = {
   'allazee': 'అల్లధీ',
   'wallazeena': 'వల్లధీన',
   'lazeena': 'లధీన',
+  // API typo: lowercase 'l' instead of 'I' in Surah Fatiha verse 5
+  'lyyaaka': 'ఇయ్యాక',
 }
 
 // Nasals that use anusvara (ం) before a different consonant in natural Telugu.
