@@ -363,9 +363,7 @@ const Home = React.memo(function Home() {
             <a
               className="apk-popup-download"
               href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk"
-              target="_blank"
               rel="noopener noreferrer"
-              download
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
