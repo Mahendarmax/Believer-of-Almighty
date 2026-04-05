@@ -108,8 +108,6 @@ ReciterPicker.displayName = 'ReciterPicker'
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
-  const [showApkPopup, setShowApkPopup] = useState(false)
-
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
@@ -338,7 +336,7 @@ const Home = React.memo(function Home() {
           "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
         </blockquote>
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
-        <button className="apk-download-btn" onClick={() => setShowApkPopup(true)}>
+        <button className="apk-download-btn" onClick={() => { window.location.href = 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk' }}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
@@ -347,33 +345,6 @@ const Home = React.memo(function Home() {
           Download Mobile APK
         </button>
       </footer>
-
-      {/* APK Download Popup */}
-      {showApkPopup && (
-        <div className="apk-popup-overlay" onClick={() => setShowApkPopup(false)}>
-          <div className="apk-popup" onClick={e => e.stopPropagation()}>
-            <button className="apk-popup-close" onClick={() => setShowApkPopup(false)} aria-label="Close">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
-            </button>
-            <div className="apk-popup-icon">📱</div>
-            <h3 className="apk-popup-title">Download Mobile APK</h3>
-            <p className="apk-popup-desc">Install the Holy Quran app on your Android device for offline access.</p>
-            <button
-              className="apk-popup-download"
-              onClick={() => { window.location.href = 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk' }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Download APK
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   )
 })
