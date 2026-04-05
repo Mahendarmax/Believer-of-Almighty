@@ -108,6 +108,7 @@ ReciterPicker.displayName = 'ReciterPicker'
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
+  const [showApkPopup, setShowApkPopup] = useState(false)
 
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
@@ -133,8 +134,44 @@ const Home = React.memo(function Home() {
           <p className="hero-desc">
             Read, Listen & Understand the words of Allah
           </p>
+          <button className="apk-download-btn" onClick={() => setShowApkPopup(true)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Mobile APK
+          </button>
         </div>
       </header>
+
+      {/* APK Download Popup */}
+      {showApkPopup && (
+        <div className="apk-popup-overlay" onClick={() => setShowApkPopup(false)}>
+          <div className="apk-popup" onClick={e => e.stopPropagation()}>
+            <button className="apk-popup-close" onClick={() => setShowApkPopup(false)} aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+            <div className="apk-popup-icon">📱</div>
+            <h3 className="apk-popup-title">Download Mobile APK</h3>
+            <p className="apk-popup-desc">Install the Holy Quran app on your Android device for offline access.</p>
+            <a
+              className="apk-popup-download"
+              href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download APK
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <section className="stats-row">
