@@ -161,6 +161,19 @@ export const RECITERS = [
   { id: 'ar.alijaber', name: 'Ali Jaber', nameAr: 'علي جابر', folder: 'Ali_Jaber_64kbps' },
   { id: 'ar.faresabbad', name: 'Fares Abbad', nameAr: 'فارس عباد', folder: 'Fares_Abbad_64kbps' },
   { id: 'ar.salahbudair', name: 'Salah Al-Budair', nameAr: 'صلاح البدير', folder: 'Salah_Al_Budair_128kbps' },
+  { id: 'ar.alafasy', name: 'Mishari Rashid Al-Afasy', nameAr: 'مشاري راشد العفاسي', folder: 'Alafasy_128kbps' },
+  { id: 'ar.ghamadi', name: 'Saad Al-Ghamdi', nameAr: 'سعد الغامدي', folder: 'Ghamadi_40kbps' },
+  { id: 'ar.maabormuaiqly', name: 'Maher Al-Muaiqly', nameAr: 'ماهر المعيقلي', folder: 'MaherAlMuaiqly128kbps' },
+  { id: 'ar.ibrahimakhdar', name: 'Ibrahim Akhdar', nameAr: 'إبراهيم الأخضر', folder: 'Ibrahim_Akhdar_64kbps' },
+  { id: 'ar.mohammadaltablaway', name: 'Mohammad Al-Tablaway', nameAr: 'محمد الطبلاوي', folder: 'Mohammad_al_Tablaway_128kbps' },
+  { id: 'ar.mustafaismail', name: 'Mustafa Ismail', nameAr: 'مصطفى إسماعيل', folder: 'Mustafa_Ismail_48kbps' },
+  { id: 'ar.bukhatir', name: 'Salaah Bukhatir', nameAr: 'صلاح بو خاطر', folder: 'Salaah_AbdulRahman_Bukhatir_128kbps' },
+  { id: 'ar.muhsinqasim', name: 'Muhsin Al-Qasim', nameAr: 'محسن القاسم', folder: 'Muhsin_Al_Qasim_192kbps' },
+  { id: 'ar.abdullahmatroud', name: 'Abdullah Matroud', nameAr: 'عبدالله مطرود', folder: 'Abdullah_Matroud_128kbps' },
+  { id: 'ar.husarymuallim', name: 'Husary (Muallim)', nameAr: 'محمود خليل الحصري (المعلم)', folder: 'Husary_Muallim_128kbps' },
+  { id: 'ar.khalidqahtani', name: 'Khalid Al-Qahtanee', nameAr: 'خالد عبدالله القحطاني', folder: 'Khaalid_Abdullaah_al-Qahtaanee_192kbps' },
+  { id: 'ar.alihajjajsuesy', name: 'Ali Hajjaj Al-Suesy', nameAr: 'علي حجاج السويسي', folder: 'Ali_Hajjaj_AlSuesy_128kbps' },
+  { id: 'ar.akramalaqimy', name: 'Akram Al-Alaqimy', nameAr: 'أكرم العلاقمي', folder: 'Akram_AlAlaqimy_128kbps' },
 ]
 
 // Map reciter ID to everyayah folder
