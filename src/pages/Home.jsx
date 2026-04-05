@@ -360,10 +360,9 @@ const Home = React.memo(function Home() {
             <div className="apk-popup-icon">📱</div>
             <h3 className="apk-popup-title">Download Mobile APK</h3>
             <p className="apk-popup-desc">Install the Holy Quran app on your Android device for offline access.</p>
-            <a
+            <button
               className="apk-popup-download"
-              href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk"
-              rel="noopener noreferrer"
+              onClick={() => { window.location.href = 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk' }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -371,7 +370,7 @@ const Home = React.memo(function Home() {
                 <line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
               Download APK
-            </a>
+            </button>
           </div>
         </div>
       )}
