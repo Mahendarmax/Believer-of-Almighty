@@ -336,14 +336,14 @@ const Home = React.memo(function Home() {
           "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
         </blockquote>
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
-        <button className="apk-download-btn" onClick={() => { window.location.href = 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk' }}>
+        <a className="apk-download-btn" href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/V1/Holy-Quran.apk" download="Holy-Quran.apk" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
           </svg>
           Download Mobile APK
-        </button>
+        </a>
       </footer>
     </div>
   )
