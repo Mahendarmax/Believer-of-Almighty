@@ -13,7 +13,7 @@ A complete Islamic web application built with React + Vite, featuring the Holy Q
 ### 📖 Quran
 - All **114 Surahs** with **6236 verses**
 - Arabic text with English & Telugu translations
-- Verse-by-verse audio playback with **21 reciters** (default: Nasser Al-Qatami)
+- Verse-by-verse audio playback with **21 reciters** (default: Mishari Rashid Al-Afasy)
 - Surah-level full audio streaming
 - Bookmarks & continue reading
 - Adjustable Arabic font size

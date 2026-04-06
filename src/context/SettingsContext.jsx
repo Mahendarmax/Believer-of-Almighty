@@ -28,7 +28,7 @@ export const SettingsProvider = ({ children }) => {
   const [lastRead, setLastRead] = useState(() => loadSetting('lastRead', null))
   const [favorites, setFavorites] = useState(() => loadSetting('favorites', []))
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'both'))
-  const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.nasseralqatami'))
+  const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.alafasy'))
 
   // Debounced localStorage writes — batch rapid changes (e.g. font size)
   const saveTimers = useRef({})
