@@ -4,20 +4,21 @@
 
 const VIRAMA = '\u0C4D' // Telugu halant (్)
 const ANUSVARA = '\u0C02' // Telugu anusvara (ం)
+const ZWNJ = '\u200C'    // Zero-width non-joiner — prevents conjunct formation
 
 // Consonant mappings — longest match first
 const CONSONANTS = [
   ['shh', 'ష'], ['sh', 'ష'], ['zh', 'జ'],
-  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'జ\u0C4Dహ'],
-  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'బ\u0C4Dహ'],
-  ['nh', 'న\u0C4Dహ'],
+  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'జ\u0C4D\u200Cహ'],
+  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'బ\u0C4D\u200Cహ'],
+  ['nh', 'న\u0C4D\u200Cహ'],
   ['k', 'క'], ['g', 'గ'], ['c', 'చ'], ['j', 'జ'],
   ['t', 'త'], ['d', 'ద'], ['n', 'న'],
   ['p', 'ప'], ['f', 'ఫ'], ['b', 'బ'], ['m', 'మ'],
   ['y', 'య'], ['r', 'ర'], ['l', 'ల'],
   ['v', 'వ'], ['w', 'వ'],
   ['s', 'స'], ['h', 'హ'], ['z', 'జ'], ['q', 'ఖ'],
-  ['x', 'క\u0C4Dస'],
+  ['x', 'క\u0C4D\u200Cస'],
 ]
 
 // Word-level overrides for cases where automatic transliteration is inaccurate
@@ -26,6 +27,7 @@ const WORD_OVERRIDES = {
   'walmunfiqeena': 'వల్‌మున్ఫిఖీనా',
   // API typo: lowercase 'l' instead of 'I' in Surah Fatiha verse 5
   'lyyaaka': 'ఇయ్యాక',
+  'liyahkuma': 'లియహ్‌కుమ',
 }
 
 // Nasals that use anusvara (ం) before a different consonant in natural Telugu.
@@ -148,6 +150,11 @@ function transliterateSegment(text) {
             result += ANUSVARA
           } else {
             result += telugu + VIRAMA
+            // Insert ZWNJ after virama when followed by a consonant
+            // to prevent Telugu fonts from forming unwanted conjunct ligatures
+            if (i < lower.length && isLetter(lower[i])) {
+              result += ZWNJ
+            }
             // Handle tanween: 'nw' at word boundary (e.g. "qaleelanw", "shai'anw")
             if (roman === 'n' && i < lower.length && lower[i] === 'w' && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
               i++ // skip the silent trailing 'w'

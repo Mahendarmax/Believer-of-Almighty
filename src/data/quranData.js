@@ -206,7 +206,7 @@ const DHAAL_WORDS = {
   'kazaalika': 'kadhaalika', 'kazaalikal': 'kadhaalikal',
   'fazaalika': 'fadhaalika',
   'azaab': 'adhaab', 'azaaban': 'adhaaban', 'azaabun': 'adhaabun',
-  'azaabi': 'adhaabi', 'azaabal': 'adhabal',
+  'azaabin': 'adhaabin', 'azaabi': 'adhaabi', 'azaabal': 'adhabal',
   'yazlimoon': 'yadhlimoon', 'yazlimoo': 'yadhlimoo',
   'yazlimuhum': 'yadhlimuhum', 'yazlim': 'yadhlim',
   'zulm': 'dhulm', 'zulman': 'dhulman',
@@ -248,13 +248,28 @@ const DHAAL_WORDS = {
 
 const fixRomanText = (text) => {
   if (!text) return ''
-  return text.replace(/[a-zA-Z']+/g, word => {
+  // Fix API typo: 'lyyaaka' should be 'Iyyaaka'
+  let fixed = text.replace(/\blyyaaka\b/gi, 'Iyyaaka')
+  return fixed.replace(/[a-zA-Z']+/g, word => {
     const lower = word.toLowerCase()
-    const fixed = DHAAL_WORDS[lower]
-    if (!fixed) return word
-    // Preserve original casing of first letter
-    if (word[0] === word[0].toUpperCase()) return fixed[0].toUpperCase() + fixed.slice(1)
-    return fixed
+    // Try full word first (e.g. 'allazeena')
+    const fullMatch = DHAAL_WORDS[lower]
+    if (fullMatch) {
+      if (word[0] === word[0].toUpperCase()) return fullMatch[0].toUpperCase() + fullMatch.slice(1)
+      return fullMatch
+    }
+    // Handle apostrophe-prefixed words (e.g. bi'azaabin → bi'adhaabin)
+    const apoIdx = word.indexOf("'")
+    if (apoIdx > 0 && apoIdx < word.length - 1) {
+      const prefix = word.slice(0, apoIdx + 1)
+      const suffix = word.slice(apoIdx + 1)
+      const suffixLower = suffix.toLowerCase()
+      const suffixMatch = DHAAL_WORDS[suffixLower]
+      if (suffixMatch) {
+        return prefix + suffixMatch
+      }
+    }
+    return word
   })
 }
 
