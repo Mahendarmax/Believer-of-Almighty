@@ -1,0 +1,12 @@
+{
+  "appId": "com.believer.almighty",
+  "appName": "Holy-Quran(Arabic,Roman-English & Telugu)",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#06090f"
+  }
+}

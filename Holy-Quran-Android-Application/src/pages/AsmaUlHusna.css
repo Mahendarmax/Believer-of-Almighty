@@ -1,0 +1,149 @@
+.asma-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+.asma-page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-primary);
+}
+
+.asma-page-back {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.asma-page-back:hover { background: var(--accent); color: #fff; }
+
+.asma-page-title-group { display: flex; flex-direction: column; }
+.asma-page-title { font-size: 1.35rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.asma-page-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+/* Search */
+.asma-search-wrap { margin-bottom: 1rem; }
+.asma-search {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+.asma-search:focus { border-color: var(--accent); }
+.asma-search::placeholder { color: var(--text-muted); }
+
+/* Grid */
+.asma-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+/* Card */
+.asma-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 0.75rem 0.85rem;
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+}
+.asma-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.asma-card-num {
+  position: absolute;
+  top: 0.45rem;
+  left: 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.asma-card-arabic {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0.25rem 0 0.35rem;
+  direction: rtl;
+  line-height: 1.5;
+}
+.asma-card-roman {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0.1rem 0;
+}
+.asma-card-english {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0.1rem 0;
+}
+.asma-card-telugu {
+  font-size: 0.8rem;
+  color: #34d399;
+  margin: 0.2rem 0 0;
+  font-weight: 500;
+}
+
+/* No results */
+.asma-no-results {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem 0;
+  font-size: 0.95rem;
+}
+
+/* Footer */
+.asma-footer {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+.asma-hadith {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-style: italic;
+  margin: 0;
+}
+.asma-hadith-ref {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 480px) {
+  .asma-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+  .asma-card { padding: 0.75rem 0.5rem; }
+  .asma-card-arabic { font-size: 1.25rem; }
+}

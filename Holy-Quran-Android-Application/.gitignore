@@ -1,0 +1,6 @@
+node_modules/
+dist/
+android/
+.capacitor/
+*.local
+.DS_Store

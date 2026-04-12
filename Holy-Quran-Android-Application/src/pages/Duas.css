@@ -1,0 +1,75 @@
+/* Duas Page — reuses Home.css dua styles, adds page-level layout */
+.duas-page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.duas-page-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(180deg, var(--bg-primary) 80%, transparent 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.duas-page-back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.duas-page-back:hover {
+  background: var(--bg-card);
+  transform: translateX(-2px);
+}
+
+.duas-page-title-group {
+  flex: 1;
+}
+
+.duas-page-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.duas-page-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.duas-page-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 480px) {
+  .duas-page { padding: 0 14px 70px; }
+  .duas-page-header { gap: 10px; padding: 16px 0 14px; }
+  .duas-page-back { width: 36px; height: 36px; }
+  .duas-page-title { font-size: 1.15rem; }
+  .duas-page-subtitle { font-size: 0.7rem; }
+}
+
+@media (min-width: 768px) {
+  .duas-page-title { font-size: 1.6rem; }
+}
+
+@media (min-width: 1200px) {
+  .duas-page { max-width: 900px; }
+}
