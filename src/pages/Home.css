@@ -16,27 +16,58 @@
   background: linear-gradient(175deg, #06090f 0%, #0d1320 40%, #0c1018 70%, #06090f 100%);
 }
 
-.home-settings-btn {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: 10;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(212,164,74,0.1);
-  border: 1px solid rgba(212,164,74,0.2);
-  border-radius: 50%;
-  color: var(--accent);
-  cursor: pointer;
-  transition: var(--transition);
+.home-settings-section {
+  padding: 0 0 8px;
 }
 
-.home-settings-btn:hover {
-  background: rgba(212,164,74,0.2);
-  transform: rotate(20deg);
+.home-settings-row-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+}
+
+.home-settings-row-btn:hover,
+.home-settings-row-btn:active {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+}
+
+.home-settings-row-btn > svg:first-child {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.home-settings-row-btn > svg:last-child {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.home-settings-row-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.home-settings-row-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.home-settings-row-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .hero-pattern {
