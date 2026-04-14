@@ -7,6 +7,9 @@ import './Home.css'
 // Static counts — avoid importing large data modules on the home page
 const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, seerah: 48 }
 
+// Show APK-only features when running inside Capacitor WebView
+const isApk = typeof navigator !== 'undefined' && navigator.userAgent.includes('HolyQuranApp')
+
 // Memoized reciter picker for Home page
 const ReciterPicker = memo(({ reciter, onSelect }) => {
   const [open, setOpen] = useState(false)
@@ -147,12 +150,12 @@ const Home = React.memo(function Home() {
     <div className="home">
       {/* Hero Section */}
       <header className="home-hero">
-        <button className="home-settings-btn" onClick={() => navigate('/settings')} aria-label="Settings">
+        {isApk && <button className="home-settings-btn" onClick={() => navigate('/settings')} aria-label="Settings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="22" height="22">
             <circle cx="12" cy="12" r="3"/>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
-        </button>
+        </button>}
         <div className="hero-pattern" />
         <div className="hero-content">
           <div className="hero-icon">﷽</div>
