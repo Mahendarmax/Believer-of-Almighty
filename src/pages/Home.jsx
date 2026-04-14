@@ -118,7 +118,13 @@ const Home = React.memo(function Home() {
         if (!data || !data.tag_name) return
         setApkRelease(data)
         const lastSeen = localStorage.getItem('apk_last_seen_tag')
-        if (lastSeen !== data.tag_name) setIsNewApk(true)
+        if (!lastSeen) {
+          // First time ever — fresh install, silently save tag, no badge
+          localStorage.setItem('apk_last_seen_tag', data.tag_name)
+        } else if (lastSeen !== data.tag_name) {
+          // User has seen a previous version — new APK is available
+          setIsNewApk(true)
+        }
       })
       .catch(() => {})
   }, [])
