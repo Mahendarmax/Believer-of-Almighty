@@ -86,13 +86,4 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Patch web app APK download URL
-        working-directory: ${{ github.workspace }}
-        run: |
-          NEW_URL="https://github.com/${{ github.repository }}/releases/download/holy-quran-${{ github.run_number }}/Holy-Quran.apk"
-          sed -i "s|https://github\.com/[^\"]*\.apk|$NEW_URL|g" src/pages/Home.jsx
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/pages/Home.jsx
-          git diff --cached --quiet || git commit -m "ci: update APK download URL to build ${{ github.run_number }}"
-          git push origin ${{ github.ref_name }}
+

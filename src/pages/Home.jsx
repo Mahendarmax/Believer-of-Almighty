@@ -338,8 +338,8 @@ const Home = React.memo(function Home() {
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
         <a
           className="apk-download-btn"
-          href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-2/Holy-Quran.apk"
-          download="Holy-Quran.apk"
+          href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/latest/download/Holy-Quran.apk"
+          target="_blank"
           rel="noopener noreferrer"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
