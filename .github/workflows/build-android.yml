@@ -30,12 +30,6 @@ jobs:
       - name: Install Node dependencies
         run: npm install
 
-      - name: Fix bin permissions
-        run: chmod -R +x node_modules/.bin
-
-      - name: Build web app
-        run: npx vite build
-
       - name: Add Capacitor Android platform
         run: npx cap add android
 

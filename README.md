@@ -4,7 +4,142 @@
 
 A complete Islamic web application built with React + Vite, featuring the Holy Quran with Arabic, English, and Telugu translations, verse-by-verse audio, and a rich set of Islamic tools.
 
-🌐 **Live:** [https://mahendarmax.github.io/Believer-of-Almighty/](https://mahendarmax.github.io/Believer-of-Almighty/)
+🌐 **Live Web App:** [https://mahendarmax.github.io/Believer-of-Almighty/](https://mahendarmax.github.io/Believer-of-Almighty/)
+📱 **Android APK:** [Download Latest](https://github.com/Mahendarmax/Believer-of-Almighty/releases/latest/download/Holy-Quran.apk)
+
+---
+
+## 🏗️ Architecture & Flow
+
+This project has **one codebase** that powers both the web app and the Android APK.
+
+### Project Structure
+
+```
+Believer-of-Almighty/
+├── src/                              ← Web app source code (React)
+├── .github/
+│   └── workflows/
+│       ├── jekyll-gh-pages.yml       ← Deploys web app to GitHub Pages
+│       └── build-android.yml         ← Builds Android APK
+└── Holy-Quran-Android-Application/
+    ├── capacitor.config.json         ← Points APK to GitHub Pages URL
+    └── package.json                  ← Only Capacitor packages (lightweight)
+```
+
+---
+
+### How the Android APK Works
+
+The APK is a lightweight shell — it has **no bundled web code**. When opened, it loads the live GitHub Pages URL inside Android's WebView:
+
+```
+User opens APK
+      │
+      ▼
+WebView loads → https://mahendarmax.github.io/Believer-of-Almighty/
+      │
+      ▼
+Always shows the latest web app ✅
+No reinstall needed for web changes ✅
+```
+
+---
+
+### Flow 1 — Web Code Change (UI, features, bug fixes)
+
+> Push to `src/` folder only
+
+```
+You edit src/pages/Home.jsx (or any web file)
+      │
+      ▼
+Push to develop branch
+      │
+      ▼
+jekyll-gh-pages.yml triggers automatically
+  → npm install
+  → vite build
+  → Deploy to GitHub Pages
+      │
+      ▼
+Web app updated instantly at GitHub Pages URL
+      │
+      ▼
+APK users open app → loads updated code instantly ✅
+Browser users refresh → see updated code instantly ✅
+No new APK needed ✅
+```
+
+---
+
+### Flow 2 — Android Config Change (icon, permissions, native plugins)
+
+> Push to `Holy-Quran-Android-Application/` folder
+
+```
+You edit capacitor.config.json (or Android native config)
+      │
+      ▼
+Push to develop branch
+      │
+      ▼
+build-android.yml triggers automatically
+  → npm install (Capacitor packages only — very fast)
+  → npx cap add android
+  → npx cap sync android
+  → Gradle builds APK
+  → GitHub Release created (tag: holy-quran-{build-number})
+  → Holy-Quran.apk attached to release
+      │
+      ▼
+Web app users see 🔴 NEW badge on Download button
+  → "New update available!"
+  → User clicks → /releases/latest/download/Holy-Quran.apk
+  → Always downloads newest APK ✅
+```
+
+---
+
+### Flow 3 — First Time User
+
+```
+User visits https://mahendarmax.github.io/Believer-of-Almighty/
+      │
+      ▼
+Clicks "Download Mobile APK"
+      │
+      ▼
+GitHub /releases/latest/ → auto-redirects to newest APK ✅
+      │
+      ▼
+User installs APK on Android
+      │
+      ▼
+Opens app → WebView loads GitHub Pages URL
+      → Same as web app, always latest code ✅
+```
+
+---
+
+### Summary Table
+
+| Change Type | Push To | Result |
+|---|---|---|
+| UI / features / bug fixes | `src/` | Instant update in browser + APK |
+| App icon / name / permissions | `Holy-Quran-Android-Application/` | New APK built + 🔴 badge shown on web |
+| First install | Download from web app | Always gets latest APK |
+
+---
+
+### Pipelines
+
+| Workflow | Triggers When | Does |
+|---|---|---|
+| `jekyll-gh-pages.yml` | Push to `develop` | Builds & deploys web app to GitHub Pages |
+| `build-android.yml` | Push to `Holy-Quran-Android-Application/**` | Builds APK + creates GitHub Release |
+
+---
 
 ---
 

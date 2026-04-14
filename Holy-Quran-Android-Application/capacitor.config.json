@@ -1,7 +1,6 @@
 {
   "appId": "com.believer.almighty",
   "appName": "Holy-Quran(Arabic,Roman-English & Telugu)",
-  "webDir": "dist",
   "server": {
     "url": "https://mahendarmax.github.io/Believer-of-Almighty/",
     "cleartext": false,
