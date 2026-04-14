@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
 import './Settings.css'
 
+// Detect if running inside the APK (Capacitor WebView sets this user agent)
+const isApk = typeof navigator !== 'undefined' && navigator.userAgent.includes('HolyQuranApp')
+
 function Settings() {
   const navigate = useNavigate()
   const { showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize } = useSettings()
@@ -16,19 +19,38 @@ function Settings() {
     setShowExportGuide(true)
   }, [])
 
-  const doExport = useCallback(() => {
+  const doExport = useCallback(async () => {
     const data = {}
     const keys = ['quran_favorites', 'quran_lastRead', 'quran_transliteration', 'quran_reciter', 'quran_fontSize', 'quran_showArabic']
     keys.forEach(k => {
       const val = localStorage.getItem(k)
       if (val !== null) data[k] = val
     })
+    const filename = `quran-backup-${new Date().toISOString().slice(0, 10)}.json`
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+
+    // On Android WebView, use Web Share API to share/save the file
+    if (navigator.canShare) {
+      const file = new File([blob], filename, { type: 'application/json' })
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: 'Quran Backup' })
+        } catch {
+          // User cancelled or share failed — do nothing
+        }
+        setShowExportGuide(false)
+        return
+      }
+    }
+
+    // Web fallback: trigger download via anchor
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `quran-backup-${new Date().toISOString().slice(0, 10)}.json`
+    a.download = filename
+    document.body.appendChild(a)
     a.click()
+    document.body.removeChild(a)
     URL.revokeObjectURL(url)
     setShowExportGuide(false)
   }, [])
@@ -164,8 +186,8 @@ function Settings() {
           </div>
         </div>
 
-        {/* Backup & Restore */}
-        <div className="backup-section">
+        {/* Backup & Restore — APK only */}
+        {isApk && <div className="backup-section">
           <div className="backup-section-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="20" height="20">
               <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
@@ -199,7 +221,7 @@ function Settings() {
           {importStatus === 'error' && (
             <div className="backup-status error">❌ Invalid backup file. Please try again.</div>
           )}
-        </div>
+        </div>}
       </div>
 
       <footer className="set-footer">
