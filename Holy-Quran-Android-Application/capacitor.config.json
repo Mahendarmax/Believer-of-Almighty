@@ -8,6 +8,8 @@
   },
   "android": {
     "allowMixedContent": false,
-    "backgroundColor": "#06090f"
+    "backgroundColor": "#06090f",
+    "webContentsDebuggingEnabled": false,
+    "overrideUserAgent": "HolyQuranApp/2.0 Android"
   }
 }

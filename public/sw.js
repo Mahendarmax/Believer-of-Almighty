@@ -1,5 +1,5 @@
 // Service Worker for Holy Quran App — cache static assets for offline use
-const CACHE_NAME = 'quran-app-v3'
+const CACHE_NAME = 'quran-app-v4'
 const STATIC_ASSETS = [
   '/Believer-of-Almighty/',
   '/Believer-of-Almighty/index.html',
@@ -84,19 +84,20 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // Static assets: cache-first
+  // Static assets: network-first for app shell so APK always loads latest
+  // Falls back to cache only when offline
   if (url.origin === self.location.origin) {
     event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) return cached
-        return fetch(request).then((response) => {
+      fetch(request, { cache: 'no-cache' })
+        .then((response) => {
           if (response.ok && response.type === 'basic') {
             const clone = response.clone()
             caches.open(CACHE_NAME).then((cache) => cache.put(request, clone))
           }
           return response
         })
-      })
+        .catch(() => caches.match(request))
+    )
     )
   }
 })
