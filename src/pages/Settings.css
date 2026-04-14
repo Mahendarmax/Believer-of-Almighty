@@ -306,6 +306,7 @@
   align-items: center;
   gap: 14px;
   padding: 20px 0 24px;
+  position: relative;
 }
 
 .set-back {
@@ -317,6 +318,7 @@
   border-radius: var(--radius-sm);
   color: var(--accent);
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .set-back:hover {
@@ -326,6 +328,10 @@
 .set-title {
   font-size: 1.4rem;
   font-weight: 700;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 /* Content */
