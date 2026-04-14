@@ -71,14 +71,24 @@ jobs:
           path: Holy-Quran-Android-Application/android/app/build/outputs/apk/debug/Holy-Quran.apk
           retention-days: 30
 
+      - name: Delete previous releases and tags
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # List all releases and delete them along with their tags
+          gh release list --limit 50 --json tagName -q '.[].tagName' | while read tag; do
+            gh release delete "$tag" --yes --cleanup-tag || true
+          done
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: holy-quran-${{ github.run_number }}
-          name: "Holy Quran APK - Build ${{ github.run_number }}"
+          tag_name: holy-quran-latest
+          name: "Holy Quran APK - Latest"
           body: |
-            Automated release from changes in Holy-Quran-Android-Application.
-            Commit: ${{ github.sha }}
+            Latest release from Holy-Quran-Android-Application.
+            Build: ${{ github.run_number }} | Commit: ${{ github.sha }}
           files: Holy-Quran-Android-Application/android/app/build/outputs/apk/debug/Holy-Quran.apk
           draft: false
           prerelease: false

@@ -112,17 +112,17 @@ const Home = React.memo(function Home() {
   const [isNewApk, setIsNewApk] = useState(false)
 
   useEffect(() => {
-    fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/latest')
+    fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
       .then(r => r.ok ? r.json() : null)
       .then(data => {
-        if (!data || !data.tag_name) return
+        if (!data || !data.id) return
         setApkRelease(data)
-        const lastSeen = localStorage.getItem('apk_last_seen_tag')
+        const lastSeen = localStorage.getItem('apk_last_seen_id')
         if (!lastSeen) {
-          // First time ever — fresh install, silently save tag, no badge
-          localStorage.setItem('apk_last_seen_tag', data.tag_name)
-        } else if (lastSeen !== data.tag_name) {
-          // User has seen a previous version — new APK is available
+          // Fresh install — silently save, no badge
+          localStorage.setItem('apk_last_seen_id', String(data.id))
+        } else if (lastSeen !== String(data.id)) {
+          // Release was updated since last seen
           setIsNewApk(true)
         }
       })
@@ -131,7 +131,7 @@ const Home = React.memo(function Home() {
 
   const handleApkDownload = useCallback(() => {
     if (apkRelease) {
-      localStorage.setItem('apk_last_seen_tag', apkRelease.tag_name)
+      localStorage.setItem('apk_last_seen_id', String(apkRelease.id))
       setIsNewApk(false)
     }
   }, [apkRelease])
@@ -147,6 +147,12 @@ const Home = React.memo(function Home() {
     <div className="home">
       {/* Hero Section */}
       <header className="home-hero">
+        <button className="home-settings-btn" onClick={() => navigate('/settings')} aria-label="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="22" height="22">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
         <div className="hero-pattern" />
         <div className="hero-content">
           <div className="hero-icon">﷽</div>

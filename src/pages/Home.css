@@ -16,6 +16,29 @@
   background: linear-gradient(175deg, #06090f 0%, #0d1320 40%, #0c1018 70%, #06090f 100%);
 }
 
+.home-settings-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212,164,74,0.1);
+  border: 1px solid rgba(212,164,74,0.2);
+  border-radius: 50%;
+  color: var(--accent);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.home-settings-btn:hover {
+  background: rgba(212,164,74,0.2);
+  transform: rotate(20deg);
+}
+
 .hero-pattern {
   position: absolute;
   inset: 0;
