@@ -233,6 +233,72 @@
   box-shadow: 0 4px 14px rgba(212,164,74,0.35);
 }
 
+.backup-btn-download:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.backup-copied-msg {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.backup-copied-icon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+.backup-copied-msg p {
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  margin: 0 0 6px;
+  line-height: 1.55;
+}
+
+.backup-copied-sub {
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
+  margin-bottom: 14px !important;
+}
+
+.backup-manual-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.backup-json-textarea {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: monospace;
+  font-size: 0.72rem;
+  padding: 8px 10px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.backup-paste-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.backup-paste-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
 
 /* Header */
 .set-header {
