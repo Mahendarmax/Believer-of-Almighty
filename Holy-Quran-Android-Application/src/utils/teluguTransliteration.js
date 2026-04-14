@@ -31,13 +31,15 @@ const WORD_OVERRIDES = {
 
 // Nasals that use anusvara (ం) before a different consonant in natural Telugu.
 // Maps nasal letter → set of following consonants where anusvara is used.
-// n before: t, d, th, dh, s, k, j, b, p, f, g, ch, kh, gh, sh
-// m before: d, t, th, dh, b, h, p, s, k, j, f, g, ch, kh, gh, sh
+// n before: t, d, th, dh, s, k, b, p, f, g, ch, kh, gh, sh
+// m before: d, t, th, dh, b, h, p, s, k, f, g, ch, kh, gh, sh
 // NOT when the same consonant follows (nn→న్న, mm→మ్మ stay halant for geminate)
 // NOT for 'nf' — Arabic nun+fa should stay halant న్ఫ (e.g. munfiqeena → మున్ఫిఖీన)
 // NOT before 'y' — Telugu uses halant న్య/మ్య not anusvara ంయ (e.g. dunyaa → దున్యా)
-const ANUSVARA_N_BEFORE = new Set(['t', 'd', 's', 'k', 'j', 'b', 'p', 'g', 'c', 'q', 'z', 'v', 'w', 'h', 'l', 'r', 'm'])
-const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'j', 'f', 'g', 'c', 'q', 'z', 'v', 'w', 'l', 'r', 'n'])
+// NOT before 'z' or 'j' — both map to జ in Telugu; Arabic نز/نج/مز/مج clusters need halant
+//   (e.g. tanzi'u → తన్‌జిఉ, tanzeel → తన్‌జీల్, munjaa → మున్‌జా)
+const ANUSVARA_N_BEFORE = new Set(['t', 'd', 's', 'k', 'b', 'p', 'g', 'c', 'q', 'v', 'w', 'h', 'l', 'r', 'm'])
+const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'f', 'g', 'c', 'q', 'v', 'w', 'l', 'r', 'n'])
 
 // Vowel mappings — [roman, standalone, matra (after consonant)]
 // Longest match first to avoid partial matches.
