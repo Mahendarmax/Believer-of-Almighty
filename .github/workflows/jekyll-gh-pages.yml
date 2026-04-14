@@ -3,6 +3,12 @@ name: Deploy Quran App to GitHub Pages
 on:
   push:
     branches: ["develop"]
+    paths-ignore:
+      - 'Holy-Quran-Android-Application/**'
+  workflow_run:
+    workflows: ["Build Android APK"]
+    types: [completed]
+    branches: [develop]
   workflow_dispatch:
 
 permissions:
