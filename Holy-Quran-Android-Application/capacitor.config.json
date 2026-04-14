@@ -3,10 +3,12 @@
   "appName": "Holy-Quran(Arabic,Roman-English & Telugu)",
   "webDir": "dist",
   "server": {
+    "url": "https://mahendarmax.github.io/Believer-of-Almighty/",
+    "cleartext": false,
     "androidScheme": "https"
   },
   "android": {
-    "allowMixedContent": true,
+    "allowMixedContent": false,
     "backgroundColor": "#06090f"
   }
 }

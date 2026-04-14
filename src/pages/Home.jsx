@@ -108,6 +108,27 @@ ReciterPicker.displayName = 'ReciterPicker'
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
+  const [apkRelease, setApkRelease] = useState(null)
+  const [isNewApk, setIsNewApk] = useState(false)
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/latest')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data || !data.tag_name) return
+        setApkRelease(data)
+        const lastSeen = localStorage.getItem('apk_last_seen_tag')
+        if (lastSeen !== data.tag_name) setIsNewApk(true)
+      })
+      .catch(() => {})
+  }, [])
+
+  const handleApkDownload = useCallback(() => {
+    if (apkRelease) {
+      localStorage.setItem('apk_last_seen_tag', apkRelease.tag_name)
+      setIsNewApk(false)
+    }
+  }, [apkRelease])
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
@@ -341,13 +362,20 @@ const Home = React.memo(function Home() {
           href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/latest/download/Holy-Quran.apk"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={handleApkDownload}
         >
+          {isNewApk && <span className="apk-new-badge">NEW</span>}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
           </svg>
-          Download Mobile APK
+          <span className="apk-btn-text">
+            Download Mobile APK
+            {isNewApk && (
+              <span className="apk-version-info">New update available!</span>
+            )}
+          </span>
         </a>
       </footer>
     </div>
