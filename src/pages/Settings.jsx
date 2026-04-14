@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
 import './Settings.css'
@@ -15,7 +15,6 @@ function Settings() {
   const [importStatus, setImportStatus] = useState(null) // 'success' | 'error'
   const [showPasteImport, setShowPasteImport] = useState(false)
   const [pasteValue, setPasteValue] = useState('')
-  const fileInputRef = useRef(null)
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -83,15 +82,6 @@ function Settings() {
     }
   }, [])
 
-  const handleImport = useCallback((e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = (ev) => restoreData(ev.target.result)
-    reader.readAsText(file)
-    e.target.value = ''
-  }, [restoreData])
-
   const handlePasteImport = useCallback(() => {
     restoreData(pasteValue)
     setPasteValue('')
@@ -117,11 +107,15 @@ function Settings() {
                   </div>
                   <div className="backup-step">
                     <span className="backup-step-num">2</span>
-                    <span>Save to <strong>Files</strong>, <strong>Google Drive</strong>, or share to <strong>WhatsApp Saved Messages</strong></span>
+                    <span>Share to <strong>WhatsApp Saved Messages</strong>, <strong>Google Keep</strong>, or any notes app to save the JSON text</span>
                   </div>
                   <div className="backup-step">
                     <span className="backup-step-num">3</span>
-                    <span>After reinstalling, go to <strong>Settings → Import Backup</strong> and pick the file</span>
+                    <span>After reinstalling, open that saved message, <strong>copy the JSON text</strong></span>
+                  </div>
+                  <div className="backup-step">
+                    <span className="backup-step-num">4</span>
+                    <span>Go to <strong>Settings → Paste JSON</strong>, paste it, and tap <strong>Restore</strong> ✅</span>
                   </div>
                 </div>
                 <p className="backup-note">📁 Contains your favorites, reading position &amp; preferences.</p>
@@ -144,7 +138,7 @@ function Settings() {
               <div className="backup-copied-msg">
                 <div className="backup-copied-icon">✅</div>
                 <p><strong>Backup copied to clipboard!</strong></p>
-                <p className="backup-copied-sub">Open Notes, Google Keep, or WhatsApp Saved Messages and <strong>paste</strong> it there to save.<br/>To restore later, copy the text and use <em>Paste JSON</em> in Import.</p>
+                <p className="backup-copied-sub">Open <strong>WhatsApp Saved Messages</strong>, Google Keep, or any notes app and <strong>paste</strong> it there to save.<br/>To restore: copy that text → Settings → <em>Paste JSON</em> → Restore.</p>
                 <button className="backup-btn-cancel" onClick={() => { setExportCopied(false); setShowExportGuide(false) }}>Done</button>
               </div>
             )}
@@ -254,14 +248,6 @@ function Settings() {
               </svg>
               Export Backup
             </button>
-            <button className="backup-import-btn" onClick={() => fileInputRef.current?.click()}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
-              </svg>
-              Import File
-            </button>
             <button className="backup-import-btn" onClick={() => setShowPasteImport(v => !v)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
                 <rect x="9" y="9" width="13" height="13" rx="2"/>
@@ -269,7 +255,6 @@ function Settings() {
               </svg>
               Paste JSON
             </button>
-            <input ref={fileInputRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
             {showPasteImport && (
               <div className="backup-paste-area">
                 <p className="backup-paste-label">Paste your backup JSON here:</p>
