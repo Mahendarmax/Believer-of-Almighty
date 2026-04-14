@@ -1,9 +1,61 @@
 # Holy-Quran (Arabic, Roman-English & Telugu)
 
-An Android application for reading the Holy Quran with Arabic text, Roman-English transliteration, and Telugu translation. Built with React, Vite, and Capacitor.
+An Android application for reading the Holy Quran with Arabic text, Roman-English transliteration, and Telugu translation. Built with Capacitor 6 — the APK loads the web app live from GitHub Pages, so web-only changes appear instantly without a new APK release.
 
 - **App ID:** `com.believer.almighty`
 - **Version:** 2.0.0
+- **Live URL (loaded by APK):** `https://mahendarmax.github.io/Believer-of-Almighty/`
+- **Latest APK download:** [GitHub Releases — holy-quran-latest](https://github.com/Mahendarmax/Believer-of-Almighty/releases/tag/holy-quran-latest)
+
+---
+
+## Architecture
+
+```
+GitHub Repository (develop branch)
+│
+├── src/                        ← React web app source
+├── public/                     ← Static assets + service worker
+├── Holy-Quran-Android-Application/
+│   ├── capacitor.config.json   ← Points APK to GitHub Pages live URL
+│   ├── android/                ← Capacitor Android project
+│   └── www/.gitkeep            ← Placeholder (webDir required by Capacitor)
+│
+└── .github/workflows/
+    ├── jekyll-gh-pages.yml     ← Deploys web app to GitHub Pages
+    └── build-android.yml       ← Builds APK and publishes to GitHub Releases
+```
+
+**How updates work:**
+- **Web-only change** (UI, content, CSS) → push to `develop` → GitHub Pages auto-deploys → APK picks it up automatically on next open (no new release needed)
+- **Android config change** (capacitor, native code) → push touching `Holy-Quran-Android-Application/**` → CI builds new APK → old release deleted → single `holy-quran-latest` release updated → web app shows 🔴 NEW badge to users
+
+---
+
+## CI/CD — Automated APK Build
+
+The `build-android.yml` workflow triggers when files inside `Holy-Quran-Android-Application/` change. It:
+
+1. Sets up Java 17 + Node 20
+2. Installs Capacitor dependencies
+3. Runs `cap sync android` to sync the project
+4. Builds a debug APK via Gradle
+5. **Deletes all previous GitHub releases** (so only one release ever exists)
+6. Creates a new release under the fixed tag `holy-quran-latest` with the APK attached as `Holy-Quran.apk`
+
+The download URL is always stable:
+```
+https://github.com/Mahendarmax/Believer-of-Almighty/releases/latest/download/Holy-Quran.apk
+```
+
+---
+
+## NEW Badge (In-App Update Notification)
+
+The web app fetches `https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest` on load.
+It tracks the release's numeric `id` in `localStorage` (`apk_last_seen_id`).
+When a new APK is published the `id` changes → a 🔴 **NEW** badge appears on the Download APK button.
+Clicking download saves the new `id` and dismisses the badge.
 
 ---
 
@@ -226,11 +278,18 @@ Features:
 
 ## Updating the App Later
 
-1. Increment version in `package.json`:
-   ```json
-   "version": "2.1.0"
-   ```
-2. Build new signed AAB
+### Web-only changes (no new APK needed)
+Push any changes to `src/`, `public/`, or other web files. GitHub Pages redeploys automatically and the APK picks up the new content on its next load.
+
+### Android/Native changes (new APK required)
+1. Make changes inside `Holy-Quran-Android-Application/` (e.g. `capacitor.config.json`, native plugins)
+2. Push to `develop` — the `build-android.yml` CI pipeline triggers automatically
+3. A new APK is built, the old GitHub Release is deleted, and a fresh `holy-quran-latest` release is published
+4. Users see the 🔴 NEW badge on the web app's Download button
+
+### Publishing to Play Store
+1. Increment `versionCode` / `versionName` in `android/app/build.gradle`
+2. Build a signed AAB (see Step 2 above)
 3. Go to Play Console → **Production → Create new release**
 4. Upload new AAB, add release notes
 5. Submit for review
