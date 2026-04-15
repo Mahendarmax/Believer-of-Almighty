@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir, getVerseAudioUrl } from '../data/quranData'
+import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir, getVerseAudioUrl, clearSurahCache } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
@@ -350,6 +350,20 @@ function VerseView() {
     document.querySelectorAll('.verse-card[id^="verse-"]').forEach(el => observer.observe(el))
     return () => observer.disconnect()
   }, [loading, verses.length, visibleCount])
+
+  // Background refresh: when app comes to foreground, silently re-fetch current surah
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === 'visible' && surah && !loading) {
+        clearSurahCache(surahNumber)
+        getSurahVerses(surahNumber).then(data => {
+          if (data && data.length > 0) setVerses(data)
+        }).catch(() => {})
+      }
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [surahNumber, surah, loading])
 
   // Cleanup surah audio on unmount
   useEffect(() => {

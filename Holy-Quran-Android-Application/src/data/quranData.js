@@ -400,6 +400,13 @@ export const getSurahVerses = async (surahNumber, signal) => {
   return promise
 }
 
+// Clear cached verses for a surah so next fetch gets fresh data
+export const clearSurahCache = (surahNumber) => {
+  delete verseCache[surahNumber]
+  const idx = verseCacheOrder.indexOf(surahNumber)
+  if (idx !== -1) verseCacheOrder.splice(idx, 1)
+}
+
 // Tafsir cache + in-flight dedup for revelation context (max 50 entries)
 const tafsirCache = {}
 const tafsirCacheOrder = []

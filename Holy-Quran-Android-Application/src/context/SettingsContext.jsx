@@ -22,6 +22,9 @@ const saveSetting = (key, value) => {
   catch { /* quota exceeded — silent fail */ }
 }
 
+// APK: always running inside HolyQuranApp WebView
+const isApk = typeof navigator !== 'undefined' && navigator.userAgent.includes('HolyQuranApp')
+
 export const SettingsProvider = ({ children }) => {
   const [showArabic, setShowArabic] = useState(() => loadSetting('showArabic', true))
   const [fontSize, setFontSize] = useState(() => loadSetting('fontSize', 16))
@@ -37,13 +40,13 @@ export const SettingsProvider = ({ children }) => {
     saveTimers.current[key] = setTimeout(() => saveSetting(key, value), delay)
   }, [])
 
-  // Save to localStorage on change (debounced to reduce IO)
-  useEffect(() => { debouncedSave('showArabic', showArabic, 0) }, [showArabic, debouncedSave])
-  useEffect(() => { debouncedSave('fontSize', fontSize) }, [fontSize, debouncedSave])
+  // Save to localStorage on change — APK only persists favorites and lastRead
+  useEffect(() => { if (!isApk) debouncedSave('showArabic', showArabic, 0) }, [showArabic, debouncedSave])
+  useEffect(() => { if (!isApk) debouncedSave('fontSize', fontSize) }, [fontSize, debouncedSave])
   useEffect(() => { if (lastRead) debouncedSave('lastRead', lastRead, 0) }, [lastRead, debouncedSave])
   useEffect(() => { debouncedSave('favorites', favorites, 500) }, [favorites, debouncedSave])
-  useEffect(() => { debouncedSave('transliteration', transliteration, 0) }, [transliteration, debouncedSave])
-  useEffect(() => { debouncedSave('reciter', reciter, 0) }, [reciter, debouncedSave])
+  useEffect(() => { if (!isApk) debouncedSave('transliteration', transliteration, 0) }, [transliteration, debouncedSave])
+  useEffect(() => { if (!isApk) debouncedSave('reciter', reciter, 0) }, [reciter, debouncedSave])
 
   const toggleArabic = useCallback(() => setShowArabic(prev => !prev), [])
   const increaseFontSize = useCallback(() => setFontSize(prev => Math.min(28, prev + 1)), [])
