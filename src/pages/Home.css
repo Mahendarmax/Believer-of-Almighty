@@ -52,11 +52,17 @@
   flex-shrink: 0;
 }
 
+.home-settings-row-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .home-settings-row-label {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .home-settings-row-title {
