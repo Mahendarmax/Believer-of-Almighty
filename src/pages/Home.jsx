@@ -116,38 +116,36 @@ const Home = React.memo(function Home() {
   const [showApkUpdateDialog, setShowApkUpdateDialog] = useState(false)
 
   useEffect(() => {
-    // APK: check if a new binary version is available
+    // APK: check if a new binary version is available via version number
     if (isApk) {
       const installed = localStorage.getItem('apk_installed_build')
       if (!installed) {
-        // First install — save current version silently, no dialog
         localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
       } else if (parseFloat(APK_BINARY_VERSION) > parseFloat(installed)) {
-        // Newer APK binary available — check if user already dismissed this version
         const dismissed = localStorage.getItem('apk_dismissed_build')
-        if (dismissed !== APK_BINARY_VERSION) {
-          setShowApkUpdateDialog(true)
-        }
+        if (dismissed !== APK_BINARY_VERSION) setShowApkUpdateDialog(true)
       }
+      // Fetch release only to get asset download URL
+      fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => { if (data?.id) setApkRelease(data) })
+        .catch(() => {})
+      return
     }
 
+    // Web browser: show NEW badge only when APK_BINARY_VERSION is bumped
+    const seenVersion = localStorage.getItem('web_seen_apk_version')
+    if (!seenVersion) {
+      // First visit — save silently, no badge
+      localStorage.setItem('web_seen_apk_version', APK_BINARY_VERSION)
+    } else if (parseFloat(APK_BINARY_VERSION) > parseFloat(seenVersion)) {
+      // New APK binary available for download
+      setIsNewApk(true)
+    }
+    // Fetch release to get asset download URL
     fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
       .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (!data || !data.id) return
-        setApkRelease(data)
-        // Inside APK — only web badge logic handled above, mark seen silently
-        if (isApk) {
-          localStorage.setItem('apk_last_seen_id', String(data.id))
-          return
-        }
-        const lastSeen = localStorage.getItem('apk_last_seen_id')
-        if (!lastSeen) {
-          localStorage.setItem('apk_last_seen_id', String(data.id))
-        } else if (lastSeen !== String(data.id)) {
-          setIsNewApk(true)
-        }
-      })
+      .then(data => { if (data?.id) setApkRelease(data) })
       .catch(() => {})
   }, [])
 
@@ -166,11 +164,9 @@ const Home = React.memo(function Home() {
   }, [])
 
   const handleApkDownload = useCallback(() => {
-    if (apkRelease) {
-      localStorage.setItem('apk_last_seen_id', String(apkRelease.id))
-      setIsNewApk(false)
-    }
-    // Use asset download URL from API if available, else fallback
+    // Mark this APK version as seen on web
+    localStorage.setItem('web_seen_apk_version', APK_BINARY_VERSION)
+    setIsNewApk(false)
     const assetUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
       || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
     const a = document.createElement('a')
