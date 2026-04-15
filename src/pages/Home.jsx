@@ -142,6 +142,15 @@ const Home = React.memo(function Home() {
       localStorage.setItem('apk_last_seen_id', String(apkRelease.id))
       setIsNewApk(false)
     }
+    // Use asset download URL from API if available, else fallback
+    const assetUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
+      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
+    const a = document.createElement('a')
+    a.href = assetUrl
+    a.download = 'Holy-Quran.apk'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
   }, [apkRelease])
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
@@ -392,11 +401,8 @@ const Home = React.memo(function Home() {
           "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
         </blockquote>
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
-        <a
+        <button
           className="apk-download-btn"
-          href="https://github.com/Mahendarmax/Believer-of-Almighty/releases/latest/download/Holy-Quran.apk"
-          target="_blank"
-          rel="noopener noreferrer"
           onClick={handleApkDownload}
         >
           {isNewApk && <span className="apk-new-badge">NEW</span>}
@@ -411,7 +417,7 @@ const Home = React.memo(function Home() {
               <span className="apk-version-info">New update available!</span>
             )}
           </span>
-        </a>
+        </button>
       </footer>
     </div>
   )
