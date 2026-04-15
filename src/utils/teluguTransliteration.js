@@ -28,6 +28,8 @@ const WORD_OVERRIDES = {
   // API typo: lowercase 'l' instead of 'I' in Surah Fatiha verse 5
   'lyyaaka': 'ఇయ్యాక',
   'liyahkuma': 'లియహ్‌కుమ',
+  // 3:26 — tu'izzu (تُعِزُّ)
+  "tu'izzu": 'తుఇజ్జు',
 }
 
 // Nasals that use anusvara (ం) before a different consonant in natural Telugu.
@@ -78,7 +80,8 @@ export function romanToTelugu(text) {
   // Split into words and whitespace, check overrides per word
   return text.split(/(\s+)/).map(segment => {
     if (!segment || /^\s+$/.test(segment)) return segment
-    const override = WORD_OVERRIDES[segment.toLowerCase()]
+    const normalizedKey = segment.toLowerCase().replace(/[\u2018\u2019\u02BB\u02BC]/g, "'")
+    const override = WORD_OVERRIDES[normalizedKey]
     if (override) return override
     return transliterateSegment(segment)
   }).join('')
