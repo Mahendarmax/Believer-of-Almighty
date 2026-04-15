@@ -27,6 +27,10 @@ const WORD_OVERRIDES = {
   'walmunfiqeena': 'వల్‌మున్ఫిఖీనా',
   'lyyaaka': 'ఇయ్యాక',
   'liyahkuma': 'లియహ్‌కుమ',
+  // 3:26 — kulli (كُلِّ)
+  'kulli': 'కుల్లి',
+  // 3:26 — tuzillu (تُذِلُّ)
+  'tuzillu': 'తుజిల్లు',
   // 3:26 — tu'izzu (تُعِزُّ)
   "tu'izzu": 'తుఇజ్జు',
 }
