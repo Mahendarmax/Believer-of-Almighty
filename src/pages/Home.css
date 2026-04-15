@@ -24,6 +24,7 @@
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 14px;
   padding: 16px 18px;
   background: var(--bg-card);
@@ -32,7 +33,7 @@
   color: var(--text-primary);
   cursor: pointer;
   transition: var(--transition);
-  text-align: left;
+  text-align: center;
 }
 
 .home-settings-row-btn:hover,
@@ -49,14 +50,13 @@
 .home-settings-row-btn > svg:last-child {
   color: var(--text-muted);
   flex-shrink: 0;
-  margin-left: auto;
 }
 
 .home-settings-row-label {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 1;
+  align-items: center;
 }
 
 .home-settings-row-title {
