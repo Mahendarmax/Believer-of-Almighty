@@ -105,11 +105,49 @@ const ReciterPicker = memo(({ reciter, onSelect }) => {
 })
 ReciterPicker.displayName = 'ReciterPicker'
 
+// Bump ONLY when publishing a new APK binary (new permissions/native changes).
+// Web-only updates auto-deploy via GitHub Pages — no bump needed.
+const APK_BINARY_VERSION = '2.0'
+
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
+  const [apkRelease, setApkRelease] = useState(null)
+  const [showApkUpdateDialog, setShowApkUpdateDialog] = useState(false)
 
-  const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
+  useEffect(() => {
+    // Check if a new APK binary version is available
+    const installed = localStorage.getItem('apk_installed_build')
+    if (!installed) {
+      localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
+    } else if (parseFloat(APK_BINARY_VERSION) > parseFloat(installed)) {
+      const dismissed = localStorage.getItem('apk_dismissed_build')
+      if (dismissed !== APK_BINARY_VERSION) setShowApkUpdateDialog(true)
+    }
+
+    fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.id) setApkRelease(data) })
+      .catch(() => {})
+  }, [])
+
+  const handleApkUpdateDownload = useCallback(() => {
+    localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
+    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
+    setShowApkUpdateDialog(false)
+    const assetUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
+      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
+    window.open(assetUrl, '_system')
+  }, [apkRelease])
+
+  const handleApkUpdateLater = useCallback(() => {
+    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
+    setShowApkUpdateDialog(false)
+  }, [])
+
+  const handleCheckUpdate = useCallback(() => {
+    setShowApkUpdateDialog(true)
+  }, [])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
     if (lastRead) {
@@ -119,6 +157,28 @@ const Home = React.memo(function Home() {
 
   return (
     <div className="home">
+      {/* APK Update Dialog */}
+      {showApkUpdateDialog && (
+        <div className="apk-update-overlay">
+          <div className="apk-update-modal">
+            <div className="apk-update-icon">🔄</div>
+            <h2 className="apk-update-title">Update Available</h2>
+            <p className="apk-update-desc">A new version of Holy Quran app is ready. Download and install to get the latest features.</p>
+            <div className="apk-update-actions">
+              <button className="apk-update-later" onClick={handleApkUpdateLater}>Later</button>
+              <button className="apk-update-download" onClick={handleApkUpdateDownload}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <header className="home-hero">
         <div className="hero-pattern" />
@@ -337,6 +397,13 @@ const Home = React.memo(function Home() {
           "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
         </blockquote>
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
+        <button className="apk-check-update-btn" onClick={handleCheckUpdate}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          Check for Update
+        </button>
       </footer>
     </div>
   )
