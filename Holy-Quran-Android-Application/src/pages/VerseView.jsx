@@ -213,7 +213,6 @@ function VerseView() {
   const scrolledToVerse = useRef(false)
   const sentinelRef = useRef(null)
   const lastVisibleVerseRef = useRef(null)
-  const manualBookmarkRef = useRef(false)
 
   const surahNumber = parseInt(number)
   const surah = useMemo(() => getSurahByNumber(surahNumber), [surahNumber])
@@ -352,29 +351,6 @@ function VerseView() {
     return () => observer.disconnect()
   }, [loading, verses.length, visibleCount])
 
-  // Auto-save reading position on unmount or surah change (skip if user manually bookmarked)
-  useEffect(() => {
-    return () => {
-      if (surah && lastVisibleVerseRef.current && !manualBookmarkRef.current) {
-        updateLastRead(surahNumber, surah.name, lastVisibleVerseRef.current)
-      }
-    }
-  }, [surahNumber, surah, updateLastRead])
-
-  // Save reading position on tab/browser close (skip if user manually bookmarked)
-  useEffect(() => {
-    const onUnload = () => {
-      if (surah && lastVisibleVerseRef.current && !manualBookmarkRef.current) {
-        localStorage.setItem('quran_lastRead', JSON.stringify({
-          surahNumber, surahName: surah.name,
-          verseNumber: lastVisibleVerseRef.current, timestamp: Date.now()
-        }))
-      }
-    }
-    window.addEventListener('beforeunload', onUnload)
-    return () => window.removeEventListener('beforeunload', onUnload)
-  }, [surahNumber, surah])
-
   // Cleanup surah audio on unmount
   useEffect(() => {
     return () => {
@@ -405,7 +381,6 @@ function VerseView() {
 
   const handleBookmark = useCallback((verseNum) => {
     if (surah) {
-      manualBookmarkRef.current = true
       updateLastRead(surahNumber, surah.name, verseNum)
       setBookmarkToast(`📌 Saved: ${surah.name}, Verse ${verseNum} — Use "Continue Reading" on Home page`)
       setTimeout(() => setBookmarkToast(null), 3000)
