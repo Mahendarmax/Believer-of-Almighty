@@ -6,131 +6,103 @@
   width: 100%;
 }
 
-/* ===== APK UPDATE DIALOG ===== */
-.apk-update-overlay {
+/* ===== AUTO-UPDATE BANNER (non-blocking, fixed at bottom) ===== */
+.apk-update-banner {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(4px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.apk-update-modal {
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 480px;
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-lg);
-  padding: 32px 24px 24px;
-  max-width: 340px;
-  width: 100%;
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  text-align: center;
-}
-
-.apk-update-icon { font-size: 2.8rem; }
-
-.apk-update-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.apk-update-desc {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-  margin: 0;
-}
-
-.apk-update-actions {
-  display: flex;
   gap: 10px;
-  width: 100%;
-  margin-top: 8px;
+  z-index: 2000;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+  flex-wrap: wrap;
 }
 
-.apk-update-later {
-  flex: 1;
-  padding: 11px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-muted);
-  font-size: 0.88rem;
+.apk-update-banner.done {
+  border-color: rgba(52,211,153,0.4);
+  background: rgba(52,211,153,0.07);
+}
+
+.apk-update-banner.error {
+  border-color: rgba(239,68,68,0.4);
+  background: rgba(239,68,68,0.07);
+}
+
+.apk-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
+  color: var(--text-primary);
+  white-space: nowrap;
 }
 
-.apk-update-later:hover { background: var(--bg-card-hover); color: var(--text-primary); }
-
-.apk-update-download {
-  flex: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 11px 16px;
-  background: linear-gradient(135deg, #d4a44a, #a07830);
-  color: #0d1320;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-size: 0.88rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.apk-update-download:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(212,164,74,0.35);
-}
-
-/* Download progress bar */
-.apk-dl-progress-wrap {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.apk-dl-progress-bar {
+.apk-banner-bar {
   flex: 1;
-  height: 8px;
+  height: 6px;
   background: var(--bg-surface);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
   border: 1px solid var(--border);
+  min-width: 60px;
 }
 
-.apk-dl-progress-fill {
+.apk-banner-fill {
   height: 100%;
   background: linear-gradient(90deg, #d4a44a, #f0c060);
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.3s ease;
 }
 
-.apk-dl-progress-pct {
-  font-size: 0.82rem;
-  font-weight: 700;
+.apk-banner-spin {
+  animation: apk-spin 1s linear infinite;
   color: var(--accent);
-  min-width: 36px;
-  text-align: right;
 }
 
-/* Up-to-date toast message */
-.apk-up-to-date-msg {
-  font-size: 0.8rem;
-  color: #34d399;
-  font-weight: 600;
-  margin: 0 0 -6px;
+@keyframes apk-spin {
+  to { transform: rotate(360deg); }
+}
+
+.apk-banner-cancel {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.apk-banner-cancel:hover { color: var(--text-primary); background: var(--bg-card-hover); }
+
+.apk-banner-retry {
+  background: linear-gradient(135deg, #d4a44a, #a07830);
+  border: none;
+  color: #0d1320;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.apk-update-banner span {
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  flex: 1;
+  line-height: 1.4;
 }
 
 /* Check for Update button */
@@ -155,6 +127,14 @@
 .apk-check-update-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* Up-to-date toast */
+.apk-up-to-date-msg {
+  font-size: 0.8rem;
+  color: #34d399;
+  font-weight: 600;
+  margin: 0 0 -6px;
 }
 
 /* Hero — full width with ambient glow */

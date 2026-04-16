@@ -112,48 +112,26 @@ const APK_BINARY_VERSION = '2.0'
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
-  const [apkRelease, setApkRelease] = useState(null)
-  const [showApkUpdateDialog, setShowApkUpdateDialog] = useState(false)
   const [downloadState, setDownloadState] = useState(null) // null | 'downloading' | 'done' | 'error'
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [upToDate, setUpToDate] = useState(false)
   const abortRef = useRef(null)
+  const apkUrlRef = useRef('https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk')
 
-  useEffect(() => {
-    // Check if a new APK binary version is available
-    const installed = localStorage.getItem('apk_installed_build')
-    if (!installed) {
-      localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
-    } else if (parseFloat(APK_BINARY_VERSION) > parseFloat(installed)) {
-      const dismissed = localStorage.getItem('apk_dismissed_build')
-      if (dismissed !== APK_BINARY_VERSION) setShowApkUpdateDialog(true)
-    }
-
-    fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
-      .then(r => r.ok ? r.json() : null)
-      .then(data => { if (data?.id) setApkRelease(data) })
-      .catch(() => {})
-  }, [])
-
-  // In-app self-update: download APK with progress then trigger Android installer
-  const doSelfUpdate = useCallback(async () => {
-    const apkUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
-      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
-
+  // ── Silent auto-download helper ──
+  const doSelfUpdate = useCallback(async (url) => {
+    const apkUrl = url || apkUrlRef.current
+    if (downloadState === 'downloading') return
     setDownloadState('downloading')
     setDownloadProgress(0)
     const controller = new AbortController()
     abortRef.current = controller
 
     try {
-      const response = await fetch(apkUrl, {
-        signal: controller.signal,
-        cache: 'no-store',
-      })
+      const response = await fetch(apkUrl, { signal: controller.signal, cache: 'no-store' })
       if (!response.ok) throw new Error('HTTP ' + response.status)
 
-      const contentLength = response.headers.get('content-length')
-      const total = contentLength ? parseInt(contentLength, 10) : 0
+      const total = parseInt(response.headers.get('content-length') || '0', 10)
       const reader = response.body.getReader()
       const chunks = []
       let received = 0
@@ -166,7 +144,7 @@ const Home = React.memo(function Home() {
         setDownloadProgress(
           total > 0
             ? Math.min(99, Math.round((received / total) * 100))
-            : Math.min(90, Math.round((received / 8_000_000) * 100)) // ~8 MB estimate
+            : Math.min(90, Math.round((received / 8_000_000) * 100))
         )
       }
 
@@ -180,61 +158,64 @@ const Home = React.memo(function Home() {
       a.click()
       document.body.removeChild(a)
       setTimeout(() => URL.revokeObjectURL(blobUrl), 15000)
-
       localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
       setDownloadState('done')
     } catch (err) {
-      if (err.name === 'AbortError') {
-        setDownloadState(null)
-        return
-      }
+      if (err.name === 'AbortError') { setDownloadState(null); return }
       setDownloadState('error')
     }
-  }, [apkRelease])
+  }, [downloadState])
+
+  useEffect(() => {
+    // On launch: fetch release info and auto-start download if update available
+    const installed = localStorage.getItem('apk_installed_build')
+    if (!installed) localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
+
+    fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data?.id) return
+        const assetUrl = data.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
+        if (assetUrl) apkUrlRef.current = assetUrl
+
+        const installedVer = parseFloat(localStorage.getItem('apk_installed_build') || APK_BINARY_VERSION)
+        const dismissed = localStorage.getItem('apk_dismissed_build')
+        if (parseFloat(APK_BINARY_VERSION) > installedVer && dismissed !== APK_BINARY_VERSION) {
+          // New version detected — auto-start silent download
+          doSelfUpdate(assetUrl || apkUrlRef.current)
+        }
+      })
+      .catch(() => {})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const cancelDownload = useCallback(() => {
     abortRef.current?.abort()
+    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
     setDownloadState(null)
     setDownloadProgress(0)
   }, [])
 
-  const openInBrowser = useCallback(() => {
-    const apkUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
-      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
-    window.open(apkUrl, '_system')
-    setDownloadState(null)
-    setShowApkUpdateDialog(false)
-  }, [apkRelease])
-
-  const handleApkUpdateLater = useCallback(() => {
-    if (downloadState === 'downloading') abortRef.current?.abort()
-    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
-    setShowApkUpdateDialog(false)
-    setDownloadState(null)
-    setDownloadProgress(0)
-  }, [downloadState])
-
   const handleCheckUpdate = useCallback(async () => {
     setUpToDate(false)
-    let release = apkRelease
-    if (!release) {
-      try {
-        const r = await fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
-        const data = r.ok ? await r.json() : null
-        if (data?.id) { setApkRelease(data); release = data }
-      } catch {}
-    }
+    if (downloadState === 'downloading') return
+    try {
+      const r = await fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
+      const data = r.ok ? await r.json() : null
+      if (data?.assets) {
+        const assetUrl = data.assets.find(a => a.name.endsWith('.apk'))?.browser_download_url
+        if (assetUrl) apkUrlRef.current = assetUrl
+      }
+    } catch {}
     const installed = parseFloat(localStorage.getItem('apk_installed_build') || APK_BINARY_VERSION)
-    if (parseFloat(APK_BINARY_VERSION) <= installed && !release?.assets?.length) {
+    if (parseFloat(APK_BINARY_VERSION) <= installed) {
       setUpToDate(true)
       setTimeout(() => setUpToDate(false), 3000)
       return
     }
     localStorage.removeItem('apk_dismissed_build')
-    setDownloadState(null)
-    setDownloadProgress(0)
-    setShowApkUpdateDialog(true)
-  }, [apkRelease])
+    doSelfUpdate(apkUrlRef.current)
+  }, [downloadState, doSelfUpdate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
     if (lastRead) {
@@ -244,80 +225,36 @@ const Home = React.memo(function Home() {
 
   return (
     <div className="home">
-      {/* APK Self-Update Dialog */}
-      {showApkUpdateDialog && (
-        <div className="apk-update-overlay">
-          <div className="apk-update-modal">
-
-            {/* ── Idle: prompt to update ── */}
-            {!downloadState && (
-              <>
-                <div className="apk-update-icon">🔄</div>
-                <h2 className="apk-update-title">Update Available</h2>
-                <p className="apk-update-desc">A new version of Holy Quran is ready. The app will download and install the update automatically.</p>
-                <div className="apk-update-actions">
-                  <button className="apk-update-later" onClick={handleApkUpdateLater}>Later</button>
-                  <button className="apk-update-download" onClick={doSelfUpdate}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                      <polyline points="7 10 12 15 17 10"/>
-                      <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Update Now
-                  </button>
-                </div>
-              </>
-            )}
-
-            {/* ── Downloading: progress bar ── */}
-            {downloadState === 'downloading' && (
-              <>
-                <div className="apk-update-icon">⬇️</div>
-                <h2 className="apk-update-title">Downloading Update</h2>
-                <p className="apk-update-desc">Please wait while the update downloads...</p>
-                <div className="apk-dl-progress-wrap">
-                  <div className="apk-dl-progress-bar">
-                    <div className="apk-dl-progress-fill" style={{ width: `${downloadProgress}%` }} />
-                  </div>
-                  <span className="apk-dl-progress-pct">{downloadProgress}%</span>
-                </div>
-                <button className="apk-update-later" style={{ width: '100%', marginTop: '4px' }} onClick={cancelDownload}>Cancel</button>
-              </>
-            )}
-
-            {/* ── Done: install prompt ── */}
-            {downloadState === 'done' && (
-              <>
-                <div className="apk-update-icon">✅</div>
-                <h2 className="apk-update-title">Download Complete!</h2>
-                <p className="apk-update-desc">The installation prompt should appear now. If not, open your Downloads folder and tap <strong>Holy-Quran-Update.apk</strong> to install.</p>
-                <button className="apk-update-download" style={{ width: '100%' }} onClick={() => { setShowApkUpdateDialog(false); setDownloadState(null) }}>
-                  Done
-                </button>
-              </>
-            )}
-
-            {/* ── Error: fallback to browser ── */}
-            {downloadState === 'error' && (
-              <>
-                <div className="apk-update-icon">⚠️</div>
-                <h2 className="apk-update-title">Download Failed</h2>
-                <p className="apk-update-desc">In-app download could not complete. You can open it in the browser instead.</p>
-                <div className="apk-update-actions">
-                  <button className="apk-update-later" onClick={() => setDownloadState(null)}>Retry</button>
-                  <button className="apk-update-download" onClick={openInBrowser}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                      <polyline points="15 3 21 3 21 9"/>
-                      <line x1="10" y1="14" x2="21" y2="3"/>
-                    </svg>
-                    Open in Browser
-                  </button>
-                </div>
-              </>
-            )}
-
+      {/* ── Silent auto-update progress banner (non-blocking) ── */}
+      {downloadState === 'downloading' && (
+        <div className="apk-update-banner">
+          <div className="apk-banner-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" className="apk-banner-spin">
+              <polyline points="23 4 23 10 17 10"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+            <span>Updating app… {downloadProgress}%</span>
           </div>
+          <div className="apk-banner-bar">
+            <div className="apk-banner-fill" style={{ width: `${downloadProgress}%` }} />
+          </div>
+          <button className="apk-banner-cancel" onClick={cancelDownload} aria-label="Cancel update">✕</button>
+        </div>
+      )}
+
+      {downloadState === 'done' && (
+        <div className="apk-update-banner done">
+          <span>✅ Update downloaded — tap <strong>Install</strong> if prompted, or open Downloads folder.</span>
+          <button className="apk-banner-cancel" onClick={() => setDownloadState(null)} aria-label="Dismiss">✕</button>
+        </div>
+      )}
+
+      {downloadState === 'error' && (
+        <div className="apk-update-banner error">
+          <span>⚠️ Update download failed.</span>
+          <button className="apk-banner-retry" onClick={() => doSelfUpdate()}>Retry</button>
+          <button className="apk-banner-cancel" onClick={() => { window.open(apkUrlRef.current, '_system'); setDownloadState(null) }}>Browser</button>
+          <button className="apk-banner-cancel" onClick={() => setDownloadState(null)} aria-label="Dismiss">✕</button>
         </div>
       )}
 
