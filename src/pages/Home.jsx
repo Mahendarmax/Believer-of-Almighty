@@ -10,6 +10,10 @@ const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60
 // Show APK-only features when running inside Capacitor WebView
 const isApk = typeof navigator !== 'undefined' && navigator.userAgent.includes('HolyQuranApp')
 
+// Bump ONLY when publishing a new APK binary (new permissions/native changes).
+// Web-only updates auto-deploy via GitHub Pages — no bump needed.
+const APK_BINARY_VERSION = '2.0'
+
 // Memoized reciter picker for Home page
 const ReciterPicker = memo(({ reciter, onSelect }) => {
   const [open, setOpen] = useState(false)
