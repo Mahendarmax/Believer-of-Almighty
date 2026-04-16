@@ -105,10 +105,6 @@ const ReciterPicker = memo(({ reciter, onSelect }) => {
 })
 ReciterPicker.displayName = 'ReciterPicker'
 
-// Bump ONLY when publishing a new APK binary (new permissions/native changes).
-// Web-only updates auto-deploy via GitHub Pages — no bump needed.
-const APK_BINARY_VERSION = '2.0'
-
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
@@ -117,6 +113,7 @@ const Home = React.memo(function Home() {
   const [upToDate, setUpToDate] = useState(false)
   const abortRef = useRef(null)
   const apkUrlRef = useRef('https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk')
+  const latestReleaseIdRef = useRef(0)
 
   // ── Silent auto-download helper ──
   const doSelfUpdate = useCallback(async (url) => {
@@ -158,7 +155,7 @@ const Home = React.memo(function Home() {
       a.click()
       document.body.removeChild(a)
       setTimeout(() => URL.revokeObjectURL(blobUrl), 15000)
-      localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
+      localStorage.setItem('apk_installed_release_id', String(latestReleaseIdRef.current || 0))
       setDownloadState('done')
     } catch (err) {
       if (err.name === 'AbortError') { setDownloadState(null); return }
@@ -167,10 +164,8 @@ const Home = React.memo(function Home() {
   }, [downloadState])
 
   useEffect(() => {
-    // On launch: fetch release info and auto-start download if update available
-    const installed = localStorage.getItem('apk_installed_build')
-    if (!installed) localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
-
+    // On launch: fetch release info and auto-start download if update available.
+    // Uses GitHub release ID (increases with every new publish) so any new release triggers update.
     fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
       .then(r => r.ok ? r.json() : null)
       .then(data => {
@@ -178,10 +173,13 @@ const Home = React.memo(function Home() {
         const assetUrl = data.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
         if (assetUrl) apkUrlRef.current = assetUrl
 
-        const installedVer = parseFloat(localStorage.getItem('apk_installed_build') || APK_BINARY_VERSION)
-        const dismissed = localStorage.getItem('apk_dismissed_build')
-        if (parseFloat(APK_BINARY_VERSION) > installedVer && dismissed !== APK_BINARY_VERSION) {
-          // New version detected — auto-start silent download
+        const installedReleaseId = parseInt(localStorage.getItem('apk_installed_release_id') || '0', 10)
+        const latestReleaseId = data.id
+        const dismissed = localStorage.getItem('apk_dismissed_release_id')
+
+        if (latestReleaseId > installedReleaseId && String(dismissed) !== String(latestReleaseId)) {
+          latestReleaseIdRef.current = latestReleaseId
+          // New release detected — auto-start silent download
           doSelfUpdate(assetUrl || apkUrlRef.current)
         }
       })
@@ -191,7 +189,9 @@ const Home = React.memo(function Home() {
 
   const cancelDownload = useCallback(() => {
     abortRef.current?.abort()
-    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
+    // Mark dismissed so it doesn't re-trigger this session
+    const installedId = localStorage.getItem('apk_installed_release_id') || '0'
+    localStorage.setItem('apk_dismissed_release_id', installedId)
     setDownloadState(null)
     setDownloadProgress(0)
   }, [])
@@ -199,22 +199,26 @@ const Home = React.memo(function Home() {
   const handleCheckUpdate = useCallback(async () => {
     setUpToDate(false)
     if (downloadState === 'downloading') return
+    let latestReleaseId = 0
+    let assetUrl = null
     try {
       const r = await fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
       const data = r.ok ? await r.json() : null
-      if (data?.assets) {
-        const assetUrl = data.assets.find(a => a.name.endsWith('.apk'))?.browser_download_url
+      if (data?.id) {
+        latestReleaseId = data.id
+        latestReleaseIdRef.current = data.id
+        assetUrl = data.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
         if (assetUrl) apkUrlRef.current = assetUrl
       }
     } catch {}
-    const installed = parseFloat(localStorage.getItem('apk_installed_build') || APK_BINARY_VERSION)
-    if (parseFloat(APK_BINARY_VERSION) <= installed) {
+    const installedReleaseId = parseInt(localStorage.getItem('apk_installed_release_id') || '0', 10)
+    if (latestReleaseId <= installedReleaseId) {
       setUpToDate(true)
       setTimeout(() => setUpToDate(false), 3000)
       return
     }
-    localStorage.removeItem('apk_dismissed_build')
-    doSelfUpdate(apkUrlRef.current)
+    localStorage.removeItem('apk_dismissed_release_id')
+    doSelfUpdate(assetUrl || apkUrlRef.current)
   }, [downloadState, doSelfUpdate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
