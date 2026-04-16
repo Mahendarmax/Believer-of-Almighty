@@ -169,7 +169,7 @@ const Home = React.memo(function Home() {
 
   const handleApkDownload = useCallback(() => {
     const assetUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
-    if (!assetUrl) return // wait for API to resolve — don't use cached redirect
+      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
     localStorage.setItem('web_seen_apk_version', APK_BINARY_VERSION)
     setIsNewApk(false)
     const a = document.createElement('a')
@@ -432,8 +432,7 @@ const Home = React.memo(function Home() {
         <button
           className="apk-download-btn"
           onClick={handleApkDownload}
-          disabled={!apkRelease}
-          title={!apkRelease ? 'Loading download link...' : 'Download Holy Quran APK'}
+          title="Download Holy Quran APK"
         >
           {isNewApk && <span className="apk-new-badge">NEW</span>}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
