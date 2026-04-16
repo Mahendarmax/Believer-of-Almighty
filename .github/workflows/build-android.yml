@@ -37,7 +37,7 @@ jobs:
         run: mkdir -p android/app/src/main/assets
 
       - name: Build web assets
-        run: npm run build
+        run: node node_modules/vite/bin/vite.js build
         env:
           BUILD_NUMBER: ${{ github.run_number }}
           COMMIT_SHA: ${{ github.sha }}
