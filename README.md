@@ -5,141 +5,55 @@
 A complete Islamic web application built with React + Vite, featuring the Holy Quran with Arabic, English, and Telugu translations, verse-by-verse audio, and a rich set of Islamic tools.
 
 🌐 **Live Web App:** [https://mahendarmax.github.io/Believer-of-Almighty/](https://mahendarmax.github.io/Believer-of-Almighty/)
-📱 **Android APK:** [Download Latest](https://github.com/Mahendarmax/Believer-of-Almighty/releases/latest/download/Holy-Quran.apk)
 
 ---
 
-## 🏗️ Architecture & Flow
-
-This project has **one codebase** that powers both the web app and the Android APK.
-
-### Project Structure
+## 🏗️ Project Structure
 
 ```
 Believer-of-Almighty/
-├── src/                              ← Web app source code (React)
+├── src/                        ← React source code
+│   ├── pages/                  ← All page components
+│   ├── components/             ← Shared components (AudioPlayer, SearchBar, etc.)
+│   ├── context/                ← Settings context (theme, reciter, transliteration)
+│   ├── data/                   ← Quran, duas, adhkar, asma ul husna data files
+│   └── utils/                  ← Telugu transliteration utility
+├── public/                     ← Static assets (manifest, service worker)
 ├── .github/
 │   └── workflows/
-│       ├── jekyll-gh-pages.yml       ← Deploys web app to GitHub Pages
-│       └── build-android.yml         ← Builds Android APK
-└── Holy-Quran-Android-Application/
-    ├── capacitor.config.json         ← Points APK to GitHub Pages URL
-    └── package.json                  ← Only Capacitor packages (lightweight)
+│       └── jekyll-gh-pages.yml ← Auto-deploys to GitHub Pages on push
+└── vite.config.js              ← Vite build config
 ```
 
 ---
 
-### How the Android APK Works
+## 🚀 Deployment
 
-The APK is a lightweight shell — it has **no bundled web code**. When opened, it loads the live GitHub Pages URL inside Android's WebView:
-
-```
-User opens APK
-      │
-      ▼
-WebView loads → https://mahendarmax.github.io/Believer-of-Almighty/
-      │
-      ▼
-Always shows the latest web app ✅
-No reinstall needed for web changes ✅
-```
-
----
-
-### Flow 1 — Web Code Change (UI, features, bug fixes)
-
-> Push to `src/` folder only
+Every push to the `develop` branch automatically builds and deploys to GitHub Pages via the `jekyll-gh-pages.yml` workflow:
 
 ```
-You edit src/pages/Home.jsx (or any web file)
+Push to develop
       │
       ▼
-Push to develop branch
-      │
-      ▼
-jekyll-gh-pages.yml triggers automatically
+jekyll-gh-pages.yml triggers
   → npm install
   → vite build
   → Deploy to GitHub Pages
       │
       ▼
-Web app updated instantly at GitHub Pages URL
-      │
-      ▼
-APK users open app → loads updated code instantly ✅
-Browser users refresh → see updated code instantly ✅
-No new APK needed ✅
+Live at https://mahendarmax.github.io/Believer-of-Almighty/ ✅
 ```
 
 ---
 
-### Flow 2 — Android Config Change (icon, permissions, native plugins)
+## 💻 Local Development
 
-> Push to `Holy-Quran-Android-Application/` folder
-
+```bash
+npm install
+npm run dev       # starts at http://localhost:5173
+npm run build     # production build → dist/
+npm run preview   # preview production build
 ```
-You edit capacitor.config.json (or Android native config)
-      │
-      ▼
-Push to develop branch
-      │
-      ▼
-build-android.yml triggers automatically
-  → npm install (Capacitor packages only — very fast)
-  → npx cap add android
-  → npx cap sync android
-  → Gradle builds APK
-  → GitHub Release created (tag: holy-quran-{build-number})
-  → Holy-Quran.apk attached to release
-      │
-      ▼
-Web app users see 🔴 NEW badge on Download button
-  → "New update available!"
-  → User clicks → /releases/latest/download/Holy-Quran.apk
-  → Always downloads newest APK ✅
-```
-
----
-
-### Flow 3 — First Time User
-
-```
-User visits https://mahendarmax.github.io/Believer-of-Almighty/
-      │
-      ▼
-Clicks "Download Mobile APK"
-      │
-      ▼
-GitHub /releases/latest/ → auto-redirects to newest APK ✅
-      │
-      ▼
-User installs APK on Android
-      │
-      ▼
-Opens app → WebView loads GitHub Pages URL
-      → Same as web app, always latest code ✅
-```
-
----
-
-### Summary Table
-
-| Change Type | Push To | Result |
-|---|---|---|
-| UI / features / bug fixes | `src/` | Instant update in browser + APK |
-| App icon / name / permissions | `Holy-Quran-Android-Application/` | New APK built + 🔴 badge shown on web |
-| First install | Download from web app | Always gets latest APK |
-
----
-
-### Pipelines
-
-| Workflow | Triggers When | Does |
-|---|---|---|
-| `jekyll-gh-pages.yml` | Push to `develop` | Builds & deploys web app to GitHub Pages |
-| `build-android.yml` | Push to `Holy-Quran-Android-Application/**` | Builds APK + creates GitHub Release |
-
----
 
 ---
 
@@ -152,10 +66,10 @@ Opens app → WebView loads GitHub Pages URL
 - Surah-level full audio streaming
 - Bookmarks & continue reading
 - Adjustable Arabic font size
-- Transliteration display (English/Telugu/Both)
+- Transliteration display (English / Telugu / Both)
 
 ### 🕌 Namaz Surahs
-- **9 commonly recited Surahs** for Salah (Al-Fatiha, Al-Ikhlas, Al-Falaq, An-Nas, Al-Kafirun, Al-Kawthar, Al-Asr, An-Nasr, Ad-Duha)
+- **9 commonly recited Surahs** for Salah
 - Full Arabic text with word-by-word Telugu meaning
 
 ### 🤲 Duas
@@ -165,15 +79,15 @@ Opens app → WebView loads GitHub Pages URL
 
 ### ✅ Dos & Don'ts in Islam
 - **96 items** across 4 categories
-- Halal (29) · Haram (29) · Makruh (14) · Sunnah (24)
+- Halal · Haram · Makruh · Sunnah
 
 ### ⭐ 99 Names of Allah (Asma ul Husna)
 - All 99 names with Arabic, transliteration, English meaning & Telugu
 
 ### 📿 Tasbih Counter
 - Digital dhikr counter with 5 presets
-- SubhanAllah (33) · Alhamdulillah (33) · Allahu Akbar (34) · La ilaha illallah (100) · Astaghfirullah (100)
-- Haptic feedback & session tracking
+- SubhanAllah · Alhamdulillah · Allahu Akbar · La ilaha illallah · Astaghfirullah
+- Session tracking
 
 ### 🌅 Adhkar
 - **14 daily Adhkar** — 7 Morning & 7 Evening
@@ -181,7 +95,6 @@ Opens app → WebView loads GitHub Pages URL
 
 ### ➡️☪️ Prophet Isa (Jesus) — AS
 - **60 verses** from Bible & Quran across 7 categories
-- Proving Isa (AS) is a Prophet of Allah, not God
 - Telugu translations included
 
 ### 📜 Seerah — Prophet Muhammad ﷺ
@@ -193,139 +106,16 @@ Opens app → WebView loads GitHub Pages URL
 - Save any Quran verse to favorites
 - Quick access from home screen
 
-### ⚙️ Settings
-- Arabic text display toggle
-- Font size control (12–28px)
-- Transliteration mode (English/Telugu/Both)
-- Reciter selection (21 reciters)
-
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | React 18 |
-| Build Tool | Vite 5 |
-| Routing | React Router DOM v6 |
-| Styling | CSS (no framework — custom dark theme) |
-| Audio | HTML5 Audio API |
-| APIs | alquran.cloud, everyayah.com, cdn.islamic.network |
-| Hosting | GitHub Pages |
-| CI/CD | GitHub Actions |
+| | |
+|---|---|
+| Framework | React 18 + Vite 5 |
+| Routing | React Router v6 (HashRouter) |
+| Styling | Plain CSS with CSS variables |
+| Audio | Quran CDN (cdn.islamic.network) |
+| Offline | Service Worker (cache-first for audio) |
+| Deployment | GitHub Pages via GitHub Actions |
 
----
-
-## 🚀 Getting Started
-
-```bash
-# Clone
-git clone https://github.com/Mahendarmax/Believer-of-Almighty.git
-cd Believer-of-Almighty
-
-# Install
-npm install
-
-# Dev server (localhost:3000)
-npm run dev
-
-# Production build
-npm run build
-```
-
----
-
-## 📱 Android APK
-
-A separate Android-ready copy is available in the `Believer-of-Almighty-Android` folder, using Capacitor to wrap the exact same web app as a native APK.
-
-```bash
-cd Believer-of-Almighty-Android
-npm install
-npm run build
-npx cap add android
-npx cap sync android
-
-# Open in Android Studio
-npx cap open android
-
-# Or build from terminal
-cd android && ./gradlew assembleDebug
-```
-
-APK output: `android/app/build/outputs/apk/debug/app-debug.apk`
-
----
-
-## 📂 Project Structure
-
-```
-src/
-├── App.jsx                  # Root component with routing
-├── main.jsx                 # Entry point
-├── components/
-│   ├── AudioPlayer.jsx      # Verse & Surah audio player
-│   ├── SearchBar.jsx        # Global search
-│   └── ErrorBoundary.jsx    # Error handling
-├── context/
-│   └── SettingsContext.jsx   # App-wide settings (reciter, font, etc.)
-├── data/
-│   ├── quranData.js          # 114 Surahs + 21 reciters
-│   ├── namazAndDuas.js       # Namaz surahs + Dos & Don'ts
-│   ├── asmaUlHusna.js        # 99 Names of Allah
-│   ├── adhkar.js             # Morning & Evening Adhkar
-│   ├── prophetIsa.js         # 60 Bible & Quran verses
-│   └── prophetMuhammad.js    # 16-chapter Seerah
-├── pages/
-│   ├── Home.jsx              # Landing page with stats & navigation
-│   ├── SurahList.jsx         # All 114 Surahs browser
-│   ├── VerseView.jsx         # Verse-by-verse reading + audio
-│   ├── NamazSurahs.jsx       # Namaz Surahs viewer
-│   ├── Duas.jsx              # 31 Duas with categories
-│   ├── DosAndDonts.jsx       # Halal/Haram/Makruh/Sunnah
-│   ├── AsmaUlHusna.jsx       # 99 Names of Allah
-│   ├── TasbihCounter.jsx     # Digital Tasbih
-│   ├── Adhkar.jsx            # Daily Adhkar
-│   ├── ProphetIsa.jsx        # Isa (AS) proofs
-│   ├── ProphetMuhammad.jsx   # Complete Seerah
-│   ├── Favorites.jsx         # Saved verses
-│   └── Settings.jsx          # App settings
-└── utils/
-    └── teluguTransliteration.js  # Telugu script helper
-```
-
----
-
-## 🎨 Theme
-
-Dark theme with Islamic gold accent:
-- Background: `#06090f`
-- Cards: `#111827`
-- Primary gold: `#d4a44a`
-- Text: `#94a3b8`
-
----
-
-## 📡 APIs Used
-
-| API | Purpose |
-|-----|---------|
-| `api.alquran.cloud` | Quran Arabic text & English translation |
-| `everyayah.com` | Verse-by-verse audio (21 reciters) |
-| `cdn.islamic.network` | Full Surah audio streaming |
-
----
-
-## 🤝 Contributing
-
-1. Fork the repo
-2. Create a branch (`git checkout -b feature/my-feature`)
-3. Commit changes (`git commit -m 'Add feature'`)
-4. Push (`git push origin feature/my-feature`)
-5. Open a Pull Request
-
----
-
-**بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ**
-
-Made with ❤️ for the Ummah
