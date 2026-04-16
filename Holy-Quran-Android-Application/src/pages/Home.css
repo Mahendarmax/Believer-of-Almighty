@@ -93,6 +93,46 @@
   box-shadow: 0 4px 14px rgba(212,164,74,0.35);
 }
 
+/* Download progress bar */
+.apk-dl-progress-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.apk-dl-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-surface);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.apk-dl-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d4a44a, #f0c060);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.apk-dl-progress-pct {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Up-to-date toast message */
+.apk-up-to-date-msg {
+  font-size: 0.8rem;
+  color: #34d399;
+  font-weight: 600;
+  margin: 0 0 -6px;
+}
+
 /* Check for Update button */
 .apk-check-update-btn {
   display: flex;

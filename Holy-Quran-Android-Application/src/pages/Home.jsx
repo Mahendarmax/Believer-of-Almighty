@@ -114,6 +114,10 @@ const Home = React.memo(function Home() {
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
   const [apkRelease, setApkRelease] = useState(null)
   const [showApkUpdateDialog, setShowApkUpdateDialog] = useState(false)
+  const [downloadState, setDownloadState] = useState(null) // null | 'downloading' | 'done' | 'error'
+  const [downloadProgress, setDownloadProgress] = useState(0)
+  const [upToDate, setUpToDate] = useState(false)
+  const abortRef = useRef(null)
 
   useEffect(() => {
     // Check if a new APK binary version is available
@@ -131,23 +135,106 @@ const Home = React.memo(function Home() {
       .catch(() => {})
   }, [])
 
-  const handleApkUpdateDownload = useCallback(() => {
-    localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
-    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
-    setShowApkUpdateDialog(false)
-    const assetUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
+  // In-app self-update: download APK with progress then trigger Android installer
+  const doSelfUpdate = useCallback(async () => {
+    const apkUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
       || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
-    window.open(assetUrl, '_system')
+
+    setDownloadState('downloading')
+    setDownloadProgress(0)
+    const controller = new AbortController()
+    abortRef.current = controller
+
+    try {
+      const response = await fetch(apkUrl, {
+        signal: controller.signal,
+        cache: 'no-store',
+      })
+      if (!response.ok) throw new Error('HTTP ' + response.status)
+
+      const contentLength = response.headers.get('content-length')
+      const total = contentLength ? parseInt(contentLength, 10) : 0
+      const reader = response.body.getReader()
+      const chunks = []
+      let received = 0
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        chunks.push(value)
+        received += value.length
+        setDownloadProgress(
+          total > 0
+            ? Math.min(99, Math.round((received / total) * 100))
+            : Math.min(90, Math.round((received / 8_000_000) * 100)) // ~8 MB estimate
+        )
+      }
+
+      setDownloadProgress(100)
+      const blob = new Blob(chunks, { type: 'application/vnd.android.package-archive' })
+      const blobUrl = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = blobUrl
+      a.download = 'Holy-Quran-Update.apk'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 15000)
+
+      localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
+      setDownloadState('done')
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        setDownloadState(null)
+        return
+      }
+      setDownloadState('error')
+    }
+  }, [apkRelease])
+
+  const cancelDownload = useCallback(() => {
+    abortRef.current?.abort()
+    setDownloadState(null)
+    setDownloadProgress(0)
+  }, [])
+
+  const openInBrowser = useCallback(() => {
+    const apkUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
+      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
+    window.open(apkUrl, '_system')
+    setDownloadState(null)
+    setShowApkUpdateDialog(false)
   }, [apkRelease])
 
   const handleApkUpdateLater = useCallback(() => {
+    if (downloadState === 'downloading') abortRef.current?.abort()
     localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
     setShowApkUpdateDialog(false)
-  }, [])
+    setDownloadState(null)
+    setDownloadProgress(0)
+  }, [downloadState])
 
-  const handleCheckUpdate = useCallback(() => {
+  const handleCheckUpdate = useCallback(async () => {
+    setUpToDate(false)
+    let release = apkRelease
+    if (!release) {
+      try {
+        const r = await fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
+        const data = r.ok ? await r.json() : null
+        if (data?.id) { setApkRelease(data); release = data }
+      } catch {}
+    }
+    const installed = parseFloat(localStorage.getItem('apk_installed_build') || APK_BINARY_VERSION)
+    if (parseFloat(APK_BINARY_VERSION) <= installed && !release?.assets?.length) {
+      setUpToDate(true)
+      setTimeout(() => setUpToDate(false), 3000)
+      return
+    }
+    localStorage.removeItem('apk_dismissed_build')
+    setDownloadState(null)
+    setDownloadProgress(0)
     setShowApkUpdateDialog(true)
-  }, [])
+  }, [apkRelease])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
     if (lastRead) {
@@ -157,24 +244,79 @@ const Home = React.memo(function Home() {
 
   return (
     <div className="home">
-      {/* APK Update Dialog */}
+      {/* APK Self-Update Dialog */}
       {showApkUpdateDialog && (
         <div className="apk-update-overlay">
           <div className="apk-update-modal">
-            <div className="apk-update-icon">🔄</div>
-            <h2 className="apk-update-title">Update Available</h2>
-            <p className="apk-update-desc">A new version of Holy Quran app is ready. Download and install to get the latest features.</p>
-            <div className="apk-update-actions">
-              <button className="apk-update-later" onClick={handleApkUpdateLater}>Later</button>
-              <button className="apk-update-download" onClick={handleApkUpdateDownload}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Download Update
-              </button>
-            </div>
+
+            {/* ── Idle: prompt to update ── */}
+            {!downloadState && (
+              <>
+                <div className="apk-update-icon">🔄</div>
+                <h2 className="apk-update-title">Update Available</h2>
+                <p className="apk-update-desc">A new version of Holy Quran is ready. The app will download and install the update automatically.</p>
+                <div className="apk-update-actions">
+                  <button className="apk-update-later" onClick={handleApkUpdateLater}>Later</button>
+                  <button className="apk-update-download" onClick={doSelfUpdate}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Update Now
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* ── Downloading: progress bar ── */}
+            {downloadState === 'downloading' && (
+              <>
+                <div className="apk-update-icon">⬇️</div>
+                <h2 className="apk-update-title">Downloading Update</h2>
+                <p className="apk-update-desc">Please wait while the update downloads...</p>
+                <div className="apk-dl-progress-wrap">
+                  <div className="apk-dl-progress-bar">
+                    <div className="apk-dl-progress-fill" style={{ width: `${downloadProgress}%` }} />
+                  </div>
+                  <span className="apk-dl-progress-pct">{downloadProgress}%</span>
+                </div>
+                <button className="apk-update-later" style={{ width: '100%', marginTop: '4px' }} onClick={cancelDownload}>Cancel</button>
+              </>
+            )}
+
+            {/* ── Done: install prompt ── */}
+            {downloadState === 'done' && (
+              <>
+                <div className="apk-update-icon">✅</div>
+                <h2 className="apk-update-title">Download Complete!</h2>
+                <p className="apk-update-desc">The installation prompt should appear now. If not, open your Downloads folder and tap <strong>Holy-Quran-Update.apk</strong> to install.</p>
+                <button className="apk-update-download" style={{ width: '100%' }} onClick={() => { setShowApkUpdateDialog(false); setDownloadState(null) }}>
+                  Done
+                </button>
+              </>
+            )}
+
+            {/* ── Error: fallback to browser ── */}
+            {downloadState === 'error' && (
+              <>
+                <div className="apk-update-icon">⚠️</div>
+                <h2 className="apk-update-title">Download Failed</h2>
+                <p className="apk-update-desc">In-app download could not complete. You can open it in the browser instead.</p>
+                <div className="apk-update-actions">
+                  <button className="apk-update-later" onClick={() => setDownloadState(null)}>Retry</button>
+                  <button className="apk-update-download" onClick={openInBrowser}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                      <polyline points="15 3 21 3 21 9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                    Open in Browser
+                  </button>
+                </div>
+              </>
+            )}
+
           </div>
         </div>
       )}
@@ -397,6 +539,7 @@ const Home = React.memo(function Home() {
           "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
         </blockquote>
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
+        {upToDate && <p className="apk-up-to-date-msg">✓ App is up to date</p>}
         <button className="apk-check-update-btn" onClick={handleCheckUpdate}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
             <polyline points="23 4 23 10 17 10"/>
