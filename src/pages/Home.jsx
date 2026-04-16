@@ -7,13 +7,6 @@ import './Home.css'
 // Static counts — avoid importing large data modules on the home page
 const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, seerah: 48 }
 
-// Show APK-only features when running inside Capacitor WebView
-const isApk = typeof navigator !== 'undefined' && navigator.userAgent.includes('HolyQuranApp')
-
-// Bump ONLY when publishing a new APK binary (new permissions/native changes).
-// Web-only updates auto-deploy via GitHub Pages — no bump needed.
-const APK_BINARY_VERSION = '2.0'
-
 // Memoized reciter picker for Home page
 const ReciterPicker = memo(({ reciter, onSelect }) => {
   const [open, setOpen] = useState(false)
@@ -115,70 +108,9 @@ ReciterPicker.displayName = 'ReciterPicker'
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
   const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
-  const [apkRelease, setApkRelease] = useState(null)
-  const [isNewApk, setIsNewApk] = useState(false)
-  const [showApkUpdateDialog, setShowApkUpdateDialog] = useState(false)
 
-  useEffect(() => {
-    // APK: check if a new binary version is available via version number
-    if (isApk) {
-      const installed = localStorage.getItem('apk_installed_build')
-      if (!installed) {
-        localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
-      } else if (parseFloat(APK_BINARY_VERSION) > parseFloat(installed)) {
-        const dismissed = localStorage.getItem('apk_dismissed_build')
-        if (dismissed !== APK_BINARY_VERSION) setShowApkUpdateDialog(true)
-      }
-      // Fetch release only to get asset download URL
-      fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
-        .then(r => r.ok ? r.json() : null)
-        .then(data => { if (data?.id) setApkRelease(data) })
-        .catch(() => {})
-      return
-    }
+  useEffect(() => {}, [])
 
-    // Web browser: show NEW badge only when APK_BINARY_VERSION is bumped
-    const seenVersion = localStorage.getItem('web_seen_apk_version')
-    if (!seenVersion) {
-      // First visit — save silently, no badge
-      localStorage.setItem('web_seen_apk_version', APK_BINARY_VERSION)
-    } else if (parseFloat(APK_BINARY_VERSION) > parseFloat(seenVersion)) {
-      // New APK binary available for download
-      setIsNewApk(true)
-    }
-    // Fetch release to get asset download URL
-    fetch('https://api.github.com/repos/Mahendarmax/Believer-of-Almighty/releases/tags/holy-quran-latest')
-      .then(r => r.ok ? r.json() : null)
-      .then(data => { if (data?.id) setApkRelease(data) })
-      .catch(() => {})
-  }, [])
-
-  const handleApkUpdateDownload = useCallback(() => {
-    localStorage.setItem('apk_installed_build', APK_BINARY_VERSION)
-    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
-    setShowApkUpdateDialog(false)
-    const assetUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
-      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
-    window.open(assetUrl, '_system')
-  }, [apkRelease])
-
-  const handleApkUpdateLater = useCallback(() => {
-    localStorage.setItem('apk_dismissed_build', APK_BINARY_VERSION)
-    setShowApkUpdateDialog(false)
-  }, [])
-
-  const handleApkDownload = useCallback(() => {
-    const assetUrl = apkRelease?.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
-      || 'https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk'
-    localStorage.setItem('web_seen_apk_version', APK_BINARY_VERSION)
-    setIsNewApk(false)
-    const a = document.createElement('a')
-    a.href = assetUrl
-    a.download = 'Holy-Quran.apk'
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-  }, [apkRelease])
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
@@ -189,27 +121,6 @@ const Home = React.memo(function Home() {
 
   return (
     <div className="home">
-      {/* APK Update Dialog */}
-      {showApkUpdateDialog && (
-        <div className="apk-update-overlay">
-          <div className="apk-update-modal">
-            <div className="apk-update-icon">🔄</div>
-            <h2 className="apk-update-title">Update Available</h2>
-            <p className="apk-update-desc">A new version of Holy Quran app is ready. Download and install to get the latest features.</p>
-            <div className="apk-update-actions">
-              <button className="apk-update-later" onClick={handleApkUpdateLater}>Later</button>
-              <button className="apk-update-download" onClick={handleApkUpdateDownload}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Download Update
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Hero Section */}
       <header className="home-hero">
@@ -429,33 +340,6 @@ const Home = React.memo(function Home() {
           "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
         </blockquote>
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
-        <button
-          className="apk-download-btn"
-          onClick={handleApkDownload}
-          title="Download Holy Quran APK"
-        >
-          {isNewApk && <span className="apk-new-badge">NEW</span>}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          <span className="apk-btn-text">
-            Download Mobile APK
-            {isNewApk && (
-              <span className="apk-version-info">New update available!</span>
-            )}
-          </span>
-        </button>
-        {apkRelease && (() => {
-          const m = apkRelease.body?.match(/Build:\s*(\d+)\s*\|\s*Commit:\s*([a-f0-9]+)/i)
-          const buildNum = m?.[1]
-          const sha = m?.[2]?.slice(0, 7)
-          if (!buildNum) return null
-          return (
-            <p className="apk-build-ref">Build #{buildNum} · {sha}</p>
-          )
-        })()}
       </footer>
     </div>
   )
