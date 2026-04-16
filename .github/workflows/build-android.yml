@@ -43,6 +43,15 @@ jobs:
           BUILD_NUMBER: ${{ github.run_number }}
           COMMIT_SHA: ${{ github.sha }}
 
+      - name: Verify dist was built
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "ERROR: dist/index.html not found — vite build failed"
+            exit 1
+          fi
+          echo "dist/ contents:"
+          ls -la dist/
+
       - name: Sync Capacitor Android
         run: npx cap sync android
 

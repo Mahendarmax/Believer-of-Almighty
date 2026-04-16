@@ -1,9 +1,9 @@
 // Service Worker for Holy Quran App — cache static assets for offline use
 const CACHE_NAME = 'quran-app-v3'
 const STATIC_ASSETS = [
-  '/Believer-of-Almighty/',
-  '/Believer-of-Almighty/index.html',
-  '/Believer-of-Almighty/manifest.json',
+  '/',
+  '/index.html',
+  '/manifest.json',
 ]
 
 // Install: cache shell
