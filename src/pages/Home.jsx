@@ -448,6 +448,15 @@ const Home = React.memo(function Home() {
             )}
           </span>
         </button>
+        {apkRelease && (() => {
+          const m = apkRelease.body?.match(/Build:\s*(\d+)\s*\|\s*Commit:\s*([a-f0-9]+)/i)
+          const buildNum = m?.[1]
+          const sha = m?.[2]?.slice(0, 7)
+          if (!buildNum) return null
+          return (
+            <p className="apk-build-ref">Build #{buildNum} · {sha}</p>
+          )
+        })()}
       </footer>
     </div>
   )

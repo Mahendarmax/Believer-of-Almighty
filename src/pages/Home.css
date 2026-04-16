@@ -334,6 +334,13 @@
   0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
   50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
 }
+.apk-build-ref {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.45);
+  margin: 6px 0 0;
+  letter-spacing: 0.5px;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+}
 
 /* Stats — floating cards */
 .stats-row {
