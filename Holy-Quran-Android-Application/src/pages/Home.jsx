@@ -491,6 +491,7 @@ const Home = React.memo(function Home() {
           </svg>
           Check for Update
         </button>
+        <p className="apk-build-info">Build #{__BUILD_NUMBER__} · {__COMMIT_SHA__}</p>
       </footer>
     </div>
   )

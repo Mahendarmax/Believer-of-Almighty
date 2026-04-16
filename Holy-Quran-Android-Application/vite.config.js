@@ -4,6 +4,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/',
   plugins: [react()],
+  define: {
+    __BUILD_NUMBER__: JSON.stringify(process.env.BUILD_NUMBER || 'dev'),
+    __COMMIT_SHA__: JSON.stringify((process.env.COMMIT_SHA || 'local').slice(0, 7)),
+  },
   server: {
     port: 3000,
     open: true
