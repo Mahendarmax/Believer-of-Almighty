@@ -13,7 +13,7 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist', // matches capacitor.config.json webDir
     assetsDir: 'assets',
     target: 'es2018',
     minify: 'esbuild',
