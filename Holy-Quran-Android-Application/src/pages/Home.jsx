@@ -112,12 +112,14 @@ const Home = React.memo(function Home() {
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [upToDate, setUpToDate] = useState(false)
   const abortRef = useRef(null)
-  const apkUrlRef = useRef('https://github.com/Mahendarmax/Believer-of-Almighty/releases/download/holy-quran-latest/Holy-Quran.apk')
+  // Always set from GitHub API browser_download_url — never use the tag redirect (cached by GitHub CDN)
+  const apkUrlRef = useRef(null)
   const latestReleaseIdRef = useRef(0)
 
   // ── Silent auto-download helper ──
   const doSelfUpdate = useCallback(async (url) => {
     const apkUrl = url || apkUrlRef.current
+    if (!apkUrl) return // no URL from API yet — refuse to download
     if (downloadState === 'downloading') return
     setDownloadState('downloading')
     setDownloadProgress(0)
@@ -171,7 +173,8 @@ const Home = React.memo(function Home() {
       .then(data => {
         if (!data?.id) return
         const assetUrl = data.assets?.find(a => a.name.endsWith('.apk'))?.browser_download_url
-        if (assetUrl) apkUrlRef.current = assetUrl
+        if (!assetUrl) return // no APK asset found in this release
+        apkUrlRef.current = assetUrl
 
         const installedReleaseId = parseInt(localStorage.getItem('apk_installed_release_id') || '0', 10)
         const latestReleaseId = data.id
@@ -179,8 +182,8 @@ const Home = React.memo(function Home() {
 
         if (latestReleaseId > installedReleaseId && String(dismissed) !== String(latestReleaseId)) {
           latestReleaseIdRef.current = latestReleaseId
-          // New release detected — auto-start silent download
-          doSelfUpdate(assetUrl || apkUrlRef.current)
+          // New release detected — auto-start silent download using exact API asset URL (bypasses CDN cache)
+          doSelfUpdate(assetUrl)
         }
       })
       .catch(() => {})
