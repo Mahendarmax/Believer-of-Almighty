@@ -424,7 +424,7 @@ const Home = React.memo(function Home() {
         </div>
       </section>
 
-      {/* Quote */
+      {/* Quote */}
       <footer className="home-footer">
         <blockquote className="footer-quote">
           "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
