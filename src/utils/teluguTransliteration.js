@@ -159,9 +159,11 @@ function transliterateSegment(text) {
             result += ANUSVARA
           } else {
             result += telugu + VIRAMA
-            // Insert ZWNJ after virama when followed by a consonant
-            // to prevent Telugu fonts from forming unwanted conjunct ligatures
-            if (i < lower.length && isLetter(lower[i])) {
+            // Insert ZWNJ after virama when followed by a DIFFERENT consonant
+            // to prevent Telugu fonts from forming unwanted conjunct ligatures.
+            // Skip ZWNJ for geminate (doubled) consonants like ll, nn, dd —
+            // they should form proper Telugu conjuncts (e.g. కుల్లు, అన్న, తవద్దు).
+            if (i < lower.length && isLetter(lower[i]) && !lower.startsWith(roman, i)) {
               result += ZWNJ
             }
             // Handle tanween: 'nw' at word boundary (e.g. "qaleelanw", "shai'anw")
