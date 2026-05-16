@@ -1,7 +1,7 @@
 /* ===== VERSE VIEW ===== */
 .verse-view {
-  width: 100%;
-  max-width: 900px;
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px 80px;
 }
@@ -457,28 +457,25 @@
 
 .verse-card {
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(212, 164, 74, 0.22);
   border-radius: var(--radius-lg);
   padding: 22px;
-  transition: border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: verseSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: opacity, transform;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   scroll-margin-top: 80px;
 }
 
 .verse-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow), var(--shadow-glow);
-}
-
-@keyframes verseSlideIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  border-color: rgba(212, 164, 74, 0.45);
+  box-shadow: 0 6px 28px rgba(212,164,74,0.10);
 }
 
 /* Stagger animations — only first few visible cards */
-.verse-card:nth-child(1) { animation-delay: 0s; }
-.verse-card:nth-child(2) { animation-delay: 0.03s; }
-.verse-card:nth-child(3) { animation-delay: 0.06s; }
+.verse-card:nth-child(1) { animation: verseSlideIn 0.35s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0s; }
+.verse-card:nth-child(2) { animation: verseSlideIn 0.35s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.03s; }
+.verse-card:nth-child(3) { animation: verseSlideIn 0.35s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.06s; }
 .verse-card:nth-child(n+4) { animation: none; }
 
 /* Verse header */
@@ -495,16 +492,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(212, 164, 74, 0.08);
-  border: 1px solid var(--border);
+  background: rgba(212, 164, 74, 0.12);
+  border: 1.5px solid rgba(212, 164, 74, 0.25);
   border-radius: 50%;
   transform: rotate(45deg);
   transition: var(--transition);
 }
 
 .verse-card:hover .vc-number {
-  background: rgba(212, 164, 74, 0.14);
-  border-color: var(--border-strong);
+  background: rgba(212, 164, 74, 0.18);
+  border-color: rgba(212, 164, 74, 0.45);
 }
 
 .vc-number span {
@@ -598,7 +595,8 @@
   color: var(--text-arabic);
   text-align: right;
   word-spacing: 8px;
-  text-shadow: 0 1px 12px rgba(254,243,199,0.06);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Side-by-side columns */
@@ -618,19 +616,19 @@
   font-size: 0.66rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--accent-dim);
+  color: var(--accent);
   margin-bottom: 8px;
   font-weight: 700;
 }
 
 .vc-roman {
-  color: var(--text-primary);
+  color: #f1f5f9;
   line-height: 1.75;
 }
 
 .vc-telugu {
   font-family: 'Noto Sans Telugu', sans-serif;
-  color: var(--text-primary);
+  color: #f1f5f9;
   line-height: 1.85;
 }
 
@@ -641,12 +639,11 @@
 }
 
 .vc-translation .vc-label {
-  color: var(--emerald);
-  opacity: 0.7;
+  color: var(--accent);
 }
 
 .vc-translation p {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   line-height: 1.75;
   font-style: italic;
 }
@@ -777,21 +774,17 @@
 }
 
 @media (min-width: 768px) {
-  .verse-view { max-width: 900px; }
+  .verse-view { max-width: 1200px; }
   .verse-card { padding: 28px; }
   .vc-arabic p { font-size: 2rem; }
   .vv-surah-name { font-size: 1.4rem; }
 }
 
 @media (min-width: 1200px) {
-  .verse-view { max-width: 1100px; }
+  .verse-view { max-width: 1400px; }
   .vc-columns { gap: 24px; }
 }
 
 @media (min-width: 1600px) {
-  .verse-view { max-width: 1400px; }
-}
-
-@media (min-width: 1600px) {
-  .verse-view { max-width: 1400px; }
+  .verse-view { max-width: 1600px; }
 }
