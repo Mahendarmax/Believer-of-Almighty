@@ -49,11 +49,12 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
 
   // Design canvas at "logical" CSS px, then upscale via dpr for HD output
   const DPR = 3
-  const W = 1200
-  const PADDING_X = 80
-  const PADDING_TOP = 80
-  const PADDING_BOTTOM = 90
+  const W = 1080
+  const PADDING_X = 60
+  const PADDING_TOP = 60
+  const PADDING_BOTTOM = 60
   const contentW = W - PADDING_X * 2
+  const SECTION_GAP = 28 // uniform gap between sections
 
   // Theme
   const BG_TOP = '#0b1117'
@@ -62,8 +63,7 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   const BORDER = 'rgba(212,164,74,0.25)'
   const ACCENT = '#d4a44a'
   const TEXT = '#e6e6e6'
-  const MUTED = '#9aa3ad'
-  const LABEL = '#d4a44a'
+  const LABEL_CLR = '#d4a44a'
 
   // Font stacks
   const ARABIC_FONT = "'Amiri', 'Scheherazade New', 'Traditional Arabic', serif"
@@ -71,50 +71,53 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   const UI_FONT = "'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
 
   // Sections (built first to measure total height)
-  // We use an offscreen canvas to measure with a real 2D context.
   const measure = document.createElement('canvas').getContext('2d')
-
   const sections = []
 
-  // Header section
-  sections.push({ type: 'header', h: 70 })
-  sections.push({ type: 'divider', h: 30 })
+  // Header
+  sections.push({ type: 'header', h: 60 })
+  sections.push({ type: 'gap', h: 16 })
+
+  // Thin separator under header
+  sections.push({ type: 'separator', h: 16 })
 
   if (arabic) {
-    measure.font = `60px ${ARABIC_FONT}`
+    measure.font = `56px ${ARABIC_FONT}`
     const lines = wrapLines(measure, arabic, contentW)
-    sections.push({ type: 'arabic', lines, lineHeight: 90, h: lines.length * 90 + 30 })
+    sections.push({ type: 'arabic', lines, lineHeight: 84, h: lines.length * 84 + 20 })
+    sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (roman) {
-    sections.push({ type: 'label', text: 'Transliteration', h: 36 })
-    measure.font = `italic 28px ${UI_FONT}`
+    sections.push({ type: 'label', text: 'Transliteration', h: 30 })
+    measure.font = `italic 26px ${UI_FONT}`
     const lines = wrapLines(measure, roman, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 42, font: `italic 28px ${UI_FONT}`, color: TEXT, h: lines.length * 42 + 24 })
+    sections.push({ type: 'body', lines, lineHeight: 40, font: `italic 26px ${UI_FONT}`, color: TEXT, h: lines.length * 40 + 16 })
+    sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (teluguRoman) {
-    sections.push({ type: 'label', text: 'తెలుగు లిప్యంతరీకరణ', h: 36, font: TELUGU_FONT })
-    measure.font = `28px ${TELUGU_FONT}`
+    sections.push({ type: 'label', text: 'తెలుగు లిప్యంతరీకరణ', h: 30, font: TELUGU_FONT })
+    measure.font = `26px ${TELUGU_FONT}`
     const lines = wrapLines(measure, teluguRoman, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 44, font: `28px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 44 + 24 })
+    sections.push({ type: 'body', lines, lineHeight: 42, font: `26px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 42 + 16 })
+    sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (telugu) {
-    sections.push({ type: 'label', text: 'తెలుగు', h: 36, font: TELUGU_FONT })
-    measure.font = `30px ${TELUGU_FONT}`
+    sections.push({ type: 'label', text: 'తెలుగు', h: 30, font: TELUGU_FONT })
+    measure.font = `28px ${TELUGU_FONT}`
     const lines = wrapLines(measure, telugu, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 46, font: `30px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 46 + 24 })
+    sections.push({ type: 'body', lines, lineHeight: 44, font: `28px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 44 + 16 })
+    sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (english) {
-    sections.push({ type: 'label', text: 'English', h: 36 })
-    measure.font = `28px ${UI_FONT}`
+    sections.push({ type: 'label', text: 'English', h: 30 })
+    measure.font = `26px ${UI_FONT}`
     const lines = wrapLines(measure, english, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 42, font: `28px ${UI_FONT}`, color: TEXT, h: lines.length * 42 + 24 })
+    sections.push({ type: 'body', lines, lineHeight: 40, font: `26px ${UI_FONT}`, color: TEXT, h: lines.length * 40 + 16 })
   }
-
-  sections.push({ type: 'footer', h: 70 })
 
   const contentH = sections.reduce((s, sec) => s + sec.h, 0)
   const H = PADDING_TOP + contentH + PADDING_BOTTOM
@@ -135,12 +138,13 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, W, H)
 
-  // Inner "card" with subtle border
-  const cardX = 40
-  const cardY = 40
-  const cardW = W - 80
-  const cardH = H - 80
-  const radius = 24
+  // Inner "card" with subtle border — equal margin all sides
+  const CARD_MARGIN = 30
+  const cardX = CARD_MARGIN
+  const cardY = CARD_MARGIN
+  const cardW = W - CARD_MARGIN * 2
+  const cardH = H - CARD_MARGIN * 2
+  const radius = 20
   ctx.fillStyle = CARD_BG
   roundRect(ctx, cardX, cardY, cardW, cardH, radius)
   ctx.fill()
@@ -152,45 +156,46 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   // Render sections
   let y = PADDING_TOP
   for (const sec of sections) {
-    if (sec.type === 'header') {
+    if (sec.type === 'gap') {
+      // just spacing
+    } else if (sec.type === 'separator') {
+      const sy = y + sec.h / 2
+      const g = ctx.createLinearGradient(PADDING_X, sy, W - PADDING_X, sy)
+      g.addColorStop(0, 'rgba(212,164,74,0)')
+      g.addColorStop(0.3, 'rgba(212,164,74,0.35)')
+      g.addColorStop(0.7, 'rgba(212,164,74,0.35)')
+      g.addColorStop(1, 'rgba(212,164,74,0)')
+      ctx.fillStyle = g
+      ctx.fillRect(PADDING_X, sy - 0.5, contentW, 1)
+    } else if (sec.type === 'header') {
       // Verse number badge (circle)
-      const cx = PADDING_X + 24
-      const cy = y + 24
+      const cx = PADDING_X + 22
+      const cy = y + 22
       ctx.beginPath()
-      ctx.arc(cx, cy, 26, 0, Math.PI * 2)
+      ctx.arc(cx, cy, 24, 0, Math.PI * 2)
       ctx.fillStyle = 'rgba(212,164,74,0.15)'
       ctx.fill()
       ctx.strokeStyle = ACCENT
       ctx.lineWidth = 1.5
       ctx.stroke()
       ctx.fillStyle = ACCENT
-      ctx.font = `bold 22px ${UI_FONT}`
+      ctx.font = `bold 20px ${UI_FONT}`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText(String(verseNumber), cx, cy + 1)
       ctx.textBaseline = 'top'
       ctx.textAlign = 'left'
 
-      // Title (surah)
+      // Surah name next to badge
       ctx.fillStyle = ACCENT
-      ctx.font = `600 24px ${UI_FONT}`
-      ctx.textAlign = 'right'
-      ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W - PADDING_X, y + 12)
-      ctx.textAlign = 'left'
-    } else if (sec.type === 'divider') {
-      const gy = y + sec.h / 2
-      const g = ctx.createLinearGradient(PADDING_X, gy, W - PADDING_X, gy)
-      g.addColorStop(0, 'rgba(212,164,74,0)')
-      g.addColorStop(0.5, 'rgba(212,164,74,0.6)')
-      g.addColorStop(1, 'rgba(212,164,74,0)')
-      ctx.fillStyle = g
-      ctx.fillRect(PADDING_X, gy - 0.75, contentW, 1.5)
+      ctx.font = `600 22px ${UI_FONT}`
+      ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, PADDING_X + 56, y + 12)
     } else if (sec.type === 'arabic') {
       ctx.fillStyle = TEXT
-      ctx.font = `60px ${ARABIC_FONT}`
+      ctx.font = `56px ${ARABIC_FONT}`
       ctx.direction = 'rtl'
       ctx.textAlign = 'right'
-      let ly = y + 10
+      let ly = y + 8
       for (const line of sec.lines) {
         ctx.fillText(line, W - PADDING_X, ly)
         ly += sec.lineHeight
@@ -198,25 +203,19 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
       ctx.direction = 'ltr'
       ctx.textAlign = 'left'
     } else if (sec.type === 'label') {
-      ctx.fillStyle = LABEL
-      ctx.font = `600 16px ${sec.font || UI_FONT}`
+      ctx.fillStyle = LABEL_CLR
+      ctx.font = `600 15px ${sec.font || UI_FONT}`
       ctx.textAlign = 'left'
-      ctx.fillText(sec.text, PADDING_X, y + 8)
+      ctx.fillText(sec.text, PADDING_X, y + 6)
     } else if (sec.type === 'body') {
       ctx.fillStyle = sec.color
       ctx.font = sec.font
       ctx.textAlign = 'left'
-      let ly = y + 4
+      let ly = y + 2
       for (const line of sec.lines) {
         ctx.fillText(line, PADDING_X, ly)
         ly += sec.lineHeight
       }
-    } else if (sec.type === 'footer') {
-      ctx.fillStyle = MUTED
-      ctx.font = `500 18px ${UI_FONT}`
-      ctx.textAlign = 'center'
-      ctx.fillText('Believer of Almighty', W / 2, y + 24)
-      ctx.textAlign = 'left'
     }
     y += sec.h
   }
