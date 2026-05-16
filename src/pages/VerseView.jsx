@@ -436,6 +436,11 @@ function VerseView() {
       setVisibleCount(verseNum + 10)
     }
     setPlayingVerse(null)
+
+    // Highlight verse IMMEDIATELY — don't wait for audio to load
+    setSurahPlayingVerse(verseNum)
+    setIsSurahPlaying(true)
+
     const url = getVerseAudioUrl(surahNumber, verseNum, reciter)
     if (surahAudioRef.current) {
       surahAudioRef.current.pause()
@@ -443,18 +448,19 @@ function VerseView() {
     }
     const audio = new Audio(url)
     surahAudioRef.current = audio
-    audio.addEventListener('ended', () => {
-      playNextRef.current?.(verseNum + 1)
-    })
-    audio.addEventListener('error', () => {
-      playNextRef.current?.(verseNum + 1)
-    })
-    audio.play().then(() => {
-      setSurahPlayingVerse(verseNum)
-      setIsSurahPlaying(true)
-    }).catch(() => {
-      playNextRef.current?.(verseNum + 1)
-    })
+
+    // Guard against double-advancement (error event + catch can both fire)
+    let advanced = false
+    const advance = () => {
+      if (!advanced) {
+        advanced = true
+        playNextRef.current?.(verseNum + 1)
+      }
+    }
+
+    audio.addEventListener('ended', advance)
+    audio.addEventListener('error', advance)
+    audio.play().catch(advance)
   }
   // Always keep ref updated so ended/error callbacks use latest closure
   playNextRef.current = playVerseInSequence
