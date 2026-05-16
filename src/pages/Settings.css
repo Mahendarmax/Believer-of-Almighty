@@ -12,9 +12,10 @@
 /* ===== BACKUP SECTION ===== */
 .backup-section {
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-md);
   padding: 18px 20px;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -347,14 +348,16 @@
   justify-content: space-between;
   padding: 18px 20px;
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-md);
   gap: 16px;
   transition: var(--transition);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
 }
 
 .set-item:hover {
-  border-color: var(--border-strong);
+  border-color: rgba(52, 211, 153, 0.65);
+  box-shadow: 0 0 24px rgba(52, 211, 153, 0.18), 0 0 48px rgba(52, 211, 153, 0.06);
 }
 
 .set-item-info {
@@ -461,8 +464,9 @@
   margin-top: 20px;
   padding: 20px;
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-md);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
 }
 
 .set-preview h4 {

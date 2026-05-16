@@ -203,16 +203,16 @@
   text-align: center;
   padding: 22px 10px;
   background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow), var(--shadow-glow);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
   transition: var(--transition);
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-lg), 0 0 30px rgba(212,164,74,0.06);
+  border-color: rgba(52, 211, 153, 0.65);
+  box-shadow: var(--shadow-lg), 0 0 24px rgba(52, 211, 153, 0.18), 0 0 48px rgba(52, 211, 153, 0.06);
 }
 
 .stat-num {

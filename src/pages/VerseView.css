@@ -457,17 +457,18 @@
 
 .verse-card {
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-lg);
   padding: 22px;
   transition: var(--transition);
   scroll-margin-top: 80px;
   overflow: hidden;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
 }
 
 .verse-card:hover {
-  border-color: rgba(212,164,74,0.18);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-color: rgba(52, 211, 153, 0.65);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 24px rgba(52, 211, 153, 0.18), 0 0 48px rgba(52, 211, 153, 0.06);
 }
 
 /* Stagger animations — only first few visible cards */
