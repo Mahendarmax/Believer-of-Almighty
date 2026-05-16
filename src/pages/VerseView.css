@@ -777,13 +777,21 @@
 }
 
 @media (min-width: 768px) {
-  .verse-view { max-width: 850px; }
+  .verse-view { max-width: 900px; }
   .verse-card { padding: 28px; }
   .vc-arabic p { font-size: 2rem; }
   .vv-surah-name { font-size: 1.4rem; }
 }
 
 @media (min-width: 1200px) {
-  .verse-view { max-width: 960px; }
+  .verse-view { max-width: 1100px; }
   .vc-columns { gap: 24px; }
+}
+
+@media (min-width: 1600px) {
+  .verse-view { max-width: 1400px; }
+}
+
+@media (min-width: 1600px) {
+  .verse-view { max-width: 1400px; }
 }
