@@ -325,27 +325,26 @@
   text-align: center;
   padding: 34px 16px 26px;
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1.5px solid rgba(212, 164, 74, 0.22);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  transition: transform 0.3s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: var(--transition);
   position: relative;
   overflow: hidden;
-  will-change: transform;
 }
 
 .action-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(212,164,74,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 30%, rgba(212,164,74,0.04) 0%, transparent 70%);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: var(--transition);
 }
 
 .action-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 28px rgba(212,164,74,0.12), var(--shadow-lg);
-  border-color: rgba(212, 164, 74, 0.45);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(212,164,74,0.18);
 }
 
 .action-card:hover::after { opacity: 1; }
@@ -1151,15 +1150,15 @@
 
 .dua-card {
   background: var(--bg-card);
-  border: 1.5px solid rgba(212, 164, 74, 0.18);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transition);
 }
 
 .dua-card.expanded {
-  border-color: rgba(212, 164, 74, 0.40);
-  box-shadow: 0 4px 24px rgba(212,164,74,0.10);
+  border-color: rgba(212,164,74,0.18);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
 .dua-card-header {
@@ -1177,7 +1176,7 @@
 }
 
 .dua-card-header:hover {
-  background: rgba(212,164,74,0.05);
+  background: rgba(255,255,255,0.02);
 }
 
 .dua-card-info {
@@ -1188,11 +1187,11 @@
 
 .dua-card-category {
   padding: 3px 10px;
-  background: rgba(212,164,74,0.12);
+  background: rgba(52,211,153,0.1);
   border-radius: 6px;
   font-size: 0.68rem;
   font-weight: 600;
-  color: var(--accent);
+  color: #34d399;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -1252,9 +1251,9 @@
   font-family: 'Scheherazade New', 'Amiri', serif;
   margin: 14px 0;
   padding: 18px 20px;
-  background: rgba(212,164,74,0.04);
+  background: rgba(212,164,74,0.06);
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(212,164,74,0.14);
+  border: 1px solid rgba(212,164,74,0.15);
   width: 100%;
 }
 

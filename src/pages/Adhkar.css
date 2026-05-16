@@ -44,14 +44,14 @@
 /* Category card */
 .adhkar-card {
   background: var(--bg-card);
-  border: 1.5px solid rgba(212,164,74,0.18);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transition);
 }
 .adhkar-card.expanded {
-  border-color: rgba(212,164,74,0.40);
-  box-shadow: 0 4px 24px rgba(212,164,74,0.10);
+  border-color: rgba(212,164,74,0.18);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 .adhkar-card-header {
   display: flex;
