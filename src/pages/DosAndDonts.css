@@ -108,7 +108,7 @@
 .dd-card-category-telugu {
   display: block;
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-top: 2px;
 }
 
@@ -185,7 +185,7 @@
 
 .dd-item-telugu {
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   line-height: 1.5;
   margin: 4px 0 0;
 }

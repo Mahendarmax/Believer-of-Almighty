@@ -36,9 +36,9 @@
 
 /* Intro banner */
 .isa-intro {
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(99, 179, 237, 0.06) 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212, 164, 74, 0.06) 100%);
   border: 1px solid var(--border);
-  border-left: 3px solid #63b3ed;
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
   padding: 1.25rem;
   margin-bottom: 1.25rem;
@@ -49,14 +49,14 @@
   line-height: 1.65;
   margin: 0 0 0.5rem;
 }
-.isa-intro-text strong { color: #63b3ed; }
+.isa-intro-text strong { color: var(--accent); }
 .isa-intro-telugu {
   font-size: 0.82rem;
-  color: #34d399;
+  color: var(--text-primary);
   line-height: 1.6;
   margin: 0 0 0.75rem;
 }
-.isa-intro-telugu strong { color: #34d399; }
+.isa-intro-telugu strong { color: var(--accent); }
 .isa-intro-stat {
   display: flex;
   align-items: center;
@@ -120,7 +120,7 @@
 .isa-card-category-telugu {
   display: block;
   font-size: 0.78rem;
-  color: #34d399;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 .isa-card-right {
@@ -158,7 +158,7 @@
   transition: var(--transition);
 }
 .isa-verse.verse-expanded {
-  border-color: rgba(99, 179, 237, 0.25);
+  border-color: rgba(212, 164, 74, 0.25);
 }
 
 .isa-verse-header {
@@ -174,8 +174,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #63b3ed;
-  color: #fff;
+  background: var(--accent);
+  color: #0a0e17;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -195,11 +195,11 @@
   line-height: 1.65;
   margin: 0 0 0.4rem;
   padding-left: 0.75rem;
-  border-left: 2px solid rgba(99, 179, 237, 0.3);
+  border-left: 2px solid rgba(212, 164, 74, 0.3);
 }
 .isa-verse-telugu {
   font-size: 0.85rem;
-  color: #34d399;
+  color: var(--text-primary);
   font-weight: 500;
   line-height: 1.55;
   margin: 0 0 0.6rem;
@@ -213,20 +213,20 @@
   gap: 0.35rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #63b3ed;
+  color: var(--accent);
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.3rem 0;
   transition: var(--transition);
 }
-.isa-context-toggle:hover { color: #90cdf4; }
+.isa-context-toggle:hover { color: var(--accent-light); }
 
 .isa-context-box {
   margin-top: 0.6rem;
   padding: 0.85rem;
-  background: rgba(99, 179, 237, 0.05);
-  border: 1px solid rgba(99, 179, 237, 0.12);
+  background: rgba(212, 164, 74, 0.05);
+  border: 1px solid rgba(212, 164, 74, 0.12);
   border-radius: var(--radius-sm);
   animation: fadeIn 0.25s ease;
 }
@@ -242,7 +242,7 @@
 }
 .isa-context-telugu {
   font-size: 0.78rem;
-  color: #34d399;
+  color: var(--text-primary);
   line-height: 1.5;
   margin: 0;
 }
@@ -271,7 +271,7 @@
 }
 .isa-footer-telugu {
   font-size: 0.82rem;
-  color: #34d399;
+  color: var(--text-primary);
   line-height: 1.55;
   margin: 0;
 }

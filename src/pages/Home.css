@@ -960,15 +960,15 @@
 
 .namaz-card {
   background: var(--bg-card);
-  border: 1.5px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: var(--transition);
 }
 
 .namaz-card.expanded {
-  border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.08);
+  border-color: rgba(212,164,74,0.18);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
 .namaz-card-header {
@@ -1072,26 +1072,26 @@
 
 .namaz-verse-roman {
   font-size: 0.82rem;
-  color: var(--accent);
+  color: var(--text-primary);
   margin-bottom: 4px;
   font-style: italic;
 }
 
 .namaz-verse-telugu-translit {
   font-size: 0.82rem;
-  color: #8b9dc3;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .namaz-verse-english {
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .namaz-verse-telugu {
   font-size: 0.82rem;
-  color: #a3b8d0;
+  color: var(--text-primary);
 }
 
 .namaz-goto-btn {
