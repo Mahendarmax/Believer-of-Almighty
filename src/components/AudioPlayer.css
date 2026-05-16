@@ -56,3 +56,17 @@
   border-radius: 2px;
   transition: width 0.1s linear;
 }
+
+/* Mobile: shrink audio button to match other action buttons */
+@media (max-width: 540px) {
+  .audio-btn { width: 28px; height: 28px; }
+  .audio-btn svg { width: 14px; height: 14px; }
+  .audio-progress-bar { width: 36px; height: 2px; }
+  .verse-audio { gap: 4px; }
+}
+
+@media (max-width: 360px) {
+  .audio-btn { width: 26px; height: 26px; }
+  .audio-btn svg { width: 13px; height: 13px; }
+  .audio-progress-bar { width: 28px; }
+}

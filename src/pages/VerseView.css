@@ -1,7 +1,7 @@
 /* ===== VERSE VIEW ===== */
 .verse-view {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 20px 80px;
 }
@@ -132,23 +132,6 @@
 @keyframes pulse_surah {
   0%, 100% { box-shadow: 0 0 0 0 rgba(212, 164, 74, 0.35); }
   50% { box-shadow: 0 0 0 10px rgba(212, 164, 74, 0); }
-}
-
-/* Play area wrapper for button + progress */
-.vv-play-area {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.vv-verse-progress {
-  font-size: 0.65rem;
-  color: var(--accent);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  min-width: 28px;
 }
 
 /* Navigation */
@@ -444,7 +427,7 @@
 .vv-verses {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .vv-empty {
@@ -479,6 +462,7 @@
   padding: 22px;
   transition: var(--transition);
   scroll-margin-top: 80px;
+  overflow: hidden;
 }
 
 .verse-card:hover {
@@ -530,6 +514,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
 }
 
 .vc-action-btn {
@@ -569,41 +554,6 @@
   0%   { border-color: var(--accent); box-shadow: 0 0 0 0 rgba(212,164,74,0.4); }
   30%  { border-color: var(--accent); box-shadow: 0 0 16px 4px rgba(212,164,74,0.25); }
   100% { border-color: var(--border); box-shadow: none; }
-}
-
-/* Active playing verse — ayah-by-ayah highlight */
-.verse-card.verse-active {
-  border-color: var(--accent);
-  border-left: 4px solid var(--accent);
-  box-shadow: 0 0 30px rgba(212, 164, 74, 0.25), 0 0 0 2px rgba(212, 164, 74, 0.15);
-  background: linear-gradient(160deg, rgba(212, 164, 74, 0.12) 0%, rgba(212, 164, 74, 0.04) 100%);
-  animation: verseActivePulse 2s ease-in-out infinite;
-  transform: scale(1.01);
-}
-
-@keyframes verseActivePulse {
-  0%, 100% { box-shadow: 0 0 30px rgba(212, 164, 74, 0.25), 0 0 0 2px rgba(212, 164, 74, 0.15); }
-  50% { box-shadow: 0 0 40px rgba(212, 164, 74, 0.35), 0 0 0 3px rgba(212, 164, 74, 0.2); }
-}
-
-.verse-card.verse-active .vc-number {
-  background: rgba(212, 164, 74, 0.3);
-  border-color: var(--accent);
-}
-
-.verse-card.verse-active .vc-arabic p {
-  color: #fef3c7;
-  text-shadow: 0 0 12px rgba(254, 243, 199, 0.15);
-}
-
-.verse-card.verse-active .vc-translation p {
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.verse-card.verse-active .vc-roman,
-.verse-card.verse-active .vc-telugu {
-  color: #fef3c7;
 }
 
 .fav-btn:hover,
@@ -764,77 +714,168 @@
   box-shadow: 0 8px 30px rgba(212,164,74,0.4);
 }
 
-/* Responsive */
+/* ===== MOBILE: compact, no border overlap ===== */
 @media (max-width: 540px) {
-  .verse-view { padding: 0 14px 80px; }
+  .verse-view {
+    padding: 0 10px 80px;
+    width: 100%;
+  }
+
+  .vv-verses {
+    gap: 10px;
+  }
 
   .vc-columns {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
-  
+
   .vc-arabic p {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     word-spacing: 4px;
+    line-height: 2;
   }
-  
+
+  .vv-bismillah {
+    padding: 20px 16px;
+    margin: 8px 0 14px;
+  }
+
   .vv-bismillah-arabic {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
   }
-  
+
   .verse-card {
-    padding: 16px;
-    border-radius: var(--radius-md);
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    border-width: 1px;
   }
 
   .vv-header {
     padding: 10px 0;
-    gap: 10px;
+    gap: 8px;
   }
 
-  .vv-surah-name { font-size: 1.05rem; }
-  .vv-surah-sub { font-size: 0.65rem; }
+  .vv-surah-name { font-size: 1rem; }
+  .vv-surah-sub { font-size: 0.62rem; }
 
-  .vv-play-surah { width: 36px; height: 36px; }
+  .vv-play-surah { width: 34px; height: 34px; }
 
-  .vc-header { flex-wrap: wrap; }
-  .vc-number { width: 32px; height: 32px; }
-  .vc-number span { font-size: 0.72rem; }
-  .vc-action-btn { width: 30px; height: 30px; }
+  .vc-header {
+    margin-bottom: 12px;
+  }
+  .vc-number { width: 30px; height: 30px; }
+  .vc-number span { font-size: 0.7rem; }
+  .vc-actions { gap: 4px; }
+  .vc-action-btn { width: 28px; height: 28px; }
+  .vc-action-btn svg { width: 14px; height: 14px; }
 
   .vc-context-btn { padding: 6px 12px; font-size: 0.72rem; }
 
-  .vv-nav-btn, .vv-bottom-nav .vv-nav-btn { font-size: 0.78rem; padding: 8px 12px; }
-  .vv-nav-label { font-size: 0.72rem; }
+  .vv-nav, .vv-bottom-nav {
+    padding: 10px 0;
+    gap: 8px;
+  }
+  .vv-nav-btn, .vv-bottom-nav .vv-nav-btn { font-size: 0.75rem; padding: 8px 12px; }
+  .vv-nav-label { font-size: 0.7rem; }
 
-  .vv-reciter-toggle { padding: 9px 12px; gap: 8px; font-size: 0.78rem; }
-  .vv-reciter-icon { width: 26px; height: 26px; border-radius: 6px; }
-  .vv-reciter-label { font-size: 0.6rem; }
+  .vv-reciter-bar { padding: 0 0 6px; }
+  .vv-reciter-toggle { padding: 8px 10px; gap: 8px; font-size: 0.75rem; }
+  .vv-reciter-icon { width: 24px; height: 24px; border-radius: 6px; }
+  .vv-reciter-label { font-size: 0.58rem; }
   .vv-reciter-dropdown { border-radius: var(--radius-sm); }
-  .vv-reciter-list { max-height: 250px; }
-  .vv-reciter-option { padding: 9px 12px; font-size: 0.78rem; }
+  .vv-reciter-list { max-height: 240px; }
+  .vv-reciter-option { padding: 8px 12px; font-size: 0.75rem; }
 
-  .vv-toast { font-size: 0.75rem; padding: 10px 18px; bottom: 70px; }
+  .vc-label { font-size: 0.62rem; margin-bottom: 6px; }
+
+  .vc-translation { padding-top: 10px; }
+  .vc-translation p { line-height: 1.65; }
+
+  .vv-toast { font-size: 0.72rem; padding: 10px 16px; bottom: 70px; }
+
+  .scroll-top-btn { width: 40px; height: 40px; bottom: 18px; right: 16px; }
 }
 
+/* ===== Extra small phones ===== */
 @media (max-width: 360px) {
-  .verse-view { padding: 0 10px 70px; }
-  .vc-arabic p { font-size: 1.2rem; }
-  .verse-card { padding: 14px; }
-  .vc-actions { gap: 4px; }
+  .verse-view { padding: 0 6px 70px; }
+
+  .verse-card { padding: 12px; }
+
+  .vc-arabic p { font-size: 1.15rem; line-height: 1.9; }
+
+  .vc-number { width: 26px; height: 26px; }
+  .vc-number span { font-size: 0.65rem; }
+  .vc-action-btn { width: 26px; height: 26px; }
+  .vc-action-btn svg { width: 13px; height: 13px; }
+  .vc-actions { gap: 2px; }
+
+  .vv-nav-btn, .vv-bottom-nav .vv-nav-btn { font-size: 0.72rem; padding: 7px 10px; }
 }
 
+/* ===== Tablet / small desktop ===== */
+@media (min-width: 541px) and (max-width: 767px) {
+  .verse-view { max-width: 720px; padding: 0 20px 80px; }
+  .verse-card { padding: 22px; }
+  .vv-verses { gap: 16px; }
+}
+
+/* ===== Desktop ===== */
 @media (min-width: 768px) {
-  .verse-view { max-width: 1200px; }
-  .verse-card { padding: 28px; }
-  .vc-arabic p { font-size: 2rem; }
+  .verse-view {
+    max-width: 860px;
+    padding: 0 32px 80px;
+  }
+
+  .vv-verses { gap: 20px; }
+
+  .verse-card {
+    padding: 28px 32px;
+    border-radius: var(--radius-lg);
+  }
+
+  .vc-arabic p {
+    font-size: 2rem;
+    line-height: 2.4;
+  }
+
+  .vc-columns { gap: 24px; }
+
+  .vv-header {
+    padding: 16px 0;
+    gap: 14px;
+  }
+
   .vv-surah-name { font-size: 1.4rem; }
+  .vv-surah-sub { font-size: 0.78rem; }
+
+  .vv-play-surah { width: 44px; height: 44px; }
+
+  .vc-number { width: 40px; height: 40px; }
+  .vc-number span { font-size: 0.88rem; }
+
+  .vc-action-btn { width: 36px; height: 36px; }
+  .vc-actions { gap: 8px; }
+
+  .vv-bismillah {
+    padding: 36px 28px;
+    margin: 14px 0 24px;
+  }
+
+  .vv-bismillah-arabic { font-size: 2rem; }
+
+  .vc-label { font-size: 0.68rem; }
+  .vc-translation p { line-height: 1.8; }
 }
 
+/* ===== Wide desktop ===== */
 @media (min-width: 1200px) {
-  .verse-view { max-width: 1400px; }
-  .vc-columns { gap: 24px; }
+  .verse-view { max-width: 960px; }
+  .verse-card { padding: 32px 40px; }
+  .vc-columns { gap: 28px; }
 }
 
 @media (min-width: 1600px) {
-  .verse-view { max-width: 1600px; }
+  .verse-view { max-width: 1060px; }
 }

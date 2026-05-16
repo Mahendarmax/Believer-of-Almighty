@@ -325,11 +325,12 @@
   text-align: center;
   padding: 34px 16px 26px;
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(52, 211, 153, 0.25);
   border-radius: var(--radius-lg);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.04);
 }
 
 .action-card::after {
@@ -343,8 +344,8 @@
 
 .action-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(212,164,74,0.18);
+  box-shadow: var(--shadow-lg), 0 0 18px rgba(52, 211, 153, 0.1);
+  border-color: rgba(52, 211, 153, 0.4);
 }
 
 .action-card:hover::after { opacity: 1; }
