@@ -973,13 +973,13 @@
 }
 
 .namaz-card-body {
-  padding: 0 16px 16px;
-  border-top: 1px solid var(--border);
+  padding: 0 20px 20px;
+  border-top: 1px solid rgba(212,164,74,0.1);
 }
 
 .namaz-verse {
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(148,163,184,0.06);
+  padding: 18px 0 14px;
+  border-bottom: 1px solid rgba(148,163,184,0.07);
 }
 
 .namaz-verse:last-of-type {
@@ -987,52 +987,45 @@
 }
 
 .namaz-verse-arabic {
-  font-size: 1.35rem;
-  line-height: 2;
+  font-size: 1.5rem;
+  line-height: 2.1;
   color: var(--accent);
   font-family: 'Scheherazade New', 'Amiri', serif;
-  margin-bottom: 10px;
-  background: rgba(212,164,74,0.06);
-  border: 1px solid rgba(212,164,74,0.14);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
+  text-align: right;
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(212,164,74,0.12);
 }
 
 .namaz-verse-roman {
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   color: var(--accent);
-  opacity: 0.85;
-  margin-bottom: 4px;
+  opacity: 0.82;
+  margin: 0 0 3px;
   font-style: italic;
 }
 
 .namaz-verse-telugu-translit {
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   color: #fbbf24;
-  opacity: 0.8;
-  margin-bottom: 10px;
+  opacity: 0.75;
+  margin: 0 0 10px;
+  font-family: 'Noto Sans Telugu', sans-serif;
 }
 
 .namaz-verse-english {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  margin-bottom: 8px;
-  background: rgba(99,179,237,0.05);
-  border: 1px solid rgba(99,179,237,0.12);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  margin: 0 0 5px;
   line-height: 1.65;
 }
 
 .namaz-verse-telugu {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--text-primary);
   font-family: 'Noto Sans Telugu', sans-serif;
-  background: rgba(52,211,153,0.05);
-  border: 1px solid rgba(52,211,153,0.14);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
   line-height: 1.7;
+  margin: 0;
 }
 
 .namaz-goto-btn {
