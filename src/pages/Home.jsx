@@ -107,12 +107,7 @@ ReciterPicker.displayName = 'ReciterPicker'
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, theme, setTheme } = useSettings()
-
-  const themes = useMemo(() => [
-    { id: 'default', label: 'Gold', color: '#d4a44a' },
-    { id: 'green', label: 'Green', color: '#2ecc71' },
-  ], [])
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
 
   useEffect(() => {}, [])
 
@@ -336,30 +331,6 @@ const Home = React.memo(function Home() {
             <span className="translit-btn-label">Both</span>
             <span className="translit-btn-example">English + Telugu side by side</span>
           </button>
-        </div>
-      </section>
-
-      {/* Theme Selector */}
-      <section className="theme-section">
-        <h3 className="theme-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
-            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
-            <circle cx="12" cy="12" r="4"/>
-          </svg>
-          Theme
-        </h3>
-        <p className="theme-desc">Choose your preferred color theme</p>
-        <div className="theme-options">
-          {themes.map(t => (
-            <button
-              key={t.id}
-              className={`theme-btn ${theme === t.id ? 'active' : ''}`}
-              onClick={() => setTheme(t.id)}
-            >
-              <span className="theme-dot" style={{ background: t.color }} />
-              <span className="theme-btn-label">{t.label}</span>
-            </button>
-          ))}
         </div>
       </section>
 

@@ -29,7 +29,6 @@ export const SettingsProvider = ({ children }) => {
   const [favorites, setFavorites] = useState(() => loadSetting('favorites', []))
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'both'))
   const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.alafasy'))
-  const [theme, setTheme] = useState(() => loadSetting('theme', 'default'))
 
   // Debounced localStorage writes — batch rapid changes (e.g. font size)
   const saveTimers = useRef({})
@@ -45,15 +44,6 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => { debouncedSave('favorites', favorites, 500) }, [favorites, debouncedSave])
   useEffect(() => { debouncedSave('transliteration', transliteration, 0) }, [transliteration, debouncedSave])
   useEffect(() => { debouncedSave('reciter', reciter, 0) }, [reciter, debouncedSave])
-  useEffect(() => {
-    debouncedSave('theme', theme, 0)
-    document.body.setAttribute('data-theme', theme)
-  }, [theme, debouncedSave])
-
-  // Apply saved theme on mount
-  useEffect(() => {
-    document.body.setAttribute('data-theme', theme)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleArabic = useCallback(() => setShowArabic(prev => !prev), [])
   const increaseFontSize = useCallback(() => setFontSize(prev => Math.min(28, prev + 1)), [])
@@ -83,8 +73,7 @@ export const SettingsProvider = ({ children }) => {
     favorites, toggleFavorite, isFavorite,
     transliteration, setTransliteration,
     reciter, setReciter,
-    theme, setTheme,
-  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter, theme])
+  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter])
 
   return (
     <SettingsContext.Provider value={value}>
