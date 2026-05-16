@@ -202,6 +202,7 @@ const stripHtml = (html) => {
 const DHAAL_WORDS = {
   'allazeena': 'alladheena', 'allazee': 'alladhee',
   'wallazeena': 'walladheena', 'lazeena': 'ladheena',
+  'lazeee': 'ladhee', 'lazee': 'ladhee',
   'zaalika': 'dhaalika', 'zaalikal': 'dhaalikal',
   'kazaalika': 'kadhaalika', 'kazaalikal': 'kadhaalikal',
   'fazaalika': 'fadhaalika',
