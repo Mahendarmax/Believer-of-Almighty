@@ -404,6 +404,39 @@ const tafsirCacheOrder = []
 const MAX_TAFSIR_CACHE = 50
 const pendingTafsirRequests = {}
 
+// Translate English text to Telugu using Google Translate's free public endpoint.
+// No API key required. Chunks long text to stay under the ~5000 char per-call limit.
+const translateEnToTe = async (text) => {
+  if (!text || typeof text !== 'string') return text
+  const CHUNK = 4500
+  // Split on sentence boundaries when possible to keep chunks readable
+  const chunks = []
+  let remaining = text.trim()
+  while (remaining.length > CHUNK) {
+    let cut = remaining.lastIndexOf('. ', CHUNK)
+    if (cut < CHUNK * 0.5) cut = remaining.lastIndexOf(' ', CHUNK)
+    if (cut <= 0) cut = CHUNK
+    chunks.push(remaining.slice(0, cut + 1))
+    remaining = remaining.slice(cut + 1)
+  }
+  if (remaining) chunks.push(remaining)
+
+  try {
+    const parts = await Promise.all(chunks.map(async (chunk) => {
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=te&dt=t&q=${encodeURIComponent(chunk)}`
+      const res = await fetchWithTimeout(url, {}, 10000)
+      if (!res?.ok) return chunk // fallback to English on failure
+      const data = await res.json()
+      // Response: [[["translated","original",null,null,1], ...], null, "en", ...]
+      if (!Array.isArray(data) || !Array.isArray(data[0])) return chunk
+      return data[0].map(seg => (Array.isArray(seg) ? seg[0] : '')).join('')
+    }))
+    return parts.join('').trim()
+  } catch (_) {
+    return text // graceful fallback to English
+  }
+}
+
 export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
   const key = `${surahNumber}:${verseNumber}`
   if (tafsirCache[key]) return tafsirCache[key]
@@ -438,6 +471,16 @@ export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
         const histData = await histRes.json()
         if (histData?.tafsir?.text) result.historical = stripHtml(histData.tafsir.text)
       }
+
+      // Translate English tafsir text to Telugu (in parallel). Falls back to English on failure.
+      const [teContext, teDetailed, teHistorical] = await Promise.all([
+        result.context ? translateEnToTe(result.context) : Promise.resolve(null),
+        result.detailed ? translateEnToTe(result.detailed) : Promise.resolve(null),
+        result.historical ? translateEnToTe(result.historical) : Promise.resolve(null),
+      ])
+      result.context = teContext
+      result.detailed = teDetailed
+      result.historical = teHistorical
     } catch (_) { /* silent fail */ }
 
     if (result.context || result.detailed || result.historical) {
