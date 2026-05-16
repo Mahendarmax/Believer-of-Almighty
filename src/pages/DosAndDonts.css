@@ -1,7 +1,7 @@
 /* Dos & Don'ts Page — follows same layout as Namaz/Duas pages */
 .dosdonts-page {
-  width: 100%;
-  max-width: 800px;
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px 80px;
 }
@@ -215,5 +215,5 @@
 }
 
 @media (min-width: 1200px) {
-  .dosdonts-page { max-width: 900px; }
+  .dosdonts-page { max-width: 1200px; }
 }

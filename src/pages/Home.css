@@ -1118,9 +1118,9 @@
 /* ===== DUAS ===== */
 .duas-section {
   padding: 0 24px;
-  max-width: 720px;
+  max-width: 1200px;
   margin: 0 auto 32px;
-  width: 100%;
+  width: 90%;
 }
 
 .duas-title {

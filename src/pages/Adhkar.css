@@ -1,5 +1,6 @@
 .adhkar-page {
-  max-width: 800px;
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem 2rem;
 }
