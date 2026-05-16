@@ -189,21 +189,15 @@
   text-shadow: 0 0 16px rgba(212, 164, 74, 0.3);
 }
 
-/* Stats — floating cards */
+/* Stats — single surrounding box */
 .stats-row {
   display: flex;
   gap: 14px;
-  padding: 0 24px;
+  padding: 22px 24px;
   max-width: 720px;
   margin: -32px auto 32px;
   position: relative;
   z-index: 2;
-}
-
-.stat-card {
-  flex: 1;
-  text-align: center;
-  padding: 22px 10px;
   background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-surface) 100%);
   border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-lg);
@@ -211,10 +205,19 @@
   transition: var(--transition);
 }
 
-.stat-card:hover {
-  transform: translateY(-2px);
+.stats-row:hover {
   border-color: rgba(52, 211, 153, 0.65);
   box-shadow: var(--shadow-lg), 0 0 24px rgba(52, 211, 153, 0.18), 0 0 48px rgba(52, 211, 153, 0.06);
+}
+
+.stat-card {
+  flex: 1;
+  text-align: center;
+  padding: 22px 10px;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
 }
 
 .stat-num {
