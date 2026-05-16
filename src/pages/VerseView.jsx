@@ -125,8 +125,7 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   canvas.height = H * DPR
   const ctx = canvas.getContext('2d')
   ctx.scale(DPR, DPR)
-  ctx.textBaseline = 'top'
-  ctx.imageSmoothingEnabled = true
+    ctx.textBaseline = 'middle'
 
   // Background gradient
   const grad = ctx.createLinearGradient(0, 0, 0, H)
@@ -156,18 +155,19 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
     if (sec.type === 'gap') {
       // just spacing
     } else if (sec.type === 'header') {
-      // Surah name + verse ref centered at top
+      // Surah name centered — vertically middle of header height
       ctx.fillStyle = ACCENT
       ctx.font = `600 24px ${UI_FONT}`
       ctx.textAlign = 'center'
-      ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W / 2, y + 12)
+      ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W / 2, y + sec.h / 2)
       ctx.textAlign = 'left'
     } else if (sec.type === 'arabic') {
       ctx.fillStyle = TEXT
       ctx.font = `56px ${ARABIC_FONT}`
       ctx.direction = 'rtl'
       ctx.textAlign = 'right'
-      let ly = y + 8
+      // Center each line in its slot — prevents diacritics sinking/clipping
+      let ly = y + sec.lineHeight / 2
       for (const line of sec.lines) {
         ctx.fillText(line, W - PADDING_X, ly)
         ly += sec.lineHeight
@@ -178,12 +178,13 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
       ctx.fillStyle = LABEL_CLR
       ctx.font = `600 15px ${sec.font || UI_FONT}`
       ctx.textAlign = 'left'
-      ctx.fillText(sec.text, PADDING_X, y + 6)
+      ctx.fillText(sec.text, PADDING_X, y + sec.h / 2)
     } else if (sec.type === 'body') {
       ctx.fillStyle = sec.color
       ctx.font = sec.font
       ctx.textAlign = 'left'
-      let ly = y + 2
+      // Center each line vertically in its lineHeight slot
+      let ly = y + sec.lineHeight / 2
       for (const line of sec.lines) {
         ctx.fillText(line, PADDING_X, ly)
         ly += sec.lineHeight
