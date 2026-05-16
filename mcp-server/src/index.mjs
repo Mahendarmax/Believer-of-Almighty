@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 // Believer-of-Almighty local MCP server.
 //
 // Goal: cut Claude / Copilot token usage by exposing tiny, targeted tools
@@ -6,14 +6,14 @@
 // on every turn.
 //
 // Tools provided:
-//   project_overview  — hand-curated facts (routes, data layer, APIs, gotchas)
-//   project_tree      — compact ASCII tree (depth-limited)
-//   list_files        — files matching a glob-ish pattern
-//   file_outline      — imports/exports/top-level symbols + line count
-//   read_lines        — read only a line range from a file
-//   search_code       — regex grep with capped matches + line context
-//   find_symbol       — locate definition/usages of a name across the project
-//   reindex           — rebuild the project index on demand
+//   project_overview  â€” hand-curated facts (routes, data layer, APIs, gotchas)
+//   project_tree      â€” compact ASCII tree (depth-limited)
+//   list_files        â€” files matching a glob-ish pattern
+//   file_outline      â€” imports/exports/top-level symbols + line count
+//   read_lines        â€” read only a line range from a file
+//   search_code       â€” regex grep with capped matches + line context
+//   find_symbol       â€” locate definition/usages of a name across the project
+//   reindex           â€” rebuild the project index on demand
 //
 // Configure PROJECT_ROOT in env (defaults to a sibling Believer-of-Almighty
 // folder next to this server).
@@ -90,7 +90,7 @@ const text = (s) => ({ content: [{ type: 'text', text: s }] })
 // ---- Tool implementations ----
 const tools = {
   project_overview: {
-    description: 'Returns a hand-curated, high-density JSON overview of the project (routes, data layer, external APIs, pipeline notes, build commands, known gotchas). Always call this FIRST before exploring — it usually answers structural questions in ~2 KB and prevents redundant file reads.',
+    description: 'Returns a hand-curated, high-density JSON overview of the project (routes, data layer, external APIs, pipeline notes, build commands, known gotchas). Always call this FIRST before exploring â€” it usually answers structural questions in ~2 KB and prevents redundant file reads.',
     inputSchema: { type: 'object', properties: {} },
     handler: async () => text(JSON.stringify(PROJECT_OVERVIEW, null, 2)),
   },
@@ -114,7 +114,7 @@ const tools = {
       }
       if (typeof maxDepth === 'number' && maxDepth < 6) {
         tree = tree.split('\n').filter(l => {
-          const indent = (l.match(/^(\s|│|├|└|─)*/)?.[0].length || 0) / 3
+          const indent = (l.match(/^(\s|â”‚|â”œ|â””|â”€)*/)?.[0].length || 0) / 3
           return indent <= maxDepth
         }).join('\n')
       }
@@ -145,7 +145,7 @@ const tools = {
   },
 
   file_outline: {
-    description: 'Returns line count, imports, exports, and top-level symbol names for a single file — no body. Use this before deciding whether/where to read_lines. Saves dramatic amounts of tokens vs reading the whole file.',
+    description: 'Returns line count, imports, exports, and top-level symbol names for a single file â€” no body. Use this before deciding whether/where to read_lines. Saves dramatic amounts of tokens vs reading the whole file.',
     inputSchema: {
       type: 'object',
       required: ['path'],
@@ -311,9 +311,8 @@ const startWatcher = () => {
       try {
         const current = await getIndex()
         if (files.length > 0 && files.length <= 20) {
-          // Incremental: only reindex changed files (fast)
+          // Incremental: update in-memory only — skip disk I/O for speed
           const updated = await updateIndex(current, files, PROJECT_ROOT)
-          await saveIndex(updated, INDEX_PATH)
           indexPromise = Promise.resolve(updated)
           console.error(`[believer-mcp] incremental reindex: ${files.length} file(s) updated`)
         } else {
@@ -324,7 +323,7 @@ const startWatcher = () => {
       } catch (e) {
         console.error('[believer-mcp] reindex failed:', e?.message || e)
       }
-    }, 500) // 500ms debounce (was 1500ms)
+    }, 150) // 150ms debounce
   }
 
   try {
@@ -341,7 +340,7 @@ const startWatcher = () => {
 }
 
 const main = async () => {
-  // Warm the index in the background — first tool call will already have it.
+  // Warm the index in the background â€” first tool call will already have it.
   getIndex().catch(() => {})
   const transport = new StdioServerTransport()
   await server.connect(transport)
