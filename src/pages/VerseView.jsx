@@ -4,6 +4,7 @@ import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudio
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
+import { toPng } from 'html-to-image'
 import './VerseView.css'
 
 // Scroll to top button — throttled scroll handler to reduce layout thrashing
@@ -46,6 +47,36 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
   const [tafsirLoading, setTafsirLoading] = useState(false)
   const [showTafsir, setShowTafsir] = useState(false)
   const [justBookmarked, setJustBookmarked] = useState(false)
+  const [downloading, setDownloading] = useState(false)
+  const cardRef = useRef(null)
+
+  const handleDownload = useCallback(async () => {
+    if (!cardRef.current || downloading) return
+    setDownloading(true)
+    try {
+      // Resolve the card's actual background color (cards often use a CSS var that
+      // html-to-image may render as transparent). Fallback to dark theme background.
+      const bg = getComputedStyle(cardRef.current).backgroundColor
+      const safeBg = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0f1419' : bg
+      const dataUrl = await toPng(cardRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: safeBg,
+        style: { margin: '0' },
+      })
+      const link = document.createElement('a')
+      const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
+      link.download = `${safeName}_verse-${verse.number}.png`
+      link.href = dataUrl
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (err) {
+      console.error('Failed to download verse image:', err)
+    } finally {
+      setDownloading(false)
+    }
+  }, [downloading, surahName, surahNumber, verse.number])
 
   const handleBookmarkClick = useCallback(() => {
     onBookmark(verse.number)
@@ -67,7 +98,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
   }, [showTafsir, tafsir, surahNumber, verse.number])
 
   return (
-    <div className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''}`} id={`verse-${verse.number}`}>
+    <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''}`} id={`verse-${verse.number}`}>
       {/* Verse header with number, bookmark, favorite, and audio */}
       <div className="vc-header">
         <div className="vc-number">
@@ -93,6 +124,23 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
             <svg viewBox="0 0 24 24" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" width="16" height="16">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
+          </button>
+          <button
+            className={`vc-action-btn download-btn ${downloading ? 'loading' : ''}`}
+            onClick={handleDownload}
+            disabled={downloading}
+            title={downloading ? 'Generating image...' : 'Download verse as image'}
+            aria-label="Download verse as image"
+          >
+            {downloading ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" className="download-spinner">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+            )}
           </button>
           <AudioPlayer
             audioUrl={getVerseAudioUrl(surahNumber, verse.number, reciter)}

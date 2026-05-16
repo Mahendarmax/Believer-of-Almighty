@@ -569,6 +569,21 @@
   background: rgba(239, 68, 68, 0.1);
 }
 
+/* Download-as-image button */
+.download-btn:hover {
+  color: var(--accent);
+  background: rgba(212, 164, 74, 0.12);
+}
+
+.download-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.download-spinner {
+  animation: spin 0.8s linear infinite;
+}
+
 /* Arabic text */
 .vc-arabic {
   padding: 18px 0;
