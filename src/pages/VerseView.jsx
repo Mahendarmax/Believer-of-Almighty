@@ -74,12 +74,9 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   const measure = document.createElement('canvas').getContext('2d')
   const sections = []
 
-  // Header
-  sections.push({ type: 'header', h: 60 })
-  sections.push({ type: 'gap', h: 16 })
-
-  // Thin separator under header
-  sections.push({ type: 'separator', h: 16 })
+  // Header — surah name centered at top
+  sections.push({ type: 'header', h: 50 })
+  sections.push({ type: 'gap', h: 20 })
 
   if (arabic) {
     measure.font = `56px ${ARABIC_FONT}`
@@ -158,38 +155,13 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   for (const sec of sections) {
     if (sec.type === 'gap') {
       // just spacing
-    } else if (sec.type === 'separator') {
-      const sy = y + sec.h / 2
-      const g = ctx.createLinearGradient(PADDING_X, sy, W - PADDING_X, sy)
-      g.addColorStop(0, 'rgba(212,164,74,0)')
-      g.addColorStop(0.3, 'rgba(212,164,74,0.35)')
-      g.addColorStop(0.7, 'rgba(212,164,74,0.35)')
-      g.addColorStop(1, 'rgba(212,164,74,0)')
-      ctx.fillStyle = g
-      ctx.fillRect(PADDING_X, sy - 0.5, contentW, 1)
     } else if (sec.type === 'header') {
-      // Verse number badge (circle)
-      const cx = PADDING_X + 22
-      const cy = y + 22
-      ctx.beginPath()
-      ctx.arc(cx, cy, 24, 0, Math.PI * 2)
-      ctx.fillStyle = 'rgba(212,164,74,0.15)'
-      ctx.fill()
-      ctx.strokeStyle = ACCENT
-      ctx.lineWidth = 1.5
-      ctx.stroke()
+      // Surah name + verse ref centered at top
       ctx.fillStyle = ACCENT
-      ctx.font = `bold 20px ${UI_FONT}`
+      ctx.font = `600 24px ${UI_FONT}`
       ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillText(String(verseNumber), cx, cy + 1)
-      ctx.textBaseline = 'top'
+      ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W / 2, y + 12)
       ctx.textAlign = 'left'
-
-      // Surah name next to badge
-      ctx.fillStyle = ACCENT
-      ctx.font = `600 22px ${UI_FONT}`
-      ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, PADDING_X + 56, y + 12)
     } else if (sec.type === 'arabic') {
       ctx.fillStyle = TEXT
       ctx.font = `56px ${ARABIC_FONT}`
