@@ -54,23 +54,73 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
     if (!cardRef.current || downloading) return
     setDownloading(true)
     try {
-      // Resolve the card's actual background color (cards often use a CSS var that
-      // html-to-image may render as transparent). Fallback to dark theme background.
-      const bg = getComputedStyle(cardRef.current).backgroundColor
-      const safeBg = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0f1419' : bg
-      const dataUrl = await toPng(cardRef.current, {
-        cacheBust: true,
-        pixelRatio: 2,
-        backgroundColor: safeBg,
-        style: { margin: '0' },
+      // Clone the card OFF-SCREEN so the visible UI doesn't flicker, and so we can
+      // safely strip interactive controls (buttons / audio player / context toggle)
+      // to produce a clean, text-only HD image.
+      const original = cardRef.current
+      const clone = original.cloneNode(true)
+
+      // Remove interactive / non-content elements from the clone
+      const removeSelectors = [
+        '.vc-actions',         // bookmark / favorite / download / audio buttons row
+        '.vc-context',         // "Show Revelation Context" button + tafsir area
+        '.vc-context-btn',
+        'button',              // any leftover buttons
+        'audio',
+      ]
+      removeSelectors.forEach(sel => {
+        clone.querySelectorAll(sel).forEach(el => el.remove())
       })
-      const link = document.createElement('a')
-      const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
-      link.download = `${safeName}_verse-${verse.number}.png`
-      link.href = dataUrl
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+
+      // Reformat header so the verse number sits alone, centered-left, with a
+      // small surah label on the right — no action buttons.
+      const header = clone.querySelector('.vc-header')
+      if (header) {
+        header.style.justifyContent = 'space-between'
+        header.style.alignItems = 'center'
+        const label = document.createElement('div')
+        label.textContent = `${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verse.number}`
+        label.style.cssText = 'font-size:13px;opacity:0.7;font-weight:500;letter-spacing:0.3px;'
+        header.appendChild(label)
+      }
+
+      // Off-screen host — fixed width gives consistent HD output regardless of viewport
+      const host = document.createElement('div')
+      host.style.cssText = [
+        'position:fixed',
+        'top:0',
+        'left:-10000px',
+        'width:900px',
+        'padding:24px',
+        'background:#0f1419',
+        'z-index:-1',
+        'pointer-events:none',
+      ].join(';')
+      clone.style.margin = '0'
+      clone.style.width = '100%'
+      host.appendChild(clone)
+      document.body.appendChild(host)
+
+      try {
+        const bg = getComputedStyle(original).backgroundColor
+        const safeBg = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0f1419' : bg
+
+        const dataUrl = await toPng(clone, {
+          cacheBust: true,
+          pixelRatio: 3, // HD
+          backgroundColor: safeBg,
+        })
+
+        const link = document.createElement('a')
+        const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
+        link.download = `${safeName}_verse-${verse.number}.png`
+        link.href = dataUrl
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      } finally {
+        document.body.removeChild(host)
+      }
     } catch (err) {
       console.error('Failed to download verse image:', err)
     } finally {
