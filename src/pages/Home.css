@@ -325,26 +325,27 @@
   text-align: center;
   padding: 34px 16px 26px;
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid rgba(212, 164, 74, 0.22);
   border-radius: var(--radius-lg);
-  transition: var(--transition);
+  transition: transform 0.3s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.3s ease, border-color 0.3s ease;
   position: relative;
   overflow: hidden;
+  will-change: transform;
 }
 
 .action-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(212,164,74,0.04) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 30%, rgba(212,164,74,0.06) 0%, transparent 70%);
   opacity: 0;
-  transition: var(--transition);
+  transition: opacity 0.3s ease;
 }
 
 .action-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--border-strong);
+  box-shadow: 0 6px 28px rgba(212,164,74,0.12), var(--shadow-lg);
+  border-color: rgba(212, 164, 74, 0.45);
 }
 
 .action-card:hover::after { opacity: 1; }
@@ -1150,15 +1151,15 @@
 
 .dua-card {
   background: var(--bg-card);
-  border: 1.5px solid var(--border);
+  border: 1.5px solid rgba(212, 164, 74, 0.18);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: var(--transition);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dua-card.expanded {
-  border-color: #52d19a;
-  box-shadow: 0 0 20px rgba(52,211,153,0.08);
+  border-color: rgba(212, 164, 74, 0.40);
+  box-shadow: 0 4px 24px rgba(212,164,74,0.10);
 }
 
 .dua-card-header {
@@ -1176,7 +1177,7 @@
 }
 
 .dua-card-header:hover {
-  background: rgba(52,211,153,0.04);
+  background: rgba(212,164,74,0.05);
 }
 
 .dua-card-info {
@@ -1187,11 +1188,11 @@
 
 .dua-card-category {
   padding: 3px 10px;
-  background: rgba(52,211,153,0.1);
+  background: rgba(212,164,74,0.12);
   border-radius: 6px;
   font-size: 0.68rem;
   font-weight: 600;
-  color: #52d19a;
+  color: var(--accent);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -1250,10 +1251,11 @@
   color: var(--text-primary);
   font-family: 'Scheherazade New', 'Amiri', serif;
   margin: 14px 0;
-  padding: 16px;
-  background: rgba(52,211,153,0.03);
+  padding: 18px 20px;
+  background: rgba(212,164,74,0.04);
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(52,211,153,0.08);
+  border: 1px solid rgba(212,164,74,0.14);
+  width: 100%;
 }
 
 .dua-text-block {

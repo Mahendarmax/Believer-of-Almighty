@@ -63,13 +63,13 @@
   background: var(--bg-card);
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid rgba(212,164,74,0.08);
-  transition: var(--transition);
+  border: 1.5px solid rgba(212,164,74,0.18);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dd-card.expanded {
-  border-color: rgba(212,164,74,0.2);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  border-color: rgba(212,164,74,0.40);
+  box-shadow: 0 4px 24px rgba(212,164,74,0.10);
 }
 
 .dd-card-header {
