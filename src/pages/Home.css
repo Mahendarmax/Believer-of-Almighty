@@ -923,6 +923,89 @@
   line-height: 1.4;
 }
 
+/* ===== THEME SELECTOR ===== */
+.theme-section {
+  padding: 0 24px;
+  max-width: 720px;
+  margin: 0 auto 32px;
+  width: 100%;
+}
+
+.theme-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.theme-title svg {
+  color: var(--accent);
+}
+
+.theme-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.theme-options {
+  display: flex;
+  gap: 10px;
+}
+
+.theme-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 12px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.theme-btn:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.theme-btn.active {
+  border-color: var(--accent);
+  background: linear-gradient(160deg, var(--bg-card) 0%, rgba(212,164,74,0.06) 100%);
+  box-shadow: 0 0 16px rgba(212,164,74,0.1);
+}
+
+.theme-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.theme-btn.active .theme-dot {
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 0 14px currentColor;
+}
+
+.theme-btn-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.theme-btn.active .theme-btn-label {
+  color: var(--accent);
+}
+
 /* ===== NAMAZ SURAHS ===== */
 .namaz-section {
   padding: 0 24px;

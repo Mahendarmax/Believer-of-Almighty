@@ -146,3 +146,34 @@ a {
 @media (min-width: 1400px) {
   body { font-size: 17px; }
 }
+
+/* ===== THEME: GREEN (Madinah Green) ===== */
+body[data-theme="green"] {
+  --bg-primary: #041a0e;
+  --bg-secondary: #082414;
+  --bg-card: #0c2e1a;
+  --bg-card-hover: #123d24;
+  --bg-surface: #0a2816;
+
+  --accent: #2ecc71;
+  --accent-light: #58d68d;
+  --accent-dim: #1a9c54;
+  --gold: #2ecc71;
+  --gold-light: #58d68d;
+  --gold-dim: #1a9c54;
+
+  --emerald: #2ecc71;
+  --emerald-dim: #1a9c54;
+
+  --text-primary: #e8f5e9;
+  --text-secondary: #a5d6a7;
+  --text-muted: #4a7c5c;
+  --text-arabic: #c8f7d0;
+
+  --border: rgba(46, 204, 113, 0.12);
+  --border-strong: rgba(46, 204, 113, 0.30);
+
+  --shadow: 0 4px 30px rgba(0, 20, 8, 0.5);
+  --shadow-lg: 0 12px 50px rgba(0, 30, 12, 0.65);
+  --shadow-glow: 0 0 40px rgba(46, 204, 113, 0.12);
+}
