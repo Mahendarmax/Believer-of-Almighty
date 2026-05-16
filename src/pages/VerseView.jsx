@@ -639,7 +639,6 @@ function VerseView() {
   }
 
   return (
-    <div className="verse-view-bg">
     <div className="verse-view">
       {/* Fixed header */}
       <header className="vv-header">
@@ -745,7 +744,6 @@ function VerseView() {
       )}
 
       <ScrollToTop />
-    </div>
     </div>
   )
 }
