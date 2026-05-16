@@ -1,44 +1,42 @@
 /* ===== GLOBAL STYLES ===== */
-/* Kaaba Theme — Pure black (Kiswah silk), royal gold (embroidery band),
-   crisp white (Maqam Ibrahim marble). Premium HD contrast. */
 :root {
-  /* Pure black — like the Kiswah cloth */
-  --bg-primary: #000000;
-  --bg-secondary: #080808;
-  --bg-card: #0f0f0f;
-  --bg-card-hover: #1a1a1a;
-  --bg-surface: #0a0a0a;
+  /* Premium Dark Palette */
+  --bg-primary: #06090f;
+  --bg-secondary: #0c1018;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --bg-surface: #0f1520;
   
-  /* Royal Gold — the embroidered calligraphy band */
-  --accent: #e8b84b;
-  --accent-light: #fad068;
-  --accent-dim: #c49530;
-  --gold: #e8b84b;
-  --gold-light: #fad068;
-  --gold-dim: #c49530;
+  /* Luxurious Gold Accents */
+  --accent: #d4a44a;
+  --accent-light: #f0c05a;
+  --accent-dim: #a07830;
+  --gold: #d4a44a;
+  --gold-light: #f0c05a;
+  --gold-dim: #a07830;
   
-  /* White marble accent */
-  --emerald: #ffffff;
-  --emerald-dim: #d4d4d4;
+  /* Teal Accents */
+  --emerald: #34d399;
+  --emerald-dim: #059669;
   
-  /* Text — bright white & warm gold */
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
-  --text-muted: #5a5a5a;
-  --text-arabic: #fde9a0;
+  /* Text */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --text-arabic: #fef3c7;
   
-  /* Borders — gold tracery, visible */
-  --border: rgba(232, 184, 75, 0.15);
-  --border-strong: rgba(232, 184, 75, 0.40);
+  /* Borders */
+  --border: rgba(212, 164, 74, 0.08);
+  --border-strong: rgba(212, 164, 74, 0.2);
   
-  /* Effects — HD glow */
+  /* Effects */
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 18px;
   --radius-xl: 26px;
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
-  --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.85);
-  --shadow-glow: 0 0 40px rgba(232, 184, 75, 0.18);
+  --shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 50px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 40px rgba(212, 164, 74, 0.08);
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
