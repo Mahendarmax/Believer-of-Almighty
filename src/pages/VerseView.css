@@ -134,6 +134,23 @@
   50% { box-shadow: 0 0 0 10px rgba(212, 164, 74, 0); }
 }
 
+/* Play area wrapper for button + progress */
+.vv-play-area {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.vv-verse-progress {
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  min-width: 28px;
+}
+
 /* Navigation */
 .vv-nav, .vv-bottom-nav {
   display: flex;
@@ -552,6 +569,24 @@
   0%   { border-color: var(--accent); box-shadow: 0 0 0 0 rgba(212,164,74,0.4); }
   30%  { border-color: var(--accent); box-shadow: 0 0 16px 4px rgba(212,164,74,0.25); }
   100% { border-color: var(--border); box-shadow: none; }
+}
+
+/* Active playing verse — ayah-by-ayah highlight */
+.verse-card.verse-active {
+  border-color: rgba(212, 164, 74, 0.5);
+  box-shadow: 0 0 24px rgba(212, 164, 74, 0.15), inset 0 0 0 1px rgba(212, 164, 74, 0.1);
+  background: linear-gradient(160deg, rgba(212, 164, 74, 0.08) 0%, rgba(212, 164, 74, 0.02) 100%);
+  animation: verseActivePulse 2s ease-in-out infinite;
+}
+
+@keyframes verseActivePulse {
+  0%, 100% { box-shadow: 0 0 24px rgba(212, 164, 74, 0.15), inset 0 0 0 1px rgba(212, 164, 74, 0.1); }
+  50% { box-shadow: 0 0 12px rgba(212, 164, 74, 0.08), inset 0 0 0 1px rgba(212, 164, 74, 0.05); }
+}
+
+.verse-card.verse-active .vc-number {
+  background: rgba(212, 164, 74, 0.22);
+  border-color: var(--accent);
 }
 
 .fav-btn:hover,

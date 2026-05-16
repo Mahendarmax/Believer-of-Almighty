@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, getVerseAudioUrl } from '../data/quranData'
+import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
@@ -246,7 +246,7 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter, isActivePlaying }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const cardRef = useRef(null)
@@ -290,7 +290,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
 
   return (
-    <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''}`} id={`verse-${verse.number}`}>
+    <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''} ${isActivePlaying ? 'verse-active' : ''}`} id={`verse-${verse.number}`}>
       {/* Verse header with number, bookmark, favorite, and audio */}
       <div className="vc-header">
         <div className="vc-number">
@@ -406,9 +406,11 @@ function VerseView() {
   const [bismillah, setBismillah] = useState(null)
   const [playingVerse, setPlayingVerse] = useState(null)
   const [isSurahPlaying, setIsSurahPlaying] = useState(false)
+  const [surahPlayingVerse, setSurahPlayingVerse] = useState(null)
   const [bookmarkToast, setBookmarkToast] = useState(null)
   const [visibleCount, setVisibleCount] = useState(30)
   const surahAudioRef = useRef(null)
+  const playNextRef = useRef(null)
   const scrolledToVerse = useRef(false)
   const sentinelRef = useRef(null)
   const lastVisibleVerseRef = useRef(null)
@@ -422,6 +424,69 @@ function VerseView() {
     for (const f of favorites) set.add(f.key)
     return set
   }, [favorites])
+
+  // Sequential verse-by-verse surah playback with ayah highlighting
+  const playVerseInSequence = (verseNum) => {
+    if (verseNum > verses.length) {
+      setSurahPlayingVerse(null)
+      setIsSurahPlaying(false)
+      return
+    }
+    if (verseNum > visibleCount) {
+      setVisibleCount(verseNum + 10)
+    }
+    setPlayingVerse(null)
+    const url = getVerseAudioUrl(surahNumber, verseNum, reciter)
+    if (surahAudioRef.current) {
+      surahAudioRef.current.pause()
+      surahAudioRef.current.src = ''
+    }
+    const audio = new Audio(url)
+    surahAudioRef.current = audio
+    audio.addEventListener('ended', () => {
+      playNextRef.current?.(verseNum + 1)
+    })
+    audio.addEventListener('error', () => {
+      playNextRef.current?.(verseNum + 1)
+    })
+    audio.play().then(() => {
+      setSurahPlayingVerse(verseNum)
+      setIsSurahPlaying(true)
+    }).catch(() => {
+      playNextRef.current?.(verseNum + 1)
+    })
+  }
+  // Always keep ref updated so ended/error callbacks use latest closure
+  playNextRef.current = playVerseInSequence
+
+  // Auto-scroll to currently playing verse during surah playback
+  useEffect(() => {
+    if (!surahPlayingVerse) return
+    const timeout = setTimeout(() => {
+      const el = document.getElementById(`verse-${surahPlayingVerse}`)
+      if (el) {
+        const rect = el.getBoundingClientRect()
+        if (rect.top < 80 || rect.top > window.innerHeight - 200) {
+          window.scrollTo({
+            top: window.pageYOffset + rect.top - 120,
+            behavior: 'smooth'
+          })
+        }
+      }
+    }, 100)
+    return () => clearTimeout(timeout)
+  }, [surahPlayingVerse])
+
+  // Reset surah playback when reciter changes
+  useEffect(() => {
+    if (surahAudioRef.current) {
+      surahAudioRef.current.pause()
+      surahAudioRef.current.src = ''
+      surahAudioRef.current = null
+    }
+    setIsSurahPlaying(false)
+    setSurahPlayingVerse(null)
+  }, [reciter])
 
   // Progressive rendering: load more verses as user scrolls
   useEffect(() => {
@@ -459,6 +524,7 @@ function VerseView() {
       setLoading(true)
       setError(false)
       setPlayingVerse(null)
+      setSurahPlayingVerse(null)
 
       // Stop any playing surah audio
       if (surahAudioRef.current) {
@@ -570,11 +636,14 @@ function VerseView() {
   }, [surahNumber, navigate])
 
   const handleVersePlay = useCallback((verseNum) => {
-    // Stop surah audio when individual verse plays
+    // Stop surah sequential playback when individual verse plays
     if (surahAudioRef.current) {
       surahAudioRef.current.pause()
-      setIsSurahPlaying(false)
+      surahAudioRef.current.src = ''
+      surahAudioRef.current = null
     }
+    setIsSurahPlaying(false)
+    setSurahPlayingVerse(null)
     setPlayingVerse(verseNum)
   }, [])
 
@@ -599,24 +668,20 @@ function VerseView() {
 
     setPlayingVerse(null) // Stop any verse audio
 
-    if (!surahAudioRef.current || surahAudioRef.current._reciter !== reciter) {
-      if (surahAudioRef.current) {
-        surahAudioRef.current.pause()
-        surahAudioRef.current.src = ''
+    // Resume paused surah playback
+    if (surahPlayingVerse && surahAudioRef.current) {
+      try {
+        await surahAudioRef.current.play()
+        setIsSurahPlaying(true)
+        return
+      } catch {
+        // Fall through to start fresh
       }
-      surahAudioRef.current = new Audio(getSurahAudioUrl(surahNumber, reciter))
-      surahAudioRef.current._reciter = reciter
-      surahAudioRef.current.addEventListener('ended', () => setIsSurahPlaying(false))
-      surahAudioRef.current.addEventListener('error', () => setIsSurahPlaying(false))
     }
 
-    try {
-      await surahAudioRef.current.play()
-      setIsSurahPlaying(true)
-    } catch {
-      setIsSurahPlaying(false)
-    }
-  }, [isSurahPlaying, surahNumber, reciter])
+    // Start sequential verse-by-verse playback
+    playNextRef.current?.(1)
+  }, [isSurahPlaying, surahPlayingVerse])
 
 
 
@@ -651,23 +716,28 @@ function VerseView() {
           <h1 className="vv-surah-name">{surah.name}</h1>
           <p className="vv-surah-sub">{surah.nameEnglish} • {surah.nameTelugu} • {surah.ayahs} Ayahs</p>
         </div>
-        <button
-          className={`vv-play-surah ${isSurahPlaying ? 'active' : ''}`}
-          onClick={handleSurahPlay}
-          title={isSurahPlaying ? 'Pause surah' : 'Play full surah'}
-          aria-label={isSurahPlaying ? 'Pause surah' : 'Play full surah'}
-        >
-          {isSurahPlaying ? (
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-              <rect x="6" y="4" width="4" height="16" rx="1"/>
-              <rect x="14" y="4" width="4" height="16" rx="1"/>
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-              <polygon points="6,3 20,12 6,21"/>
-            </svg>
+        <div className="vv-play-area">
+          <button
+            className={`vv-play-surah ${isSurahPlaying ? 'active' : ''}`}
+            onClick={handleSurahPlay}
+            title={isSurahPlaying ? 'Pause surah' : surahPlayingVerse ? `Resume from verse ${surahPlayingVerse}` : 'Play full surah'}
+            aria-label={isSurahPlaying ? 'Pause surah' : 'Play full surah'}
+          >
+            {isSurahPlaying ? (
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <rect x="6" y="4" width="4" height="16" rx="1"/>
+                <rect x="14" y="4" width="4" height="16" rx="1"/>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <polygon points="6,3 20,12 6,21"/>
+              </svg>
+            )}
+          </button>
+          {surahPlayingVerse && (
+            <span className="vv-verse-progress">{surahPlayingVerse}/{surah.ayahs}</span>
           )}
-        </button>
+        </div>
       </header>
 
       {/* Surah nav */}
@@ -716,6 +786,7 @@ function VerseView() {
                 onToggleFav={handleToggleFav}
                 transliteration={transliteration}
                 reciter={reciter}
+                isActivePlaying={surahPlayingVerse === verse.number}
               />
             ))}
             {visibleCount < verses.length && (
