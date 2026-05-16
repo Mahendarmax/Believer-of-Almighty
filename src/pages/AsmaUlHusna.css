@@ -107,7 +107,7 @@
 }
 .asma-card-telugu {
   font-size: 0.8rem;
-  color: #34d399;
+  color: var(--text-primary);
   margin: 0.2rem 0 0;
   font-weight: 500;
 }

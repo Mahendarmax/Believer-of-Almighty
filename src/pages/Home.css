@@ -379,45 +379,45 @@
 }
 
 .namaz-action-card .action-icon-wrap {
-  background: rgba(52, 211, 153, 0.1);
-  color: var(--emerald);
-  box-shadow: 0 0 20px rgba(52,211,153,0.06);
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .duas-action-card .action-icon-wrap {
-  background: rgba(99, 179, 237, 0.1);
-  color: #63b3ed;
-  box-shadow: 0 0 20px rgba(99,179,237,0.06);
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .dosdonts-action-card .action-icon-wrap {
-  background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
-  box-shadow: 0 0 20px rgba(245,158,11,0.06);
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .asma-action-card .action-icon-wrap {
-  background: rgba(168, 85, 247, 0.1);
-  color: #a855f7;
-  box-shadow: 0 0 20px rgba(168,85,247,0.06);
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .tasbih-action-card .action-icon-wrap {
-  background: rgba(236, 72, 153, 0.1);
-  color: #ec4899;
-  box-shadow: 0 0 20px rgba(236,72,153,0.06);
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .adhkar-action-card .action-icon-wrap {
-  background: rgba(251, 191, 36, 0.1);
-  color: #fbbf24;
-  box-shadow: 0 0 20px rgba(251,191,36,0.06);
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .isa-action-card .action-icon-wrap {
-  background: rgba(99, 179, 237, 0.1);
-  color: #63b3ed;
-  box-shadow: 0 0 20px rgba(99,179,237,0.06);
+  background: rgba(212, 164, 74, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(212,164,74,0.1);
 }
 
 .seerah-action-card .action-icon-wrap {
@@ -442,6 +442,7 @@
 .action-card h3 {
   font-size: 1.05rem;
   font-weight: 700;
+  color: var(--text-primary);
   margin-bottom: 4px;
   position: relative;
   z-index: 1;
@@ -1224,7 +1225,7 @@
 
 .dua-card-title-telugu {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   display: block;
   margin-top: 2px;
 }
@@ -1265,7 +1266,7 @@
   display: block;
   font-size: 0.68rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--accent-dim);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 4px;
@@ -1273,26 +1274,26 @@
 
 .dua-roman {
   font-size: 0.82rem;
-  color: var(--accent);
+  color: var(--text-primary);
   font-style: italic;
   line-height: 1.6;
 }
 
 .dua-telugu-translit {
   font-size: 0.82rem;
-  color: #8b9dc3;
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
 .dua-english {
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
 .dua-telugu {
   font-size: 0.82rem;
-  color: #a3b8d0;
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
