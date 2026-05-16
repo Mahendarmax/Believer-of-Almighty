@@ -59,17 +59,18 @@
 
 /* Card */
 .asma-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  border: 1.5px solid rgba(212, 164, 74, 0.22);
   border-radius: var(--radius-md);
   padding: 1rem 0.75rem 0.85rem;
   text-align: center;
-  transition: var(--transition);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   position: relative;
 }
 .asma-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 20px rgba(212,164,74,0.10);
+  border-color: rgba(212, 164, 74, 0.45);
 }
 .asma-card-num {
   position: absolute;
@@ -77,8 +78,8 @@
   left: 0.55rem;
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--text-muted);
-  background: var(--bg-primary);
+  color: var(--accent);
+  background: rgba(212, 164, 74, 0.10);
   border-radius: 50%;
   width: 22px;
   height: 22px;
@@ -89,7 +90,7 @@
 .asma-card-arabic {
   font-size: 1.45rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-light);
   margin: 0.25rem 0 0.35rem;
   direction: rtl;
   line-height: 1.5;
@@ -97,17 +98,17 @@
 .asma-card-roman {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #f1f5f9;
   margin: 0.1rem 0;
 }
 .asma-card-english {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin: 0.1rem 0;
 }
 .asma-card-telugu {
   font-size: 0.8rem;
-  color: #34d399;
+  color: #5eead4;
   margin: 0.2rem 0 0;
   font-weight: 500;
 }
