@@ -181,10 +181,11 @@
 }
 
 .hero-desc {
-  color: var(--text-secondary);
+  color: var(--accent);
   font-size: 1.05rem;
-  font-weight: 300;
+  font-weight: 600;
   letter-spacing: 0.3px;
+  text-shadow: 0 0 16px rgba(212, 164, 74, 0.3);
 }
 
 /* Stats — floating cards */
@@ -246,11 +247,12 @@
   gap: 16px;
   padding: 20px 24px;
   background: linear-gradient(135deg, var(--bg-card) 0%, #131d2b 100%);
-  border: 1px solid var(--border-strong);
+  border: 1.5px solid rgba(220, 230, 245, 0.35);
   border-radius: var(--radius-lg);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 12px rgba(220, 230, 245, 0.06), inset 0 0 20px rgba(220, 230, 245, 0.02);
 }
 
 .continue-card::before {
@@ -266,7 +268,8 @@
 
 .continue-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow), 0 0 20px rgba(52,211,153,0.06);
+  border-color: rgba(220, 230, 245, 0.55);
+  box-shadow: var(--shadow), 0 0 24px rgba(220, 230, 245, 0.12), 0 0 48px rgba(220, 230, 245, 0.04);
 }
 
 .continue-icon { font-size: 30px; }
