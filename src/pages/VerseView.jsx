@@ -76,7 +76,7 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
 
   // Header — surah name centered at top
   sections.push({ type: 'header', h: 50 })
-  sections.push({ type: 'gap', h: 20 })
+  sections.push({ type: 'gap', h: 40 })
 
   if (arabic) {
     measure.font = `56px ${ARABIC_FONT}`
