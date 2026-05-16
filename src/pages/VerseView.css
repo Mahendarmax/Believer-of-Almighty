@@ -573,20 +573,37 @@
 
 /* Active playing verse — ayah-by-ayah highlight */
 .verse-card.verse-active {
-  border-color: rgba(212, 164, 74, 0.5);
-  box-shadow: 0 0 24px rgba(212, 164, 74, 0.15), inset 0 0 0 1px rgba(212, 164, 74, 0.1);
-  background: linear-gradient(160deg, rgba(212, 164, 74, 0.08) 0%, rgba(212, 164, 74, 0.02) 100%);
+  border-color: var(--accent);
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 0 30px rgba(212, 164, 74, 0.25), 0 0 0 2px rgba(212, 164, 74, 0.15);
+  background: linear-gradient(160deg, rgba(212, 164, 74, 0.12) 0%, rgba(212, 164, 74, 0.04) 100%);
   animation: verseActivePulse 2s ease-in-out infinite;
+  transform: scale(1.01);
 }
 
 @keyframes verseActivePulse {
-  0%, 100% { box-shadow: 0 0 24px rgba(212, 164, 74, 0.15), inset 0 0 0 1px rgba(212, 164, 74, 0.1); }
-  50% { box-shadow: 0 0 12px rgba(212, 164, 74, 0.08), inset 0 0 0 1px rgba(212, 164, 74, 0.05); }
+  0%, 100% { box-shadow: 0 0 30px rgba(212, 164, 74, 0.25), 0 0 0 2px rgba(212, 164, 74, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(212, 164, 74, 0.35), 0 0 0 3px rgba(212, 164, 74, 0.2); }
 }
 
 .verse-card.verse-active .vc-number {
-  background: rgba(212, 164, 74, 0.22);
+  background: rgba(212, 164, 74, 0.3);
   border-color: var(--accent);
+}
+
+.verse-card.verse-active .vc-arabic p {
+  color: #fef3c7;
+  text-shadow: 0 0 12px rgba(254, 243, 199, 0.15);
+}
+
+.verse-card.verse-active .vc-translation p {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.verse-card.verse-active .vc-roman,
+.verse-card.verse-active .vc-telugu {
+  color: #fef3c7;
 }
 
 .fav-btn:hover,
