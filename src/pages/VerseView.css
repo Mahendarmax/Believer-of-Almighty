@@ -427,7 +427,7 @@
 .vv-verses {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 14px;
 }
 
 .vv-empty {
@@ -456,20 +456,18 @@
 }
 
 .verse-card {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border);
-  border-radius: 0;
-  padding: 28px 4px;
-  transition: background 0.25s ease;
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  transition: border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   animation: verseSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
   scroll-margin-top: 80px;
 }
 
 .verse-card:hover {
-  background: rgba(212, 164, 74, 0.03);
   border-color: var(--border-strong);
-  box-shadow: none;
+  box-shadow: var(--shadow), var(--shadow-glow);
 }
 
 @keyframes verseSlideIn {
