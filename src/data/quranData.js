@@ -447,43 +447,22 @@ export const fetchVerseTafsir = async (surahNumber, verseNumber) => {
     const result = {
       revelationType: surah?.revelationType || null,
       context: null,
-      detailed: null,
-      historical: null,
     }
 
     try {
-      // Fetch: Tazkirul Quran (concise context) + Ibn Kathir (detailed) + Ma'arif al-Qur'an (historical background)
-      const [ctxRes, detRes, histRes] = await Promise.all([
-        fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/817/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
-        fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/169/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
-        fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/168/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null),
-      ])
+      // Fetch: Tazkirul Quran (concise revelation context)
+      const ctxRes = await fetchWithTimeout(`https://api.quran.com/api/v4/tafsirs/817/by_ayah/${surahNumber}:${verseNumber}`).catch(() => null)
 
       if (ctxRes?.ok) {
         const ctxData = await ctxRes.json()
         if (ctxData?.tafsir?.text) result.context = stripHtml(ctxData.tafsir.text)
       }
-      if (detRes?.ok) {
-        const detData = await detRes.json()
-        if (detData?.tafsir?.text) result.detailed = stripHtml(detData.tafsir.text)
-      }
-      if (histRes?.ok) {
-        const histData = await histRes.json()
-        if (histData?.tafsir?.text) result.historical = stripHtml(histData.tafsir.text)
-      }
 
-      // Translate English tafsir text to Telugu (in parallel). Falls back to English on failure.
-      const [teContext, teDetailed, teHistorical] = await Promise.all([
-        result.context ? translateEnToTe(result.context) : Promise.resolve(null),
-        result.detailed ? translateEnToTe(result.detailed) : Promise.resolve(null),
-        result.historical ? translateEnToTe(result.historical) : Promise.resolve(null),
-      ])
-      result.context = teContext
-      result.detailed = teDetailed
-      result.historical = teHistorical
+      // Translate to Telugu. Falls back to English on failure.
+      result.context = result.context ? await translateEnToTe(result.context) : null
     } catch (_) { /* silent fail */ }
 
-    if (result.context || result.detailed || result.historical) {
+    if (result.context) {
       tafsirCache[key] = result
       tafsirCacheOrder.push(key)
       if (tafsirCacheOrder.length > MAX_TAFSIR_CACHE) {

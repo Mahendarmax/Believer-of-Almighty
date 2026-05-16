@@ -421,21 +421,9 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
             )}
             {tafsir.context && (
               <div className="vc-context-section">
-                <span className="vc-label">📖 Revelation Context</span>
+                <span className="vc-label">📖 వెల్లడి సందర్భం</span>
                 <p style={{ fontSize: `${fontSize - 1}px` }}>{tafsir.context}</p>
               </div>
-            )}
-            {tafsir.historical && (
-              <details className="vc-detailed-tafsir">
-                <summary>📜 Historical Background (Ma'arif al-Qur'an)</summary>
-                <p style={{ fontSize: `${fontSize - 1}px` }}>{tafsir.historical}</p>
-              </details>
-            )}
-            {tafsir.detailed && (
-              <details className="vc-detailed-tafsir">
-                <summary>📚 Detailed Tafsir (Ibn Kathir)</summary>
-                <p style={{ fontSize: `${fontSize - 1}px` }}>{tafsir.detailed}</p>
-              </details>
             )}
           </div>
         )}
