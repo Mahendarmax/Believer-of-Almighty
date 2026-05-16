@@ -81,7 +81,7 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   if (arabic) {
     measure.font = `56px ${ARABIC_FONT}`
     const lines = wrapLines(measure, arabic, contentW)
-    sections.push({ type: 'arabic', lines, lineHeight: 104, h: lines.length * 104 + 40 })
+    sections.push({ type: 'arabic', lines, lineHeight: 120, h: lines.length * 120 + 40 })
     sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
