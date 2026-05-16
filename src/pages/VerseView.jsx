@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, fetchVerseTafsir, getVerseAudioUrl } from '../data/quranData'
+import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
@@ -247,9 +247,6 @@ ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
 const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
-  const [tafsir, setTafsir] = useState(null)
-  const [tafsirLoading, setTafsirLoading] = useState(false)
-  const [showTafsir, setShowTafsir] = useState(false)
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const cardRef = useRef(null)
@@ -291,16 +288,6 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
 
   // Memoize Telugu transliteration to avoid recomputing on every render
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
-
-  const handleShowTafsir = useCallback(async () => {
-    if (showTafsir) { setShowTafsir(false); return }
-    if (tafsir) { setShowTafsir(true); return }
-    setTafsirLoading(true)
-    const text = await fetchVerseTafsir(surahNumber, verse.number)
-    setTafsir(text)
-    setTafsirLoading(false)
-    setShowTafsir(true)
-  }, [showTafsir, tafsir, surahNumber, verse.number])
 
   return (
     <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''}`} id={`verse-${verse.number}`}>
@@ -401,36 +388,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
         </p>
       </div>
 
-      {/* Revelation Context / Tafsir */}
-      <div className="vc-context">
-        <button className="vc-context-btn" onClick={handleShowTafsir}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
-            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
-          </svg>
-          {showTafsir ? 'Hide Context' : 'Show Revelation Context'}
-        </button>
-        {tafsirLoading && <p className="vc-context-loading">Loading...</p>}
-        {showTafsir && tafsir && (
-          <div className="vc-context-text">
-            {tafsir.revelationType && (
-              <div className="vc-revelation-badge">
-                <span className={`vc-badge ${tafsir.revelationType === 'Meccan' ? 'meccan' : 'medinan'}`}>
-                  {tafsir.revelationType === 'Meccan' ? '🕋' : '🕌'} Revealed in {tafsir.revelationType === 'Meccan' ? 'Makkah' : 'Madinah'}
-                </span>
-              </div>
-            )}
-            {tafsir.context && (
-              <div className="vc-context-section">
-                <span className="vc-label">📖 వెల్లడి సందర్భం</span>
-                <p style={{ fontSize: `${fontSize - 1}px` }}>{tafsir.context}</p>
-              </div>
-            )}
-          </div>
-        )}
-        {showTafsir && !tafsir && !tafsirLoading && (
-          <p className="vc-context-none">No revelation context available for this verse</p>
-        )}
-      </div>
+
     </div>
   )
 })
