@@ -424,7 +424,7 @@ const translateEnToTe = async (text) => {
   try {
     const parts = await Promise.all(chunks.map(async (chunk) => {
       const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=te&dt=t&q=${encodeURIComponent(chunk)}`
-      const res = await fetchWithTimeout(url, {}, 10000)
+      const res = await fetchWithTimeout(url, null, 10000)
       if (!res?.ok) return chunk // fallback to English on failure
       const data = await res.json()
       // Response: [[["translated","original",null,null,1], ...], null, "en", ...]
