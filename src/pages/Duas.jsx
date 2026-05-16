@@ -18,7 +18,7 @@ function Duas() {
           </svg>
         </button>
         <div className="duas-page-title-group">
-          <h1 className="duas-page-title">🤲 Recommended Duas</h1>
+          <h1 className="duas-page-title">Recommended Duas</h1>
           <span className="duas-page-subtitle">Most recommended supplications by Prophet Muhammad ﷺ</span>
         </div>
       </header>
@@ -67,7 +67,7 @@ function Duas() {
                   <span className="dua-label">తెలుగు</span>
                   <p className="dua-telugu">{d.telugu}</p>
                 </div>
-                <span className="dua-reference">📖 {d.reference}</span>
+                <span className="dua-reference">{d.reference}</span>
               </div>
             )}
           </div>

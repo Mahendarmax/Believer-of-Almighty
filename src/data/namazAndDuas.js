@@ -523,7 +523,7 @@ export const islamicDosAndDonts = [
   {
     category: 'Halal (Allowed) — حلال',
     categoryTelugu: 'హలాల్ (అనుమతించబడినవి)',
-    icon: '✅',
+    icon: '',
     items: [
       { text: 'Eating Halal meat (slaughtered in the name of Allah)', telugu: 'హలాల్ మాంసం తినడం (అల్లాహ్ పేరుతో వధించినది)', reference: 'Quran 5:4' },
       { text: 'Earning through honest trade and labor', telugu: 'నిజాయితీ వ్యాపారం మరియు శ్రమ ద్వారా సంపాదించడం', reference: 'Quran 2:275' },
@@ -559,7 +559,7 @@ export const islamicDosAndDonts = [
   {
     category: 'Haram (Forbidden) — حرام',
     categoryTelugu: 'హరామ్ (నిషేధించబడినవి)',
-    icon: '🚫',
+    icon: '',
     items: [
       { text: 'Shirk — Associating partners with Allah', telugu: 'షిర్క్ — అల్లాహ్‌కు భాగస్వాములను కల్పించడం', reference: 'Quran 4:48' },
       { text: 'Consuming alcohol and intoxicants', telugu: 'మద్యం మరియు మత్తు పదార్థాలు సేవించడం', reference: 'Quran 5:90' },
@@ -595,7 +595,7 @@ export const islamicDosAndDonts = [
   {
     category: 'Makruh (Disliked) — مكروه',
     categoryTelugu: 'మక్రూహ్ (అయిష్టమైనవి)',
-    icon: '⚠️',
+    icon: '',
     items: [
       { text: 'Wasting food and water', telugu: 'ఆహారం మరియు నీటిని వృథా చేయడం', reference: 'Quran 7:31' },
       { text: 'Eating or drinking while standing (without need)', telugu: 'అవసరం లేకుండా నిలబడి తినడం లేదా తాగడం', reference: 'Sahih Muslim 2024' },
@@ -616,7 +616,7 @@ export const islamicDosAndDonts = [
   {
     category: 'Sunnah (Recommended) — سنة',
     categoryTelugu: 'సున్నత్ (సిఫారసు చేయబడినవి)',
-    icon: '🌟',
+    icon: '',
     items: [
       { text: 'Using Miswak (tooth stick) before prayer', telugu: 'నమాజ్ కు ముందు మిస్వాక్ ఉపయోగించడం', reference: 'Sahih Bukhari 887' },
       { text: 'Saying Salam when meeting others', telugu: 'ఇతరులను కలిసినప్పుడు సలామ్ చెప్పడం', reference: 'Sahih Muslim 54' },

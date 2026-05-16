@@ -581,7 +581,7 @@ function VerseView() {
   const handleBookmark = useCallback((verseNum) => {
     if (surah) {
       updateLastRead(surahNumber, surah.name, verseNum)
-      setBookmarkToast(`📌 Saved: ${surah.name}, Verse ${verseNum} — Use "Continue Reading" on Home page`)
+      setBookmarkToast(`Saved: ${surah.name}, Verse ${verseNum} — Use "Continue Reading" on Home page`)
       setTimeout(() => setBookmarkToast(null), 3000)
     }
   }, [surah, surahNumber, updateLastRead])

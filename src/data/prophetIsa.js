@@ -5,7 +5,7 @@ export const prophetIsaData = [
   {
     category: 'Jesus Commanded: Worship God ALONE',
     categoryTelugu: 'యేసు ఆజ్ఞ: దేవుడిని మాత్రమే ఆరాధించాలి',
-    icon: '☝️',
+    icon: '',
     items: [
       {
         verse: 'You shall worship the Lord your God, and Him ONLY you shall serve.',
@@ -82,7 +82,7 @@ export const prophetIsaData = [
   {
     category: 'Jesus Said: I Was SENT by God (I Am a Messenger)',
     categoryTelugu: 'యేసు చెప్పారు: నేను దేవునిచే పంపబడినవాడను (వార్తాహరుడను)',
-    icon: '📨',
+    icon: '',
     items: [
       {
         verse: 'I did not come on my own; God SENT me.',
@@ -152,7 +152,7 @@ export const prophetIsaData = [
   {
     category: 'Jesus is a Prophet & Servant of God — NOT God',
     categoryTelugu: 'యేసు దేవుని ప్రవక్త & సేవకుడు — దేవుడు కాదు',
-    icon: '📖',
+    icon: '',
     items: [
       {
         verse: 'This is the prophet Jesus, from Nazareth of Galilee.',
@@ -215,7 +215,7 @@ export const prophetIsaData = [
   {
     category: 'Jesus Prayed to God (A God Does Not Pray)',
     categoryTelugu: 'యేసు దేవునికి ప్రార్థించారు (దేవుడు ప్రార్థన చేయడు)',
-    icon: '🤲',
+    icon: '',
     items: [
       {
         verse: 'He fell with his FACE to the ground and prayed, "My Father, if it is possible, let this cup pass from me; yet not as I will, but as YOU will."',
@@ -285,7 +285,7 @@ export const prophetIsaData = [
   {
     category: 'Jesus Did Not Know the Future (Only God Knows All)',
     categoryTelugu: 'యేసుకు భవిష్యత్తు తెలియదు (దేవునికి మాత్రమే అన్నీ తెలుసు)',
-    icon: '🔮',
+    icon: '',
     items: [
       {
         verse: 'But about that day or hour NO ONE knows, not even the angels in heaven, NOR THE SON, but only the Father.',
@@ -327,7 +327,7 @@ export const prophetIsaData = [
   {
     category: 'The Comforter (Paraclete) — Prophecy of Prophet Muhammad ﷺ',
     categoryTelugu: 'ఆదరణకర్త (పారాక్లీట్) — ప్రవక్త ముహమ్మద్ ﷺ రాక గురించి ప్రవచనం',
-    icon: '🌙',
+    icon: '',
     items: [
       {
         verse: 'And I will pray the Father, and He will give you ANOTHER Comforter, that he may abide with you forever.',
@@ -390,7 +390,7 @@ export const prophetIsaData = [
   {
     category: 'What the Quran Says About Prophet Isa (عيسى عليه السلام)',
     categoryTelugu: 'ప్రవక్త ఈసా (అ) గురించి ఖురాన్ ఏం చెబుతుంది',
-    icon: '☪️',
+    icon: '',
     items: [
       {
         verse: '"Indeed, I am the servant of Allah. He has given me the Scripture and made me a prophet."',
@@ -474,3 +474,4 @@ export const prophetIsaData = [
 ]
 
 Object.freeze(prophetIsaData)
+

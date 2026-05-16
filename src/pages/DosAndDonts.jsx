@@ -18,7 +18,7 @@ function DosAndDonts() {
           </svg>
         </button>
         <div className="dosdonts-page-title-group">
-          <h1 className="dosdonts-page-title">📜 Dos and Don'ts in Islam</h1>
+          <h1 className="dosdonts-page-title">Dos and Don'ts in Islam</h1>
           <span className="dosdonts-page-subtitle">What Allah has allowed and forbidden — based on Quran & Hadith</span>
         </div>
       </header>
@@ -56,7 +56,7 @@ function DosAndDonts() {
                     <div className="dd-item-content">
                       <p className="dd-item-english">{item.text}</p>
                       <p className="dd-item-telugu">{item.telugu}</p>
-                      <span className="dd-item-ref">📖 {item.reference}</span>
+                      <span className="dd-item-ref">{item.reference}</span>
                     </div>
                   </div>
                 ))}

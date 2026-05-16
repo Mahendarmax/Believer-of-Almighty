@@ -21,7 +21,7 @@ function ProphetMuhammad() {
           </svg>
         </button>
         <div className="seerah-title-group">
-          <h1 className="seerah-title">☪️ సీరత్-ఉన్-నబీ ﷺ</h1>
+          <h1 className="seerah-title">సీరత్-ఉన్-నబీ ﷺ</h1>
           <span className="seerah-subtitle">سِيرَةُ النَّبِيِّ مُحَمَّدٍ ﷺ — Life of Prophet Muhammad</span>
         </div>
       </header>

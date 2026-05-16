@@ -159,7 +159,7 @@ const Home = React.memo(function Home() {
       {lastRead && (
         <section className="continue-section">
           <button className="continue-card" onClick={handleContinue}>
-            <div className="continue-icon">📖</div>
+            <div className="continue-icon"></div>
             <div className="continue-info">
               <span className="continue-label">Continue Reading</span>
               <span className="continue-surah">{lastRead.surahName}</span>

@@ -4,7 +4,7 @@ export const adhkarData = [
     category: 'Morning Adhkar (أذكار الصباح)',
     categoryTelugu: 'ఉదయపు అధ్కార్',
     time: 'morning',
-    icon: '🌅',
+    icon: '',
     note: 'After Fajr until sunrise',
     items: [
       {
@@ -69,7 +69,7 @@ export const adhkarData = [
     category: 'Evening Adhkar (أذكار المساء)',
     categoryTelugu: 'సాయంత్రపు అధ్కార్',
     time: 'evening',
-    icon: '🌙',
+    icon: '',
     note: 'After Asr until Maghrib',
     items: [
       {

@@ -41,7 +41,7 @@ function AsmaUlHusna() {
           </svg>
         </button>
         <div className="asma-page-title-group">
-          <h1 className="asma-page-title">☪️ 99 Names of Allah</h1>
+          <h1 className="asma-page-title">99 Names of Allah</h1>
           <span className="asma-page-subtitle">أسماء الله الحسنى — Asma ul Husna</span>
         </div>
       </header>

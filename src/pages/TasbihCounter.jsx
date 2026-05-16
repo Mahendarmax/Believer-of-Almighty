@@ -80,7 +80,7 @@ function TasbihCounter() {
           </svg>
         </button>
         <div className="tasbih-page-title-group">
-          <h1 className="tasbih-page-title">📿 Tasbih Counter</h1>
+          <h1 className="tasbih-page-title">Tasbih Counter</h1>
           <span className="tasbih-page-subtitle">Digital Dhikr Counter — tap to count</span>
         </div>
       </header>

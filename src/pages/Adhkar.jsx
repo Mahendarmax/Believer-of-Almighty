@@ -18,7 +18,7 @@ function Adhkar() {
           </svg>
         </button>
         <div className="adhkar-page-title-group">
-          <h1 className="adhkar-page-title">🤲 Morning & Evening Adhkar</h1>
+          <h1 className="adhkar-page-title">Morning & Evening Adhkar</h1>
           <span className="adhkar-page-subtitle">أذكار الصباح والمساء — Daily Remembrance</span>
         </div>
       </header>
@@ -61,7 +61,7 @@ function Adhkar() {
                     <p className="adhkar-item-roman">{item.roman}</p>
                     <p className="adhkar-item-english">{item.english}</p>
                     <p className="adhkar-item-telugu">{item.telugu}</p>
-                    <span className="adhkar-item-ref">📖 {item.reference}</span>
+                    <span className="adhkar-item-ref">{item.reference}</span>
                   </div>
                 ))}
               </div>

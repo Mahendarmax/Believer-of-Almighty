@@ -21,7 +21,7 @@ function ProphetIsa() {
           </svg>
         </button>
         <div className="isa-page-title-group">
-          <h1 className="isa-page-title">☪️ Prophet Isa (Jesus)</h1>
+          <h1 className="isa-page-title">Prophet Isa (Jesus)</h1>
           <span className="isa-page-subtitle">عيسى عليه السلام — What Jesus really said</span>
         </div>
       </header>

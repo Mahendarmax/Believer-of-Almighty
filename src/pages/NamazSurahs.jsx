@@ -29,7 +29,7 @@ function NamazSurahs() {
           </svg>
         </button>
         <div className="namaz-page-title-group">
-          <h1 className="namaz-page-title">🕌 Namaz Surahs</h1>
+          <h1 className="namaz-page-title">Namaz Surahs</h1>
           <span className="namaz-page-subtitle">Surahs commonly recited during Salah (Prayer)</span>
         </div>
       </header>
