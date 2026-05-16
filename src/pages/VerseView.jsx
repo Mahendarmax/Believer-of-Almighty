@@ -4,8 +4,240 @@ import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudio
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
-import { toPng } from 'html-to-image'
 import './VerseView.css'
+
+// ===================== Canvas verse-image renderer =====================
+// Generates a clean HD PNG of a single verse from the raw text data — no DOM
+// cloning, so no flicker and no font/layout race conditions.
+function wrapLines(ctx, text, maxWidth) {
+  if (!text) return []
+  const words = String(text).split(/\s+/)
+  const lines = []
+  let current = ''
+  for (const w of words) {
+    const test = current ? current + ' ' + w : w
+    if (ctx.measureText(test).width <= maxWidth) {
+      current = test
+    } else {
+      if (current) lines.push(current)
+      // Hard-break very long words
+      if (ctx.measureText(w).width > maxWidth) {
+        let chunk = ''
+        for (const ch of w) {
+          if (ctx.measureText(chunk + ch).width > maxWidth && chunk) {
+            lines.push(chunk)
+            chunk = ch
+          } else {
+            chunk += ch
+          }
+        }
+        current = chunk
+      } else {
+        current = w
+      }
+    }
+  }
+  if (current) lines.push(current)
+  return lines
+}
+
+async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, roman, teluguRoman, telugu, english }) {
+  // Wait for any web fonts so measurements are accurate
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready } catch { /* ignore */ }
+  }
+
+  // Design canvas at "logical" CSS px, then upscale via dpr for HD output
+  const DPR = 3
+  const W = 1200
+  const PADDING_X = 80
+  const PADDING_TOP = 80
+  const PADDING_BOTTOM = 90
+  const contentW = W - PADDING_X * 2
+
+  // Theme
+  const BG_TOP = '#0b1117'
+  const BG_BOTTOM = '#131c25'
+  const CARD_BG = '#0f1721'
+  const BORDER = 'rgba(212,164,74,0.25)'
+  const ACCENT = '#d4a44a'
+  const TEXT = '#e6e6e6'
+  const MUTED = '#9aa3ad'
+  const LABEL = '#d4a44a'
+
+  // Font stacks
+  const ARABIC_FONT = "'Amiri', 'Scheherazade New', 'Traditional Arabic', serif"
+  const TELUGU_FONT = "'Noto Sans Telugu', 'Mallanna', system-ui, sans-serif"
+  const UI_FONT = "'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+
+  // Sections (built first to measure total height)
+  // We use an offscreen canvas to measure with a real 2D context.
+  const measure = document.createElement('canvas').getContext('2d')
+
+  const sections = []
+
+  // Header section
+  sections.push({ type: 'header', h: 70 })
+  sections.push({ type: 'divider', h: 30 })
+
+  if (arabic) {
+    measure.font = `60px ${ARABIC_FONT}`
+    const lines = wrapLines(measure, arabic, contentW)
+    sections.push({ type: 'arabic', lines, lineHeight: 90, h: lines.length * 90 + 30 })
+  }
+
+  if (roman) {
+    sections.push({ type: 'label', text: 'Transliteration', h: 36 })
+    measure.font = `italic 28px ${UI_FONT}`
+    const lines = wrapLines(measure, roman, contentW)
+    sections.push({ type: 'body', lines, lineHeight: 42, font: `italic 28px ${UI_FONT}`, color: TEXT, h: lines.length * 42 + 24 })
+  }
+
+  if (teluguRoman) {
+    sections.push({ type: 'label', text: 'తెలుగు లిప్యంతరీకరణ', h: 36, font: TELUGU_FONT })
+    measure.font = `28px ${TELUGU_FONT}`
+    const lines = wrapLines(measure, teluguRoman, contentW)
+    sections.push({ type: 'body', lines, lineHeight: 44, font: `28px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 44 + 24 })
+  }
+
+  if (telugu) {
+    sections.push({ type: 'label', text: 'తెలుగు', h: 36, font: TELUGU_FONT })
+    measure.font = `30px ${TELUGU_FONT}`
+    const lines = wrapLines(measure, telugu, contentW)
+    sections.push({ type: 'body', lines, lineHeight: 46, font: `30px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 46 + 24 })
+  }
+
+  if (english) {
+    sections.push({ type: 'label', text: 'English', h: 36 })
+    measure.font = `28px ${UI_FONT}`
+    const lines = wrapLines(measure, english, contentW)
+    sections.push({ type: 'body', lines, lineHeight: 42, font: `28px ${UI_FONT}`, color: TEXT, h: lines.length * 42 + 24 })
+  }
+
+  sections.push({ type: 'footer', h: 70 })
+
+  const contentH = sections.reduce((s, sec) => s + sec.h, 0)
+  const H = PADDING_TOP + contentH + PADDING_BOTTOM
+
+  // Create the real HD canvas
+  const canvas = document.createElement('canvas')
+  canvas.width = W * DPR
+  canvas.height = H * DPR
+  const ctx = canvas.getContext('2d')
+  ctx.scale(DPR, DPR)
+  ctx.textBaseline = 'top'
+  ctx.imageSmoothingEnabled = true
+
+  // Background gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, H)
+  grad.addColorStop(0, BG_TOP)
+  grad.addColorStop(1, BG_BOTTOM)
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, W, H)
+
+  // Inner "card" with subtle border
+  const cardX = 40
+  const cardY = 40
+  const cardW = W - 80
+  const cardH = H - 80
+  const radius = 24
+  ctx.fillStyle = CARD_BG
+  roundRect(ctx, cardX, cardY, cardW, cardH, radius)
+  ctx.fill()
+  ctx.lineWidth = 1.5
+  ctx.strokeStyle = BORDER
+  roundRect(ctx, cardX, cardY, cardW, cardH, radius)
+  ctx.stroke()
+
+  // Render sections
+  let y = PADDING_TOP
+  for (const sec of sections) {
+    if (sec.type === 'header') {
+      // Verse number badge (circle)
+      const cx = PADDING_X + 24
+      const cy = y + 24
+      ctx.beginPath()
+      ctx.arc(cx, cy, 26, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(212,164,74,0.15)'
+      ctx.fill()
+      ctx.strokeStyle = ACCENT
+      ctx.lineWidth = 1.5
+      ctx.stroke()
+      ctx.fillStyle = ACCENT
+      ctx.font = `bold 22px ${UI_FONT}`
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(String(verseNumber), cx, cy + 1)
+      ctx.textBaseline = 'top'
+      ctx.textAlign = 'left'
+
+      // Title (surah)
+      ctx.fillStyle = ACCENT
+      ctx.font = `600 24px ${UI_FONT}`
+      ctx.textAlign = 'right'
+      ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W - PADDING_X, y + 12)
+      ctx.textAlign = 'left'
+    } else if (sec.type === 'divider') {
+      const gy = y + sec.h / 2
+      const g = ctx.createLinearGradient(PADDING_X, gy, W - PADDING_X, gy)
+      g.addColorStop(0, 'rgba(212,164,74,0)')
+      g.addColorStop(0.5, 'rgba(212,164,74,0.6)')
+      g.addColorStop(1, 'rgba(212,164,74,0)')
+      ctx.fillStyle = g
+      ctx.fillRect(PADDING_X, gy - 0.75, contentW, 1.5)
+    } else if (sec.type === 'arabic') {
+      ctx.fillStyle = TEXT
+      ctx.font = `60px ${ARABIC_FONT}`
+      ctx.direction = 'rtl'
+      ctx.textAlign = 'right'
+      let ly = y + 10
+      for (const line of sec.lines) {
+        ctx.fillText(line, W - PADDING_X, ly)
+        ly += sec.lineHeight
+      }
+      ctx.direction = 'ltr'
+      ctx.textAlign = 'left'
+    } else if (sec.type === 'label') {
+      ctx.fillStyle = LABEL
+      ctx.font = `600 16px ${sec.font || UI_FONT}`
+      ctx.textAlign = 'left'
+      ctx.fillText(sec.text, PADDING_X, y + 8)
+    } else if (sec.type === 'body') {
+      ctx.fillStyle = sec.color
+      ctx.font = sec.font
+      ctx.textAlign = 'left'
+      let ly = y + 4
+      for (const line of sec.lines) {
+        ctx.fillText(line, PADDING_X, ly)
+        ly += sec.lineHeight
+      }
+    } else if (sec.type === 'footer') {
+      ctx.fillStyle = MUTED
+      ctx.font = `500 18px ${UI_FONT}`
+      ctx.textAlign = 'center'
+      ctx.fillText('Believer of Almighty', W / 2, y + 24)
+      ctx.textAlign = 'left'
+    }
+    y += sec.h
+  }
+
+  return canvas.toDataURL('image/png')
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath()
+  ctx.moveTo(x + r, y)
+  ctx.lineTo(x + w - r, y)
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r)
+  ctx.lineTo(x + w, y + h - r)
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
+  ctx.lineTo(x + r, y + h)
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r)
+  ctx.lineTo(x, y + r)
+  ctx.quadraticCurveTo(x, y, x + r, y)
+  ctx.closePath()
+}
+// =======================================================================
 
 // Scroll to top button — throttled scroll handler to reduce layout thrashing
 const ScrollToTop = memo(() => {
@@ -51,82 +283,33 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
   const cardRef = useRef(null)
 
   const handleDownload = useCallback(async () => {
-    if (!cardRef.current || downloading) return
+    if (downloading) return
     setDownloading(true)
     try {
-      // Clone the card OFF-SCREEN so the visible UI doesn't flicker, and so we can
-      // safely strip interactive controls (buttons / audio player / context toggle)
-      // to produce a clean, text-only HD image.
-      const original = cardRef.current
-      const clone = original.cloneNode(true)
-
-      // Remove interactive / non-content elements from the clone
-      const removeSelectors = [
-        '.vc-actions',         // bookmark / favorite / download / audio buttons row
-        '.vc-context',         // "Show Revelation Context" button + tafsir area
-        '.vc-context-btn',
-        'button',              // any leftover buttons
-        'audio',
-      ]
-      removeSelectors.forEach(sel => {
-        clone.querySelectorAll(sel).forEach(el => el.remove())
+      const teluguRoman = verse.roman ? romanToTelugu(verse.roman) : ''
+      const dataUrl = await renderVerseImage({
+        surahNumber,
+        surahName,
+        verseNumber: verse.number,
+        arabic: verse.arabic || '',
+        roman: verse.roman || '',
+        teluguRoman,
+        telugu: verse.telugu || '',
+        english: verse.translation || '',
       })
-
-      // Reformat header so the verse number sits alone, centered-left, with a
-      // small surah label on the right — no action buttons.
-      const header = clone.querySelector('.vc-header')
-      if (header) {
-        header.style.justifyContent = 'space-between'
-        header.style.alignItems = 'center'
-        const label = document.createElement('div')
-        label.textContent = `${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verse.number}`
-        label.style.cssText = 'font-size:13px;opacity:0.7;font-weight:500;letter-spacing:0.3px;'
-        header.appendChild(label)
-      }
-
-      // Off-screen host — fixed width gives consistent HD output regardless of viewport
-      const host = document.createElement('div')
-      host.style.cssText = [
-        'position:fixed',
-        'top:0',
-        'left:-10000px',
-        'width:900px',
-        'padding:24px',
-        'background:#0f1419',
-        'z-index:-1',
-        'pointer-events:none',
-      ].join(';')
-      clone.style.margin = '0'
-      clone.style.width = '100%'
-      host.appendChild(clone)
-      document.body.appendChild(host)
-
-      try {
-        const bg = getComputedStyle(original).backgroundColor
-        const safeBg = (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') ? '#0f1419' : bg
-
-        const dataUrl = await toPng(clone, {
-          cacheBust: true,
-          pixelRatio: 3, // HD
-          backgroundColor: safeBg,
-        })
-
-        const link = document.createElement('a')
-        const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
-        link.download = `${safeName}_verse-${verse.number}.png`
-        link.href = dataUrl
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      } finally {
-        document.body.removeChild(host)
-      }
+      const link = document.createElement('a')
+      const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
+      link.download = `${safeName}_verse-${verse.number}.png`
+      link.href = dataUrl
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     } catch (err) {
       console.error('Failed to download verse image:', err)
     } finally {
       setDownloading(false)
     }
-  }, [downloading, surahName, surahNumber, verse.number])
+  }, [downloading, surahName, surahNumber, verse])
 
   const handleBookmarkClick = useCallback(() => {
     onBookmark(verse.number)
