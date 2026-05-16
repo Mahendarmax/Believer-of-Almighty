@@ -349,83 +349,6 @@
 
 .action-card:hover::after { opacity: 1; }
 
-.action-icon-wrap {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 1;
-  transition: var(--transition);
-}
-
-.action-card:hover .action-icon-wrap {
-  transform: scale(1.08);
-}
-
-.read-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.1);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.08);
-}
-
-.fav-card .action-icon-wrap {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  box-shadow: 0 0 20px rgba(239,68,68,0.06);
-}
-
-.namaz-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
-.duas-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
-.dosdonts-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
-.asma-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
-.tasbih-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
-.adhkar-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
-.isa-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
-.seerah-action-card .action-icon-wrap {
-  background: rgba(212, 164, 74, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 20px rgba(212,164,74,0.1);
-}
-
 .action-card-chevron {
   position: absolute;
   bottom: 10px;
@@ -1364,8 +1287,6 @@
   .continue-surah { font-size: 1rem; }
   .action-cards { gap: 10px; padding: 0 16px; }
   .action-card { padding: 24px 12px 20px; }
-  .action-icon-wrap { width: 52px; height: 52px; margin-bottom: 12px; }
-  .action-icon-wrap svg { width: 26px !important; height: 26px !important; }
   .action-card h3 { font-size: 0.88rem; }
   .action-card p { font-size: 0.68rem; }
   .action-meta { font-size: 0.62rem; }
@@ -1397,7 +1318,6 @@
   .stat-num { font-size: 2rem; }
   .action-cards { max-width: 800px; gap: 18px; }
   .action-card { padding: 40px 20px 30px; }
-  .action-icon-wrap { width: 72px; height: 72px; }
   .action-card h3 { font-size: 1.15rem; }
   .continue-section { max-width: 800px; }
   .continue-card { padding: 24px 28px; }

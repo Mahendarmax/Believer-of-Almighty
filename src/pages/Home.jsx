@@ -175,113 +175,60 @@ const Home = React.memo(function Home() {
       {/* Action Cards — 2x2 Grid */}
       <section className="action-cards">
         <button className="action-card read-card" onClick={handleReadQuran}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-          </div>
           <h3>Read Quran</h3>
           <p>ఖురాన్ చదవండి</p>
           <span className="action-meta">All 114 Surahs</span>
         </button>
 
         <button className="action-card namaz-action-card" onClick={() => navigate('/namaz')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/>
-            </svg>
-          </div>
           <h3>Namaz Surahs</h3>
           <p>నమాజ్ సూరాలు</p>
           <span className="action-meta">{COUNTS.namaz} Surahs</span>
         </button>
 
         <button className="action-card duas-action-card" onClick={() => navigate('/duas')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-          </div>
           <h3>Duas</h3>
           <p>దుఆలు</p>
           <span className="action-meta">{COUNTS.duas} Duas</span>
         </button>
 
         <button className="action-card dosdonts-action-card" onClick={() => navigate('/dos-and-donts')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6M9 14l2 2 4-4"/>
-            </svg>
-          </div>
           <h3>Dos and Don'ts in Islam</h3>
           <p>ఆదేశాలు & నిషేధాలు</p>
           <span className="action-meta">{COUNTS.dosdonts} Items</span>
         </button>
 
         <button className="action-card asma-action-card" onClick={() => navigate('/names-of-allah')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-          </div>
           <h3>99 Names of Allah</h3>
           <p>అల్లాహ్ 99 నామాలు</p>
           <span className="action-meta">{COUNTS.asma} Names</span>
         </button>
 
         <button className="action-card tasbih-action-card" onClick={() => navigate('/tasbih')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 6v6l4 2"/>
-            </svg>
-          </div>
           <h3>Tasbih Counter</h3>
           <p>తస్బీహ్ కౌంటర్</p>
           <span className="action-meta">Digital Dhikr</span>
         </button>
 
         <button className="action-card adhkar-action-card" onClick={() => navigate('/adhkar')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-            </svg>
-          </div>
           <h3>Morning & Evening Adhkar</h3>
           <p>ఉదయ సాయంత్ర అధ్కార్</p>
           <span className="action-meta">{COUNTS.adhkar} Adhkar</span>
         </button>
 
         <button className="action-card isa-action-card" onClick={() => navigate('/prophet-isa')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-          </div>
           <h3>Prophet Isa (Jesus)</h3>
           <p>ప్రవక్త ఈసా (అ)</p>
           <span className="action-meta">{COUNTS.isa} Verses</span>
         </button>
 
         <button className="action-card seerah-action-card" onClick={() => navigate('/prophet-muhammad')}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-              <path d="M12 2l.5 1.5M12 2l-.5 1.5M17 5l-1.2 1M7 5l1.2 1"/>
-            </svg>
-          </div>
           <h3>Seerah — Prophet ﷺ Life</h3>
           <p>ప్రవక్త ﷺ జీవిత చరిత్ర</p>
           <span className="action-meta">{COUNTS.seerah} Events</span>
         </button>
 
         <button className="action-card fav-card" onClick={handleFavorites}>
-          <div className="action-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="32" height="32">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </div>
           <h3>Favorites</h3>
           <p>ఇష్టమైనవి</p>
           <span className="action-meta">{favorites.length} Saved</span>
