@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from 'react'
+import React, { useState, useCallback, useRef, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { namazSurahs } from '../data/namazAndDuas'
 import './NamazSurahs.css'
@@ -17,8 +17,25 @@ NamazVerse.displayName = 'NamazVerse'
 function NamazSurahs() {
   const navigate = useNavigate()
   const [expandedNamaz, setExpandedNamaz] = useState(null)
+  const cardRefs = useRef({})
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
+
+  const handleToggle = useCallback((num) => {
+    setExpandedNamaz(prev => {
+      const next = prev === num ? null : num
+      if (next !== null) {
+        setTimeout(() => {
+          const el = cardRefs.current[next]
+          if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 72
+            window.scrollTo({ top, behavior: 'smooth' })
+          }
+        }, 50)
+      }
+      return next
+    })
+  }, [])
 
   return (
     <div className="namaz-page">
@@ -36,10 +53,14 @@ function NamazSurahs() {
 
       <div className="namaz-page-list">
         {namazSurahs.map(s => (
-          <div key={s.number} className={`namaz-card ${expandedNamaz === s.number ? 'expanded' : ''}`}>
+          <div
+            key={s.number}
+            ref={el => { cardRefs.current[s.number] = el }}
+            className={`namaz-card ${expandedNamaz === s.number ? 'expanded' : ''}`}
+          >
             <button
               className="namaz-card-header"
-              onClick={() => setExpandedNamaz(expandedNamaz === s.number ? null : s.number)}
+              onClick={() => handleToggle(s.number)}
             >
               <div className="namaz-card-info">
                 <span className="namaz-card-num">{s.number}</span>

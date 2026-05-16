@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { islamicDosAndDonts } from '../data/namazAndDuas'
 import './DosAndDonts.css'
@@ -6,8 +6,25 @@ import './DosAndDonts.css'
 function DosAndDonts() {
   const navigate = useNavigate()
   const [expandedCat, setExpandedCat] = useState(null)
+  const cardRefs = useRef({})
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
+
+  const handleToggle = useCallback((idx) => {
+    setExpandedCat(prev => {
+      const next = prev === idx ? null : idx
+      if (next !== null) {
+        setTimeout(() => {
+          const el = cardRefs.current[next]
+          if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 72
+            window.scrollTo({ top, behavior: 'smooth' })
+          }
+        }, 50)
+      }
+      return next
+    })
+  }, [])
 
   return (
     <div className="dosdonts-page">
@@ -25,10 +42,14 @@ function DosAndDonts() {
 
       <div className="dosdonts-page-list">
         {islamicDosAndDonts.map((cat, idx) => (
-          <div key={idx} className={`dd-card ${expandedCat === idx ? 'expanded' : ''}`}>
+          <div
+            key={idx}
+            ref={el => { cardRefs.current[idx] = el }}
+            className={`dd-card ${expandedCat === idx ? 'expanded' : ''}`}
+          >
             <button
               className="dd-card-header"
-              onClick={() => setExpandedCat(expandedCat === idx ? null : idx)}
+              onClick={() => handleToggle(idx)}
             >
               <div className="dd-card-info">
                 <span className="dd-card-icon">{cat.icon}</span>
