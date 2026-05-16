@@ -325,12 +325,12 @@
   text-align: center;
   padding: 34px 16px 26px;
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1px solid rgba(52, 211, 153, 0.25);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-lg);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 8px rgba(52, 211, 153, 0.04);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
 }
 
 .action-card::after {
@@ -344,8 +344,8 @@
 
 .action-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg), 0 0 18px rgba(52, 211, 153, 0.1);
-  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: var(--shadow-lg), 0 0 24px rgba(52, 211, 153, 0.18), 0 0 48px rgba(52, 211, 153, 0.06);
+  border-color: rgba(52, 211, 153, 0.65);
 }
 
 .action-card:hover::after { opacity: 1; }
