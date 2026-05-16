@@ -739,7 +739,8 @@
 }
 
 .vc-context-section p {
-  color: var(--text-secondary);
+  font-family: 'Noto Sans Telugu', sans-serif;
+  color: var(--text-primary);
   line-height: 1.85;
   margin-top: 6px;
 }
@@ -785,8 +786,9 @@
 }
 
 .vc-detailed-tafsir p {
+  font-family: 'Noto Sans Telugu', sans-serif;
   padding: 14px 16px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   line-height: 1.85;
   max-height: 400px;
   overflow-y: auto;
