@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo, memo, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { asmaUlHusna } from '../data/asmaUlHusna'
 import './AsmaUlHusna.css'
@@ -95,7 +96,7 @@ function AsmaUlHusna() {
         <cite className="asma-hadith-ref">— Sahih Al-Bukhari 2736</cite>
       </div>
 
-      {selectedName && (
+      {selectedName && createPortal(
         <div className={`asma-detail-overlay${closing ? ' closing' : ''}`} onClick={closeDetail}>
           <div className={`asma-detail-panel${closing ? ' closing' : ''}`} onClick={e => e.stopPropagation()}>
             <button className="asma-detail-close" onClick={closeDetail} aria-label="Close">
@@ -111,7 +112,8 @@ function AsmaUlHusna() {
             <div className="asma-detail-divider"></div>
             <p className="asma-detail-reason">{selectedName.reason}</p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
