@@ -24,7 +24,6 @@ function AsmaUlHusna() {
 
   const openDetail = useCallback((name) => {
     setSelectedName(name)
-    requestAnimationFrame(() => setDetailVisible(true))
   }, [])
 
   const closeDetail = useCallback(() => {
@@ -32,11 +31,18 @@ function AsmaUlHusna() {
     setTimeout(() => setSelectedName(null), 300)
   }, [])
 
+  // Trigger visibility after overlay mounts so CSS transition plays
   useEffect(() => {
     if (!selectedName) return
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setDetailVisible(true))
+    })
     const handleEsc = (e) => { if (e.key === 'Escape') closeDetail() }
     document.addEventListener('keydown', handleEsc)
-    return () => document.removeEventListener('keydown', handleEsc)
+    return () => {
+      cancelAnimationFrame(id)
+      document.removeEventListener('keydown', handleEsc)
+    }
   }, [selectedName, closeDetail])
 
   const filtered = useMemo(() => {
