@@ -281,31 +281,93 @@
 
 .qv-select {
   width: 100%;
-  padding: 10px 32px 10px 14px;
+  padding: 12px 18px;
   background: #111827;
   border: 1.5px solid rgba(212,164,74,0.55);
   border-radius: 10px;
   color: var(--text-primary);
   font-size: 0.78rem;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   cursor: pointer;
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  user-select: none;
+  box-sizing: border-box;
 }
-.qv-select:focus {
+.qv-select:hover {
   border-color: #e8c46a;
-  box-shadow: 0 0 0 2px rgba(212,164,74,0.15);
-  outline: none;
+}
+.qv-select-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+.qv-chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
 }
 
-.qv-chevron {
+/* Custom dropdown */
+.qv-dropdown {
   position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #111827;
+  border: 1.5px solid rgba(212,164,74,0.55);
+  border-radius: 10px;
+  z-index: 100;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.qv-drop-search {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0d1117;
+  border: none;
+  border-bottom: 1px solid rgba(212,164,74,0.25);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  outline: none;
+  box-sizing: border-box;
+}
+.qv-drop-search::placeholder {
   color: var(--text-muted);
-  pointer-events: none;
+}
+.qv-drop-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.qv-drop-list::-webkit-scrollbar { width: 5px; }
+.qv-drop-list::-webkit-scrollbar-track { background: transparent; }
+.qv-drop-list::-webkit-scrollbar-thumb { background: rgba(212,164,74,0.3); border-radius: 4px; }
+.qv-drop-item {
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.qv-drop-item:hover {
+  background: rgba(212,164,74,0.1);
+  color: var(--text-primary);
+}
+.qv-drop-item.active {
+  background: rgba(212,164,74,0.15);
+  color: var(--accent);
+}
+.qv-drop-empty {
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.75rem;
 }
 
 .qv-verse-input {

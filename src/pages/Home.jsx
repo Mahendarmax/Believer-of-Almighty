@@ -120,6 +120,23 @@ const Home = React.memo(function Home() {
   const [qvError, setQvError] = useState('')
   const [qvClosing, setQvClosing] = useState(false)
   const [qvPlaying, setQvPlaying] = useState(null)
+  const [qvDropOpen, setQvDropOpen] = useState(false)
+  const [qvFilter, setQvFilter] = useState('')
+  const qvDropRef = useRef(null)
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!qvDropOpen) return
+    const handler = (e) => { if (qvDropRef.current && !qvDropRef.current.contains(e.target)) setQvDropOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [qvDropOpen])
+
+  const qvFilteredSurahs = useMemo(() => {
+    if (!qvFilter) return surahs
+    const q = qvFilter.toLowerCase()
+    return surahs.filter(s => s.name.toLowerCase().includes(q) || s.nameEnglish.toLowerCase().includes(q) || String(s.number).includes(q))
+  }, [qvFilter])
 
   const handleQvPlay = useCallback((verseNum) => {
     setQvPlaying(verseNum)
@@ -236,22 +253,39 @@ const Home = React.memo(function Home() {
           {transliteration === 'telugu' ? 'ఆయత్ వెతుకు' : 'Quick Verse Lookup'}
         </h3>
         <div className="qv-controls">
-          <div className="qv-select-wrap">
-            <select
-              className="qv-select"
-              value={qvSurah}
-              onChange={e => { setQvSurah(e.target.value); setQvVerse(''); setQvError('') }}
-            >
-              <option value="">{transliteration === 'telugu' ? 'సూరా ఎంచుకోండి' : 'Select Surah'}</option>
-              {surahs.map(s => (
-                <option key={s.number} value={s.number}>
-                  {s.number}. {s.name} ({s.nameEnglish})
-                </option>
-              ))}
-            </select>
-            <svg className="qv-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
+          <div className="qv-select-wrap" ref={qvDropRef}>
+            <div className="qv-select" onClick={() => setQvDropOpen(p => !p)}>
+              <span className="qv-select-label">
+                {qvSurah ? `${qvSurah}. ${surahs.find(s => s.number === parseInt(qvSurah))?.name || ''}` : (transliteration === 'telugu' ? 'సూరా ఎంచుకోండి' : 'Select Surah')}
+              </span>
+              <svg className="qv-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14" style={{transform: qvDropOpen ? 'rotate(180deg)' : 'none', transition: '0.2s'}}>
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </div>
+            {qvDropOpen && (
+              <div className="qv-dropdown">
+                <input
+                  className="qv-drop-search"
+                  placeholder={transliteration === 'telugu' ? 'సూరా వెతుకు...' : 'Search surah...'}
+                  value={qvFilter}
+                  onChange={e => setQvFilter(e.target.value)}
+                  autoFocus
+                  onClick={e => e.stopPropagation()}
+                />
+                <ul className="qv-drop-list">
+                  {qvFilteredSurahs.map(s => (
+                    <li
+                      key={s.number}
+                      className={`qv-drop-item${String(s.number) === qvSurah ? ' active' : ''}`}
+                      onClick={() => { setQvSurah(String(s.number)); setQvVerse(''); setQvError(''); setQvDropOpen(false); setQvFilter('') }}
+                    >
+                      {s.number}. {s.name} ({s.nameEnglish})
+                    </li>
+                  ))}
+                  {qvFilteredSurahs.length === 0 && <li className="qv-drop-empty">No results</li>}
+                </ul>
+              </div>
+            )}
           </div>
           <input
             type="number"
