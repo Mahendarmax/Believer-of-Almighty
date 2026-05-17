@@ -246,6 +246,8 @@ const DHAAL_WORDS = {
   'yuzillu': 'yudhillu', 'zalla': 'dhalla', 'zalloo': 'dhalloo',
   'zaaleen': 'dhaaleen', 'zaaalleen': 'dhaaalleen',
   'azzana': 'adhdhana',
+  'azeem': 'adheem', 'azeemun': 'adheemun', 'azeeman': 'adheeman',
+  'azeemi': 'adheemi', 'azeemin': 'adheemin',
 }
 
 const fixRomanText = (text) => {
@@ -258,6 +260,14 @@ const fixRomanText = (text) => {
     const lower = word.toLowerCase()
     // Try full word first (e.g. 'allazeena')
     const fullMatch = DHAAL_WORDS[lower]
+    // Handle leading apostrophe: strip it, check DHAAL_WORDS, reattach (e.g. 'azeem → 'adheem)
+    if (!fullMatch && lower.startsWith("'") && lower.length > 1) {
+      const withoutApo = lower.slice(1)
+      const apoMatch = DHAAL_WORDS[withoutApo]
+      if (apoMatch) {
+        return "'" + apoMatch
+      }
+    }
     if (fullMatch) {
       if (word[0] === word[0].toUpperCase()) return fullMatch[0].toUpperCase() + fullMatch.slice(1)
       return fullMatch
