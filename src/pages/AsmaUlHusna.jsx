@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useMemo, memo } from 'react'
+import React, { useState, useCallback, useMemo, memo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { asmaUlHusna } from '../data/asmaUlHusna'
 import './AsmaUlHusna.css'
 
-const NameCard = memo(({ name }) => (
-  <div className="asma-card">
+const NameCard = memo(({ name, onClick }) => (
+  <div className="asma-card" onClick={() => onClick(name)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && onClick(name)}>
     <div className="asma-card-num">{name.num}</div>
     <p className="asma-card-arabic" dir="rtl">{name.arabic}</p>
     <p className="asma-card-roman">{name.roman}</p>
@@ -17,8 +17,27 @@ NameCard.displayName = 'NameCard'
 function AsmaUlHusna() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
+  const [selectedName, setSelectedName] = useState(null)
+  const [detailVisible, setDetailVisible] = useState(false)
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
+
+  const openDetail = useCallback((name) => {
+    setSelectedName(name)
+    requestAnimationFrame(() => setDetailVisible(true))
+  }, [])
+
+  const closeDetail = useCallback(() => {
+    setDetailVisible(false)
+    setTimeout(() => setSelectedName(null), 300)
+  }, [])
+
+  useEffect(() => {
+    if (!selectedName) return
+    const handleEsc = (e) => { if (e.key === 'Escape') closeDetail() }
+    document.addEventListener('keydown', handleEsc)
+    return () => document.removeEventListener('keydown', handleEsc)
+  }, [selectedName, closeDetail])
 
   const filtered = useMemo(() => {
     if (!search) return asmaUlHusna
@@ -58,7 +77,7 @@ function AsmaUlHusna() {
 
       <div className="asma-grid">
         {filtered.map(name => (
-          <NameCard key={name.num} name={name} />
+          <NameCard key={name.num} name={name} onClick={openDetail} />
         ))}
       </div>
 
@@ -72,6 +91,25 @@ function AsmaUlHusna() {
         </p>
         <cite className="asma-hadith-ref">— Sahih Al-Bukhari 2736</cite>
       </div>
+
+      {selectedName && (
+        <div className={`asma-detail-overlay${detailVisible ? ' visible' : ''}`} onClick={closeDetail}>
+          <div className={`asma-detail-panel${detailVisible ? ' visible' : ''}`} onClick={e => e.stopPropagation()}>
+            <button className="asma-detail-close" onClick={closeDetail} aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+            <div className="asma-detail-num">{selectedName.num}</div>
+            <p className="asma-detail-arabic" dir="rtl">{selectedName.arabic}</p>
+            <p className="asma-detail-roman">{selectedName.roman}</p>
+            <p className="asma-detail-english">{selectedName.english}</p>
+            <p className="asma-detail-telugu-name">{selectedName.telugu}</p>
+            <div className="asma-detail-divider"></div>
+            <p className="asma-detail-reason">{selectedName.reason}</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
