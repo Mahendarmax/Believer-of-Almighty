@@ -64,18 +64,20 @@
 
 /* Card */
 .asma-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
+  border-radius: var(--radius-lg);
   padding: 1rem 0.75rem 0.85rem;
   text-align: center;
   transition: var(--transition);
   position: relative;
   cursor: pointer;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
 }
 .asma-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  border-color: rgba(52, 211, 153, 0.65);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 0 24px rgba(52, 211, 153, 0.18), 0 0 48px rgba(52, 211, 153, 0.06);
 }
 .asma-card-num {
   position: absolute;
