@@ -388,51 +388,60 @@ const Home = React.memo(function Home() {
       {qvData && createPortal(
         <div className={`qv-overlay${qvClosing ? ' closing' : ''}`} onClick={closeQvModal}>
           <div className={`qv-modal${qvClosing ? ' closing' : ''}`} onClick={e => e.stopPropagation()}>
-            <button className="qv-modal-close" onClick={closeQvModal} aria-label="Close">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
-            </button>
+            {/* Top bar: audio + close */}
+            <div className="qv-modal-topbar">
+              <div className="qv-modal-audio">
+                <AudioPlayer
+                  audioUrl={getVerseAudioUrl(qvData.surahNumber, qvData.verse.number, reciter)}
+                  verseNumber={qvData.verse.number}
+                />
+              </div>
+              <button className="qv-modal-close" onClick={closeQvModal} aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="18" height="18">
+                  <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Header */}
             <div className="qv-modal-header">
               <span className="qv-modal-surah">{qvData.surahName}</span>
               <span className="qv-modal-ayah">{transliteration === 'telugu' ? 'ఆయత్' : 'Verse'} {qvData.verse.number}</span>
             </div>
-            {showArabic && qvData.verse.arabic && (
-              <div className="qv-modal-arabic" dir="rtl">
-                <p>{qvData.verse.arabic}</p>
+
+            {/* Scrollable content */}
+            <div className="qv-modal-scroll">
+              {showArabic && qvData.verse.arabic && (
+                <div className="qv-modal-arabic" dir="rtl">
+                  <p>{qvData.verse.arabic}</p>
+                </div>
+              )}
+              <div className="qv-modal-body">
+                {(transliteration === 'english' || transliteration === 'both') && qvData.verse.roman && (
+                  <div className="qv-modal-block">
+                    <span className="qv-modal-label">Transliteration</span>
+                    <p className="qv-modal-roman">{qvData.verse.roman}</p>
+                  </div>
+                )}
+                {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.roman && (
+                  <div className="qv-modal-block">
+                    <span className="qv-modal-label">{transliteration === 'both' ? 'తెలుగు లిప్యంతరీకరణ' : 'తెలుగు'}</span>
+                    <p className="qv-modal-telugu">{romanToTelugu(qvData.verse.roman)}</p>
+                  </div>
+                )}
+                {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.telugu && (
+                  <div className="qv-modal-block">
+                    <span className="qv-modal-label">అర్థం</span>
+                    <p className="qv-modal-telugu">{qvData.verse.telugu}</p>
+                  </div>
+                )}
+                {(transliteration === 'english' || transliteration === 'both') && qvData.verse.translation && (
+                  <div className="qv-modal-block">
+                    <span className="qv-modal-label">Translation</span>
+                    <p className="qv-modal-english">{qvData.verse.translation}</p>
+                  </div>
+                )}
               </div>
-            )}
-            <div className="qv-modal-body">
-              {(transliteration === 'english' || transliteration === 'both') && qvData.verse.roman && (
-                <div className="qv-modal-block">
-                  <span className="qv-modal-label">Transliteration</span>
-                  <p className="qv-modal-roman">{qvData.verse.roman}</p>
-                </div>
-              )}
-              {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.roman && (
-                <div className="qv-modal-block">
-                  <span className="qv-modal-label">{transliteration === 'both' ? 'తెలుగు లిప్యంతరీకరణ' : 'తెలుగు'}</span>
-                  <p className="qv-modal-telugu">{romanToTelugu(qvData.verse.roman)}</p>
-                </div>
-              )}
-              {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.telugu && (
-                <div className="qv-modal-block">
-                  <span className="qv-modal-label">అర్థం</span>
-                  <p className="qv-modal-telugu">{qvData.verse.telugu}</p>
-                </div>
-              )}
-              {(transliteration === 'english' || transliteration === 'both') && qvData.verse.translation && (
-                <div className="qv-modal-block">
-                  <span className="qv-modal-label">Translation</span>
-                  <p className="qv-modal-english">{qvData.verse.translation}</p>
-                </div>
-              )}
-            </div>
-            <div className="qv-modal-audio">
-              <AudioPlayer
-                audioUrl={getVerseAudioUrl(qvData.surahNumber, qvData.verse.number, reciter)}
-                verseNumber={qvData.verse.number}
-              />
             </div>
           </div>
         </div>,

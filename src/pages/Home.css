@@ -348,9 +348,9 @@
 .qv-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 100;
   display: flex;
   align-items: center;
@@ -364,25 +364,26 @@
 
 @keyframes qvOverlayIn {
   from { background: rgba(0,0,0,0); }
-  to { background: rgba(0,0,0,0.5); }
+  to { background: rgba(0,0,0,0.6); }
 }
 @keyframes qvOverlayOut {
-  from { background: rgba(0,0,0,0.5); }
+  from { background: rgba(0,0,0,0.6); }
   to { background: rgba(0,0,0,0); }
 }
 
 .qv-modal {
-  background: #000;
-  border: 1.5px solid rgba(212,164,74,0.35);
+  background: linear-gradient(160deg, #131b2e 0%, #0f1520 100%);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 560px;
+  max-width: 520px;
   max-height: 80vh;
-  overflow-y: auto;
-  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  box-shadow: 0 0 40px rgba(212,164,74,0.08), inset 0 0 30px rgba(212,164,74,0.02);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
   animation: qvModalIn 0.3s cubic-bezier(0.32,0.72,0,1) forwards;
+  overflow: hidden;
 }
 .qv-modal.closing {
   animation: qvModalOut 0.28s ease forwards;
@@ -397,57 +398,89 @@
   to { transform: scale(0.92); opacity: 0; }
 }
 
+/* Top bar — audio + close */
+.qv-modal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.15);
+  flex-shrink: 0;
+}
+
+.qv-modal-audio {
+  display: flex;
+  align-items: center;
+}
+
 .qv-modal-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   color: var(--text-muted);
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.06);
   transition: var(--transition);
-  z-index: 2;
 }
 .qv-modal-close:hover {
-  color: var(--text-primary);
-  background: rgba(255,255,255,0.1);
+  color: #ef4444;
+  background: rgba(239,68,68,0.12);
 }
 
+/* Header */
 .qv-modal-header {
   text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
+  padding: 16px 20px 12px;
+  flex-shrink: 0;
 }
 
 .qv-modal-surah {
   display: block;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 4px;
+  color: #e8c46a;
+  text-shadow: 0 0 8px rgba(212,164,74,0.25);
+  margin-bottom: 2px;
 }
 
 .qv-modal-ayah {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
+}
+
+/* Scrollable content */
+.qv-modal-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 20px;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.qv-modal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.qv-modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.qv-modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(212,164,74,0.3);
+  border-radius: 4px;
 }
 
 .qv-modal-arabic {
   text-align: center;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 16px;
+  padding: 18px 0;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.12);
 }
 .qv-modal-arabic p {
   font-family: 'Amiri', 'Scheherazade New', serif;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 2.2;
   color: var(--text-primary);
 }
@@ -455,25 +488,28 @@
 .qv-modal-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .qv-modal-block {
-  padding: 0;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.25);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(148,163,184,0.08);
 }
 
 .qv-modal-label {
   display: block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #e8c46a;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
 }
 
 .qv-modal-roman {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   line-height: 1.75;
   color: var(--text-secondary);
   font-style: italic;
@@ -481,24 +517,16 @@
 
 .qv-modal-telugu {
   font-family: 'Noto Sans Telugu', 'Mallanna', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   line-height: 1.85;
   color: var(--text-primary);
 }
 
 .qv-modal-english {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   line-height: 1.75;
   color: var(--text-secondary);
   font-style: italic;
-}
-
-.qv-modal-audio {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: center;
 }
 
 /* Responsive */
@@ -516,10 +544,13 @@
     flex: 0 0 auto;
   }
   .qv-modal {
-    padding: 22px 16px;
+    max-height: 85vh;
+  }
+  .qv-modal-scroll {
+    padding: 0 14px 16px;
   }
   .qv-modal-arabic p {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
 }
 
