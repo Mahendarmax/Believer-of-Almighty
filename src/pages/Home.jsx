@@ -197,15 +197,15 @@ const Home = React.memo(function Home() {
       <section className="stats-row">
         <div className="stat-card">
           <span className="stat-num">114</span>
-          <span className="stat-label">Surahs</span>
+          <span className="stat-label">{transliteration === 'telugu' ? 'సూరాలు' : 'Surahs'}</span>
         </div>
         <div className="stat-card">
           <span className="stat-num">6236</span>
-          <span className="stat-label">Verses</span>
+          <span className="stat-label">{transliteration === 'telugu' ? 'ఆయతులు' : 'Verses'}</span>
         </div>
         <div className="stat-card">
           <span className="stat-num">30</span>
-          <span className="stat-label">Juz</span>
+          <span className="stat-label">{transliteration === 'telugu' ? 'జుజ్' : 'Juz'}</span>
         </div>
       </section>
 
@@ -215,9 +215,9 @@ const Home = React.memo(function Home() {
           <button className="continue-card" onClick={handleContinue}>
             <div className="continue-icon"></div>
             <div className="continue-info">
-              <span className="continue-label">Continue Reading</span>
+              <span className="continue-label">{transliteration === 'telugu' ? 'చదవడం కొనసాగించు' : 'Continue Reading'}</span>
               <span className="continue-surah">{lastRead.surahName}</span>
-              <span className="continue-verse">Verse {lastRead.verseNumber || 1}</span>
+              <span className="continue-verse">{transliteration === 'telugu' ? 'ఆయత్' : 'Verse'} {lastRead.verseNumber || 1}</span>
             </div>
             <svg className="continue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -278,63 +278,63 @@ const Home = React.memo(function Home() {
       {/* Action Cards — 2x2 Grid */}
       <section className="action-cards">
         <button className="action-card read-card" onClick={handleReadQuran}>
-          <h3>Read Quran</h3>
-          <p>ఖురాన్ చదవండి</p>
-          <span className="action-meta">All 114 Surahs</span>
+          <h3>{transliteration === 'telugu' ? 'ఖురాన్ చదవండి' : 'Read Quran'}</h3>
+          {transliteration !== 'telugu' && <p>ఖురాన్ చదవండి</p>}
+          <span className="action-meta">{transliteration === 'telugu' ? 'మొత్తం 114 సూరాలు' : 'All 114 Surahs'}</span>
         </button>
 
         <button className="action-card namaz-action-card" onClick={() => navigate('/namaz')}>
-          <h3>Namaz Surahs</h3>
-          <p>నమాజ్ సూరాలు</p>
-          <span className="action-meta">{COUNTS.namaz} Surahs</span>
+          <h3>{transliteration === 'telugu' ? 'నమాజ్ సూరాలు' : 'Namaz Surahs'}</h3>
+          {transliteration !== 'telugu' && <p>నమాజ్ సూరాలు</p>}
+          <span className="action-meta">{COUNTS.namaz} {transliteration === 'telugu' ? 'సూరాలు' : 'Surahs'}</span>
         </button>
 
         <button className="action-card duas-action-card" onClick={() => navigate('/duas')}>
-          <h3>Duas</h3>
-          <p>దుఆలు</p>
-          <span className="action-meta">{COUNTS.duas} Duas</span>
+          <h3>{transliteration === 'telugu' ? 'దుఆలు' : 'Duas'}</h3>
+          {transliteration !== 'telugu' && <p>దుఆలు</p>}
+          <span className="action-meta">{COUNTS.duas} {transliteration === 'telugu' ? 'దుఆలు' : 'Duas'}</span>
         </button>
 
         <button className="action-card dosdonts-action-card" onClick={() => navigate('/dos-and-donts')}>
-          <h3>Dos and Don'ts in Islam</h3>
-          <p>ఆదేశాలు & నిషేధాలు</p>
-          <span className="action-meta">{COUNTS.dosdonts} Items</span>
+          <h3>{transliteration === 'telugu' ? 'ఆదేశాలు & నిషేధాలు' : "Dos and Don'ts in Islam"}</h3>
+          {transliteration !== 'telugu' && <p>ఆదేశాలు & నిషేధాలు</p>}
+          <span className="action-meta">{COUNTS.dosdonts} {transliteration === 'telugu' ? 'అంశాలు' : 'Items'}</span>
         </button>
 
         <button className="action-card asma-action-card" onClick={() => navigate('/names-of-allah')}>
-          <h3>99 Names of Allah</h3>
-          <p>అల్లాహ్ 99 నామాలు</p>
-          <span className="action-meta">{COUNTS.asma} Names</span>
+          <h3>{transliteration === 'telugu' ? 'అల్లాహ్ 99 నామాలు' : '99 Names of Allah'}</h3>
+          {transliteration !== 'telugu' && <p>అల్లాహ్ 99 నామాలు</p>}
+          <span className="action-meta">{COUNTS.asma} {transliteration === 'telugu' ? 'నామాలు' : 'Names'}</span>
         </button>
 
         <button className="action-card tasbih-action-card" onClick={() => navigate('/tasbih')}>
-          <h3>Tasbih Counter</h3>
-          <p>తస్బీహ్ కౌంటర్</p>
-          <span className="action-meta">Digital Dhikr</span>
+          <h3>{transliteration === 'telugu' ? 'తస్బీహ్ కౌంటర్' : 'Tasbih Counter'}</h3>
+          {transliteration !== 'telugu' && <p>తస్బీహ్ కౌంటర్</p>}
+          <span className="action-meta">{transliteration === 'telugu' ? 'డిజిటల్ ధిక్ర్' : 'Digital Dhikr'}</span>
         </button>
 
         <button className="action-card adhkar-action-card" onClick={() => navigate('/adhkar')}>
-          <h3>Morning & Evening Adhkar</h3>
-          <p>ఉదయ సాయంత్ర అధ్కార్</p>
-          <span className="action-meta">{COUNTS.adhkar} Adhkar</span>
+          <h3>{transliteration === 'telugu' ? 'ఉదయ సాయంత్ర అధ్కార్' : 'Morning & Evening Adhkar'}</h3>
+          {transliteration !== 'telugu' && <p>ఉదయ సాయంత్ర అధ్కార్</p>}
+          <span className="action-meta">{COUNTS.adhkar} {transliteration === 'telugu' ? 'అధ్కార్' : 'Adhkar'}</span>
         </button>
 
         <button className="action-card isa-action-card" onClick={() => navigate('/prophet-isa')}>
-          <h3>Prophet Isa (Jesus)</h3>
-          <p>ప్రవక్త ఈసా (అ)</p>
-          <span className="action-meta">{COUNTS.isa} Verses</span>
+          <h3>{transliteration === 'telugu' ? 'ప్రవక్త ఈసా (అ)' : 'Prophet Isa (Jesus)'}</h3>
+          {transliteration !== 'telugu' && <p>ప్రవక్త ఈసా (అ)</p>}
+          <span className="action-meta">{COUNTS.isa} {transliteration === 'telugu' ? 'వచనాలు' : 'Verses'}</span>
         </button>
 
         <button className="action-card seerah-action-card" onClick={() => navigate('/prophet-muhammad')}>
-          <h3>Seerah — Prophet ﷺ Life</h3>
-          <p>ప్రవక్త ﷺ జీవిత చరిత్ర</p>
-          <span className="action-meta">{COUNTS.seerah} Events</span>
+          <h3>{transliteration === 'telugu' ? 'ప్రవక్త ﷺ జీవిత చరిత్ర' : 'Seerah — Prophet ﷺ Life'}</h3>
+          {transliteration !== 'telugu' && <p>ప్రవక్త ﷺ జీవిత చరిత్ర</p>}
+          <span className="action-meta">{COUNTS.seerah} {transliteration === 'telugu' ? 'సంఘటనలు' : 'Events'}</span>
         </button>
 
         <button className="action-card fav-card" onClick={handleFavorites}>
-          <h3>Favorites</h3>
-          <p>ఇష్టమైనవి</p>
-          <span className="action-meta">{favorites.length} Saved</span>
+          <h3>{transliteration === 'telugu' ? 'ఇష్టమైనవి' : 'Favorites'}</h3>
+          {transliteration !== 'telugu' && <p>ఇష్టమైనవి</p>}
+          <span className="action-meta">{favorites.length} {transliteration === 'telugu' ? 'సేవ్ చేసినవి' : 'Saved'}</span>
         </button>
       </section>
 

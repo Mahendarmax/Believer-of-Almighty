@@ -40,7 +40,7 @@ export const SettingsProvider = ({ children }) => {
   // Save to localStorage on change (debounced to reduce IO)
   useEffect(() => { debouncedSave('showArabic', showArabic, 0) }, [showArabic, debouncedSave])
   useEffect(() => { debouncedSave('fontSize', fontSize) }, [fontSize, debouncedSave])
-  useEffect(() => { if (lastRead) debouncedSave('lastRead', lastRead, 0) }, [lastRead, debouncedSave])
+  useEffect(() => { debouncedSave('lastRead', lastRead, 0) }, [lastRead, debouncedSave])
   useEffect(() => { debouncedSave('favorites', favorites, 500) }, [favorites, debouncedSave])
   useEffect(() => { debouncedSave('transliteration', transliteration, 0) }, [transliteration, debouncedSave])
   useEffect(() => { debouncedSave('reciter', reciter, 0) }, [reciter, debouncedSave])
@@ -51,6 +51,11 @@ export const SettingsProvider = ({ children }) => {
 
   const updateLastRead = useCallback((surahNumber, surahName, verseNumber) => {
     setLastRead({ surahNumber, surahName, verseNumber: verseNumber || 1, timestamp: Date.now() })
+  }, [])
+
+  const clearLastRead = useCallback(() => {
+    setLastRead(null)
+    localStorage.removeItem('quran_lastRead')
   }, [])
 
   const toggleFavorite = useCallback((surahNumber, surahName, verseNumber, arabicText, translationText) => {
@@ -69,11 +74,11 @@ export const SettingsProvider = ({ children }) => {
   const value = useMemo(() => ({
     showArabic, toggleArabic,
     fontSize, increaseFontSize, decreaseFontSize,
-    lastRead, updateLastRead,
+    lastRead, updateLastRead, clearLastRead,
     favorites, toggleFavorite, isFavorite,
     transliteration, setTransliteration,
     reciter, setReciter,
-  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter])
+  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, clearLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter])
 
   return (
     <SettingsContext.Provider value={value}>

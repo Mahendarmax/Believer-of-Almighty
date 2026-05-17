@@ -491,7 +491,7 @@ function VerseView() {
   const { number } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter } = useSettings()
+  const { showArabic, fontSize, updateLastRead, clearLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -673,11 +673,17 @@ function VerseView() {
 
   const handleBookmark = useCallback((verseNum) => {
     if (surah) {
-      updateLastRead(surahNumber, surah.name, verseNum)
-      setBookmarkToast(`Saved: ${surah.name}, Verse ${verseNum} — Use "Continue Reading" on Home page`)
+      const isCurrentlyBookmarked = lastRead?.surahNumber === surahNumber && lastRead?.verseNumber === verseNum
+      if (isCurrentlyBookmarked) {
+        clearLastRead()
+        setBookmarkToast('Bookmark removed')
+      } else {
+        updateLastRead(surahNumber, surah.name, verseNum)
+        setBookmarkToast(`Saved: ${surah.name}, Verse ${verseNum} — Use "Continue Reading" on Home page`)
+      }
       setTimeout(() => setBookmarkToast(null), 3000)
     }
-  }, [surah, surahNumber, updateLastRead])
+  }, [surah, surahNumber, updateLastRead, clearLastRead, lastRead])
 
   const handleToggleFav = useCallback((verseNum, arabic, translation) => {
     if (surah) toggleFavorite(surahNumber, surah.name, verseNum, arabic, translation)
