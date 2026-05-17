@@ -611,17 +611,33 @@
 
 /* Responsive */
 @media (max-width: 480px) {
+  .qv-box {
+    padding: 12px 12px;
+  }
   .qv-controls {
     flex-wrap: wrap;
   }
   .qv-select-wrap {
     flex: 1 1 100%;
   }
+  .qv-select {
+    padding: 11px 14px;
+    font-size: 0.82rem;
+  }
   .qv-verse-input {
     flex: 1;
+    padding: 11px 10px;
   }
   .qv-go-btn {
     flex: 0 0 auto;
+    padding: 11px 14px;
+  }
+  .qv-dropdown {
+    left: 0;
+    right: 0;
+  }
+  .qv-drop-list {
+    max-height: 250px;
   }
   .qv-modal {
     max-height: 85vh;
