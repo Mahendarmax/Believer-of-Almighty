@@ -204,8 +204,9 @@ const DHAAL_WORDS = {
   'wallazeena': 'walladheena', 'lazeena': 'ladheena',
   'lazeee': 'ladhee', 'lazee': 'ladhee',
   'zaalika': 'dhaalika', 'zaalikal': 'dhaalikal',
+  'zaalikum': 'dhaalikum', 'zaalikuma': 'dhaalikuma',
   'kazaalika': 'kadhaalika', 'kazaalikal': 'kadhaalikal',
-  'fazaalika': 'fadhaalika',
+  'fazaalika': 'fadhaalika', 'fazaalikum': 'fadhaalikum',
   'azaab': 'adhaab', 'azaaban': 'adhaaban', 'azaabun': 'adhaabun',
   'azaabin': 'adhaabin', 'azaabi': 'adhaabi', 'azaabal': 'adhabal',
   'yazlimoon': 'yadhlimoon', 'yazlimoo': 'yadhlimoo',
@@ -261,16 +262,20 @@ const fixRomanText = (text) => {
       if (word[0] === word[0].toUpperCase()) return fullMatch[0].toUpperCase() + fullMatch.slice(1)
       return fullMatch
     }
-    // Handle apostrophe-prefixed words (e.g. bi'azaabin → bi'adhaabin)
+    // Handle apostrophe-joined words (e.g. bi'azaabin → bi'adhaabin, Allazeena'aahatta → Alladheena'aahatta)
     const apoIdx = word.indexOf("'")
     if (apoIdx > 0 && apoIdx < word.length - 1) {
-      const prefix = word.slice(0, apoIdx + 1)
+      const prefix = word.slice(0, apoIdx)
       const suffix = word.slice(apoIdx + 1)
+      const prefixLower = prefix.toLowerCase()
       const suffixLower = suffix.toLowerCase()
+      const prefixMatch = DHAAL_WORDS[prefixLower]
       const suffixMatch = DHAAL_WORDS[suffixLower]
-      if (suffixMatch) {
-        return prefix + suffixMatch
-      }
+      const fixedPrefix = prefixMatch
+        ? (prefix[0] === prefix[0].toUpperCase() ? prefixMatch[0].toUpperCase() + prefixMatch.slice(1) : prefixMatch)
+        : prefix
+      const fixedSuffix = suffixMatch || suffix
+      return fixedPrefix + "'" + fixedSuffix
     }
     return word
   })
