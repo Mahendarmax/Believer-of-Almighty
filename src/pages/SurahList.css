@@ -4,7 +4,9 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 20px 80px;
-  background: #000000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* Header */
