@@ -238,9 +238,21 @@
 
 /* ===== Quick Verse Lookup ===== */
 .qv-section {
-  max-width: 360px;
+  max-width: 720px;
   margin: 0 auto 24px;
   padding: 0 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.qv-box {
+  background: linear-gradient(160deg, #131b2e 0%, #0f1520 100%);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
+  width: 100%;
+  max-width: 360px;
 }
 
 .qv-title {
@@ -248,9 +260,10 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: 8px;
+  font-weight: 700;
+  color: #e8c46a;
+  margin-bottom: 10px;
+  text-shadow: 0 0 8px rgba(212,164,74,0.25);
 }
 
 .qv-controls {

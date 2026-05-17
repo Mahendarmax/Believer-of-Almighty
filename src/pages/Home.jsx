@@ -119,6 +119,11 @@ const Home = React.memo(function Home() {
   const [qvLoading, setQvLoading] = useState(false)
   const [qvError, setQvError] = useState('')
   const [qvClosing, setQvClosing] = useState(false)
+  const [qvPlaying, setQvPlaying] = useState(null)
+
+  const handleQvPlay = useCallback((verseNum) => {
+    setQvPlaying(verseNum)
+  }, [])
 
   const qvSelectedSurah = useMemo(() => {
     if (!qvSurah) return null
@@ -151,6 +156,7 @@ const Home = React.memo(function Home() {
 
   const closeQvModal = useCallback(() => {
     setQvClosing(true)
+    setQvPlaying(null)
     setTimeout(() => {
       setQvData(null)
       setQvClosing(false)
@@ -222,6 +228,7 @@ const Home = React.memo(function Home() {
 
       {/* Quick Verse Lookup */}
       <section className="qv-section">
+        <div className="qv-box">
         <h3 className="qv-title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -265,6 +272,7 @@ const Home = React.memo(function Home() {
           </button>
         </div>
         {qvError && <p className="qv-error">{qvError}</p>}
+        </div>
       </section>
 
       {/* Action Cards — 2x2 Grid */}
@@ -394,6 +402,8 @@ const Home = React.memo(function Home() {
                 <AudioPlayer
                   audioUrl={getVerseAudioUrl(qvData.surahNumber, qvData.verse.number, reciter)}
                   verseNumber={qvData.verse.number}
+                  isGlobalPlaying={qvPlaying}
+                  onPlay={handleQvPlay}
                 />
               </div>
               <button className="qv-modal-close" onClick={closeQvModal} aria-label="Close">
