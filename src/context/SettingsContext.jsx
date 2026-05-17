@@ -27,7 +27,7 @@ export const SettingsProvider = ({ children }) => {
   const [fontSize, setFontSize] = useState(() => loadSetting('fontSize', 16))
   const [lastRead, setLastRead] = useState(() => loadSetting('lastRead', null))
   const [favorites, setFavorites] = useState(() => loadSetting('favorites', []))
-  const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'both'))
+  const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'telugu'))
   const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.alafasy'))
 
   // Debounced localStorage writes — batch rapid changes (e.g. font size)

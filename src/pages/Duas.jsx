@@ -39,8 +39,12 @@ function Duas() {
               <div className="dua-card-info">
                 <span className={`dua-card-category ${d.category === 'Evil Eye' ? 'cat-evil-eye' : ''}`}>{d.category}</span>
                 <div>
-                  <span className="dua-card-title">{d.title}</span>
-                  <span className="dua-card-title-telugu">{d.titleTelugu}</span>
+                  {(transliteration === 'english' || transliteration === 'both') && (
+                    <span className="dua-card-title">{d.title}</span>
+                  )}
+                  {(transliteration === 'telugu' || transliteration === 'both') && (
+                    <span className="dua-card-title-telugu">{d.titleTelugu}</span>
+                  )}
                 </div>
               </div>
               <svg

@@ -56,8 +56,12 @@ function DosAndDonts() {
               <div className="dd-card-info">
                 <span className="dd-card-icon">{cat.icon}</span>
                 <div>
-                  <span className="dd-card-category">{cat.category}</span>
-                  <span className="dd-card-category-telugu">{cat.categoryTelugu}</span>
+                  {(transliteration === 'english' || transliteration === 'both') && (
+                    <span className="dd-card-category">{cat.category}</span>
+                  )}
+                  {(transliteration === 'telugu' || transliteration === 'both') && (
+                    <span className="dd-card-category-telugu">{cat.categoryTelugu}</span>
+                  )}
                 </div>
               </div>
               <div className="dd-card-right">

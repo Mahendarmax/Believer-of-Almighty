@@ -36,8 +36,12 @@ function Adhkar() {
               <div className="adhkar-card-info">
                 <span className="adhkar-card-icon">{cat.icon}</span>
                 <div>
-                  <span className="adhkar-card-category">{cat.category}</span>
-                  <span className="adhkar-card-category-telugu">{cat.categoryTelugu}</span>
+                  {(transliteration === 'english' || transliteration === 'both') && (
+                    <span className="adhkar-card-category">{cat.category}</span>
+                  )}
+                  {(transliteration === 'telugu' || transliteration === 'both') && (
+                    <span className="adhkar-card-category-telugu">{cat.categoryTelugu}</span>
+                  )}
                   <span className="adhkar-card-note">{cat.note}</span>
                 </div>
               </div>

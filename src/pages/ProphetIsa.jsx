@@ -59,8 +59,12 @@ function ProphetIsa() {
               <div className="isa-card-info">
                 <span className="isa-card-icon">{cat.icon}</span>
                 <div>
-                  <span className="isa-card-category">{cat.category}</span>
-                  <span className="isa-card-category-telugu">{cat.categoryTelugu}</span>
+                  {(transliteration === 'english' || transliteration === 'both') && (
+                    <span className="isa-card-category">{cat.category}</span>
+                  )}
+                  {(transliteration === 'telugu' || transliteration === 'both') && (
+                    <span className="isa-card-category-telugu">{cat.categoryTelugu}</span>
+                  )}
                 </div>
               </div>
               <div className="isa-card-right">
@@ -85,7 +89,9 @@ function ProphetIsa() {
                         <span className="isa-verse-num">{i + 1}</span>
                         <span className="isa-verse-ref">{item.reference}</span>
                       </div>
-                      <blockquote className="isa-verse-text">"{item.verse}"</blockquote>
+                      {(transliteration === 'english' || transliteration === 'both') && (
+                        <blockquote className="isa-verse-text">"{item.verse}"</blockquote>
+                      )}
                       {(transliteration === 'telugu' || transliteration === 'both') && (
                         <p className="isa-verse-telugu">"{item.telugu}"</p>
                       )}
@@ -102,7 +108,9 @@ function ProphetIsa() {
 
                       {isExpanded && (
                         <div className="isa-context-box">
-                          <p className="isa-context-english">{item.context}</p>
+                          {(transliteration === 'english' || transliteration === 'both') && (
+                            <p className="isa-context-english">{item.context}</p>
+                          )}
                           {(transliteration === 'telugu' || transliteration === 'both') && (
                             <p className="isa-context-telugu">{item.contextTelugu}</p>
                           )}

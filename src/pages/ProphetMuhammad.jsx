@@ -74,8 +74,12 @@ function ProphetMuhammad() {
                   <span className="seerah-chapter-num">{chapter.chapter}</span>
                   <span className="seerah-chapter-icon">{chapter.icon}</span>
                   <div className="seerah-chapter-info">
-                    <span className="seerah-chapter-era">{chapter.era}</span>
-                    <span className="seerah-chapter-era-en">{chapter.eraEn}</span>
+                    {(transliteration === 'telugu' || transliteration === 'both') && (
+                      <span className="seerah-chapter-era">{chapter.era}</span>
+                    )}
+                    {(transliteration === 'english' || transliteration === 'both') && (
+                      <span className="seerah-chapter-era-en">{chapter.eraEn}</span>
+                    )}
                     <span className="seerah-chapter-period">{chapter.period}</span>
                   </div>
                 </div>
@@ -107,8 +111,12 @@ function ProphetMuhammad() {
                           <div className="seerah-event-left">
                             <div className="seerah-event-dot" />
                             <div>
-                              <span className="seerah-event-title">{ev.title}</span>
-                              <span className="seerah-event-title-en">{ev.titleEn}</span>
+                              {(transliteration === 'telugu' || transliteration === 'both') && (
+                                <span className="seerah-event-title">{ev.title}</span>
+                              )}
+                              {(transliteration === 'english' || transliteration === 'both') && (
+                                <span className="seerah-event-title-en">{ev.titleEn}</span>
+                              )}
                               <span className="seerah-event-year">{ev.year}</span>
                             </div>
                           </div>
@@ -157,12 +165,18 @@ function ProphetMuhammad() {
       <div className="seerah-footer">
         <div className="seerah-footer-salawat">
           <p className="seerah-footer-arabic" dir="rtl">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ</p>
-          <p className="seerah-footer-transliteration">Allahumma salli 'ala Muhammadin wa 'ala aali Muhammad</p>
-          <p className="seerah-footer-meaning">ఓ అల్లాహ్! ముహమ్మద్ ﷺ పై మరియు ఆయన కుటుంబంపై దీవెనలు కురిపించు</p>
+          {(transliteration === 'english' || transliteration === 'both') && (
+            <p className="seerah-footer-transliteration">Allahumma salli 'ala Muhammadin wa 'ala aali Muhammad</p>
+          )}
+          {(transliteration === 'telugu' || transliteration === 'both') && (
+            <p className="seerah-footer-meaning">ఓ అల్లాహ్! ముహమ్మద్ ﷺ పై మరియు ఆయన కుటుంబంపై దీవెనలు కురిపించు</p>
+          )}
         </div>
-        <p className="seerah-footer-quote">
-          "Verily, in the Messenger of Allah you have an excellent example to follow."
-        </p>
+        {(transliteration === 'english' || transliteration === 'both') && (
+          <p className="seerah-footer-quote">
+            "Verily, in the Messenger of Allah you have an excellent example to follow."
+          </p>
+        )}
         <cite className="seerah-footer-ref">— Surah Al-Ahzab 33:21</cite>
       </div>
     </div>
