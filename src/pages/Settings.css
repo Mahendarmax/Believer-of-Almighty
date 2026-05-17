@@ -530,3 +530,18 @@
   .set-item { padding: 18px; }
   .preview-arabic { font-size: 1.25rem; }
 }
+
+@media (max-width: 360px) {
+  .settings-page { padding: 0 10px 50px; }
+  .set-title { font-size: 1rem; }
+  .set-item { padding: 14px; }
+}
+
+@media (min-width: 768px) {
+  .settings-page { width: 85%; }
+  .set-title { font-size: 1.5rem; }
+}
+
+@media (min-width: 1200px) {
+  .settings-page { width: 70%; max-width: 900px; }
+}

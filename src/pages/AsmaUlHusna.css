@@ -143,7 +143,31 @@
 }
 
 @media (max-width: 480px) {
+  .asma-page { width: 100%; padding: 0 14px 70px; }
   .asma-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
   .asma-card { padding: 0.75rem 0.5rem; }
   .asma-card-arabic { font-size: 1.25rem; }
+  .asma-page-title { font-size: 1.15rem; }
+}
+
+@media (max-width: 360px) {
+  .asma-page { padding: 0 10px 70px; }
+  .asma-grid { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+  .asma-card { padding: 0.6rem 0.4rem; }
+  .asma-card-arabic { font-size: 1.1rem; }
+}
+
+@media (min-width: 640px) {
+  .asma-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 768px) {
+  .asma-page { width: 85%; }
+  .asma-card { padding: 1rem 0.85rem; }
+  .asma-card-arabic { font-size: 1.55rem; }
+}
+
+@media (min-width: 1200px) {
+  .asma-page { width: 80%; }
+  .asma-grid { grid-template-columns: repeat(4, 1fr); }
 }

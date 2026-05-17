@@ -277,7 +277,29 @@
 }
 
 @media (max-width: 480px) {
+  .isa-page { width: 100%; padding: 0 14px 70px; }
   .isa-verse-text { font-size: 0.88rem; }
   .isa-card-header { padding: 0.8rem; }
   .isa-page-title { font-size: 1.15rem; }
+  .isa-intro-stat-num { font-size: 1.4rem; }
+  .isa-intro { padding: 1rem; }
+  .isa-footer-quote { font-size: 0.82rem; }
+}
+
+@media (max-width: 360px) {
+  .isa-page { padding: 0 10px 70px; }
+  .isa-verse-text { font-size: 0.82rem; }
+  .isa-page-title { font-size: 1rem; }
+  .isa-intro-stat { flex-direction: column; gap: 0.75rem; }
+}
+
+@media (min-width: 768px) {
+  .isa-page { width: 85%; }
+  .isa-verse-text { font-size: 1rem; }
+  .isa-card-header { padding: 1.1rem; }
+  .isa-intro { padding: 1.5rem; }
+}
+
+@media (min-width: 1200px) {
+  .isa-page { width: 80%; }
 }

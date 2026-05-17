@@ -183,6 +183,27 @@
 }
 
 @media (max-width: 480px) {
+  .adhkar-page { width: 100%; padding: 0 14px 70px; }
   .adhkar-item-arabic { font-size: 1.15rem; }
   .adhkar-card-header { padding: 0.8rem; }
+  .adhkar-page-title { font-size: 1.15rem; }
+  .adhkar-item-english { font-size: 0.82rem; }
+  .adhkar-item-roman { font-size: 0.82rem; }
+}
+
+@media (max-width: 360px) {
+  .adhkar-page { padding: 0 10px 70px; }
+  .adhkar-item-arabic { font-size: 1rem; }
+  .adhkar-card-header { padding: 0.7rem; }
+  .adhkar-page-title { font-size: 1rem; }
+}
+
+@media (min-width: 768px) {
+  .adhkar-page { width: 85%; }
+  .adhkar-card-header { padding: 1.1rem; }
+  .adhkar-item-arabic { font-size: 1.45rem; }
+}
+
+@media (min-width: 1200px) {
+  .adhkar-page { width: 80%; }
 }

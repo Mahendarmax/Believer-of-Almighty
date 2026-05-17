@@ -66,6 +66,11 @@
   .duas-page-subtitle { font-size: 0.7rem; }
 }
 
+@media (max-width: 360px) {
+  .duas-page { padding: 0 10px 70px; }
+  .duas-page-title { font-size: 1rem; }
+}
+
 @media (min-width: 768px) {
   .duas-page-title { font-size: 1.6rem; }
 }

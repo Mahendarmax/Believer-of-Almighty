@@ -182,8 +182,32 @@
 }
 
 @media (max-width: 480px) {
+  .tasbih-page { width: 100%; padding: 0 14px 70px; }
   .tasbih-circle-wrap { width: 190px; height: 190px; }
   .tasbih-tap-btn { width: 135px; height: 135px; }
   .tasbih-count { font-size: 2.5rem; }
   .tasbih-arabic { font-size: 1.5rem; }
+  .tasbih-preset-btn { padding: 0.4rem 0.7rem; font-size: 0.75rem; }
+  .tasbih-stats { gap: 1.5rem; }
+}
+
+@media (max-width: 360px) {
+  .tasbih-page { padding: 0 10px 70px; }
+  .tasbih-circle-wrap { width: 165px; height: 165px; }
+  .tasbih-tap-btn { width: 115px; height: 115px; }
+  .tasbih-count { font-size: 2rem; }
+  .tasbih-arabic { font-size: 1.3rem; }
+}
+
+@media (min-width: 768px) {
+  .tasbih-page { width: 85%; }
+  .tasbih-circle-wrap { width: 250px; height: 250px; }
+  .tasbih-tap-btn { width: 180px; height: 180px; }
+  .tasbih-count { font-size: 3.5rem; }
+  .tasbih-arabic { font-size: 2rem; }
+  .tasbih-stats { gap: 2.5rem; }
+}
+
+@media (min-width: 1200px) {
+  .tasbih-page { width: 70%; max-width: 800px; }
 }

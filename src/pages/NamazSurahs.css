@@ -66,6 +66,11 @@
   .namaz-page-subtitle { font-size: 0.7rem; }
 }
 
+@media (max-width: 360px) {
+  .namaz-page { padding: 0 10px 70px; }
+  .namaz-page-title { font-size: 1rem; }
+}
+
 @media (min-width: 768px) {
   .namaz-page-title { font-size: 1.6rem; }
 }
