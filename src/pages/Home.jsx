@@ -269,7 +269,6 @@ const Home = React.memo(function Home() {
                   placeholder={transliteration === 'telugu' ? 'సూరా వెతుకు...' : 'Search surah...'}
                   value={qvFilter}
                   onChange={e => setQvFilter(e.target.value)}
-                  autoFocus
                   onClick={e => e.stopPropagation()}
                 />
                 <ul className="qv-drop-list">
