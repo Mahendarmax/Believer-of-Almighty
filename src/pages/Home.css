@@ -258,6 +258,7 @@
 .qv-title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   font-size: 0.8rem;
   font-weight: 700;
@@ -281,8 +282,8 @@
 .qv-select {
   width: 100%;
   padding: 8px 28px 8px 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: #111827;
+  border: 1.5px solid rgba(212,164,74,0.35);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: 0.78rem;
@@ -291,7 +292,8 @@
   transition: var(--transition);
 }
 .qv-select:focus {
-  border-color: var(--accent);
+  border-color: #e8c46a;
+  box-shadow: 0 0 0 2px rgba(212,164,74,0.15);
   outline: none;
 }
 
@@ -307,8 +309,8 @@
 .qv-verse-input {
   width: 70px;
   padding: 8px 8px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: #111827;
+  border: 1.5px solid rgba(212,164,74,0.35);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: 0.78rem;
@@ -316,7 +318,8 @@
   transition: var(--transition);
 }
 .qv-verse-input:focus {
-  border-color: var(--accent);
+  border-color: #e8c46a;
+  box-shadow: 0 0 0 2px rgba(212,164,74,0.15);
   outline: none;
 }
 .qv-verse-input::-webkit-inner-spin-button,
