@@ -249,6 +249,7 @@ ScrollToTop.displayName = 'ScrollToTop'
 const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
+  const [shareToast, setShareToast] = useState(null)
   const cardRef = useRef(null)
 
   const handleDownload = useCallback(async () => {
@@ -285,6 +286,51 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
     setJustBookmarked(true)
     setTimeout(() => setJustBookmarked(false), 1500)
   }, [onBookmark, verse.number])
+
+  const handleShare = useCallback(async () => {
+    const lines = []
+    const header = `📖 ${surahName || 'Surah ' + surahNumber} — Verse ${verse.number}`
+    lines.push(header)
+    lines.push('')
+    if (verse.arabic) lines.push(verse.arabic)
+    if (verse.roman) {
+      if (transliteration === 'telugu' || transliteration === 'both') {
+        lines.push(romanToTelugu(verse.roman))
+      }
+      if (transliteration === 'english' || transliteration === 'both') {
+        lines.push(verse.roman)
+      }
+    }
+    if (verse.translation) lines.push(`\n${verse.translation}`)
+    lines.push('\n— Believer of Almighty')
+    const text = lines.join('\n')
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: header, text })
+      } catch (e) {
+        if (e.name !== 'AbortError') console.error('Share failed:', e)
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(text)
+        setShareToast('Copied!')
+        setTimeout(() => setShareToast(null), 1500)
+      } catch {
+        // fallback for older browsers
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.opacity = '0'
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        document.body.removeChild(ta)
+        setShareToast('Copied!')
+        setTimeout(() => setShareToast(null), 1500)
+      }
+    }
+  }, [surahName, surahNumber, verse, transliteration])
 
   // Memoize Telugu transliteration to avoid recomputing on every render
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
@@ -334,6 +380,20 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
               </svg>
             )}
           </button>
+          <button
+            className="vc-action-btn share-btn"
+            onClick={handleShare}
+            title="Share verse"
+            aria-label="Share verse"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </button>
           <AudioPlayer
             audioUrl={getVerseAudioUrl(surahNumber, verse.number, reciter)}
             verseNumber={verse.number}
@@ -341,6 +401,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
             onPlay={onPlay}
           />
         </div>
+        {shareToast && <span className="vc-share-toast">{shareToast}</span>}
       </div>
 
       {/* Arabic text */}
