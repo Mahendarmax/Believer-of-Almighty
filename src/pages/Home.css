@@ -284,6 +284,13 @@
   padding: 8px 28px 8px 10px;
   background: #111827;
   border: 1.5px solid rgba(212,164,74,0.55);
+  border-radius: 20px;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
   transition: var(--transition);
 }
 .qv-select:focus {
@@ -294,7 +301,7 @@
 
 .qv-chevron {
   position: absolute;
-  right: 8px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
@@ -306,7 +313,7 @@
   padding: 8px 8px;
   background: #111827;
   border: 1.5px solid rgba(212,164,74,0.55);
-  border-radius: var(--radius-sm);
+  border-radius: 20px;
   color: var(--text-primary);
   font-size: 0.78rem;
   text-align: center;
@@ -331,7 +338,7 @@
   padding: 8px 14px;
   background: linear-gradient(135deg, var(--accent), var(--accent-dim));
   color: #000;
-  border-radius: var(--radius-sm);
+  border-radius: 20px;
   font-weight: 700;
   font-size: 0.75rem;
   white-space: nowrap;

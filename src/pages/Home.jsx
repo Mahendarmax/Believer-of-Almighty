@@ -205,7 +205,7 @@ const Home = React.memo(function Home() {
         </div>
         <div className="stat-card">
           <span className="stat-num">30</span>
-          <span className="stat-label">{transliteration === 'telugu' ? 'జుజ్' : 'Juz'}</span>
+          <span className="stat-label">{transliteration === 'telugu' ? 'పారాలు' : 'Juz'}</span>
         </div>
       </section>
 
