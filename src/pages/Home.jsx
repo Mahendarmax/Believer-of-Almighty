@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
-import { RECITERS } from '../data/quranData'
+import { RECITERS, surahs, getSurahVerses, getVerseAudioUrl } from '../data/quranData'
+import { romanToTelugu } from '../utils/teluguTransliteration'
+import AudioPlayer from '../components/AudioPlayer'
 import './Home.css'
 
 // Static counts — avoid importing large data modules on the home page
@@ -107,7 +110,52 @@ ReciterPicker.displayName = 'ReciterPicker'
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter } = useSettings()
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize } = useSettings()
+
+  // Quick Verse Lookup state
+  const [qvSurah, setQvSurah] = useState('')
+  const [qvVerse, setQvVerse] = useState('')
+  const [qvData, setQvData] = useState(null)
+  const [qvLoading, setQvLoading] = useState(false)
+  const [qvError, setQvError] = useState('')
+  const [qvClosing, setQvClosing] = useState(false)
+
+  const qvSelectedSurah = useMemo(() => {
+    if (!qvSurah) return null
+    return surahs.find(s => s.number === parseInt(qvSurah))
+  }, [qvSurah])
+
+  const handleQvSearch = useCallback(async () => {
+    const s = parseInt(qvSurah)
+    const v = parseInt(qvVerse)
+    if (!s || s < 1 || s > 114) { setQvError('Select a valid Surah'); return }
+    if (!v || v < 1) { setQvError('Enter a valid verse number'); return }
+    const surahInfo = surahs.find(su => su.number === s)
+    if (v > surahInfo.ayahs) { setQvError(`Surah ${surahInfo.name} has only ${surahInfo.ayahs} verses`); return }
+    setQvError('')
+    setQvLoading(true)
+    try {
+      const verses = await getSurahVerses(s)
+      const verse = verses.find(vr => vr.number === v)
+      if (verse) {
+        setQvData({ verse, surahName: surahInfo.name, surahNumber: s })
+      } else {
+        setQvError('Verse not found')
+      }
+    } catch {
+      setQvError('Failed to load verse. Try again.')
+    } finally {
+      setQvLoading(false)
+    }
+  }, [qvSurah, qvVerse])
+
+  const closeQvModal = useCallback(() => {
+    setQvClosing(true)
+    setTimeout(() => {
+      setQvData(null)
+      setQvClosing(false)
+    }, 280)
+  }, [])
 
   useEffect(() => {}, [])
 
@@ -171,6 +219,53 @@ const Home = React.memo(function Home() {
           </button>
         </section>
       )}
+
+      {/* Quick Verse Lookup */}
+      <section className="qv-section">
+        <h3 className="qv-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          {transliteration === 'telugu' ? 'ఆయత్ వెతుకు' : 'Quick Verse Lookup'}
+        </h3>
+        <div className="qv-controls">
+          <div className="qv-select-wrap">
+            <select
+              className="qv-select"
+              value={qvSurah}
+              onChange={e => { setQvSurah(e.target.value); setQvVerse(''); setQvError('') }}
+            >
+              <option value="">{transliteration === 'telugu' ? 'సూరా ఎంచుకోండి' : 'Select Surah'}</option>
+              {surahs.map(s => (
+                <option key={s.number} value={s.number}>
+                  {s.number}. {s.name} ({s.nameEnglish})
+                </option>
+              ))}
+            </select>
+            <svg className="qv-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </div>
+          <input
+            type="number"
+            className="qv-verse-input"
+            placeholder={qvSelectedSurah ? `${transliteration === 'telugu' ? 'ఆయత్' : 'Verse'} (1-${qvSelectedSurah.ayahs})` : (transliteration === 'telugu' ? 'ఆయత్' : 'Verse')}
+            value={qvVerse}
+            onChange={e => { setQvVerse(e.target.value); setQvError('') }}
+            onKeyDown={e => e.key === 'Enter' && handleQvSearch()}
+            min="1"
+            max={qvSelectedSurah?.ayahs || 286}
+          />
+          <button className="qv-go-btn" onClick={handleQvSearch} disabled={qvLoading}>
+            {qvLoading ? (
+              <span className="qv-spinner" />
+            ) : (
+              <>{transliteration === 'telugu' ? 'చూడు' : 'View'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12"><path d="M5 12h14M12 5l7 7-7 7"/></svg></>
+            )}
+          </button>
+        </div>
+        {qvError && <p className="qv-error">{qvError}</p>}
+      </section>
 
       {/* Action Cards — 2x2 Grid */}
       <section className="action-cards">
@@ -288,6 +383,61 @@ const Home = React.memo(function Home() {
         </blockquote>
         <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
       </footer>
+
+      {/* Quick Verse Modal */}
+      {qvData && createPortal(
+        <div className={`qv-overlay${qvClosing ? ' closing' : ''}`} onClick={closeQvModal}>
+          <div className={`qv-modal${qvClosing ? ' closing' : ''}`} onClick={e => e.stopPropagation()}>
+            <button className="qv-modal-close" onClick={closeQvModal} aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+            <div className="qv-modal-header">
+              <span className="qv-modal-surah">{qvData.surahName}</span>
+              <span className="qv-modal-ayah">{transliteration === 'telugu' ? 'ఆయత్' : 'Verse'} {qvData.verse.number}</span>
+            </div>
+            {showArabic && qvData.verse.arabic && (
+              <div className="qv-modal-arabic" dir="rtl">
+                <p>{qvData.verse.arabic}</p>
+              </div>
+            )}
+            <div className="qv-modal-body">
+              {(transliteration === 'english' || transliteration === 'both') && qvData.verse.roman && (
+                <div className="qv-modal-block">
+                  <span className="qv-modal-label">Transliteration</span>
+                  <p className="qv-modal-roman">{qvData.verse.roman}</p>
+                </div>
+              )}
+              {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.roman && (
+                <div className="qv-modal-block">
+                  <span className="qv-modal-label">{transliteration === 'both' ? 'తెలుగు లిప్యంతరీకరణ' : 'తెలుగు'}</span>
+                  <p className="qv-modal-telugu">{romanToTelugu(qvData.verse.roman)}</p>
+                </div>
+              )}
+              {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.telugu && (
+                <div className="qv-modal-block">
+                  <span className="qv-modal-label">అర్థం</span>
+                  <p className="qv-modal-telugu">{qvData.verse.telugu}</p>
+                </div>
+              )}
+              {(transliteration === 'english' || transliteration === 'both') && qvData.verse.translation && (
+                <div className="qv-modal-block">
+                  <span className="qv-modal-label">Translation</span>
+                  <p className="qv-modal-english">{qvData.verse.translation}</p>
+                </div>
+              )}
+            </div>
+            <div className="qv-modal-audio">
+              <AudioPlayer
+                audioUrl={getVerseAudioUrl(qvData.surahNumber, qvData.verse.number, reciter)}
+                verseNumber={qvData.verse.number}
+              />
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   )
 })
