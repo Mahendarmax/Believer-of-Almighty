@@ -526,13 +526,13 @@
   justify-content: center;
   border-radius: 50%;
   transition: var(--transition);
-  color: var(--text-muted);
+  color: #d4a44a;
   background: transparent;
 }
 
 .vc-action-btn:hover {
-  background: var(--bg-card-hover);
-  color: var(--text-secondary);
+  background: rgba(212, 164, 74, 0.12);
+  color: #f0c05a;
   transform: scale(1.1);
 }
 
