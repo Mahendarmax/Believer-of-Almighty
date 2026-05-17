@@ -241,60 +241,43 @@
 
 .asma-detail-arabic {
   font-family: 'Amiri', serif;
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text-arabic);
-  text-align: right;
+  text-align: center;
   direction: rtl;
-  line-height: 2.3;
+  line-height: 2;
   word-spacing: 8px;
-  padding: 12px 0;
+  padding: 8px 0 14px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 14px;
-}
-
-.asma-detail-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-bottom: 14px;
-}
-
-.asma-detail-col {
-  min-width: 0;
-}
-
-.asma-detail-label {
-  display: block;
-  font-size: 0.66rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--accent-dim);
-  margin-bottom: 6px;
-  font-weight: 700;
+  margin: 0 0 14px;
 }
 
 .asma-detail-roman {
-  color: var(--text-primary);
+  color: var(--accent);
   line-height: 1.75;
-  font-size: 0.95rem;
-  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 4px;
 }
 
 .asma-detail-english {
   color: var(--text-secondary);
   line-height: 1.75;
-  font-size: 0.9rem;
-  margin: 0;
+  font-size: 0.92rem;
+  text-align: center;
+  margin: 0 0 8px;
 }
 
 .asma-detail-telugu-name {
   font-family: 'Noto Sans Telugu', sans-serif;
   color: var(--text-primary);
   line-height: 1.85;
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 16px;
 }
 
 .asma-detail-reason-section {
@@ -302,24 +285,13 @@
   border-top: 1px solid var(--border);
 }
 
-.asma-detail-reason-label {
-  display: block;
-  font-size: 0.66rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--emerald);
-  margin-bottom: 8px;
-  font-weight: 700;
-  opacity: 0.7;
-}
-
 .asma-detail-reason {
   font-family: 'Noto Sans Telugu', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--text-secondary);
   line-height: 1.85;
+  text-align: center;
   margin: 0;
-  font-style: italic;
 }
 
 @media (max-width: 480px) {
