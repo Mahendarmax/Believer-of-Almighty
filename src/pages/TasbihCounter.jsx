@@ -12,8 +12,29 @@ const PRESETS = [
 
 Object.freeze(PRESETS)
 
+const CUSTOM_COLORS = ['#fb923c', '#22d3ee', '#e879f9', '#facc15', '#4ade80', '#f87171']
+
+function loadCustomZikrs() {
+  try {
+    const val = localStorage.getItem('tasbih_custom_zikrs')
+    return val ? JSON.parse(val) : []
+  } catch { return [] }
+}
+
+function saveCustomZikrs(zikrs) {
+  try { localStorage.setItem('tasbih_custom_zikrs', JSON.stringify(zikrs)) }
+  catch { /* quota exceeded */ }
+}
+
 function TasbihCounter() {
   const navigate = useNavigate()
+  const [customZikrs, setCustomZikrs] = useState(loadCustomZikrs)
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [customText, setCustomText] = useState('')
+  const [customTarget, setCustomTarget] = useState(33)
+
+  const allPresets = [...PRESETS, ...customZikrs]
+
   const [activePreset, setActivePreset] = useState(() => {
     try { return parseInt(sessionStorage.getItem('tasbih_preset')) || 0 } catch { return 0 }
   })
@@ -34,7 +55,15 @@ function TasbihCounter() {
     } catch { /* quota exceeded */ }
   }, [activePreset, count, totalSets])
 
-  const preset = PRESETS[activePreset]
+  // Clamp activePreset if custom zikrs were removed
+  useEffect(() => {
+    if (activePreset >= allPresets.length) {
+      setActivePreset(0)
+      setCount(0)
+    }
+  }, [activePreset, allPresets.length])
+
+  const preset = allPresets[activePreset] || allPresets[0]
   const progress = Math.min((count / preset.target) * 100, 100)
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
@@ -59,10 +88,42 @@ function TasbihCounter() {
     setCount(0)
   }, [])
 
+  const handleAddCustom = useCallback(() => {
+    const text = customText.trim()
+    if (!text) return
+    const newZikr = {
+      label: text,
+      roman: text,
+      telugu: '',
+      target: parseInt(customTarget) || 33,
+      color: CUSTOM_COLORS[customZikrs.length % CUSTOM_COLORS.length],
+      isCustom: true,
+    }
+    const updated = [...customZikrs, newZikr]
+    setCustomZikrs(updated)
+    saveCustomZikrs(updated)
+    setCustomText('')
+    setCustomTarget(33)
+    setShowAddForm(false)
+    setActivePreset(PRESETS.length + updated.length - 1)
+    setCount(0)
+  }, [customText, customTarget, customZikrs])
+
+  const handleRemoveCustom = useCallback((customIdx) => {
+    const updated = customZikrs.filter((_, i) => i !== customIdx)
+    setCustomZikrs(updated)
+    saveCustomZikrs(updated)
+    if (activePreset >= PRESETS.length + customIdx) {
+      setActivePreset(0)
+      setCount(0)
+    }
+  }, [customZikrs, activePreset])
+
   // Keyboard support
   useEffect(() => {
     const onKey = (e) => {
       if (e.code === 'Space' || e.code === 'Enter') {
+        if (e.target.tagName === 'INPUT') return
         e.preventDefault()
         handleCount()
       }
@@ -87,7 +148,7 @@ function TasbihCounter() {
 
       {/* Preset selector */}
       <div className="tasbih-presets">
-        {PRESETS.map((p, i) => (
+        {allPresets.map((p, i) => (
           <button
             key={i}
             className={`tasbih-preset-btn ${activePreset === i ? 'active' : ''}`}
@@ -95,15 +156,60 @@ function TasbihCounter() {
             style={activePreset === i ? { borderColor: p.color, color: p.color } : {}}
           >
             <span className="tasbih-preset-roman">{p.roman}</span>
+            {p.isCustom && (
+              <span
+                className="tasbih-preset-remove"
+                onClick={(e) => { e.stopPropagation(); handleRemoveCustom(i - PRESETS.length) }}
+                title="Remove custom zikr"
+              >×</span>
+            )}
           </button>
         ))}
+        <button
+          className="tasbih-preset-btn tasbih-add-btn"
+          onClick={() => setShowAddForm(!showAddForm)}
+          title="Add custom zikr"
+        >
+          <span className="tasbih-preset-roman">{showAddForm ? '✕' : '+ Custom'}</span>
+        </button>
       </div>
+
+      {/* Add custom zikr form */}
+      {showAddForm && (
+        <div className="tasbih-custom-form">
+          <input
+            type="text"
+            className="tasbih-custom-input"
+            placeholder="Enter dua or name of Allah..."
+            value={customText}
+            onChange={e => setCustomText(e.target.value)}
+            maxLength={100}
+            autoFocus
+          />
+          <div className="tasbih-custom-row">
+            <label className="tasbih-custom-label">
+              Target count:
+              <input
+                type="number"
+                className="tasbih-custom-target"
+                value={customTarget}
+                onChange={e => setCustomTarget(e.target.value)}
+                min={1}
+                max={1000}
+              />
+            </label>
+            <button className="tasbih-custom-save" onClick={handleAddCustom} disabled={!customText.trim()}>
+              Add Zikr
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main counter area */}
       <div className="tasbih-counter-area">
         <p className="tasbih-arabic" dir="rtl">{preset.label}</p>
         <p className="tasbih-roman">{preset.roman}</p>
-        <p className="tasbih-telugu">{preset.telugu}</p>
+        {preset.telugu && <p className="tasbih-telugu">{preset.telugu}</p>}
 
         {/* Circular progress */}
         <div className="tasbih-circle-wrap">

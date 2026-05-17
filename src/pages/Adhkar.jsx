@@ -2,11 +2,13 @@ import React, { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { adhkarData } from '../data/adhkar'
 import { romanToTelugu } from '../utils/teluguTransliteration'
+import { useSettings } from '../context/SettingsContext'
 import './Adhkar.css'
 
 function Adhkar() {
   const navigate = useNavigate()
   const [expandedCat, setExpandedCat] = useState(null)
+  const { transliteration } = useSettings()
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -59,10 +61,18 @@ function Adhkar() {
                       <span className="adhkar-item-repeat">{item.repeat}</span>
                     </div>
                     <p className="adhkar-item-arabic" dir="rtl">{item.arabic}</p>
-                    <p className="adhkar-item-roman">{item.roman}</p>
-                    <p className="adhkar-item-telugu-translit">{romanToTelugu(item.roman, { noMAnusvara: true })}</p>
-                    <p className="adhkar-item-english">{item.english}</p>
-                    <p className="adhkar-item-telugu">{item.telugu}</p>
+                    {(transliteration === 'english' || transliteration === 'both') && (
+                      <p className="adhkar-item-roman">{item.roman}</p>
+                    )}
+                    {(transliteration === 'telugu' || transliteration === 'both') && (
+                      <p className="adhkar-item-telugu-translit">{romanToTelugu(item.roman, { noMAnusvara: true })}</p>
+                    )}
+                    {(transliteration === 'english' || transliteration === 'both') && (
+                      <p className="adhkar-item-english">{item.english}</p>
+                    )}
+                    {(transliteration === 'telugu' || transliteration === 'both') && (
+                      <p className="adhkar-item-telugu">{item.telugu}</p>
+                    )}
                     <span className="adhkar-item-ref">{item.reference}</span>
                   </div>
                 ))}

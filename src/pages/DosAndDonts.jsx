@@ -1,12 +1,14 @@
 import React, { useState, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { islamicDosAndDonts } from '../data/namazAndDuas'
+import { useSettings } from '../context/SettingsContext'
 import './DosAndDonts.css'
 
 function DosAndDonts() {
   const navigate = useNavigate()
   const [expandedCat, setExpandedCat] = useState(null)
   const cardRefs = useRef({})
+  const { transliteration } = useSettings()
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -75,8 +77,12 @@ function DosAndDonts() {
                   <div key={i} className="dd-item">
                     <div className="dd-item-num">{i + 1}</div>
                     <div className="dd-item-content">
-                      <p className="dd-item-english">{item.text}</p>
-                      <p className="dd-item-telugu">{item.telugu}</p>
+                      {(transliteration === 'english' || transliteration === 'both') && (
+                        <p className="dd-item-english">{item.text}</p>
+                      )}
+                      {(transliteration === 'telugu' || transliteration === 'both') && (
+                        <p className="dd-item-telugu">{item.telugu}</p>
+                      )}
                       <span className="dd-item-ref">{item.reference}</span>
                     </div>
                   </div>

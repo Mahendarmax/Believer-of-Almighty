@@ -371,22 +371,26 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
       </div>
 
       {/* Telugu meaning */}
-      <div className="vc-columns">
-        <div className="vc-col">
-          <span className="vc-label">తెలుగు</span>
-          <p className="vc-telugu" style={{ fontSize: `${fontSize}px` }}>
-            {verse.telugu || '—'}
-          </p>
+      {(transliteration === 'telugu' || transliteration === 'both') && (
+        <div className="vc-columns">
+          <div className="vc-col">
+            <span className="vc-label">తెలుగు</span>
+            <p className="vc-telugu" style={{ fontSize: `${fontSize}px` }}>
+              {verse.telugu || '—'}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* English translation */}
-      <div className="vc-translation">
-        <span className="vc-label">English</span>
-        <p style={{ fontSize: `${fontSize - 1}px` }}>
-          {verse.translation || '—'}
-        </p>
-      </div>
+      {(transliteration === 'english' || transliteration === 'both') && (
+        <div className="vc-translation">
+          <span className="vc-label">English</span>
+          <p style={{ fontSize: `${fontSize - 1}px` }}>
+            {verse.translation || '—'}
+          </p>
+        </div>
+      )}
 
 
     </div>

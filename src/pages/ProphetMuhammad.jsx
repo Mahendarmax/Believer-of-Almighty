@@ -1,12 +1,14 @@
 import React, { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { prophetMuhammadData } from '../data/prophetMuhammad'
+import { useSettings } from '../context/SettingsContext'
 import './ProphetMuhammad.css'
 
 function ProphetMuhammad() {
   const navigate = useNavigate()
   const [expandedChapter, setExpandedChapter] = useState(null)
   const [expandedEvent, setExpandedEvent] = useState(null)
+  const { transliteration } = useSettings()
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -126,15 +128,19 @@ function ProphetMuhammad() {
                               <p className="seerah-arabic-text" dir="rtl">{ev.arabic}</p>
                             </div>
                             {/* Telugu */}
-                            <div className="seerah-lang-block telugu-block">
-                              <span className="seerah-lang-tag">తెలుగు</span>
-                              <p className="seerah-telugu-text">{ev.telugu}</p>
-                            </div>
+                            {(transliteration === 'telugu' || transliteration === 'both') && (
+                              <div className="seerah-lang-block telugu-block">
+                                <span className="seerah-lang-tag">తెలుగు</span>
+                                <p className="seerah-telugu-text">{ev.telugu}</p>
+                              </div>
+                            )}
                             {/* English */}
-                            <div className="seerah-lang-block english-block">
-                              <span className="seerah-lang-tag">English</span>
-                              <p className="seerah-english-text">{ev.english}</p>
-                            </div>
+                            {(transliteration === 'english' || transliteration === 'both') && (
+                              <div className="seerah-lang-block english-block">
+                                <span className="seerah-lang-tag">English</span>
+                                <p className="seerah-english-text">{ev.english}</p>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>

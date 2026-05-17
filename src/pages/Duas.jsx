@@ -2,11 +2,13 @@ import React, { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { prophetDuas } from '../data/namazAndDuas'
 import { romanToTelugu } from '../utils/teluguTransliteration'
+import { useSettings } from '../context/SettingsContext'
 import './Duas.css'
 
 function Duas() {
   const navigate = useNavigate()
   const [expandedDua, setExpandedDua] = useState(null)
+  const { transliteration } = useSettings()
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -52,22 +54,30 @@ function Duas() {
             {expandedDua === idx && (
               <div className="dua-card-body">
                 <p className="dua-arabic" dir="rtl">{d.arabic}</p>
-                <div className="dua-text-block">
-                  <span className="dua-label">Transliteration</span>
-                  <p className="dua-roman">{d.roman}</p>
-                </div>
-                <div className="dua-text-block">
-                  <span className="dua-label">తెలుగు లిప్యంతరీకరణ</span>
-                  <p className="dua-telugu-translit">{romanToTelugu(d.roman, { noMAnusvara: true })}</p>
-                </div>
-                <div className="dua-text-block">
-                  <span className="dua-label">English</span>
-                  <p className="dua-english">{d.english}</p>
-                </div>
-                <div className="dua-text-block">
-                  <span className="dua-label">తెలుగు</span>
-                  <p className="dua-telugu">{d.telugu}</p>
-                </div>
+                {(transliteration === 'english' || transliteration === 'both') && (
+                  <div className="dua-text-block">
+                    <span className="dua-label">Transliteration</span>
+                    <p className="dua-roman">{d.roman}</p>
+                  </div>
+                )}
+                {(transliteration === 'telugu' || transliteration === 'both') && (
+                  <div className="dua-text-block">
+                    <span className="dua-label">తెలుగు లిప్యంతరీకరణ</span>
+                    <p className="dua-telugu-translit">{romanToTelugu(d.roman, { noMAnusvara: true })}</p>
+                  </div>
+                )}
+                {(transliteration === 'english' || transliteration === 'both') && (
+                  <div className="dua-text-block">
+                    <span className="dua-label">English</span>
+                    <p className="dua-english">{d.english}</p>
+                  </div>
+                )}
+                {(transliteration === 'telugu' || transliteration === 'both') && (
+                  <div className="dua-text-block">
+                    <span className="dua-label">తెలుగు</span>
+                    <p className="dua-telugu">{d.telugu}</p>
+                  </div>
+                )}
                 <span className="dua-reference">{d.reference}</span>
               </div>
             )}

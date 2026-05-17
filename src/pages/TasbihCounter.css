@@ -190,6 +190,91 @@
   border-color: #ef4444;
 }
 
+/* Custom zikr */
+.tasbih-add-btn {
+  border-style: dashed !important;
+  color: var(--accent) !important;
+}
+.tasbih-preset-remove {
+  margin-left: 0.3rem;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.6;
+  cursor: pointer;
+}
+.tasbih-preset-remove:hover {
+  opacity: 1;
+  color: #ef4444;
+}
+.tasbih-custom-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.tasbih-custom-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  box-sizing: border-box;
+}
+.tasbih-custom-input:focus {
+  border-color: var(--accent);
+}
+.tasbih-custom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.tasbih-custom-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.tasbih-custom-target {
+  width: 70px;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+}
+.tasbih-custom-target:focus {
+  border-color: var(--accent);
+}
+.tasbih-custom-save {
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--accent);
+  color: #000;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.tasbih-custom-save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.tasbih-custom-save:not(:disabled):hover {
+  opacity: 0.85;
+}
+
 @media (max-width: 480px) {
   .tasbih-page { padding: 0 14px 70px; }
   .tasbih-page-header { gap: 10px; padding: 16px 0 14px; }

@@ -2,15 +2,22 @@ import React, { useState, useCallback, useMemo, memo, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { asmaUlHusna } from '../data/asmaUlHusna'
+import { useSettings } from '../context/SettingsContext'
 import './AsmaUlHusna.css'
 
-const NameCard = memo(({ name, onClick }) => (
+const NameCard = memo(({ name, onClick, transliteration }) => (
   <div className="asma-card" onClick={() => onClick(name)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && onClick(name)}>
     <div className="asma-card-num">{name.num}</div>
     <p className="asma-card-arabic" dir="rtl">{name.arabic}</p>
-    <p className="asma-card-roman">{name.roman}</p>
-    <p className="asma-card-english">{name.english}</p>
-    <p className="asma-card-telugu">{name.telugu}</p>
+    {(transliteration === 'english' || transliteration === 'both') && (
+      <p className="asma-card-roman">{name.roman}</p>
+    )}
+    {(transliteration === 'english' || transliteration === 'both') && (
+      <p className="asma-card-english">{name.english}</p>
+    )}
+    {(transliteration === 'telugu' || transliteration === 'both') && (
+      <p className="asma-card-telugu">{name.telugu}</p>
+    )}
   </div>
 ))
 NameCard.displayName = 'NameCard'
@@ -20,6 +27,7 @@ function AsmaUlHusna() {
   const [search, setSearch] = useState('')
   const [selectedName, setSelectedName] = useState(null)
   const [closing, setClosing] = useState(false)
+  const { transliteration } = useSettings()
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -81,7 +89,7 @@ function AsmaUlHusna() {
 
       <div className="asma-grid">
         {filtered.map(name => (
-          <NameCard key={name.num} name={name} onClick={openDetail} />
+          <NameCard key={name.num} name={name} onClick={openDetail} transliteration={transliteration} />
         ))}
       </div>
 
@@ -106,9 +114,15 @@ function AsmaUlHusna() {
             </button>
             <div className="asma-detail-num"><span>{selectedName.num}</span></div>
             <p className="asma-detail-arabic" dir="rtl">{selectedName.arabic}</p>
-            <p className="asma-detail-roman">{selectedName.roman}</p>
-            <p className="asma-detail-english">{selectedName.english}</p>
-            <p className="asma-detail-telugu-name">{selectedName.telugu}</p>
+            {(transliteration === 'english' || transliteration === 'both') && (
+              <p className="asma-detail-roman">{selectedName.roman}</p>
+            )}
+            {(transliteration === 'english' || transliteration === 'both') && (
+              <p className="asma-detail-english">{selectedName.english}</p>
+            )}
+            {(transliteration === 'telugu' || transliteration === 'both') && (
+              <p className="asma-detail-telugu-name">{selectedName.telugu}</p>
+            )}
             <div className="asma-detail-reason-section">
               <p className="asma-detail-reason">{selectedName.reason}</p>
             </div>

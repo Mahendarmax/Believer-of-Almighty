@@ -1,12 +1,14 @@
 import React, { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { prophetIsaData } from '../data/prophetIsa'
+import { useSettings } from '../context/SettingsContext'
 import './ProphetIsa.css'
 
 function ProphetIsa() {
   const navigate = useNavigate()
   const [expandedCat, setExpandedCat] = useState(null)
   const [expandedVerse, setExpandedVerse] = useState(null)
+  const { transliteration } = useSettings()
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -28,14 +30,18 @@ function ProphetIsa() {
 
       {/* Intro banner */}
       <div className="isa-intro">
-        <p className="isa-intro-text">
-          Muslims love and honor Prophet Isa (Jesus, peace be upon him). The Quran and the Bible both confirm: 
-          <strong> Jesus worshipped ONE God, called himself a prophet, and never claimed to be God.</strong>
-        </p>
-        <p className="isa-intro-telugu">
-          ముస్లింలు ప్రవక్త ఈసా (యేసు, శాంతి ఆయనపై ఉండుగాక) ను ప్రేమిస్తారు మరియు గౌరవిస్తారు. ఖురాన్ మరియు బైబిల్ రెండూ ధృవీకరిస్తాయి:
-          <strong> ఈసా (అ) ఒక్క దేవుడిని ఆరాధించారు, తనను ప్రవక్తగా చెప్పుకున్నారు, ఎన్నడూ దేవుడినని చెప్పలేదు.</strong>
-        </p>
+        {(transliteration === 'english' || transliteration === 'both') && (
+          <p className="isa-intro-text">
+            Muslims love and honor Prophet Isa (Jesus, peace be upon him). The Quran and the Bible both confirm: 
+            <strong> Jesus worshipped ONE God, called himself a prophet, and never claimed to be God.</strong>
+          </p>
+        )}
+        {(transliteration === 'telugu' || transliteration === 'both') && (
+          <p className="isa-intro-telugu">
+            ముస్లింలు ప్రవక్త ఈసా (యేసు, శాంతి ఆయనపై ఉండుగాక) ను ప్రేమిస్తారు మరియు గౌరవిస్తారు. ఖురాన్ మరియు బైబిల్ రెండూ ధృవీకరిస్తాయి:
+            <strong> ఈసా (అ) ఒక్క దేవుడిని ఆరాధించారు, తనను ప్రవక్తగా చెప్పుకున్నారు, ఎన్నడూ దేవుడినని చెప్పలేదు.</strong>
+          </p>
+        )}
         <div className="isa-intro-stat">
           <span className="isa-intro-stat-num">{totalVerses}</span>
           <span className="isa-intro-stat-label">Verses from Bible & Quran</span>
@@ -80,7 +86,9 @@ function ProphetIsa() {
                         <span className="isa-verse-ref">{item.reference}</span>
                       </div>
                       <blockquote className="isa-verse-text">"{item.verse}"</blockquote>
-                      <p className="isa-verse-telugu">"{item.telugu}"</p>
+                      {(transliteration === 'telugu' || transliteration === 'both') && (
+                        <p className="isa-verse-telugu">"{item.telugu}"</p>
+                      )}
 
                       <button
                         className="isa-context-toggle"
@@ -95,7 +103,9 @@ function ProphetIsa() {
                       {isExpanded && (
                         <div className="isa-context-box">
                           <p className="isa-context-english">{item.context}</p>
-                          <p className="isa-context-telugu">{item.contextTelugu}</p>
+                          {(transliteration === 'telugu' || transliteration === 'both') && (
+                            <p className="isa-context-telugu">{item.contextTelugu}</p>
+                          )}
                         </div>
                       )}
                     </div>

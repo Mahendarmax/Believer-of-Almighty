@@ -2,15 +2,24 @@ import React, { useState, useCallback, useRef, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { namazSurahs } from '../data/namazAndDuas'
 import { romanToTelugu } from '../utils/teluguTransliteration'
+import { useSettings } from '../context/SettingsContext'
 import './NamazSurahs.css'
 
-const NamazVerse = memo(({ v }) => (
+const NamazVerse = memo(({ v, transliteration }) => (
   <div className="namaz-verse">
     <p className="namaz-verse-arabic" dir="rtl">{v.arabic}</p>
-    <p className="namaz-verse-roman">{v.roman}</p>
-    <p className="namaz-verse-telugu-translit">{romanToTelugu(v.roman, { noMAnusvara: true })}</p>
-    <p className="namaz-verse-english">{v.english}</p>
-    <p className="namaz-verse-telugu">{v.telugu}</p>
+    {(transliteration === 'english' || transliteration === 'both') && (
+      <p className="namaz-verse-roman">{v.roman}</p>
+    )}
+    {(transliteration === 'telugu' || transliteration === 'both') && (
+      <p className="namaz-verse-telugu-translit">{romanToTelugu(v.roman, { noMAnusvara: true })}</p>
+    )}
+    {(transliteration === 'english' || transliteration === 'both') && (
+      <p className="namaz-verse-english">{v.english}</p>
+    )}
+    {(transliteration === 'telugu' || transliteration === 'both') && (
+      <p className="namaz-verse-telugu">{v.telugu}</p>
+    )}
   </div>
 ))
 NamazVerse.displayName = 'NamazVerse'
@@ -19,6 +28,7 @@ function NamazSurahs() {
   const navigate = useNavigate()
   const [expandedNamaz, setExpandedNamaz] = useState(null)
   const cardRefs = useRef({})
+  const { transliteration } = useSettings()
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
@@ -84,7 +94,7 @@ function NamazSurahs() {
             {expandedNamaz === s.number && (
               <div className="namaz-card-body">
                 {s.verses.map((v, i) => (
-                  <NamazVerse key={i} v={v} />
+                  <NamazVerse key={i} v={v} transliteration={transliteration} />
                 ))}
 
               </div>
