@@ -37,8 +37,8 @@ function DosAndDonts() {
           </svg>
         </button>
         <div className="dosdonts-page-title-group">
-          <h1 className="dosdonts-page-title">Dos and Don'ts in Islam</h1>
-          <span className="dosdonts-page-subtitle">What Allah has allowed and forbidden — based on Quran & Hadith</span>
+          <h1 className="dosdonts-page-title">{transliteration === 'telugu' ? 'ఇస్లాంలో ఆదేశాలు & నిషేధాలు' : "Dos and Don'ts in Islam"}</h1>
+          <span className="dosdonts-page-subtitle">{transliteration === 'telugu' ? 'అల్లాహ్ అనుమతించినవి మరియు నిషేధించినవి — ఖుర్ఆన్ & హదీస్ ఆధారంగా' : 'What Allah has allowed and forbidden — based on Quran & Hadith'}</span>
         </div>
       </header>
 
@@ -65,7 +65,7 @@ function DosAndDonts() {
                 </div>
               </div>
               <div className="dd-card-right">
-                <span className="dd-card-count">{cat.items.length} items</span>
+                <span className="dd-card-count">{cat.items.length} {transliteration === 'telugu' ? 'అంశాలు' : 'items'}</span>
                 <svg
                   className={`dd-chevron ${expandedCat === idx ? 'open' : ''}`}
                   viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"

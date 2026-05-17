@@ -1008,33 +1008,34 @@
 }
 
 .namaz-verse-roman {
-  font-size: 0.83rem;
-  color: var(--accent);
-  opacity: 0.82;
-  margin: 0 0 3px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin: 0 0 6px;
   font-style: italic;
+  line-height: 1.75;
 }
 
 .namaz-verse-telugu-translit {
-  font-size: 0.83rem;
-  color: #fbbf24;
-  opacity: 0.75;
-  margin: 0 0 10px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin: 0 0 12px;
   font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
 }
 
 .namaz-verse-english {
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  margin: 0 0 5px;
-  line-height: 1.65;
+  margin: 0 0 6px;
+  line-height: 1.75;
+  font-style: italic;
 }
 
 .namaz-verse-telugu {
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   font-family: 'Noto Sans Telugu', sans-serif;
-  line-height: 1.7;
+  line-height: 1.85;
   margin: 0;
 }
 
@@ -1208,37 +1209,40 @@
 
 .dua-label {
   display: block;
-  font-size: 0.68rem;
-  font-weight: 600;
+  font-size: 0.66rem;
+  font-weight: 700;
   color: var(--accent-dim);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
 }
 
 .dua-roman {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1.75;
 }
 
 .dua-telugu-translit {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
-  line-height: 1.6;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
 }
 
 .dua-english {
-  font-size: 0.82rem;
-  color: var(--text-primary);
-  line-height: 1.6;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  font-style: italic;
 }
 
 .dua-telugu {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
-  line-height: 1.6;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
 }
 
 .dua-reference {
@@ -1259,8 +1263,8 @@
   .namaz-card-body { padding: 14px; }
   .dua-card-header { padding: 14px; }
   .dua-card-body { padding: 14px; }
-  .namaz-verse-roman, .namaz-verse-english, .namaz-verse-telugu, .namaz-verse-telugu-translit { font-size: 0.82rem; }
-  .dua-roman, .dua-english, .dua-telugu, .dua-telugu-translit { font-size: 0.82rem; }
+  .namaz-verse-roman, .namaz-verse-english, .namaz-verse-telugu, .namaz-verse-telugu-translit { font-size: 0.88rem; }
+  .dua-roman, .dua-english, .dua-telugu, .dua-telugu-translit { font-size: 0.88rem; }
 }
 
 /* Footer */

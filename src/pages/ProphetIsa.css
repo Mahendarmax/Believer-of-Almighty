@@ -196,16 +196,17 @@
   font-size: 0.95rem;
   color: var(--text-primary);
   font-style: italic;
-  line-height: 1.65;
+  line-height: 1.75;
   margin: 0 0 0.4rem;
   padding-left: 0.75rem;
   border-left: 2px solid rgba(212, 164, 74, 0.3);
 }
 .isa-verse-telugu {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   font-weight: 500;
-  line-height: 1.55;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
   margin: 0 0 0.6rem;
   padding-left: 0.75rem;
 }
@@ -239,15 +240,16 @@
   to { opacity: 1; transform: translateY(0); }
 }
 .isa-context-english {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
-  line-height: 1.5;
-  margin: 0 0 0.3rem;
+  line-height: 1.75;
+  margin: 0 0 0.4rem;
 }
 .isa-context-telugu {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
-  line-height: 1.5;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
   margin: 0;
 }
 

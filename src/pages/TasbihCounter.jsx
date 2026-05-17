@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSettings } from '../context/SettingsContext'
 import './TasbihCounter.css'
 
 const PRESETS = [
@@ -28,6 +29,7 @@ function saveCustomZikrs(zikrs) {
 
 function TasbihCounter() {
   const navigate = useNavigate()
+  const { transliteration } = useSettings()
   const [customZikrs, setCustomZikrs] = useState(loadCustomZikrs)
   const [showAddForm, setShowAddForm] = useState(false)
   const [customText, setCustomText] = useState('')
@@ -141,8 +143,8 @@ function TasbihCounter() {
           </svg>
         </button>
         <div className="tasbih-page-title-group">
-          <h1 className="tasbih-page-title">Tasbih Counter</h1>
-          <span className="tasbih-page-subtitle">Digital Dhikr Counter — tap to count</span>
+          <h1 className="tasbih-page-title">{transliteration === 'telugu' ? 'తస్బీహ్ కౌంటర్' : 'Tasbih Counter'}</h1>
+          <span className="tasbih-page-subtitle">{transliteration === 'telugu' ? 'డిజిటల్ ధిక్ర్ కౌంటర్ — లెక్కించడానికి టాప్ చేయండి' : 'Digital Dhikr Counter — tap to count'}</span>
         </div>
       </header>
 
@@ -170,7 +172,7 @@ function TasbihCounter() {
           onClick={() => setShowAddForm(!showAddForm)}
           title="Add custom zikr"
         >
-          <span className="tasbih-preset-roman">{showAddForm ? '✕' : '+ Custom'}</span>
+          <span className="tasbih-preset-roman">{showAddForm ? '✕' : (transliteration === 'telugu' ? '+ కస్టమ్' : '+ Custom')}</span>
         </button>
       </div>
 
@@ -180,7 +182,7 @@ function TasbihCounter() {
           <input
             type="text"
             className="tasbih-custom-input"
-            placeholder="Enter dua or name of Allah..."
+            placeholder={transliteration === 'telugu' ? 'దుఆ లేదా అల్లాహ్ పేరు నమోదు చేయండి...' : 'Enter dua or name of Allah...'}
             value={customText}
             onChange={e => setCustomText(e.target.value)}
             maxLength={100}
@@ -188,7 +190,7 @@ function TasbihCounter() {
           />
           <div className="tasbih-custom-row">
             <label className="tasbih-custom-label">
-              Target count:
+              {transliteration === 'telugu' ? 'లక్ష్య లెక్క:' : 'Target count:'}
               <input
                 type="number"
                 className="tasbih-custom-target"
@@ -199,7 +201,7 @@ function TasbihCounter() {
               />
             </label>
             <button className="tasbih-custom-save" onClick={handleAddCustom} disabled={!customText.trim()}>
-              Add Zikr
+              {transliteration === 'telugu' ? 'జిక్ర్ చేర్చండి' : 'Add Zikr'}
             </button>
           </div>
         </div>
@@ -230,21 +232,21 @@ function TasbihCounter() {
           </button>
         </div>
 
-        <p className="tasbih-tap-hint">Tap the circle or press Space</p>
+        <p className="tasbih-tap-hint">{transliteration === 'telugu' ? 'వృత్తాన్ని టాప్ చేయండి లేదా Space నొక్కండి' : 'Tap the circle or press Space'}</p>
 
         <div className="tasbih-stats">
           <div className="tasbih-stat">
             <span className="tasbih-stat-num">{totalSets}</span>
-            <span className="tasbih-stat-label">Sets completed</span>
+            <span className="tasbih-stat-label">{transliteration === 'telugu' ? 'పూర్తి అయిన సెట్లు' : 'Sets completed'}</span>
           </div>
           <div className="tasbih-stat">
             <span className="tasbih-stat-num">{totalSets * preset.target + count}</span>
-            <span className="tasbih-stat-label">Total count</span>
+            <span className="tasbih-stat-label">{transliteration === 'telugu' ? 'మొత్తం లెక్క' : 'Total count'}</span>
           </div>
         </div>
 
         <button className="tasbih-reset-btn" onClick={handleReset}>
-          Reset Count
+          {transliteration === 'telugu' ? 'రీసెట్' : 'Reset Count'}
         </button>
       </div>
     </div>

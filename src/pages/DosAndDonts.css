@@ -178,18 +178,19 @@
 }
 
 .dd-item-english {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 0 0 4px;
+  line-height: 1.75;
+  margin: 0 0 6px;
+  font-style: italic;
 }
 
 .dd-item-telugu {
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   font-family: 'Noto Sans Telugu', sans-serif;
-  line-height: 1.65;
-  margin: 0 0 4px;
+  line-height: 1.85;
+  margin: 0 0 6px;
 }
 
 .dd-item-ref {

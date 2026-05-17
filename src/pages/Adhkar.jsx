@@ -21,8 +21,8 @@ function Adhkar() {
           </svg>
         </button>
         <div className="adhkar-page-title-group">
-          <h1 className="adhkar-page-title">Morning & Evening Adhkar</h1>
-          <span className="adhkar-page-subtitle">أذكار الصباح والمساء — Daily Remembrance</span>
+          <h1 className="adhkar-page-title">{transliteration === 'telugu' ? 'ఉదయ సాయంత్ర అధ్కార్' : 'Morning & Evening Adhkar'}</h1>
+          <span className="adhkar-page-subtitle">أذكار الصباح والمساء {transliteration !== 'telugu' && '— Daily Remembrance'}</span>
         </div>
       </header>
 
@@ -46,7 +46,7 @@ function Adhkar() {
                 </div>
               </div>
               <div className="adhkar-card-right">
-                <span className="adhkar-card-count">{cat.items.length} adhkar</span>
+                <span className="adhkar-card-count">{cat.items.length} {transliteration === 'telugu' ? 'అధ్కార్' : 'adhkar'}</span>
                 <svg
                   className={`adhkar-chevron ${expandedCat === idx ? 'open' : ''}`}
                   viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"

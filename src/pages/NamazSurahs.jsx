@@ -57,8 +57,8 @@ function NamazSurahs() {
           </svg>
         </button>
         <div className="namaz-page-title-group">
-          <h1 className="namaz-page-title">Namaz Surahs</h1>
-          <span className="namaz-page-subtitle">Surahs commonly recited during Salah (Prayer)</span>
+          <h1 className="namaz-page-title">{transliteration === 'telugu' ? 'నమాజ్ సూరాలు' : 'Namaz Surahs'}</h1>
+          <span className="namaz-page-subtitle">{transliteration === 'telugu' ? 'సలాహ్ (నమాజ్) సమయంలో చదివే సూరాలు' : 'Surahs commonly recited during Salah (Prayer)'}</span>
         </div>
       </header>
 

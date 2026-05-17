@@ -40,17 +40,17 @@ function ProphetMuhammad() {
         <div className="seerah-hero-stats">
           <div className="seerah-hero-stat">
             <span className="seerah-stat-val">63</span>
-            <span className="seerah-stat-lbl">సంవత్సరాలు • Years</span>
+            <span className="seerah-stat-lbl">{transliteration === 'telugu' ? 'సంవత్సరాలు' : 'సంవత్సరాలు • Years'}</span>
           </div>
           <div className="seerah-stat-divider" />
           <div className="seerah-hero-stat">
             <span className="seerah-stat-val">23</span>
-            <span className="seerah-stat-lbl">వహీ సంవత్సరాలు • Years of Revelation</span>
+            <span className="seerah-stat-lbl">{transliteration === 'telugu' ? 'వహీ సంవత్సరాలు' : 'వహీ సంవత్సరాలు • Years of Revelation'}</span>
           </div>
           <div className="seerah-stat-divider" />
           <div className="seerah-hero-stat">
             <span className="seerah-stat-val">{totalEvents}</span>
-            <span className="seerah-stat-lbl">జీవిత సంఘటనలు • Life Events</span>
+            <span className="seerah-stat-lbl">{transliteration === 'telugu' ? 'జీవిత సంఘటనలు' : 'జీవిత సంఘటనలు • Life Events'}</span>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@ function ProphetMuhammad() {
                   </div>
                 </div>
                 <div className="seerah-chapter-right">
-                  <span className="seerah-chapter-count">{chapter.events.length} events</span>
+                  <span className="seerah-chapter-count">{chapter.events.length} {transliteration === 'telugu' ? 'సంఘటనలు' : 'events'}</span>
                   <svg
                     className={`seerah-chevron ${isChapterOpen ? 'open' : ''}`}
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"

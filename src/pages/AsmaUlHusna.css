@@ -103,21 +103,26 @@
   line-height: 1.5;
 }
 .asma-card-roman {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0.1rem 0;
+  line-height: 1.75;
 }
 .asma-card-english {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   margin: 0.1rem 0;
+  font-style: italic;
+  line-height: 1.75;
 }
 .asma-card-telugu {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--text-primary);
   margin: 0.2rem 0 0;
   font-weight: 500;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
 }
 
 /* No results */

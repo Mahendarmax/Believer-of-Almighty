@@ -161,32 +161,35 @@
   margin: 0 0 0.5rem;
 }
 .adhkar-item-roman {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
-  margin: 0 0 0.25rem;
-  font-weight: 500;
-  line-height: 1.5;
-}
-.adhkar-item-telugu-translit {
-  font-size: 0.85rem;
-  color: var(--accent);
-  margin: 0 0 0.25rem;
-  font-weight: 500;
-  line-height: 1.6;
-}
-.adhkar-item-english {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin: 0 0 0.25rem;
-  font-style: italic;
-  line-height: 1.5;
-}
-.adhkar-item-telugu {
-  font-size: 0.82rem;
-  color: #34d399;
   margin: 0 0 0.4rem;
   font-weight: 500;
-  line-height: 1.5;
+  font-style: italic;
+  line-height: 1.75;
+}
+.adhkar-item-telugu-translit {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem;
+  font-weight: 500;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
+}
+.adhkar-item-english {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.4rem;
+  font-style: italic;
+  line-height: 1.75;
+}
+.adhkar-item-telugu {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+  font-weight: 500;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  line-height: 1.85;
 }
 .adhkar-item-ref {
   font-size: 0.7rem;

@@ -23,8 +23,8 @@ function ProphetIsa() {
           </svg>
         </button>
         <div className="isa-page-title-group">
-          <h1 className="isa-page-title">Prophet Isa (Jesus)</h1>
-          <span className="isa-page-subtitle">عيسى عليه السلام — What Jesus really said</span>
+          <h1 className="isa-page-title">{transliteration === 'telugu' ? 'ప్రవక్త ఈసా (యేసు)' : 'Prophet Isa (Jesus)'}</h1>
+          <span className="isa-page-subtitle">عيسى عليه السلام {transliteration !== 'telugu' && '— What Jesus really said'}</span>
         </div>
       </header>
 
@@ -68,7 +68,7 @@ function ProphetIsa() {
                 </div>
               </div>
               <div className="isa-card-right">
-                <span className="isa-card-count">{cat.items.length} verses</span>
+                <span className="isa-card-count">{cat.items.length} {transliteration === 'telugu' ? 'వచనాలు' : 'verses'}</span>
                 <svg
                   className={`isa-chevron ${expandedCat === idx ? 'open' : ''}`}
                   viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"
@@ -103,7 +103,10 @@ function ProphetIsa() {
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
                           <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
                         </svg>
-                        {isExpanded ? 'Hide Explanation' : 'Why This Matters'}
+                        {isExpanded
+                          ? (transliteration === 'telugu' ? 'వివరణ దాచు' : 'Hide Explanation')
+                          : (transliteration === 'telugu' ? 'ఇది ఎందుకు ముఖ్యం' : 'Why This Matters')
+                        }
                       </button>
 
                       {isExpanded && (
@@ -127,13 +130,17 @@ function ProphetIsa() {
 
       {/* Footer */}
       <div className="isa-footer">
-        <blockquote className="isa-footer-quote">
-          "Say: He is Allah, the One. Allah, the Eternal Refuge. He neither begets nor is born. And there is none comparable to Him."
-        </blockquote>
+        {(transliteration === 'english' || transliteration === 'both') && (
+          <blockquote className="isa-footer-quote">
+            "Say: He is Allah, the One. Allah, the Eternal Refuge. He neither begets nor is born. And there is none comparable to Him."
+          </blockquote>
+        )}
         <cite className="isa-footer-ref">— Surah Al-Ikhlas 112:1-4</cite>
-        <p className="isa-footer-telugu">
-          "చెప్పు: ఆయన అల్లాహ్, ఒక్కడు. అల్లాహ్, శాశ్వత ఆశ్రయం. ఆయన జన్మించలేదు, జన్మింపజేయలేదు. ఆయనకు సమానమైనది ఏదీ లేదు."
-        </p>
+        {(transliteration === 'telugu' || transliteration === 'both') && (
+          <p className="isa-footer-telugu">
+            "చెప్పు: ఆయన అల్లాహ్, ఒక్కడు. అల్లాహ్, శాశ్వత ఆశ్రయం. ఆయన జన్మించలేదు, జన్మింపజేయలేదు. ఆయనకు సమానమైనది ఏదీ లేదు."
+          </p>
+        )}
       </div>
     </div>
   )

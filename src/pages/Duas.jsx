@@ -21,8 +21,8 @@ function Duas() {
           </svg>
         </button>
         <div className="duas-page-title-group">
-          <h1 className="duas-page-title">Recommended Duas</h1>
-          <span className="duas-page-subtitle">Most recommended supplications by Prophet Muhammad ﷺ</span>
+          <h1 className="duas-page-title">{transliteration === 'telugu' ? 'సిఫారసు చేయబడిన దుఆలు' : 'Recommended Duas'}</h1>
+          <span className="duas-page-subtitle">{transliteration === 'telugu' ? 'ప్రవక్త ముహమ్మద్ ﷺ సిఫారసు చేసిన ప్రార్థనలు' : 'Most recommended supplications by Prophet Muhammad ﷺ'}</span>
         </div>
       </header>
 

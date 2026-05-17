@@ -382,15 +382,16 @@
 
 .seerah-telugu-text {
   font-family: 'Noto Sans Telugu', sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
-  line-height: 1.75;
+  line-height: 1.85;
   margin: 0;
 }
 .seerah-english-text {
-  font-size: 0.86rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.75;
+  font-style: italic;
   margin: 0;
 }
 
@@ -462,8 +463,8 @@
   .seerah-event-title-en { font-size: 0.72rem; }
   .seerah-event-body { padding: 0 0.7rem 0.7rem; gap: 0.6rem; }
   .seerah-arabic-text { font-size: 1rem; }
-  .seerah-telugu-text { font-size: 0.82rem; }
-  .seerah-english-text { font-size: 0.8rem; }
+  .seerah-telugu-text { font-size: 0.88rem; }
+  .seerah-english-text { font-size: 0.88rem; }
   .seerah-footer { padding: 1.5rem 1rem; margin-top: 2rem; }
   .seerah-footer-arabic { font-size: 1.1rem; }
   .seerah-footer-quote { font-size: 0.82rem; }

@@ -72,8 +72,8 @@ function AsmaUlHusna() {
           </svg>
         </button>
         <div className="asma-page-title-group">
-          <h1 className="asma-page-title">99 Names of Allah</h1>
-          <span className="asma-page-subtitle">أسماء الله الحسنى — Asma ul Husna</span>
+          <h1 className="asma-page-title">{transliteration === 'telugu' ? 'అల్లాహ్ 99 నామాలు' : '99 Names of Allah'}</h1>
+          <span className="asma-page-subtitle">أسماء الله الحسنى {transliteration !== 'telugu' && '— Asma ul Husna'}</span>
         </div>
       </header>
 
@@ -81,7 +81,7 @@ function AsmaUlHusna() {
         <input
           type="text"
           className="asma-search"
-          placeholder="Search by name, number, or meaning..."
+          placeholder={transliteration === 'telugu' ? 'పేరు, నంబర్, లేదా అర్థం ద్వారా వెతకండి...' : 'Search by name, number, or meaning...'}
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
@@ -94,12 +94,15 @@ function AsmaUlHusna() {
       </div>
 
       {filtered.length === 0 && (
-        <p className="asma-no-results">No names found for "{search}"</p>
+        <p className="asma-no-results">{transliteration === 'telugu' ? `"${search}" కి పేర్లు కనుగొనబడలేదు` : `No names found for "${search}"`}</p>
       )}
 
       <div className="asma-footer">
         <p className="asma-hadith">
-          Prophet ﷺ said: "Allah has 99 names. Whoever memorizes them will enter Paradise."
+          {transliteration === 'telugu'
+            ? 'ప్రవక్త ﷺ చెప్పారు: "అల్లాహ్కు 99 పేర్లు ఉన్నాయి. వాటిని కంఠస్థం చేసిన వారు స్వర్గంలో ప్రవేశిస్తారు."'
+            : 'Prophet ﷺ said: "Allah has 99 names. Whoever memorizes them will enter Paradise."'
+          }
         </p>
         <cite className="asma-hadith-ref">— Sahih Al-Bukhari 2736</cite>
       </div>
