@@ -58,7 +58,7 @@ function Duas() {
                 </div>
                 <div className="dua-text-block">
                   <span className="dua-label">తెలుగు లిప్యంతరీకరణ</span>
-                  <p className="dua-telugu-translit">{romanToTelugu(d.roman)}</p>
+                  <p className="dua-telugu-translit">{romanToTelugu(d.roman, { noMAnusvara: true })}</p>
                 </div>
                 <div className="dua-text-block">
                   <span className="dua-label">English</span>

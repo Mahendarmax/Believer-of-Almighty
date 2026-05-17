@@ -9,16 +9,16 @@ const ZWNJ = '\u200C'    // Zero-width non-joiner — prevents conjunct formatio
 // Consonant mappings — longest match first
 const CONSONANTS = [
   ['shh', 'ష'], ['sh', 'ష'], ['zh', 'జ'],
-  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'జ\u0C4D\u200Cహ'],
-  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'బ\u0C4D\u200Cహ'],
-  ['nh', 'న\u0C4D\u200Cహ'],
+  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'జ\u0C4Dహ'],
+  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'బ\u0C4Dహ'],
+  ['nh', 'న\u0C4Dహ'],
   ['k', 'క'], ['g', 'గ'], ['c', 'చ'], ['j', 'జ'],
   ['t', 'త'], ['d', 'ద'], ['n', 'న'],
   ['p', 'ప'], ['f', 'ఫ'], ['b', 'బ'], ['m', 'మ'],
   ['y', 'య'], ['r', 'ర'], ['l', 'ల'],
   ['v', 'వ'], ['w', 'వ'],
   ['s', 'స'], ['h', 'హ'], ['z', 'జ'], ['q', 'ఖ'],
-  ['x', 'క\u0C4D\u200Cస'],
+  ['x', 'క\u0C4Dస'],
 ]
 
 // Word-level overrides for cases where automatic transliteration is inaccurate
@@ -39,14 +39,15 @@ const WORD_OVERRIDES = {
 // Nasals that use anusvara (ం) before a different consonant in natural Telugu.
 // Maps nasal letter → set of following consonants where anusvara is used.
 // n before: t, d, th, dh, s, k, b, p, f, g, ch, kh, gh, sh
-// m before: d, t, th, dh, b, h, p, s, k, f, g, ch, kh, gh, sh
 // NOT when the same consonant follows (nn→న్న, mm→మ్మ stay halant for geminate)
 // NOT for 'nf' — Arabic nun+fa should stay halant న్ఫ (e.g. munfiqeena → మున్ఫిఖీన)
 // NOT before 'y' — Telugu uses halant న్య/మ్య not anusvara ంయ (e.g. dunyaa → దున్యా)
 // NOT before 'z' or 'j' — both map to జ in Telugu; Arabic نز/نج/مز/مج clusters need halant
 //   (e.g. tanzi'u → తన్‌జిఉ, tanzeel → తన్‌జీల్, munjaa → మున్‌జా)
+// n before certain consonants → anusvara (e.g. antum → అంతుమ్)
 const ANUSVARA_N_BEFORE = new Set(['t', 'd', 's', 'k', 'b', 'p', 'g', 'c', 'q', 'v', 'w', 'h', 'l', 'r', 'm'])
-const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'f', 'g', 'c', 'q', 'v', 'w', 'l', 'r', 'n'])
+// m before certain consonants → anusvara (default for Quran page)
+const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'f', 'g', 'c', 'q', 'v', 'w', 'l', 'r'])
 
 // Vowel mappings — [roman, standalone, matra (after consonant)]
 // Longest match first to avoid partial matches.
@@ -78,7 +79,7 @@ const isApostrophe = (ch) => ch === "'" || ch === '\u2018' || ch === '\u2019' ||
  * @param {string} text - Roman English text (e.g. "Bismillaahir Rahmaanir Raheem")
  * @returns {string} Telugu script text (e.g. "బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్")
  */
-export function romanToTelugu(text) {
+export function romanToTelugu(text, options = {}) {
   if (!text) return ''
 
   // Split into words and whitespace, check overrides per word
@@ -87,11 +88,11 @@ export function romanToTelugu(text) {
     const normalizedKey = segment.toLowerCase().replace(/[\u2018\u2019\u02BB\u02BC]/g, "'")
     const override = WORD_OVERRIDES[normalizedKey]
     if (override) return override
-    return transliterateSegment(segment)
+    return transliterateSegment(segment, options)
   }).join('')
 }
 
-function transliterateSegment(text) {
+function transliterateSegment(text, options = {}) {
   const lower = text.toLowerCase()
   let result = ''
   let i = 0
@@ -152,7 +153,7 @@ function transliterateSegment(text) {
           const useAnusvara = (
             roman === 'n' && nextChar && isLetter(nextChar) && nextChar !== 'n' && nextChar !== 'f' && ANUSVARA_N_BEFORE.has(nextChar)
           ) || (
-            roman === 'm' && nextChar && isLetter(nextChar) && nextChar !== 'm' && ANUSVARA_M_BEFORE.has(nextChar)
+            !options.noMAnusvara && roman === 'm' && nextChar && isLetter(nextChar) && nextChar !== 'm' && ANUSVARA_M_BEFORE.has(nextChar)
           )
 
           if (useAnusvara) {

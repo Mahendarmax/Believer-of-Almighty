@@ -60,7 +60,7 @@ function Adhkar() {
                     </div>
                     <p className="adhkar-item-arabic" dir="rtl">{item.arabic}</p>
                     <p className="adhkar-item-roman">{item.roman}</p>
-                    <p className="adhkar-item-telugu-translit">{romanToTelugu(item.roman)}</p>
+                    <p className="adhkar-item-telugu-translit">{romanToTelugu(item.roman, { noMAnusvara: true })}</p>
                     <p className="adhkar-item-english">{item.english}</p>
                     <p className="adhkar-item-telugu">{item.telugu}</p>
                     <span className="adhkar-item-ref">{item.reference}</span>
