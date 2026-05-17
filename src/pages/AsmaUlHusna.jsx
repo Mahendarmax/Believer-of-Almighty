@@ -18,31 +18,28 @@ function AsmaUlHusna() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selectedName, setSelectedName] = useState(null)
-  const [detailVisible, setDetailVisible] = useState(false)
+  const [closing, setClosing] = useState(false)
 
   const handleBack = useCallback(() => navigate('/'), [navigate])
 
   const openDetail = useCallback((name) => {
     setSelectedName(name)
+    setClosing(false)
   }, [])
 
   const closeDetail = useCallback(() => {
-    setDetailVisible(false)
-    setTimeout(() => setSelectedName(null), 300)
+    setClosing(true)
+    setTimeout(() => {
+      setSelectedName(null)
+      setClosing(false)
+    }, 300)
   }, [])
 
-  // Trigger visibility after overlay mounts so CSS transition plays
   useEffect(() => {
     if (!selectedName) return
-    const id = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setDetailVisible(true))
-    })
     const handleEsc = (e) => { if (e.key === 'Escape') closeDetail() }
     document.addEventListener('keydown', handleEsc)
-    return () => {
-      cancelAnimationFrame(id)
-      document.removeEventListener('keydown', handleEsc)
-    }
+    return () => document.removeEventListener('keydown', handleEsc)
   }, [selectedName, closeDetail])
 
   const filtered = useMemo(() => {
@@ -99,8 +96,8 @@ function AsmaUlHusna() {
       </div>
 
       {selectedName && (
-        <div className={`asma-detail-overlay${detailVisible ? ' visible' : ''}`} onClick={closeDetail}>
-          <div className={`asma-detail-panel${detailVisible ? ' visible' : ''}`} onClick={e => e.stopPropagation()}>
+        <div className={`asma-detail-overlay${closing ? ' closing' : ''}`} onClick={closeDetail}>
+          <div className={`asma-detail-panel${closing ? ' closing' : ''}`} onClick={e => e.stopPropagation()}>
             <button className="asma-detail-close" onClick={closeDetail} aria-label="Close">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
                 <path d="M18 6L6 18M6 6l12 12"/>

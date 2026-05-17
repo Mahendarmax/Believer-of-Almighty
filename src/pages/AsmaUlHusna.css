@@ -152,15 +152,24 @@
 .asma-detail-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 100;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  transition: background 0.3s ease;
+  animation: overlayFadeIn 0.3s ease forwards;
 }
-.asma-detail-overlay.visible {
-  background: rgba(0, 0, 0, 0.5);
+.asma-detail-overlay.closing {
+  animation: overlayFadeOut 0.3s ease forwards;
+}
+
+@keyframes overlayFadeIn {
+  from { background: rgba(0, 0, 0, 0); }
+  to { background: rgba(0, 0, 0, 0.5); }
+}
+@keyframes overlayFadeOut {
+  from { background: rgba(0, 0, 0, 0.5); }
+  to { background: rgba(0, 0, 0, 0); }
 }
 
 /* Detail Panel */
@@ -173,13 +182,19 @@
   overflow-y: auto;
   padding: 1.5rem 1.25rem 2rem;
   position: relative;
-  transform: translateY(100%);
-  opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease;
+  animation: panelSlideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
-.asma-detail-panel.visible {
-  transform: translateY(0);
-  opacity: 1;
+.asma-detail-panel.closing {
+  animation: panelSlideDown 0.3s ease forwards;
+}
+
+@keyframes panelSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes panelSlideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
 }
 
 .asma-detail-close {
@@ -289,9 +304,7 @@
   .asma-detail-panel {
     border-radius: var(--radius-md);
     max-height: 70vh;
-    transform: translateY(30px);
   }
-  .asma-detail-panel.visible { transform: translateY(0); }
 }
 
 @media (min-width: 768px) {
