@@ -289,25 +289,53 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
 
   const handleShare = useCallback(async () => {
     const lines = []
-    const header = `📖 ${surahName || 'Surah ' + surahNumber} — Verse ${verse.number}`
-    lines.push(header)
-    lines.push('')
-    if (verse.arabic) lines.push(verse.arabic)
+    const surahLabel = surahName || 'Surah ' + surahNumber
+    const verseLbl = transliteration === 'telugu' ? 'ఆయత్' : 'Verse'
+
+    // Header
+    lines.push(`┌─────────────────────────`)
+    lines.push(`  ${surahLabel} | ${verseLbl} ${verse.number}`)
+    lines.push(`└─────────────────────────`)
+
+    // Arabic
+    if (verse.arabic) {
+      lines.push('')
+      lines.push(verse.arabic)
+    }
+
+    // Transliteration
     if (verse.roman) {
       if (transliteration === 'telugu' || transliteration === 'both') {
-        lines.push(romanToTelugu(verse.roman))
+        lines.push('')
+        lines.push(`${transliteration === 'both' ? 'తెలుగు: ' : ''}${romanToTelugu(verse.roman)}`)
       }
       if (transliteration === 'english' || transliteration === 'both') {
-        lines.push(verse.roman)
+        lines.push('')
+        lines.push(`${transliteration === 'both' ? 'Roman: ' : ''}${verse.roman}`)
       }
     }
-    if (verse.translation) lines.push(`\n${verse.translation}`)
-    lines.push('\n— Believer of Almighty')
+
+    // Meaning
+    if (transliteration === 'telugu' || transliteration === 'both') {
+      if (verse.telugu) {
+        lines.push('')
+        lines.push(`── ${transliteration === 'both' ? 'అర్థం' : 'అర్థం'} ──`)
+        lines.push(verse.telugu)
+      }
+    }
+    if (transliteration === 'english' || transliteration === 'both') {
+      if (verse.translation) {
+        lines.push('')
+        lines.push(`── ${transliteration === 'both' ? 'Meaning' : 'Meaning'} ──`)
+        lines.push(verse.translation)
+      }
+    }
+
     const text = lines.join('\n')
 
     if (navigator.share) {
       try {
-        await navigator.share({ title: header, text })
+        await navigator.share({ title: `${surahLabel} — Verse ${verse.number}`, text })
       } catch (e) {
         if (e.name !== 'AbortError') console.error('Share failed:', e)
       }

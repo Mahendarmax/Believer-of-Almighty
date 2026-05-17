@@ -285,9 +285,10 @@
 }
 
 .sc-telugu {
-  font-family: 'Noto Sans Telugu', sans-serif;
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-family: 'Noto Sans Telugu', 'Mallanna', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
 }
 
 .sc-meta {
