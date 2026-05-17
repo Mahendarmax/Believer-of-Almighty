@@ -176,7 +176,7 @@
 
 /* Detail Panel */
 .asma-detail-panel {
-  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  background: #000000;
   border: 1.5px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-lg);
   width: 90%;
