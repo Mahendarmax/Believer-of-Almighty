@@ -1,7 +1,7 @@
 /* Duas Page — reuses Home.css dua styles, adds page-level layout */
 .duas-page {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   padding: 0 20px 80px;
 }
@@ -76,5 +76,5 @@
 }
 
 @media (min-width: 1200px) {
-  .duas-page { max-width: 1200px; }
+  .duas-page { max-width: 900px; }
 }

@@ -1,37 +1,41 @@
 .isa-page {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 0 20px 80px;
 }
 
 .isa-page-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1.25rem 0 1rem;
+  gap: 14px;
+  padding: 20px 0 20px;
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--bg-primary);
+  background: linear-gradient(180deg, var(--bg-primary) 80%, transparent 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .isa-page-back {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem;
-  color: var(--text-primary);
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--accent);
   transition: var(--transition);
+  flex-shrink: 0;
 }
-.isa-page-back:hover { background: var(--accent); color: #fff; }
+.isa-page-back:hover {
+  background: var(--bg-card);
+  transform: translateX(-2px);
+}
 
 .isa-page-title-group { display: flex; flex-direction: column; }
-.isa-page-title { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.isa-page-title { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; }
 .isa-page-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
 
 /* Intro banner */
@@ -277,10 +281,12 @@
 }
 
 @media (max-width: 480px) {
-  .isa-page { width: 100%; padding: 0 14px 70px; }
+  .isa-page { padding: 0 14px 70px; }
+  .isa-page-header { gap: 10px; padding: 16px 0 14px; }
   .isa-verse-text { font-size: 0.88rem; }
   .isa-card-header { padding: 0.8rem; }
   .isa-page-title { font-size: 1.15rem; }
+  .isa-page-subtitle { font-size: 0.7rem; }
   .isa-intro-stat-num { font-size: 1.4rem; }
   .isa-intro { padding: 1rem; }
   .isa-footer-quote { font-size: 0.82rem; }
@@ -294,12 +300,12 @@
 }
 
 @media (min-width: 768px) {
-  .isa-page { width: 85%; }
+  .isa-page-title { font-size: 1.6rem; }
   .isa-verse-text { font-size: 1rem; }
   .isa-card-header { padding: 1.1rem; }
   .isa-intro { padding: 1.5rem; }
 }
 
 @media (min-width: 1200px) {
-  .isa-page { width: 80%; }
+  .isa-page { max-width: 900px; }
 }

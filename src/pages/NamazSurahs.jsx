@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useRef, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { namazSurahs } from '../data/namazAndDuas'
+import { romanToTelugu } from '../utils/teluguTransliteration'
 import './NamazSurahs.css'
 
 const NamazVerse = memo(({ v }) => (
   <div className="namaz-verse">
     <p className="namaz-verse-arabic" dir="rtl">{v.arabic}</p>
     <p className="namaz-verse-roman">{v.roman}</p>
-    <p className="namaz-verse-telugu-translit">{v.romanTelugu}</p>
+    <p className="namaz-verse-telugu-translit">{romanToTelugu(v.roman)}</p>
     <p className="namaz-verse-english">{v.english}</p>
     <p className="namaz-verse-telugu">{v.telugu}</p>
   </div>

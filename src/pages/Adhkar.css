@@ -1,38 +1,42 @@
 .adhkar-page {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 0 20px 80px;
 }
 
 .adhkar-page-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1.25rem 0 1rem;
+  gap: 14px;
+  padding: 20px 0 20px;
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--bg-primary);
+  background: linear-gradient(180deg, var(--bg-primary) 80%, transparent 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .adhkar-page-back {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem;
-  color: var(--text-primary);
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--accent);
   transition: var(--transition);
+  flex-shrink: 0;
 }
-.adhkar-page-back:hover { background: var(--accent); color: #fff; }
+.adhkar-page-back:hover {
+  background: var(--bg-card);
+  transform: translateX(-2px);
+}
 
 .adhkar-page-title-group { display: flex; flex-direction: column; }
-.adhkar-page-title { font-size: 1.35rem; font-weight: 700; color: var(--text-primary); margin: 0; }
-.adhkar-page-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+.adhkar-page-title { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.adhkar-page-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
 
 /* List */
 .adhkar-page-list {
@@ -163,6 +167,13 @@
   font-weight: 500;
   line-height: 1.5;
 }
+.adhkar-item-telugu-translit {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin: 0 0 0.25rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
 .adhkar-item-english {
   font-size: 0.8rem;
   color: var(--text-muted);
@@ -183,10 +194,12 @@
 }
 
 @media (max-width: 480px) {
-  .adhkar-page { width: 100%; padding: 0 14px 70px; }
+  .adhkar-page { padding: 0 14px 70px; }
+  .adhkar-page-header { gap: 10px; padding: 16px 0 14px; }
   .adhkar-item-arabic { font-size: 1.15rem; }
   .adhkar-card-header { padding: 0.8rem; }
   .adhkar-page-title { font-size: 1.15rem; }
+  .adhkar-page-subtitle { font-size: 0.7rem; }
   .adhkar-item-english { font-size: 0.82rem; }
   .adhkar-item-roman { font-size: 0.82rem; }
 }
@@ -199,11 +212,11 @@
 }
 
 @media (min-width: 768px) {
-  .adhkar-page { width: 85%; }
+  .adhkar-page-title { font-size: 1.6rem; }
   .adhkar-card-header { padding: 1.1rem; }
   .adhkar-item-arabic { font-size: 1.45rem; }
 }
 
 @media (min-width: 1200px) {
-  .adhkar-page { width: 80%; }
+  .adhkar-page { max-width: 900px; }
 }

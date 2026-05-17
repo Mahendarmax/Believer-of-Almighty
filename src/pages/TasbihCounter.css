@@ -1,33 +1,42 @@
 .tasbih-page {
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 0 20px 80px;
 }
 
 .tasbih-page-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1.25rem 0 1rem;
+  gap: 14px;
+  padding: 20px 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(180deg, var(--bg-primary) 80%, transparent 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .tasbih-page-back {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem;
-  color: var(--text-primary);
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--accent);
   transition: var(--transition);
+  flex-shrink: 0;
 }
-.tasbih-page-back:hover { background: var(--accent); color: #fff; }
+.tasbih-page-back:hover {
+  background: var(--bg-card);
+  transform: translateX(-2px);
+}
 
 .tasbih-page-title-group { display: flex; flex-direction: column; }
-.tasbih-page-title { font-size: 1.35rem; font-weight: 700; color: var(--text-primary); margin: 0; }
-.tasbih-page-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+.tasbih-page-title { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.tasbih-page-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
 
 /* Presets */
 .tasbih-presets {
@@ -182,17 +191,21 @@
 }
 
 @media (max-width: 480px) {
-  .tasbih-page { width: 100%; padding: 0 14px 70px; }
+  .tasbih-page { padding: 0 14px 70px; }
+  .tasbih-page-header { gap: 10px; padding: 16px 0 14px; }
   .tasbih-circle-wrap { width: 190px; height: 190px; }
   .tasbih-tap-btn { width: 135px; height: 135px; }
   .tasbih-count { font-size: 2.5rem; }
   .tasbih-arabic { font-size: 1.5rem; }
   .tasbih-preset-btn { padding: 0.4rem 0.7rem; font-size: 0.75rem; }
   .tasbih-stats { gap: 1.5rem; }
+  .tasbih-page-title { font-size: 1.15rem; }
+  .tasbih-page-subtitle { font-size: 0.7rem; }
 }
 
 @media (max-width: 360px) {
   .tasbih-page { padding: 0 10px 70px; }
+  .tasbih-page-title { font-size: 1rem; }
   .tasbih-circle-wrap { width: 165px; height: 165px; }
   .tasbih-tap-btn { width: 115px; height: 115px; }
   .tasbih-count { font-size: 2rem; }
@@ -200,7 +213,7 @@
 }
 
 @media (min-width: 768px) {
-  .tasbih-page { width: 85%; }
+  .tasbih-page-title { font-size: 1.6rem; }
   .tasbih-circle-wrap { width: 250px; height: 250px; }
   .tasbih-tap-btn { width: 180px; height: 180px; }
   .tasbih-count { font-size: 3.5rem; }
@@ -209,5 +222,5 @@
 }
 
 @media (min-width: 1200px) {
-  .tasbih-page { width: 70%; max-width: 800px; }
+  .tasbih-page { max-width: 700px; }
 }

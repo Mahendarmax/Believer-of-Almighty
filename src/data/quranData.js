@@ -251,6 +251,8 @@ const fixRomanText = (text) => {
   if (!text) return ''
   // Fix API typo: 'lyyaaka' should be 'Iyyaaka'
   let fixed = text.replace(/\blyyaaka\b/gi, 'Iyyaaka')
+  // Fix API quirk: triple+ consonants → double (e.g. "innnaa" → "innaa")
+  fixed = fixed.replace(/([bcdfghjklmnpqrstvwxyz])\1{2,}/gi, '$1$1')
   return fixed.replace(/[a-zA-Z']+/g, word => {
     const lower = word.toLowerCase()
     // Try full word first (e.g. 'allazeena')

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { prophetDuas } from '../data/namazAndDuas'
+import { romanToTelugu } from '../utils/teluguTransliteration'
 import './Duas.css'
 
 function Duas() {
@@ -57,7 +58,7 @@ function Duas() {
                 </div>
                 <div className="dua-text-block">
                   <span className="dua-label">తెలుగు లిప్యంతరీకరణ</span>
-                  <p className="dua-telugu-translit">{d.romanTelugu}</p>
+                  <p className="dua-telugu-translit">{romanToTelugu(d.roman)}</p>
                 </div>
                 <div className="dua-text-block">
                   <span className="dua-label">English</span>
