@@ -174,14 +174,16 @@
 
 /* Detail Panel */
 .asma-detail-panel {
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  border: 1.5px solid rgba(52, 211, 153, 0.45);
+  border-radius: var(--radius-lg);
   width: 90%;
   max-width: 500px;
   max-height: 70vh;
   overflow-y: auto;
-  padding: 1.5rem 1.25rem 2rem;
+  padding: 22px;
   position: relative;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.08), inset 0 0 20px rgba(52, 211, 153, 0.03);
   animation: panelScaleIn 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
 .asma-detail-panel.closing {
@@ -208,76 +210,114 @@
   justify-content: center;
   border-radius: 50%;
   color: var(--text-muted);
-  background: var(--bg-primary);
+  background: rgba(0, 0, 0, 0.2);
   transition: var(--transition);
 }
 .asma-detail-close:hover {
   color: var(--text-primary);
-  background: var(--border);
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .asma-detail-num {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 0.5rem;
+  margin: 0 auto 0.75rem;
+  background: rgba(212, 164, 74, 0.08);
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background: var(--accent);
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 700;
+  transform: rotate(45deg);
+}
+.asma-detail-num span {
+  transform: rotate(-45deg);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--accent);
 }
 
 .asma-detail-arabic {
-  font-size: 2rem;
+  font-family: 'Amiri', serif;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--accent);
-  text-align: center;
-  margin: 0.25rem 0 0.4rem;
-  line-height: 1.5;
+  color: var(--text-arabic);
+  text-align: right;
+  direction: rtl;
+  line-height: 2.3;
+  word-spacing: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+
+.asma-detail-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.asma-detail-col {
+  min-width: 0;
+}
+
+.asma-detail-label {
+  display: block;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-dim);
+  margin-bottom: 6px;
+  font-weight: 700;
 }
 
 .asma-detail-roman {
-  font-size: 1.05rem;
-  font-weight: 600;
   color: var(--text-primary);
-  text-align: center;
-  margin: 0.15rem 0;
+  line-height: 1.75;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 .asma-detail-english {
-  font-size: 0.9rem;
   color: var(--text-secondary);
-  text-align: center;
-  margin: 0.1rem 0;
+  line-height: 1.75;
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 .asma-detail-telugu-name {
-  font-size: 1rem;
+  font-family: 'Noto Sans Telugu', sans-serif;
   color: var(--text-primary);
-  text-align: center;
-  font-weight: 600;
-  margin: 0.35rem 0 0;
+  line-height: 1.85;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
 }
 
-.asma-detail-divider {
-  width: 50px;
-  height: 2px;
-  background: var(--accent);
-  margin: 1rem auto;
-  border-radius: 2px;
-  opacity: 0.6;
+.asma-detail-reason-section {
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.asma-detail-reason-label {
+  display: block;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--emerald);
+  margin-bottom: 8px;
+  font-weight: 700;
+  opacity: 0.7;
 }
 
 .asma-detail-reason {
+  font-family: 'Noto Sans Telugu', sans-serif;
   font-size: 0.95rem;
-  color: var(--text-primary);
-  line-height: 1.7;
-  text-align: center;
+  color: var(--text-secondary);
+  line-height: 1.85;
   margin: 0;
-  padding: 0 0.5rem;
+  font-style: italic;
 }
 
 @media (max-width: 480px) {

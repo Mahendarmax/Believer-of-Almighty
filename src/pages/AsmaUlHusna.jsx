@@ -104,13 +104,28 @@ function AsmaUlHusna() {
                 <path d="M18 6L6 18M6 6l12 12"/>
               </svg>
             </button>
-            <div className="asma-detail-num">{selectedName.num}</div>
+            <div className="asma-detail-num"><span>{selectedName.num}</span></div>
             <p className="asma-detail-arabic" dir="rtl">{selectedName.arabic}</p>
-            <p className="asma-detail-roman">{selectedName.roman}</p>
-            <p className="asma-detail-english">{selectedName.english}</p>
-            <p className="asma-detail-telugu-name">{selectedName.telugu}</p>
-            <div className="asma-detail-divider"></div>
-            <p className="asma-detail-reason">{selectedName.reason}</p>
+            <div className="asma-detail-columns">
+              <div className="asma-detail-col">
+                <span className="asma-detail-label">Transliteration</span>
+                <p className="asma-detail-roman">{selectedName.roman}</p>
+              </div>
+              <div className="asma-detail-col">
+                <span className="asma-detail-label">Meaning</span>
+                <p className="asma-detail-english">{selectedName.english}</p>
+              </div>
+            </div>
+            <div className="asma-detail-columns">
+              <div className="asma-detail-col">
+                <span className="asma-detail-label">తెలుగు</span>
+                <p className="asma-detail-telugu-name">{selectedName.telugu}</p>
+              </div>
+            </div>
+            <div className="asma-detail-reason-section">
+              <span className="asma-detail-reason-label">ఈ పేరు ఎందుకు</span>
+              <p className="asma-detail-reason">{selectedName.reason}</p>
+            </div>
           </div>
         </div>,
         document.body
