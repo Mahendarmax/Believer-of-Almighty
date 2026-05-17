@@ -283,12 +283,7 @@
   width: 100%;
   padding: 8px 28px 8px 10px;
   background: #111827;
-  border: 1.5px solid rgba(212,164,74,0.35);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-size: 0.78rem;
-  appearance: none;
-  cursor: pointer;
+  border: 1.5px solid rgba(212,164,74,0.55);
   transition: var(--transition);
 }
 .qv-select:focus {
@@ -310,7 +305,7 @@
   width: 70px;
   padding: 8px 8px;
   background: #111827;
-  border: 1.5px solid rgba(212,164,74,0.35);
+  border: 1.5px solid rgba(212,164,74,0.55);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: 0.78rem;
