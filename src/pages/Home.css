@@ -343,7 +343,7 @@
   list-style: none;
   margin: 0;
   padding: 4px 0;
-  max-height: 260px;
+  max-height: 340px;
   overflow-y: auto;
 }
 .qv-drop-list::-webkit-scrollbar { width: 5px; }
@@ -352,13 +352,13 @@
 .qv-drop-item {
   padding: 10px 14px;
   font-size: 0.84rem;
-  color: var(--text-secondary);
+  color: #e2e8f0;
   cursor: pointer;
   transition: background 0.15s;
 }
 .qv-drop-item:hover {
   background: rgba(212,164,74,0.1);
-  color: var(--text-primary);
+  color: #ffffff;
 }
 .qv-drop-item.active {
   background: rgba(212,164,74,0.15);
