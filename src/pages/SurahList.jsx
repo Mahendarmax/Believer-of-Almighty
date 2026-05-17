@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { surahs } from '../data/quranData'
+import { useSettings } from '../context/SettingsContext'
 import './SurahList.css'
 
 // Memoized surah card — prevents re-rendering unchanged cards during search
-const SurahCard = memo(({ surah, onClick }) => (
+const SurahCard = memo(({ surah, onClick, transliteration }) => (
   <button
     className="surah-card"
     onClick={() => onClick(surah.number)}
@@ -14,11 +15,15 @@ const SurahCard = memo(({ surah, onClick }) => (
     </div>
     <div className="sc-info">
       <h3 className="sc-name">{surah.name}</h3>
-      <p className="sc-english">{surah.nameEnglish}</p>
-      <p className="sc-telugu">{surah.nameTelugu}</p>
+      {(transliteration === 'english' || transliteration === 'both') && (
+        <p className="sc-english">{surah.nameEnglish}</p>
+      )}
+      {(transliteration === 'telugu' || transliteration === 'both') && (
+        <p className="sc-telugu">{surah.nameTelugu}</p>
+      )}
     </div>
     <div className="sc-meta">
-      <span className="sc-ayahs">{surah.ayahs} Ayahs</span>
+      <span className="sc-ayahs">{surah.ayahs} {transliteration === 'telugu' ? 'ఆయతులు' : 'Ayahs'}</span>
       <span className={`sc-type ${surah.revelationType.toLowerCase()}`}>
         {surah.revelationType}
       </span>
@@ -29,6 +34,7 @@ SurahCard.displayName = 'SurahCard'
 
 function SurahList() {
   const navigate = useNavigate()
+  const { transliteration } = useSettings()
   const [navSurah, setNavSurah] = useState('')
   const [navVerse, setNavVerse] = useState('')
 
@@ -61,8 +67,8 @@ function SurahList() {
           </svg>
         </button>
         <div className="sl-title-group">
-          <h1 className="sl-title">All Surahs</h1>
-          <span className="sl-subtitle">114 Chapters of the Holy Quran</span>
+          <h1 className="sl-title">{transliteration === 'telugu' ? 'అన్ని సూరాలు' : 'All Surahs'}</h1>
+          <span className="sl-subtitle">{transliteration === 'telugu' ? 'పవిత్ర ఖురాన్ లోని 114 అధ్యాయాలు' : '114 Chapters of the Holy Quran'}</span>
         </div>
       </header>
 
@@ -72,7 +78,7 @@ function SurahList() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="16" height="16">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
-          Go to Verse
+          {transliteration === 'telugu' ? 'ఆయత్ కి వెళ్ళు' : 'Go to Verse'}
         </h3>
         <div className="sl-nav-controls">
           <div className="sl-nav-select-wrap">
@@ -81,7 +87,7 @@ function SurahList() {
               value={navSurah}
               onChange={e => { setNavSurah(e.target.value); setNavVerse('') }}
             >
-              <option value="">Select Surah</option>
+              <option value="">{transliteration === 'telugu' ? 'సూరా ఎంచుకోండి' : 'Select Surah'}</option>
               {surahs.map(s => (
                 <option key={s.number} value={s.number}>
                   {s.number}. {s.name} ({s.nameEnglish})
@@ -95,7 +101,7 @@ function SurahList() {
           <input
             type="number"
             className="sl-nav-verse"
-            placeholder={selectedSurahData ? `Verse (1-${selectedSurahData.ayahs})` : 'Verse'}
+            placeholder={selectedSurahData ? `${transliteration === 'telugu' ? 'ఆయత్' : 'Verse'} (1-${selectedSurahData.ayahs})` : (transliteration === 'telugu' ? 'ఆయత్' : 'Verse')}
             value={navVerse}
             onChange={e => setNavVerse(e.target.value)}
             min="1"
@@ -107,7 +113,7 @@ function SurahList() {
             onClick={handleNavigate}
             disabled={!navSurah}
           >
-            Go
+            {transliteration === 'telugu' ? 'వెళ్ళు' : 'Go'}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="14" height="14">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -124,6 +130,7 @@ function SurahList() {
             key={surah.id}
             surah={surah}
             onClick={handleSurahClick}
+            transliteration={transliteration}
           />
         ))}
       </div>

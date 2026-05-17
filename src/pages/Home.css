@@ -719,7 +719,7 @@
 
 .action-meta {
   font-size: 0.68rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
