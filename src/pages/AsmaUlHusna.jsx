@@ -9,9 +9,7 @@ const NameCard = memo(({ name, onClick, transliteration }) => (
   <div className="asma-card" onClick={() => onClick(name)} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && onClick(name)}>
     <div className="asma-card-num">{name.num}</div>
     <p className="asma-card-arabic" dir="rtl">{name.arabic}</p>
-    {(transliteration === 'english' || transliteration === 'both') && (
-      <p className="asma-card-roman">{name.roman}</p>
-    )}
+    <p className="asma-card-roman">{name.roman}</p>
     {(transliteration === 'english' || transliteration === 'both') && (
       <p className="asma-card-english">{name.english}</p>
     )}
@@ -117,9 +115,7 @@ function AsmaUlHusna() {
             </button>
             <div className="asma-detail-num"><span>{selectedName.num}</span></div>
             <p className="asma-detail-arabic" dir="rtl">{selectedName.arabic}</p>
-            {(transliteration === 'english' || transliteration === 'both') && (
-              <p className="asma-detail-roman">{selectedName.roman}</p>
-            )}
+            <p className="asma-detail-roman">{selectedName.roman}</p>
             {(transliteration === 'english' || transliteration === 'both') && (
               <p className="asma-detail-english">{selectedName.english}</p>
             )}
