@@ -208,14 +208,21 @@ const DHAAL_WORDS = {
   'kazaalika': 'kadhaalika', 'kazaalikal': 'kadhaalikal',
   'fazaalika': 'fadhaalika', 'fazaalikum': 'fadhaalikum',
   'azaab': 'adhaab', 'azaaban': 'adhaaban', 'azaabun': 'adhaabun',
-  'azaabin': 'adhaabin', 'azaabi': 'adhaabi', 'azaabal': 'adhabal',
+  'azaabin': 'adhaabin', 'azaabi': 'adhaabi', 'azaabal': 'adhaabal',
+  'azaaba': 'adhaaba', 'azaabu': 'adhaabu', 'azaabum': 'adhaabum',
+  'azaabil': 'adhaabil', 'azaabee': 'adhaabee', 'azaabam': 'adhaabam',
+  'azaabul': 'adhaabul', 'azaabis': 'adhaabis',
   'yazlimoon': 'yadhlimoon', 'yazlimoo': 'yadhlimoo',
   'yazlimuhum': 'yadhlimuhum', 'yazlim': 'yadhlim',
   'zulm': 'dhulm', 'zulman': 'dhulman',
   'zulumaat': 'dhulumaat', 'zulumati': 'dhulumati', 'zulumatin': 'dhulumatin',
+  'zulumaati': 'dhulumaati', 'zulumaatil': 'dhulumaatil',
   'yazzakkaroon': 'yadhdhakkaroon', 'tazakkaroon': 'tadhakkaroon',
   'zikr': 'dhikr', 'zikra': 'dhikra', 'zikree': 'dhikree',
+  'zikri': 'dhikri', 'zikru': 'dhikru', 'zikruhum': 'dhikruhum',
   'zunoob': 'dhunoob', 'zunoobihim': 'dhunoobihim', 'zunoobi': 'dhunoobi',
+  'zunoobikum': 'dhunoobikum', 'zunoobakum': 'dhunoobakum',
+  'zunoobanaa': 'dhunoobanaa',
   'zanb': 'dhanb', 'zanbi': 'dhanbi', 'zanban': 'dhanban',
   'iz': 'idh', 'iza': 'idha', 'izaa': 'idhaa',
   'faiza': 'faidha', 'faizaa': 'faidhaa',
@@ -240,14 +247,17 @@ const DHAAL_WORDS = {
   'yazkuru': 'yadhkuru', 'fazkuroo': 'fadhkuroo',
   'uzkur': 'udhkur', 'uzkuroo': 'udhkuroo',
   'zakareen': 'dhakareen', 'zakar': 'dhakar',
+  'zakarin': 'dhakarin', 'zakara': 'dhakara',
+
   'azilla': 'adhilla', 'azillatan': 'adhillatan',
-  'zilla': 'dhilla', 'zillatan': 'dhillatan',
+  'zilla': 'dhilla', 'zillatan': 'dhillatan', 'zillah': 'dhillah',
   'zaleel': 'dhaleel', 'zaleela': 'dhaleela',
   'yuzillu': 'yudhillu', 'zalla': 'dhalla', 'zalloo': 'dhalloo',
   'zaaleen': 'dhaaleen', 'zaaalleen': 'dhaaalleen',
   'azzana': 'adhdhana',
   'azeem': 'adheem', 'azeemun': 'adheemun', 'azeeman': 'adheeman',
-  'azeemi': 'adheemi', 'azeemin': 'adheemin',
+  'azeemi': 'adheemi', 'azeemin': 'adheemin', 'azeema': 'adheema',
+  'azeemaa': 'adheemaa',
 }
 
 // General API vowel/spelling corrections (not dhaal-related)
@@ -256,6 +266,86 @@ const WORD_CORRECTIONS = {
   'riziqan': 'ruziqan',
   'riziqahu': 'ruziqahu',
   'riziquhum': 'ruziquhum',
+  // Leading double consonants (never valid at word-start in Arabic)
+  'mminnaa': 'minnaa',
+  'mmustaqeem': 'mustaqeem',
+  'mmin': 'min',
+  'mmubeen': 'mubeen',
+  'mman': 'man',
+  'mmulkus': 'mulkus',
+  'mminhum': 'minhum',
+  'nnahnu': 'nahnu',
+  'kkaanoo': 'kaanoo',
+  'hhuwal': 'huwal',
+  'mmai': 'mai',
+  'mmir': 'mir',
+  // Double consonant where single is correct (shadda error)
+  'kaafirroon': 'kaafiroon',
+  'tajjida': 'tajida',
+  'yakkoonu': 'yakoonu',
+  'mujjrimeen': 'mujrimeen',
+  'sammaaa\'i': 'samaaa\'i',
+  'sammaawaati': 'samaawaati',
+  // Wrong vowel (verified against Arabic)
+  'zulamoo': 'zalamoo',
+  'yikhrijul': 'yukhrijul',
+  'yadlilil': 'yudlilil',
+  'yu\'miinoon': 'yu\'minoon',
+  'mujremeen': 'mujrimeen',
+  'yudallu': 'yudillu',
+  // Extra character mid-word (verified)
+  '\'alaikhim': '\'alaihim',
+  'aarmanoo': 'aamanoo',
+  'lazaeena': 'lazeena',
+  'loazeena': 'lazeena',
+  'ayyunhan': 'ayyuhan',
+  'ayyuuhan': 'ayyuhan',
+  'shain\'in': 'shai\'in',
+  'mional': 'minal',
+  'annzalnaa': 'anzalnaa',
+  'laazeena': 'lazeena',
+  'muustaqeem': 'mustaqeem',
+  'baillaahi': 'billaahi',
+  'ashaaddu': 'ashaddu',
+  'fir\'awana': 'fir\'awna',
+  'allazeeena': 'allazeena',
+  'aammanoo': 'aamanoo',
+  'kaazzaboo': 'kazzaboo',
+  'falaammaa': 'falammaa',
+  'annammaa': 'annamaa',
+  'razaqnnaahum': 'razaqnaahum',
+  'kaamaaa': 'kamaaa',
+  'innaamaa': 'innamaa',
+  'innammaaa': 'innamaaa',
+  // Triple vowel where double is correct (no alif madd)
+  'zaaalika': 'zaalika',
+  'laaahu': 'laahu',
+  'faqaaala': 'faqaala',
+  'linnaaasi': 'linnaasi',
+  'bainanaaa': 'bainanaa',
+  'innahaaa': 'innahaa',
+  'mawtihaaa': 'mawtihaa',
+  'dunyaaa': 'dunyaa',
+  'ukhraaa': 'ukhraa',
+  'hudaaa': 'hudaa',
+  'lammaaa': 'lammaa',
+  'aaakhirati': 'aakhirati',
+  // Triple 'e' where double is correct
+  '\'azeeem': '\'azeem',
+  'beee': 'bee',
+  'qabliheee': 'qablihee',
+  'ba\'diheee': 'ba\'dihee',
+  'rasooliheee': 'rasoolihee',
+  'fadliheee': 'fadlihee',
+  'allazeee': 'allazee',
+  'banneee': 'banee',
+  // Triple 'o' where double is correct
+  'subhaanahooo': 'subhaanahoo',
+  'annahooo': 'annahoo',
+  'rasoolahooo': 'rasoolahoo',
+  // Other verified errors
+  'insaaanu': 'insaanu',
+  '\'azdaabun': '\'azaabun',
 }
 
 const fixRomanText = (text) => {
@@ -264,11 +354,25 @@ const fixRomanText = (text) => {
   let fixed = text.replace(/\blyyaaka\b/gi, 'Iyyaaka')
   // Fix API quirk: triple+ consonants → double (e.g. "innnaa" → "innaa")
   fixed = fixed.replace(/([bcdfghjklmnpqrstvwxyz])\1{2,}/gi, '$1$1')
+  // Fix API quirk: quadruple+ vowels → triple (e.g. "moosaaaa" → "moosaaa")
+  fixed = fixed.replace(/([aeiou])\1{3,}/gi, '$1$1$1')
   return fixed.replace(/[a-zA-Z']+/g, word => {
     const lower = word.toLowerCase()
     // Check general word corrections first
     const corrected = WORD_CORRECTIONS[lower]
     if (corrected) {
+      const corrLower = corrected.toLowerCase()
+      // After correcting, check if the corrected word also needs DHAAL conversion
+      const dhaalOfCorrected = DHAAL_WORDS[corrLower]
+      if (dhaalOfCorrected) {
+        if (word[0] === word[0].toUpperCase()) return dhaalOfCorrected[0].toUpperCase() + dhaalOfCorrected.slice(1)
+        return dhaalOfCorrected
+      }
+      // Also check apostrophe-prefixed corrections (e.g. 'azeeem → 'azeem → 'adheem)
+      if (corrLower.startsWith("'") && corrLower.length > 1) {
+        const withoutApo = corrLower.slice(1)
+        if (DHAAL_WORDS[withoutApo]) return "'" + DHAAL_WORDS[withoutApo]
+      }
       if (word[0] === word[0].toUpperCase()) return corrected[0].toUpperCase() + corrected.slice(1)
       return corrected
     }
@@ -280,6 +384,16 @@ const fixRomanText = (text) => {
       const apoMatch = DHAAL_WORDS[withoutApo]
       if (apoMatch) {
         return "'" + apoMatch
+      }
+      // Try suffix-stripping with apostrophe (e.g. 'azaaba → 'adhaab + a)
+      for (let s = 1; s <= 2; s++) {
+        if (withoutApo.length > s + 2) {
+          const core = withoutApo.slice(0, -s)
+          const tail = withoutApo.slice(-s)
+          if (DHAAL_WORDS[core]) {
+            return "'" + DHAAL_WORDS[core] + tail
+          }
+        }
       }
     }
     if (fullMatch) {
@@ -300,6 +414,42 @@ const fixRomanText = (text) => {
         : prefix
       const fixedSuffix = suffixMatch || suffix
       return fixedPrefix + "'" + fixedSuffix
+    }
+    // Prefix/suffix stripping for compound dhaal words (e.g. lillazeena → lilladheena)
+    const DHAAL_PREFIXES = ['lil', 'bil', 'kal', 'fal', 'wal', 'bi', 'fa', 'wa', 'li', 'la', 'ka']
+    for (const pfx of DHAAL_PREFIXES) {
+      if (lower.startsWith(pfx) && lower.length > pfx.length + 2) {
+        const remainder = lower.slice(pfx.length)
+        if (DHAAL_WORDS[remainder]) {
+          const result = pfx + DHAAL_WORDS[remainder]
+          if (word[0] === word[0].toUpperCase()) return result[0].toUpperCase() + result.slice(1)
+          return result
+        }
+        // Try stripping 1-2 suffix chars from remainder
+        for (let s = 1; s <= 2; s++) {
+          if (remainder.length > s + 2) {
+            const core = remainder.slice(0, -s)
+            const tail = remainder.slice(-s)
+            if (DHAAL_WORDS[core]) {
+              const result = pfx + DHAAL_WORDS[core] + tail
+              if (word[0] === word[0].toUpperCase()) return result[0].toUpperCase() + result.slice(1)
+              return result
+            }
+          }
+        }
+      }
+    }
+    // Suffix-only stripping (e.g. lazeenat → lazeena→ladheena + t)
+    for (let s = 1; s <= 2; s++) {
+      if (lower.length > s + 3) {
+        const core = lower.slice(0, -s)
+        const tail = lower.slice(-s)
+        if (DHAAL_WORDS[core]) {
+          const result = DHAAL_WORDS[core] + tail
+          if (word[0] === word[0].toUpperCase()) return result[0].toUpperCase() + result.slice(1)
+          return result
+        }
+      }
     }
     return word
   })
