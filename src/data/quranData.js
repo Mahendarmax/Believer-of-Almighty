@@ -250,6 +250,14 @@ const DHAAL_WORDS = {
   'azeemi': 'adheemi', 'azeemin': 'adheemin',
 }
 
+// General API vowel/spelling corrections (not dhaal-related)
+const WORD_CORRECTIONS = {
+  'riziqoo': 'ruziqoo',
+  'riziqan': 'ruziqan',
+  'riziqahu': 'ruziqahu',
+  'riziquhum': 'ruziquhum',
+}
+
 const fixRomanText = (text) => {
   if (!text) return ''
   // Fix API typo: 'lyyaaka' should be 'Iyyaaka'
@@ -258,6 +266,12 @@ const fixRomanText = (text) => {
   fixed = fixed.replace(/([bcdfghjklmnpqrstvwxyz])\1{2,}/gi, '$1$1')
   return fixed.replace(/[a-zA-Z']+/g, word => {
     const lower = word.toLowerCase()
+    // Check general word corrections first
+    const corrected = WORD_CORRECTIONS[lower]
+    if (corrected) {
+      if (word[0] === word[0].toUpperCase()) return corrected[0].toUpperCase() + corrected.slice(1)
+      return corrected
+    }
     // Try full word first (e.g. 'allazeena')
     const fullMatch = DHAAL_WORDS[lower]
     // Handle leading apostrophe: strip it, check DHAAL_WORDS, reattach (e.g. 'azeem → 'adheem)
