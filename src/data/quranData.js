@@ -227,6 +227,7 @@ const DHAAL_WORDS = {
   'iz': 'idh', 'iza': 'idha', 'izaa': 'idhaa',
   'faiza': 'faidha', 'faizaa': 'faidhaa',
   'waiza': 'waidha', 'waizaa': 'waidhaa',
+  'maazaa': 'maadhaa',
   'hazaa': 'hadhaa', 'haazaa': 'haadhaa', 'haaza': 'haadha',
   'haazihi': 'haadhihi', 'hazihee': 'hadhihee',
   'yunziroon': 'yundhiroon', 'anzar': 'andhar', 'anzir': 'andhir',
@@ -258,6 +259,74 @@ const DHAAL_WORDS = {
   'azeem': 'adheem', 'azeemun': 'adheemun', 'azeeman': 'adheeman',
   'azeemi': 'adheemi', 'azeemin': 'adheemin', 'azeema': 'adheema',
   'azeemaa': 'adheemaa',
+  // ظلم family (zaalim/zulm - oppression/wrongdoing)
+  'zaalimeen': 'dhaalimeen', 'zaalimoon': 'dhaalimoon',
+  'zaalimeena': 'dhaalimeena', 'zaalimoona': 'dhaalimoona',
+  'zaalim': 'dhaalim', 'zaalimu': 'dhaalimu',
+  'azlamu': 'adhlamu', 'zalamoo': 'dhalamoo',
+  'zalama': 'dhalama', 'zalamooaa': 'dhalamooaa',
+  'yuzlamoon': 'yudhlamoon', 'yuzlamoona': 'yudhlamoona',
+  'tuzlamoon': 'tudhlamoon', 'zulimoo': 'dhulimoo',
+  'lizzaalimeena': 'lidhdhaalimeena', 'bizzaalimeen': 'bidhdhaalimeen',
+  // إذ family (iz/idhaa - when/since)
+  'izal': 'idhal', 'izan': 'idhan', 'izas': 'idhas',
+  'izni': 'idhni', 'iznil': 'idhnil', 'iznih': 'idhnih',
+  'iznee': 'idhnee', 'iznihee': 'idhnihee', 'izin': 'idhin',
+  'izil': 'idhil',
+  // نذير family (nadheer - warner)
+  'nazeerum': 'nadheerum', 'nazeer': 'nadheer',
+  'nazeeraa': 'nadheeraa', 'nazeerin': 'nadheerin',
+  'nazeerul': 'nadheerul', 'nazeera': 'nadheera',
+  'munzareen': 'mundhareen', 'munzireen': 'mundhireen',
+  'munzireena': 'mundhireena',
+  // واذكر family (wadhkur - remember)
+  'wazkur': 'wadhkur', 'wazkuroo': 'wadhkuroo',
+  'wazkurul': 'wadhkurul',
+  'fazkurul': 'fadhkurul', 'zukiral': 'dhukiral',
+  // ذرة family (dharrah - atom)
+  'zarratin': 'dharratin', 'zarrah': 'dharrah', 'zarrat': 'dharrat',
+  // مَاذَا family (maadhaa - what)
+  'maazaa': 'maadhaa',
+  // آذان family (aadhaan - ears)
+  'aazaanihim': 'aadhaanihim', 'aazaanuny': 'aadhaanuny',
+  // يَظْهَرُ family (yadh-har - to prevail) - ظهر
+  'yazharoo': 'yadharoo', 'yazharal': 'yadharal',
+  // يُنذَر family (yundhar - to be warned)
+  'yunzaroon': 'yundharoon', 'tunziroon': 'tundhiroon',
+  'anzirhum': 'andhirhum', 'anzirneee': 'andhirnee',
+  // يومئذ - apostrophe suffix variants (yawma'izin)
+  'iziny': 'idhiny', 'izinil': 'idhinil', 'izinw': 'idhinw', 'izim': 'idhim',
+  // ذَٰلِكَ without final vowel
+  'zaalik': 'dhaalik',
+  // اذهب (idh-hab - go) - root ذهب
+  'izhab': 'idhab', 'izhabu': 'idhabu', 'izhaboo': 'idhaboo',
+  // ظن family (zhann - to think/guess)
+  'yazunnoona': 'yadhunnoona', 'tazunnoona': 'tadhunnoona',
+  // وذر family (wadhar - to leave alone)
+  'yazaroona': 'yadharoona', 'yazarhum': 'yadharhum',
+  // Additional ظلم family
+  'zalamtum': 'dhalamtum', 'zalamoonaa': 'dhalamoonaa',
+  'azlama': 'adhlama', 'zalamus': 'dhalamus',
+  'zalamnaahum': 'dhalamnaahum', 'zalimeen': 'dhalimeen',
+  'zalamahumul': 'dhalamahumul',
+  // ذلل family (dhull - humiliation)
+  'zulli': 'dhulli', 'zallalnaa': 'dhallalnaa',
+  // ذكر additional
+  'yuzkara': 'yudhkara', 'zukiral': 'dhukiral',
+  'zikrinaa': 'dhikrinaa', 'zukirasmul': 'dhukirasmul',
+  // آذن (aadhana - announce)
+  'aazana': 'aadhana',
+  // إذ additional suffixed forms
+  'izat': 'idhat', 'izis': 'idhis', 'iznillaahi': 'idhnillaahi',
+  // نذير additional
+  'munzirunw': 'mundhirunw', 'nazeerunw': 'nadheerunw',
+  // ظلم additional
+  'bizallaamil': 'bidhallaamil', 'bizulminw': 'bidhulminw',
+  'zulmihee': 'dhulmihee',
+  // ظن family (zhann - to think/guess)
+  'yazunnoona': 'yadhunnoona',
+  // وذر family (wadhar - to leave alone)
+  'yazaroona': 'yadharoona', 'yazarhum': 'yadharhum',
 }
 
 // General API vowel/spelling corrections (not dhaal-related)
@@ -341,6 +410,7 @@ const WORD_CORRECTIONS = {
   'banneee': 'banee',
   // Triple 'o' where double is correct
   'subhaanahooo': 'subhaanahoo',
+  'maazaaa': 'maazaa',
   'annahooo': 'annahoo',
   'rasoolahooo': 'rasoolahoo',
   // Other verified errors
