@@ -101,7 +101,12 @@ function transliterateSegment(text, options = {}) {
     // Skip non-letter characters (spaces, punctuation, numbers)
     if (!isLetter(lower[i])) {
       // Apostrophe/ain (') before 'ay'/'a' vowels — check for diphthong first
-      if (isApostrophe(lower[i]) && i + 1 < lower.length) {
+      if (isApostrophe(lower[i])) {
+        // Trailing apostrophe at end of word — skip it (e.g. "Baari'" → బారి)
+        if (i + 1 >= lower.length || !isLetter(lower[i + 1])) {
+          i++
+          continue
+        }
         // 'ay after apostrophe → treat as standalone ఐ diphthong (e.g. "'ayni" → ఐని)
         if (lower.startsWith('ay', i + 1)) {
           result += 'ఐ'
@@ -129,13 +134,21 @@ function transliterateSegment(text, options = {}) {
         let vowelMatched = false
         for (const [vRoman, , vMatra] of VOWELS) {
           if (lower.startsWith(vRoman, i)) {
-            // 'ay'/'aw' is a diphthong ONLY when the y/w is NOT followed by a vowel.
+            // 'ay'/'aw' is a diphthong ONLY when the y/w is NOT followed by a vowel
+            // AND NOT followed by the same consonant (geminate).
             // If y/w is followed by a vowel, it's a consonant with its own vowel —
             // use inherent 'a' instead. e.g. "bayaan" → బయాన్ (not బైఆన్),
             // "hayaata" → హయాత (not హైఆత), but "bayna" → బైన ✓
+            // If followed by same letter (ayy/aww), it's a geminate — not a diphthong.
+            // e.g. "Hayy" → హయ్య్, "Qayyoom" → ఖయ్యూమ్, "Tawwaab" → తవ్వాబ్
             if ((vRoman === 'ay' || vRoman === 'aw') && i + vRoman.length < lower.length) {
               const afterDiphthong = lower[i + vRoman.length]
               if ('aeiou'.includes(afterDiphthong)) {
+                continue // skip diphthong, fall through to 'a' (inherent vowel)
+              }
+              // Geminate: 'ayy' or 'aww' — treat as inherent 'a' + geminate consonant
+              const diphEnd = vRoman === 'ay' ? 'y' : 'w'
+              if (afterDiphthong === diphEnd) {
                 continue // skip diphthong, fall through to 'a' (inherent vowel)
               }
             }
