@@ -110,7 +110,7 @@ ReciterPicker.displayName = 'ReciterPicker'
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize } = useSettings()
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, theme, setTheme } = useSettings()
 
   // Quick Verse Lookup state
   const [qvSurah, setQvSurah] = useState('')
@@ -415,6 +415,41 @@ const Home = React.memo(function Home() {
             <span className="translit-btn-example">English + Telugu side by side</span>
           </button>
         </div>
+      </section>
+
+      {/* Theme Toggle */}
+      <section className="theme-toggle-section">
+        <h3 className="theme-toggle-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
+            {theme === 'dark'
+              ? <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
+              : <><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></>
+            }
+          </svg>
+          {transliteration === 'telugu' ? 'థీమ్' : 'Theme'}
+        </h3>
+        <p className="theme-toggle-desc">{transliteration === 'telugu' ? 'యాప్ రూపాన్ని మార్చండి' : 'Switch the app appearance'}</p>
+        <button
+          className="theme-toggle-btn"
+          onClick={() => setTheme(theme === 'dark' ? 'normal' : 'dark')}
+          aria-label={`Switch to ${theme === 'dark' ? 'normal' : 'dark'} theme`}
+        >
+          <span className={`theme-toggle-track ${theme === 'dark' ? 'dark' : ''}`}>
+            <span className="theme-toggle-thumb">
+              {theme === 'dark' ? (
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><circle cx="12" cy="12" r="5"/></svg>
+              )}
+            </span>
+          </span>
+          <span className="theme-toggle-label">
+            {theme === 'dark'
+              ? (transliteration === 'telugu' ? 'డార్క్ థీమ్' : 'Dark Theme')
+              : (transliteration === 'telugu' ? 'నార్మల్ థీమ్' : 'Normal Theme')
+            }
+          </span>
+        </button>
       </section>
 
       {/* Quote */}
