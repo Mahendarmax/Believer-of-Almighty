@@ -1302,6 +1302,7 @@
 .theme-toggle-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 14px;
   padding: 14px 18px;
   background: var(--bg-card);
@@ -1309,7 +1310,8 @@
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: var(--transition);
-  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
 }
 
 .theme-toggle-btn:hover {
