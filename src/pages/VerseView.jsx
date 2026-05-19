@@ -262,10 +262,10 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
         surahName,
         verseNumber: verse.number,
         arabic: verse.arabic || '',
-        roman: verse.roman || '',
-        teluguRoman,
-        telugu: verse.telugu || '',
-        english: verse.translation || '',
+        roman: (transliteration === 'english' || transliteration === 'both') ? (verse.roman || '') : '',
+        teluguRoman: (transliteration === 'telugu' || transliteration === 'both') ? teluguRoman : '',
+        telugu: (transliteration === 'telugu' || transliteration === 'both') ? (verse.telugu || '') : '',
+        english: (transliteration === 'english' || transliteration === 'both') ? (verse.translation || '') : '',
       })
       const link = document.createElement('a')
       const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
@@ -279,7 +279,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
     } finally {
       setDownloading(false)
     }
-  }, [downloading, surahName, surahNumber, verse])
+  }, [downloading, surahName, surahNumber, verse, transliteration])
 
   const handleBookmarkClick = useCallback(() => {
     onBookmark(verse.number)
@@ -293,25 +293,27 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
     const verseLbl = transliteration === 'telugu' ? 'ఆయత్' : 'Verse'
 
     // Header
-    lines.push(`┌─────────────────────────`)
-    lines.push(`  ${surahLabel} | ${verseLbl} ${verse.number}`)
-    lines.push(`└─────────────────────────`)
+    lines.push(`══════════════════════`)
+    lines.push(`  ${surahLabel} — ${verseLbl} ${verse.number}`)
+    lines.push(`══════════════════════`)
 
     // Arabic
     if (verse.arabic) {
       lines.push('')
-      lines.push(verse.arabic)
+      lines.push(`  ${verse.arabic}`)
     }
 
     // Transliteration
     if (verse.roman) {
       if (transliteration === 'telugu' || transliteration === 'both') {
         lines.push('')
-        lines.push(`${transliteration === 'both' ? 'తెలుగు: ' : ''}${romanToTelugu(verse.roman)}`)
+        if (transliteration === 'both') lines.push(`- తెలుగు లిప్యంతరీకరణ:`)
+        lines.push(romanToTelugu(verse.roman))
       }
       if (transliteration === 'english' || transliteration === 'both') {
         lines.push('')
-        lines.push(`${transliteration === 'both' ? 'Roman: ' : ''}${verse.roman}`)
+        if (transliteration === 'both') lines.push(`- Transliteration:`)
+        lines.push(verse.roman)
       }
     }
 
@@ -319,17 +321,20 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
     if (transliteration === 'telugu' || transliteration === 'both') {
       if (verse.telugu) {
         lines.push('')
-        lines.push(`── ${transliteration === 'both' ? 'అర్థం' : 'అర్థం'} ──`)
+        lines.push(`── ${transliteration === 'both' ? 'అర్థం (Telugu)' : 'అర్థం'} ──`)
         lines.push(verse.telugu)
       }
     }
     if (transliteration === 'english' || transliteration === 'both') {
       if (verse.translation) {
         lines.push('')
-        lines.push(`── ${transliteration === 'both' ? 'Meaning' : 'Meaning'} ──`)
+        lines.push(`── ${transliteration === 'both' ? 'Meaning (English)' : 'Meaning'} ──`)
         lines.push(verse.translation)
       }
     }
+
+    lines.push('')
+    lines.push(`── Believer of Almighty ──`)
 
     const text = lines.join('\n')
 
