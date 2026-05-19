@@ -154,21 +154,21 @@
   background: linear-gradient(
     90deg,
     var(--text-secondary) 0%,
-    var(--text-secondary) 30%,
-    #e8c566 42%,
-    #fff 46%,
+    var(--text-secondary) 40%,
+    #e8c566 44%,
+    #fff 47%,
     #ffd700 50%,
-    #fff 54%,
-    #e8c566 58%,
-    var(--text-secondary) 70%,
+    #fff 53%,
+    #e8c566 56%,
+    var(--text-secondary) 60%,
     var(--text-secondary) 100%
   );
-  background-size: 300% 100%;
+  background-size: 500% 100%;
   background-position: 100% 0;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: textShine 3.5s ease-in-out 0.5s infinite;
+  animation: textShine 5s linear 0.5s infinite;
 }
 
 @keyframes textShine {
