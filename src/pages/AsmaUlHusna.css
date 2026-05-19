@@ -333,3 +333,22 @@
   .asma-page { max-width: 1000px; }
   .asma-grid { grid-template-columns: repeat(4, 1fr); }
 }
+
+/* ===== DARK THEME OVERRIDES ===== */
+[data-theme="dark"] .asma-card {
+  background: #161617;
+  border: 1px solid rgba(192, 192, 192, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .asma-card:hover {
+  background: #1e1e1f;
+  border-color: rgba(192, 192, 192, 0.35);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .asma-detail-panel {
+  background: #000000;
+  border-color: rgba(192, 192, 192, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}

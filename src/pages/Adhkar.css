@@ -223,3 +223,8 @@
 @media (min-width: 1200px) {
   .adhkar-page { max-width: 900px; }
 }
+
+/* ===== DARK THEME OVERRIDES ===== */
+[data-theme="dark"] .adhkar-card-category-telugu {
+  color: #c0c0c0;
+}

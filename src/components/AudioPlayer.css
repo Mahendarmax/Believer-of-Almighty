@@ -70,3 +70,8 @@
   .audio-btn svg { width: 13px; height: 13px; }
   .audio-progress-bar { width: 28px; }
 }
+
+/* ===== DARK THEME OVERRIDES ===== */
+[data-theme="dark"] .audio-btn {
+  background: rgba(192, 192, 192, 0.08);
+}

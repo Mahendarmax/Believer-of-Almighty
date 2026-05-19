@@ -311,3 +311,8 @@
 @media (min-width: 1200px) {
   .isa-page { max-width: 900px; }
 }
+
+/* ===== DARK THEME OVERRIDES ===== */
+[data-theme="dark"] .isa-card.expanded {
+  border-color: rgba(192, 192, 192, 0.22);
+}

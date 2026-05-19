@@ -359,3 +359,61 @@
     gap: 14px;
   }
 }
+
+/* ===== DARK THEME OVERRIDES ===== */
+[data-theme="dark"] .surah-list-page {
+  background: #000000;
+}
+
+[data-theme="dark"] .sl-header {
+  background: linear-gradient(180deg, #000000 80%, transparent 100%);
+}
+
+[data-theme="dark"] .sl-navigator {
+  background: #161617;
+  border-color: rgba(192, 192, 192, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .sl-nav-title {
+  color: var(--accent);
+  text-shadow: none;
+}
+
+[data-theme="dark"] .sl-nav-select {
+  background: #111111;
+  border-color: rgba(192, 192, 192, 0.22);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .sl-nav-select option {
+  background: #161617;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .sl-nav-verse {
+  background: #111111;
+  border-color: rgba(192, 192, 192, 0.22);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .sl-nav-select:focus,
+[data-theme="dark"] .sl-nav-verse:focus {
+  border-color: rgba(192, 192, 192, 0.35);
+}
+
+[data-theme="dark"] .sl-nav-go {
+  color: #000;
+}
+
+[data-theme="dark"] .surah-card {
+  background: #161617;
+  border: 1px solid rgba(192, 192, 192, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .surah-card:hover {
+  background: #1e1e1f;
+  border-color: rgba(192, 192, 192, 0.35);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}

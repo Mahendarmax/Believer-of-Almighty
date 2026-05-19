@@ -309,3 +309,8 @@
 @media (min-width: 1200px) {
   .tasbih-page { max-width: 700px; }
 }
+
+/* ===== DARK THEME OVERRIDES ===== */
+[data-theme="dark"] .tasbih-telugu {
+  color: #c0c0c0;
+}

@@ -1973,3 +1973,59 @@
   background: #111111;
   border-color: rgba(192, 192, 192, 0.22);
 }
+
+[data-theme="dark"] .stats-row {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(192, 192, 192, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .stats-row:hover {
+  border-color: rgba(192, 192, 192, 0.35);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .qv-title {
+  color: var(--accent);
+  text-shadow: none;
+}
+
+[data-theme="dark"] .qv-dropdown {
+  background: #161617;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .qv-drop-search {
+  background: #111111;
+}
+
+[data-theme="dark"] .qv-modal {
+  background: #161617;
+  border-color: rgba(192, 192, 192, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .qv-modal-topbar {
+  border-color: rgba(192, 192, 192, 0.12);
+}
+
+[data-theme="dark"] .qv-modal-close {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .qv-modal-arabic {
+  border-color: rgba(192, 192, 192, 0.12);
+}
+
+[data-theme="dark"] .home-reciter-toggle {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .home-reciter-toggle:hover {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .dua-card-category {
+  background: rgba(192, 192, 192, 0.08);
+  color: #c0c0c0;
+}
