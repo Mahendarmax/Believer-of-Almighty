@@ -397,7 +397,7 @@ const Home = React.memo(function Home() {
             className={`translit-btn ${transliteration === 'english' ? 'active' : ''}`}
             onClick={() => setTransliteration('english')}
           >
-            <span className="translit-btn-label">{transliteration === 'telugu' ? 'రోమన్ ఇంగ్లీష్' : 'Roman English'}</span>
+            <span className="translit-btn-label">Roman English</span>
             <span className="translit-btn-example">Bismillaahir Rahmaanir Raheem</span>
           </button>
           <button
@@ -411,7 +411,7 @@ const Home = React.memo(function Home() {
             className={`translit-btn ${transliteration === 'both' ? 'active' : ''}`}
             onClick={() => setTransliteration('both')}
           >
-            <span className="translit-btn-label">{transliteration === 'telugu' ? 'రెండూ' : 'Both'}</span>
+            <span className="translit-btn-label">{transliteration === 'telugu' ? 'రెండూ (Both)' : 'Both'}</span>
             <span className="translit-btn-example">{transliteration === 'telugu' ? 'ఇంగ్లీష్ + తెలుగు పక్కపక్కన' : 'English + Telugu side by side'}</span>
           </button>
         </div>
