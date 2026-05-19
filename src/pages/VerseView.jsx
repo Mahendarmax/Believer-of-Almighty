@@ -156,8 +156,10 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
       // just spacing
     } else if (sec.type === 'header') {
       // Surah name centered — vertically middle of header height
+      // Use Telugu font if name contains Telugu characters
+      const hasTelugu = /[\u0C00-\u0C7F]/.test(surahName)
       ctx.fillStyle = ACCENT
-      ctx.font = `600 24px ${UI_FONT}`
+      ctx.font = hasTelugu ? `600 26px ${TELUGU_FONT}` : `600 24px ${UI_FONT}`
       ctx.textAlign = 'center'
       ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W / 2, y + sec.h / 2)
       ctx.textAlign = 'left'
@@ -246,7 +248,7 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [shareToast, setShareToast] = useState(null)
@@ -259,7 +261,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
       const teluguRoman = verse.roman ? romanToTelugu(verse.roman) : ''
       const dataUrl = await renderVerseImage({
         surahNumber,
-        surahName,
+        surahName: transliteration === 'telugu' ? (surahNameTelugu || surahName) : surahName,
         verseNumber: verse.number,
         arabic: verse.arabic || '',
         roman: (transliteration === 'english' || transliteration === 'both') ? (verse.roman || '') : '',
@@ -289,7 +291,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
 
   const handleShare = useCallback(async () => {
     const lines = []
-    const surahLabel = surahName || 'Surah ' + surahNumber
+    const surahLabel = transliteration === 'telugu' ? (surahNameTelugu || surahName) : (surahName || 'Surah ' + surahNumber)
     const verseLbl = transliteration === 'telugu' ? 'ఆయత్' : 'Verse'
 
     // Header
@@ -322,6 +324,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
       if (verse.telugu) {
         lines.push('')
         lines.push(`── ${transliteration === 'both' ? 'అర్థం (Telugu)' : 'అర్థం'} ──`)
+        lines.push('')
         lines.push(verse.telugu)
       }
     }
@@ -329,12 +332,13 @@ const VerseCard = memo(({ verse, surahNumber, surahName, showArabic, fontSize, p
       if (verse.translation) {
         lines.push('')
         lines.push(`── ${transliteration === 'both' ? 'Meaning (English)' : 'Meaning'} ──`)
+        lines.push('')
         lines.push(verse.translation)
       }
     }
 
     lines.push('')
-    lines.push(`── Believer of Almighty ──`)
+    lines.push(`══════════════════════`)
 
     const text = lines.join('\n')
 
@@ -810,6 +814,8 @@ function VerseView() {
                 verse={verse}
                 surahNumber={surahNumber}
                 surahName={surah?.name}
+                surahNameTelugu={surah?.nameTelugu}
+                surahNameTelugu={surah?.nameTelugu}
                 showArabic={showArabic}
                 fontSize={fontSize}
                 playingVerse={playingVerse}
