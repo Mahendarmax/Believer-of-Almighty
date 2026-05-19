@@ -1275,13 +1275,15 @@
 .theme-toggle-section {
   padding: 0 24px;
   max-width: 720px;
-  margin: 0 auto 32px;
+  margin: 0 auto 40px;
   width: 100%;
+  text-align: center;
 }
 
 .theme-toggle-title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 1rem;
   font-weight: 700;
@@ -1296,7 +1298,7 @@
 .theme-toggle-desc {
   font-size: 0.78rem;
   color: var(--text-muted);
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .theme-toggle-btn {
