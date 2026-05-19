@@ -135,7 +135,7 @@ const Home = React.memo(function Home() {
   const qvFilteredSurahs = useMemo(() => {
     if (!qvFilter) return surahs
     const q = qvFilter.toLowerCase()
-    return surahs.filter(s => s.name.toLowerCase().includes(q) || s.nameEnglish.toLowerCase().includes(q) || String(s.number).includes(q))
+    return surahs.filter(s => s.name.toLowerCase().includes(q) || s.nameEnglish.toLowerCase().includes(q) || (s.nameTelugu && s.nameTelugu.includes(qvFilter)) || String(s.number).includes(q))
   }, [qvFilter])
 
   const handleQvPlay = useCallback((verseNum) => {
@@ -256,7 +256,7 @@ const Home = React.memo(function Home() {
           <div className="qv-select-wrap" ref={qvDropRef}>
             <div className="qv-select" onClick={() => setQvDropOpen(p => !p)}>
               <span className="qv-select-label">
-                {qvSurah ? `${qvSurah}. ${surahs.find(s => s.number === parseInt(qvSurah))?.name || ''}` : (transliteration === 'telugu' ? 'సూరా ఎంచుకోండి' : 'Select Surah')}
+                {qvSurah ? `${qvSurah}. ${(() => { const found = surahs.find(s => s.number === parseInt(qvSurah)); return transliteration === 'telugu' ? (found?.nameTelugu || found?.name || '') : (found?.name || ''); })()}` : (transliteration === 'telugu' ? 'సూరా ఎంచుకోండి' : 'Select Surah')}
               </span>
               <svg className="qv-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14" style={{transform: qvDropOpen ? 'rotate(180deg)' : 'none', transition: '0.2s'}}>
                 <path d="M6 9l6 6 6-6"/>
@@ -278,7 +278,7 @@ const Home = React.memo(function Home() {
                       className={`qv-drop-item${String(s.number) === qvSurah ? ' active' : ''}`}
                       onClick={() => { setQvSurah(String(s.number)); setQvVerse(''); setQvError(''); setQvDropOpen(false); setQvFilter('') }}
                     >
-                      {s.number}. {s.name} ({s.nameEnglish})
+                      {s.number}. {transliteration === 'telugu' ? (s.nameTelugu || s.name) : s.name} ({transliteration === 'telugu' ? s.name : s.nameEnglish})
                     </li>
                   ))}
                   {qvFilteredSurahs.length === 0 && <li className="qv-drop-empty">No results</li>}
