@@ -38,7 +38,7 @@ function SurahList() {
   const [navSurah, setNavSurah] = useState('')
   const [navVerse, setNavVerse] = useState('')
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
   const handleSurahClick = useCallback((num) => navigate(`/surah/${num}`), [navigate])
 
   const selectedSurahData = useMemo(() => {

@@ -10,7 +10,7 @@ function DosAndDonts() {
   const cardRefs = useRef({})
   const { transliteration } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   const handleToggle = useCallback((idx) => {
     setExpandedCat(prev => {

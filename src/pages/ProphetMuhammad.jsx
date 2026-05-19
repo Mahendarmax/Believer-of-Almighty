@@ -10,7 +10,7 @@ function ProphetMuhammad() {
   const [expandedEvent, setExpandedEvent] = useState(null)
   const { transliteration } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   const totalEvents = prophetMuhammadData.reduce((t, c) => t + c.events.length, 0)
 

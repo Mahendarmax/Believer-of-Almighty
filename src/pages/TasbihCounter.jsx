@@ -68,7 +68,7 @@ function TasbihCounter() {
   const preset = allPresets[activePreset] || allPresets[0]
   const progress = Math.min((count / preset.target) * 100, 100)
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   const handleCount = useCallback(() => {
     setCount(prev => {

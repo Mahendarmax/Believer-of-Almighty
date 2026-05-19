@@ -33,7 +33,7 @@ function AsmaUlHusna() {
   const [closing, setClosing] = useState(false)
   const { transliteration } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   const openDetail = useCallback((name) => {
     setSelectedName(name)

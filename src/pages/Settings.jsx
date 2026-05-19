@@ -7,7 +7,7 @@ function Settings() {
   const navigate = useNavigate()
   const { showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   return (
     <div className="settings-page">

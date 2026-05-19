@@ -10,7 +10,7 @@ function Adhkar() {
   const [expandedCat, setExpandedCat] = useState(null)
   const { transliteration } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   return (
     <div className="adhkar-page">

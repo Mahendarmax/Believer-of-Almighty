@@ -1,5 +1,5 @@
-import React, { lazy, Suspense, useEffect } from 'react'
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
+import React, { lazy, Suspense, useEffect, useCallback } from 'react'
+import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { SettingsProvider } from './context/SettingsContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
@@ -39,12 +39,45 @@ function ScrollToTop() {
   return null
 }
 
+// Mobile back button: navigate within app instead of closing
+function BackButtonHandler() {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // Track that user has navigated within the app
+    const entryKey = '__appEntry'
+    if (!sessionStorage.getItem(entryKey)) {
+      sessionStorage.setItem(entryKey, location.pathname)
+      // Push an extra history entry so back doesn't exit immediately
+      window.history.pushState({ app: true }, '')
+    }
+  }, [])
+
+  useEffect(() => {
+    const isHome = location.pathname === '/' || location.pathname === ''
+
+    const handlePopState = (e) => {
+      if (isHome) {
+        // On home page, prevent exit — push state again
+        window.history.pushState({ app: true }, '')
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [location.pathname, navigate])
+
+  return null
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <SettingsProvider>
         <HashRouter>
           <ScrollToTop />
+          <BackButtonHandler />
           <div className="app">
             <Suspense fallback={<PageLoader />}>
               <Routes>

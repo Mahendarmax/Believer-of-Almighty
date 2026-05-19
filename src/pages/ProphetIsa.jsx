@@ -10,7 +10,7 @@ function ProphetIsa() {
   const [expandedVerse, setExpandedVerse] = useState(null)
   const { transliteration } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   const totalVerses = prophetIsaData.reduce((t, c) => t + c.items.length, 0)
 

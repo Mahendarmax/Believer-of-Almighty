@@ -10,7 +10,7 @@ function Duas() {
   const [expandedDua, setExpandedDua] = useState(null)
   const { transliteration } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
 
   return (
     <div className="duas-page">

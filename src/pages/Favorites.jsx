@@ -7,7 +7,7 @@ function Favorites() {
   const navigate = useNavigate()
   const { favorites, toggleFavorite, showArabic } = useSettings()
 
-  const handleBack = useCallback(() => navigate('/'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
   const handleGoToVerse = useCallback((surahNumber, verseNumber) => {
     navigate(`/surah/${surahNumber}?verse=${verseNumber}&t=${Date.now()}`)
   }, [navigate])

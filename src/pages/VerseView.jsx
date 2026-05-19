@@ -663,7 +663,7 @@ function VerseView() {
     }
   }, [])
 
-  const handleBack = useCallback(() => navigate('/surahs'), [navigate])
+  const handleBack = useCallback(() => navigate(-1), [navigate])
   const handlePrev = useCallback(() => {
     if (surahNumber > 1) navigate(`/surah/${surahNumber - 1}`)
   }, [surahNumber, navigate])
