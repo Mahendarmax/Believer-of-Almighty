@@ -371,7 +371,7 @@
 
 [data-theme="dark"] .sl-navigator {
   background: #161617;
-  border-color: rgba(192, 192, 192, 0.22);
+  border: 1.5px solid rgba(192, 192, 192, 0.22);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
 }
 
@@ -408,7 +408,7 @@
 
 [data-theme="dark"] .surah-card {
   background: #161617;
-  border: 1px solid rgba(192, 192, 192, 0.22);
+  border: 1.5px solid rgba(192, 192, 192, 0.22);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
 }
 

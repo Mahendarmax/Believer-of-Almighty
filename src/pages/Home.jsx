@@ -11,7 +11,7 @@ import './Home.css'
 const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, seerah: 48 }
 
 // Memoized reciter picker for Home page
-const ReciterPicker = memo(({ reciter, onSelect }) => {
+const ReciterPicker = memo(({ reciter, onSelect, transliteration }) => {
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState('')
   const barRef = useRef(null)
@@ -61,7 +61,7 @@ const ReciterPicker = memo(({ reciter, onSelect }) => {
           </svg>
         </span>
         <span className="home-reciter-info">
-          <span className="home-reciter-label">Quran Reciter</span>
+          <span className="home-reciter-label">{transliteration === 'telugu' ? 'ఖురాన్ రీసైటర్' : 'Quran Reciter'}</span>
           <span className="home-reciter-name">{currentName}</span>
         </span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" className={`home-reciter-chevron ${open ? 'rotated' : ''}`}>
@@ -73,7 +73,7 @@ const ReciterPicker = memo(({ reciter, onSelect }) => {
           <div className="home-reciter-search">
             <input
               type="text"
-              placeholder="Search reciter..."
+              placeholder={transliteration === 'telugu' ? 'రీసైటర్ వెతకండి...' : 'Search reciter...'}
               value={filter}
               onChange={e => setFilter(e.target.value)}
               autoFocus
@@ -81,7 +81,7 @@ const ReciterPicker = memo(({ reciter, onSelect }) => {
             />
           </div>
           <div className="home-reciter-list">
-            {filtered.length === 0 && <div className="home-reciter-empty">No reciters found</div>}
+            {filtered.length === 0 && <div className="home-reciter-empty">{transliteration === 'telugu' ? 'రీసైటర్లు కనుగొనలేదు' : 'No reciters found'}</div>}
             {filtered.map(r => (
               <button
                 key={r.id}
@@ -205,7 +205,7 @@ const Home = React.memo(function Home() {
             <span className="divider-ornament">✦</span>
           </div>
           <p className="hero-desc">
-            Read, Listen & Understand the words of Allah
+            {transliteration === 'telugu' ? 'అల్లాహ్ మాటలను చదవండి, వినండి & అర్థం చేసుకోండి' : 'Read, Listen & Understand the words of Allah'}
           </p>
         </div>
       </header>
@@ -377,10 +377,10 @@ const Home = React.memo(function Home() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
             <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
           </svg>
-          Quran Reciter
+          {transliteration === 'telugu' ? 'ఖురాన్ రీసైటర్' : 'Quran Reciter'}
         </h3>
-        <p className="home-reciter-desc">Choose your preferred Quran reciter for audio playback</p>
-        <ReciterPicker reciter={reciter} onSelect={setReciter} />
+        <p className="home-reciter-desc">{transliteration === 'telugu' ? 'ఆడియో ప్లేబ్యాక్ కోసం మీ ఇష్టమైన ఖురాన్ రీసైటర్‌ని ఎంచుకోండి' : 'Choose your preferred Quran reciter for audio playback'}</p>
+        <ReciterPicker reciter={reciter} onSelect={setReciter} transliteration={transliteration} />
       </section>
 
       {/* Transliteration Preference */}
@@ -389,30 +389,30 @@ const Home = React.memo(function Home() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
             <path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
           </svg>
-          Transliteration Style
+          {transliteration === 'telugu' ? 'లిప్యంతరీకరణ శైలి' : 'Transliteration Style'}
         </h3>
-        <p className="translit-desc">Choose how to display Quranic pronunciation</p>
+        <p className="translit-desc">{transliteration === 'telugu' ? 'ఖురాన్ ఉచ్ఛారణను ఎలా చూపించాలో ఎంచుకోండి' : 'Choose how to display Quranic pronunciation'}</p>
         <div className="translit-options">
           <button
             className={`translit-btn ${transliteration === 'english' ? 'active' : ''}`}
             onClick={() => setTransliteration('english')}
           >
-            <span className="translit-btn-label">Roman English</span>
+            <span className="translit-btn-label">{transliteration === 'telugu' ? 'రోమన్ ఇంగ్లీష్' : 'Roman English'}</span>
             <span className="translit-btn-example">Bismillaahir Rahmaanir Raheem</span>
           </button>
           <button
             className={`translit-btn ${transliteration === 'telugu' ? 'active' : ''}`}
             onClick={() => setTransliteration('telugu')}
           >
-            <span className="translit-btn-label">Roman Telugu</span>
+            <span className="translit-btn-label">{transliteration === 'telugu' ? 'రోమన్ తెలుగు' : 'Roman Telugu'}</span>
             <span className="translit-btn-example">బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్</span>
           </button>
           <button
             className={`translit-btn ${transliteration === 'both' ? 'active' : ''}`}
             onClick={() => setTransliteration('both')}
           >
-            <span className="translit-btn-label">Both</span>
-            <span className="translit-btn-example">English + Telugu side by side</span>
+            <span className="translit-btn-label">{transliteration === 'telugu' ? 'రెండూ' : 'Both'}</span>
+            <span className="translit-btn-example">{transliteration === 'telugu' ? 'ఇంగ్లీష్ + తెలుగు పక్కపక్కన' : 'English + Telugu side by side'}</span>
           </button>
         </div>
       </section>
@@ -455,9 +455,12 @@ const Home = React.memo(function Home() {
       {/* Quote */}
       <footer className="home-footer">
         <blockquote className="footer-quote">
-          "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"
+          {transliteration === 'telugu'
+            ? '"మరియు నిశ్చయంగా మేము ఖురాన్‌ను స్మరణ కొరకు సులభం చేశాము, కావున స్మరించేవారు ఎవరైనా ఉన్నారా?"'
+            : '"And We have certainly made the Quran easy for remembrance, so is there any who will remember?"'
+          }
         </blockquote>
-        <cite className="footer-ref">— Surah Al-Qamar 54:17</cite>
+        <cite className="footer-ref">{transliteration === 'telugu' ? '— సూరహ్ అల్-ఖమర్ 54:17' : '— Surah Al-Qamar 54:17'}</cite>
       </footer>
 
       {/* Quick Verse Modal */}
