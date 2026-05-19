@@ -150,35 +150,28 @@
 .hero-telugu {
   font-family: 'Noto Sans Telugu', sans-serif;
   font-size: 1.15rem;
-  color: var(--text-secondary);
   margin-bottom: 24px;
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-}
-
-.hero-telugu::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
   background: linear-gradient(
     90deg,
-    transparent,
-    rgba(212, 164, 74, 0.4),
-    rgba(255, 255, 255, 0.6),
-    rgba(212, 164, 74, 0.4),
-    transparent
+    var(--text-secondary) 0%,
+    var(--text-secondary) 35%,
+    #fff 48%,
+    #d4a44a 50%,
+    #fff 52%,
+    var(--text-secondary) 65%,
+    var(--text-secondary) 100%
   );
-  animation: heroShine 1.8s ease-in-out 0.5s 1 forwards;
-  pointer-events: none;
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShine 3.5s ease-in-out 0.5s 1 forwards;
 }
 
-@keyframes heroShine {
-  0% { left: -100%; }
-  100% { left: 150%; }
+@keyframes textShine {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
 .hero-divider {
