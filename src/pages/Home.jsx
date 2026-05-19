@@ -160,7 +160,7 @@ const Home = React.memo(function Home() {
       const verses = await getSurahVerses(s)
       const verse = verses.find(vr => vr.number === v)
       if (verse) {
-        setQvData({ verse, surahName: surahInfo.name, surahNumber: s })
+        setQvData({ verse, surahName: surahInfo.name, surahNameTelugu: surahInfo.nameTelugu, surahNumber: s })
       } else {
         setQvError('Verse not found')
       }
@@ -486,7 +486,7 @@ const Home = React.memo(function Home() {
 
             {/* Header */}
             <div className="qv-modal-header">
-              <span className="qv-modal-surah">{qvData.surahName}</span>
+              <span className="qv-modal-surah">{transliteration === 'telugu' ? (qvData.surahNameTelugu || qvData.surahName) : qvData.surahName}</span>
               <span className="qv-modal-ayah">{transliteration === 'telugu' ? 'ఆయత్' : 'Verse'} {qvData.verse.number}</span>
             </div>
 
