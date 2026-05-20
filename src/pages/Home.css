@@ -151,29 +151,28 @@
   font-family: 'Noto Sans Telugu', sans-serif;
   font-size: 1.15rem;
   margin-bottom: 24px;
-  background: linear-gradient(
-    90deg,
-    var(--text-secondary) 0%,
-    var(--text-secondary) 40%,
-    #e8c566 44%,
-    #fff 47%,
-    #ffd700 50%,
-    #fff 53%,
-    #e8c566 56%,
-    var(--text-secondary) 60%,
-    var(--text-secondary) 100%
-  );
-  background-size: 500% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textShine 5s linear 0.5s infinite;
+  color: #ffd700;
+  text-shadow:
+    0 0 4px rgba(255, 215, 0, 0.6),
+    0 0 8px rgba(255, 215, 0, 0.4),
+    0 0 16px rgba(255, 215, 0, 0.2);
+  animation: glowPulse 1.5s ease-in-out infinite;
 }
 
-@keyframes textShine {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+@keyframes glowPulse {
+  0%, 100% {
+    text-shadow:
+      0 0 4px rgba(255, 215, 0, 0.6),
+      0 0 8px rgba(255, 215, 0, 0.4),
+      0 0 16px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    text-shadow:
+      0 0 8px rgba(255, 215, 0, 0.9),
+      0 0 20px rgba(255, 215, 0, 0.7),
+      0 0 40px rgba(255, 215, 0, 0.4),
+      0 0 60px rgba(255, 215, 0, 0.2);
+  }
 }
 
 .hero-divider {
