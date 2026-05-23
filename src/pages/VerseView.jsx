@@ -542,6 +542,24 @@ function VerseView() {
     return () => { if (el) observer.unobserve(el) }
   }, [verses.length, visibleCount])
 
+  // Auto-scroll to the currently playing verse during surah auto-play
+  useEffect(() => {
+    if (!isSurahPlaying || !playingVerse) return
+    // Expand visible window if the playing verse isn't rendered yet
+    if (playingVerse > visibleCount) {
+      setVisibleCount(playingVerse + 10)
+      return // wait for re-render
+    }
+    const el = document.getElementById(`verse-${playingVerse}`)
+    if (el) {
+      requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect()
+        const scrollTop = window.pageYOffset + rect.top - 100
+        window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' })
+      })
+    }
+  }, [playingVerse, isSurahPlaying, visibleCount])
+
   // Reset scroll flag + expand visibleCount when verse param changes (even for same surah)
   useEffect(() => {
     scrolledToVerse.current = false
