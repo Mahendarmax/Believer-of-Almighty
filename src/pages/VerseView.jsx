@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getSurahAudioUrl, getVerseAudioUrl } from '../data/quranData'
+import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
@@ -724,63 +724,50 @@ function VerseView() {
         versePlaylistRef.current = null
       }
       setIsSurahPlaying(false)
+      setPlayingVerse(null)
       return
     }
 
-    setPlayingVerse(null) // Stop any verse audio
+    setPlayingVerse(null) // Stop any individual verse audio
 
-    const surahUrl = getSurahAudioUrl(surahNumber, reciter)
+    const totalAyahs = surah?.ayahs || 0
+    if (totalAyahs <= 0) return
 
-    if (surahUrl) {
-      // CDN surah-level audio available
-      if (!surahAudioRef.current || surahAudioRef.current._reciter !== reciter) {
-        if (surahAudioRef.current) {
-          surahAudioRef.current.pause()
-          surahAudioRef.current.src = ''
-        }
-        surahAudioRef.current = new Audio(surahUrl)
-        surahAudioRef.current._reciter = reciter
-        surahAudioRef.current.addEventListener('ended', () => setIsSurahPlaying(false))
-        surahAudioRef.current.addEventListener('error', () => setIsSurahPlaying(false))
-      }
-
-      try {
-        await surahAudioRef.current.play()
-        setIsSurahPlaying(true)
-      } catch {
-        setIsSurahPlaying(false)
-      }
-    } else {
-      // Fallback: play verses sequentially from everyayah.com
-      const totalAyahs = surah?.ayahs || 0
-      if (totalAyahs <= 0) return
-
-      setIsSurahPlaying(true)
-      const playlist = { stopped: false, audio: null }
-      versePlaylistRef.current = playlist
-
-      const playNextVerse = (ayahNum) => {
-        if (playlist.stopped || ayahNum > totalAyahs) {
-          setIsSurahPlaying(false)
-          versePlaylistRef.current = null
-          return
-        }
-        const url = getVerseAudioUrl(surahNumber, ayahNum, reciter)
-        const audio = new Audio(url)
-        playlist.audio = audio
-        audio.addEventListener('ended', () => playNextVerse(ayahNum + 1))
-        audio.addEventListener('error', () => {
-          setIsSurahPlaying(false)
-          versePlaylistRef.current = null
-        })
-        audio.play().catch(() => {
-          setIsSurahPlaying(false)
-          versePlaylistRef.current = null
-        })
-      }
-
-      playNextVerse(1)
+    // Stop any previous CDN surah audio
+    if (surahAudioRef.current) {
+      surahAudioRef.current.pause()
+      surahAudioRef.current.src = ''
+      surahAudioRef.current = null
     }
+
+    setIsSurahPlaying(true)
+    const playlist = { stopped: false, audio: null }
+    versePlaylistRef.current = playlist
+
+    const playNextVerse = (ayahNum) => {
+      if (playlist.stopped || ayahNum > totalAyahs) {
+        setIsSurahPlaying(false)
+        setPlayingVerse(null)
+        versePlaylistRef.current = null
+        return
+      }
+      setPlayingVerse(ayahNum)
+      const url = getVerseAudioUrl(surahNumber, ayahNum, reciter)
+      const audio = new Audio(url)
+      playlist.audio = audio
+      audio.addEventListener('ended', () => playNextVerse(ayahNum + 1))
+      audio.addEventListener('error', () => {
+        // Skip to next verse on error
+        playNextVerse(ayahNum + 1)
+      })
+      audio.play().catch(() => {
+        setIsSurahPlaying(false)
+        setPlayingVerse(null)
+        versePlaylistRef.current = null
+      })
+    }
+
+    playNextVerse(1)
   }, [isSurahPlaying, surahNumber, reciter, surah])
 
 
