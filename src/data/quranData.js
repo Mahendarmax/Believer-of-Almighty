@@ -184,9 +184,35 @@ export const getVerseAudioUrl = (surahNumber, ayahNumber, reciterId = 'ar.nasser
   return `https://everyayah.com/data/${folder}/${s}${a}.mp3`
 }
 
-// Build surah-level audio URL (cdn.islamic.network — 128kbps for all reciters)
+// Mapping from app reciter IDs → cdn.islamic.network identifiers for surah-level audio.
+// Reciters not available on the CDN are mapped to null — callers should fall back
+// to sequential verse-by-verse playback via everyayah.com.
+const surahAudioReciterMap = {
+  'ar.abdulbasitmurattal': 'ar.abdulbasitmurattal',
+  'ar.abdulsamad': 'ar.abdulsamad',
+  'ar.abdullahbasfar': 'ar.abdullahbasfar',
+  'ar.abdurrahmaansudais': 'ar.abdurrahmaansudais',
+  'ar.shaatree': 'ar.shaatree',
+  'ar.ahmedajamy': 'ar.ahmedajamy',
+  'ar.hanirifai': 'ar.hanirifai',
+  'ar.hudhaify': 'ar.hudhaify',
+  'ar.husary': 'ar.husary',
+  'ar.husarymujawwad': 'ar.husarymujawwad',
+  'ar.minshawi': 'ar.minshawi',
+  'ar.minshawimujawwad': 'ar.minshawimujawwad',
+  'ar.muhammadayyoub': 'ar.muhammadayyoub',
+  'ar.muhammadjibreel': 'ar.muhammadjibreel',
+  'ar.saoodshuraym': 'ar.saoodshuraym',
+  'ar.alafasy': 'ar.alafasy',
+  'ar.maabormuaiqly': 'ar.mahermuaiqly',
+}
+
+// Build surah-level audio URL (cdn.islamic.network — 128kbps).
+// Returns null if the reciter is not available on the CDN.
 export const getSurahAudioUrl = (surahNumber, reciterId = 'ar.nasseralqatami') => {
-  return `https://cdn.islamic.network/quran/audio-surah/128/${reciterId}/${surahNumber}.mp3`
+  const cdnId = surahAudioReciterMap[reciterId]
+  if (!cdnId) return null
+  return `https://cdn.islamic.network/quran/audio-surah/128/${cdnId}/${surahNumber}.mp3`
 }
 
 // Strip HTML tags from translation text
