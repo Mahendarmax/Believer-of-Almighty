@@ -138,7 +138,7 @@ const addToVerseCache = (surahNumber, verses) => {
 // In-flight request deduplication — prevents duplicate fetches for same surah
 const pendingRequests = {}
 
-// Available Quran reciters — verse audio from everyayah.com, surah audio from cdn.islamic.network
+// Available Quran reciters — verse audio from everyayah.com (best available bitrate)
 export const RECITERS = [
   { id: 'ar.abdulbasitmurattal', name: 'Abdul Basit (Murattal)', nameAr: 'عبد الباسط عبد الصمد', folder: 'Abdul_Basit_Murattal_192kbps' },
   { id: 'ar.abdulsamad', name: 'Abdul Basit (Mujawwad)', nameAr: 'عبدالباسط عبدالصمد', folder: 'Abdul_Basit_Mujawwad_128kbps' },
@@ -168,6 +168,11 @@ export const RECITERS = [
   { id: 'ar.khalidqahtani', name: 'Khalid Al-Qahtanee', nameAr: 'خالد عبدالله القحطاني', folder: 'Khaalid_Abdullaah_al-Qahtaanee_192kbps' },
   { id: 'ar.alihajjajsuesy', name: 'Ali Hajjaj Al-Suesy', nameAr: 'علي حجاج السويسي', folder: 'Ali_Hajjaj_AlSuesy_128kbps' },
   { id: 'ar.akramalaqimy', name: 'Akram Al-Alaqimy', nameAr: 'أكرم العلاقمي', folder: 'Akram_AlAlaqimy_128kbps' },
+  { id: 'ar.abdullahjuhaynee', name: 'Abdullaah Al-Juhaynee', nameAr: 'عبدالله عواد الجهني', folder: 'Abdullaah_3awwaad_Al-Juhaynee_128kbps' },
+  { id: 'ar.ahmedneana', name: 'Ahmed Neana', nameAr: 'أحمد نعينع', folder: 'Ahmed_Neana_128kbps' },
+  { id: 'ar.muhammadabdulkareem', name: 'Muhammad AbdulKareem', nameAr: 'محمد عبدالكريم', folder: 'Muhammad_AbdulKareem_128kbps' },
+  { id: 'ar.yasersalamah', name: 'Yaser Salamah', nameAr: 'ياسر سلامة', folder: 'Yaser_Salamah_128kbps' },
+  { id: 'ar.sahlyassin', name: 'Sahl Yassin', nameAr: 'سهل ياسين', folder: 'Sahl_Yassin_128kbps' },
 ]
 
 // Map reciter ID to everyayah folder
