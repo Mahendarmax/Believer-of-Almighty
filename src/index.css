@@ -1,11 +1,11 @@
 /* ===== GLOBAL STYLES ===== */
 :root {
   /* Desert Sand Light Palette */
-  --bg-primary: #e8d5b0;
-  --bg-secondary: #f0e0c4;
-  --bg-card: rgba(255, 248, 235, 0.85);
-  --bg-card-hover: rgba(255, 245, 225, 0.95);
-  --bg-surface: #f5ead4;
+  --bg-primary: #e0d4be;
+  --bg-secondary: #e8dcc8;
+  --bg-card: rgba(250, 245, 235, 0.85);
+  --bg-card-hover: rgba(248, 242, 230, 0.95);
+  --bg-surface: #ede4d4;
   
   /* Luxurious Gold Accents */
   --accent: #b8860b;
