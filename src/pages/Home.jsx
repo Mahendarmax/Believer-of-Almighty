@@ -110,7 +110,7 @@ ReciterPicker.displayName = 'ReciterPicker'
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, theme, setTheme } = useSettings()
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, bgImage, setBgImage } = useSettings()
 
   // Quick Verse Lookup state
   const [qvSurah, setQvSurah] = useState('')
@@ -182,6 +182,61 @@ const Home = React.memo(function Home() {
 
   useEffect(() => {}, [])
 
+  // Gyroscope / parallax effect for hero
+  const heroRef = useRef(null)
+  const bgRef = useRef(null)
+  const contentRef = useRef(null)
+  const tilt = useRef({ x: 0, y: 0 })
+  const rafId = useRef(null)
+
+  const applyTilt = useCallback(() => {
+    if (bgRef.current) {
+      bgRef.current.style.transform = `translate(${tilt.current.x * 10}px, ${tilt.current.y * 8}px) scale(1.04)`
+    }
+    if (contentRef.current) {
+      contentRef.current.style.transform = `translate(${tilt.current.x * -6}px, ${tilt.current.y * -4}px)`
+    }
+  }, [])
+
+  useEffect(() => {
+    // Mouse parallax (desktop)
+    const handleMouse = (e) => {
+      if (!heroRef.current) return
+      const rect = heroRef.current.getBoundingClientRect()
+      if (e.clientY > rect.bottom) return
+      const cx = (e.clientX / window.innerWidth - 0.5) * 2
+      const cy = (e.clientY / rect.height - 0.5) * 2
+      tilt.current = { x: cx, y: cy }
+      if (!rafId.current) {
+        rafId.current = requestAnimationFrame(() => {
+          applyTilt()
+          rafId.current = null
+        })
+      }
+    }
+
+    // Gyroscope (mobile)
+    const handleOrientation = (e) => {
+      const x = Math.max(-1, Math.min(1, (e.gamma || 0) / 30))
+      const y = Math.max(-1, Math.min(1, (e.beta || 0 - 45) / 30))
+      tilt.current = { x, y }
+      if (!rafId.current) {
+        rafId.current = requestAnimationFrame(() => {
+          applyTilt()
+          rafId.current = null
+        })
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouse, { passive: true })
+    window.addEventListener('deviceorientation', handleOrientation, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', handleMouse)
+      window.removeEventListener('deviceorientation', handleOrientation)
+      if (rafId.current) cancelAnimationFrame(rafId.current)
+    }
+  }, [applyTilt])
+
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
@@ -191,12 +246,13 @@ const Home = React.memo(function Home() {
   }, [navigate, lastRead])
 
   return (
-    <div className="home">
+    <div className="home" data-bg={bgImage}>
 
       {/* Hero Section */}
-      <header className="home-hero">
+      <header className="home-hero hero-no-blur" ref={heroRef}>
+        <div className="hero-bg-img" ref={bgRef} style={{ backgroundImage: `url(/${bgImage}.jpg)` }} />
         <div className="hero-pattern" />
-        <div className="hero-content">
+        <div className="hero-content" ref={contentRef}>
           <div className="hero-icon">﷽</div>
           <h1 className="hero-title">The Holy Quran</h1>
           <h2 className="hero-subtitle">القرآن الكريم</h2>
@@ -417,40 +473,41 @@ const Home = React.memo(function Home() {
         </div>
       </section>
 
-      {/* Theme Toggle */}
-      <section className="theme-toggle-section">
-        <h3 className="theme-toggle-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
-            {theme === 'dark'
-              ? <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
-              : <><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></>
-            }
-          </svg>
-          {transliteration === 'telugu' ? 'థీమ్' : 'Theme'}
-        </h3>
-        <p className="theme-toggle-desc">{transliteration === 'telugu' ? 'యాప్ రూపాన్ని మార్చండి' : 'Switch the app appearance'}</p>
-        <button
-          className="theme-toggle-btn"
-          onClick={() => setTheme(theme === 'dark' ? 'normal' : 'dark')}
-          aria-label={`Switch to ${theme === 'dark' ? 'normal' : 'dark'} theme`}
-        >
-          <span className={`theme-toggle-track ${theme === 'dark' ? 'dark' : ''}`}>
-            <span className="theme-toggle-thumb">
-              {theme === 'dark' ? (
-                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><circle cx="12" cy="12" r="5"/></svg>
-              )}
-            </span>
-          </span>
-          <span className="theme-toggle-label">
-            {theme === 'dark'
-              ? (transliteration === 'telugu' ? 'డార్క్ థీమ్' : 'Dark Theme')
-              : (transliteration === 'telugu' ? 'నార్మల్ థీమ్' : 'Normal Theme')
-            }
-          </span>
-        </button>
-      </section>
+
+
+      {/* Background Image Picker */}
+        <section className="bg-picker-section">
+          <h3 className="bg-picker-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>
+            </svg>
+            {transliteration === 'telugu' ? 'నేపథ్య చిత్రం' : 'Background Image'}
+          </h3>
+          <p className="bg-picker-desc">{transliteration === 'telugu' ? 'హోమ్ పేజీ నేపథ్య చిత్రాన్ని ఎంచుకోండి' : 'Choose the home page background image'}</p>
+          <div className="bg-picker-options">
+            <button
+              className={`bg-picker-card ${bgImage === 'desert-arch' ? 'active' : ''}`}
+              onClick={() => setBgImage('desert-arch')}
+            >
+              <img src="/desert-arch.jpg" alt="Golden Arch" className="bg-picker-thumb" />
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'బంగారు తోరణం' : 'Golden Arch'}</span>
+            </button>
+            <button
+              className={`bg-picker-card ${bgImage === 'desert-mosque' ? 'active' : ''}`}
+              onClick={() => setBgImage('desert-mosque')}
+            >
+              <img src="/desert-mosque.jpg" alt="Desert Mosque" className="bg-picker-thumb" />
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఎడారి మసీదు' : 'Desert Mosque'}</span>
+            </button>
+            <button
+              className={`bg-picker-card ${bgImage === 'desert-makka' ? 'active' : ''}`}
+              onClick={() => setBgImage('desert-makka')}
+            >
+              <img src="/desert-makka.jpg" alt="Makkah" className="bg-picker-thumb" />
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'మక్కా' : 'Makkah'}</span>
+            </button>
+          </div>
+        </section>
 
       {/* Quote */}
       <footer className="home-footer">

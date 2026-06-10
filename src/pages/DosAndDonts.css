@@ -63,7 +63,7 @@
   background: var(--bg-card);
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   transition: var(--transition);
 }
 

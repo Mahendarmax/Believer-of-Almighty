@@ -44,7 +44,7 @@
   width: 100%;
   padding: 0.65rem 1rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   background: var(--bg-card);
   color: var(--text-primary);
   font-size: 0.95rem;
@@ -65,7 +65,7 @@
 /* Card */
 .asma-card {
   background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
-  border: 1.5px solid rgba(52, 211, 153, 0.45);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
   padding: 1rem 0.75rem 0.85rem;
   text-align: center;
@@ -138,7 +138,7 @@
   margin-top: 2rem;
   padding: 1.25rem;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-md);
   text-align: center;
 }
@@ -184,7 +184,7 @@
 /* Detail Panel */
 .asma-detail-panel {
   background: #000000;
-  border: 1.5px solid rgba(52, 211, 153, 0.45);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
   width: 90%;
   max-width: 500px;
@@ -332,23 +332,4 @@
 @media (min-width: 1200px) {
   .asma-page { max-width: 1000px; }
   .asma-grid { grid-template-columns: repeat(4, 1fr); }
-}
-
-/* ===== DARK THEME OVERRIDES ===== */
-[data-theme="dark"] .asma-card {
-  background: #161617;
-  border: 1px solid rgba(192, 192, 192, 0.22);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .asma-card:hover {
-  background: #1e1e1f;
-  border-color: rgba(192, 192, 192, 0.35);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .asma-detail-panel {
-  background: #000000;
-  border-color: rgba(192, 192, 192, 0.22);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
 }

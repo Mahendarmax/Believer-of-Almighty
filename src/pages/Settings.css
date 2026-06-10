@@ -545,30 +545,3 @@
 @media (min-width: 1200px) {
   .settings-page { width: 70%; max-width: 900px; }
 }
-
-/* ===== DARK THEME OVERRIDES ===== */
-[data-theme="dark"] .set-item {
-  border-color: rgba(192, 192, 192, 0.22);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .set-item:hover {
-  border-color: rgba(192, 192, 192, 0.35);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .set-preview {
-  border-color: rgba(192, 192, 192, 0.22);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .backup-section {
-  border-color: rgba(192, 192, 192, 0.22);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .backup-status.success {
-  color: #c0c0c0;
-  background: rgba(192, 192, 192, 0.08);
-  border-color: rgba(192, 192, 192, 0.22);
-}

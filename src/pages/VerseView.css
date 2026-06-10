@@ -912,24 +912,3 @@
 @media (min-width: 1600px) {
   .verse-view { max-width: 1060px; }
 }
-
-/* ===== DARK THEME OVERRIDES ===== */
-[data-theme="dark"] .verse-view {
-  background: #000000;
-}
-
-[data-theme="dark"] .vv-header {
-  background: linear-gradient(180deg, #000000 85%, transparent 100%);
-}
-
-[data-theme="dark"] .verse-card {
-  background: #161617;
-  border: 1px solid rgba(192, 192, 192, 0.22);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .verse-card:hover {
-  background: #1e1e1f;
-  border-color: rgba(192, 192, 192, 0.35);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-}

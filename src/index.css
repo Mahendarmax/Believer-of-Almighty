@@ -1,76 +1,45 @@
 /* ===== GLOBAL STYLES ===== */
 :root {
-  /* Premium Dark Palette */
-  --bg-primary: #06090f;
-  --bg-secondary: #0c1018;
-  --bg-card: #111827;
-  --bg-card-hover: #1a2332;
-  --bg-surface: #0f1520;
+  /* Desert Sand Light Palette */
+  --bg-primary: #e8d5b0;
+  --bg-secondary: #f0e0c4;
+  --bg-card: rgba(255, 248, 235, 0.85);
+  --bg-card-hover: rgba(255, 245, 225, 0.95);
+  --bg-surface: #f5ead4;
   
   /* Luxurious Gold Accents */
-  --accent: #d4a44a;
-  --accent-light: #f0c05a;
-  --accent-dim: #a07830;
-  --gold: #d4a44a;
-  --gold-light: #f0c05a;
-  --gold-dim: #a07830;
+  --accent: #b8860b;
+  --accent-light: #d4a44a;
+  --accent-dim: #8b6508;
+  --gold: #b8860b;
+  --gold-light: #d4a44a;
+  --gold-dim: #8b6508;
   
-  /* Teal Accents */
-  --emerald: #34d399;
-  --emerald-dim: #059669;
+  /* Warm Desert Accents */
+  --emerald: #c47a30;
+  --emerald-dim: #a06520;
   
   /* Text */
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --text-arabic: #fef3c7;
+  --text-primary: #1a1005;
+  --text-secondary: #2a1c0e;
+  --text-muted: #3d2b1a;
+  --text-arabic: #1a1005;
   
   /* Borders */
-  --border: rgba(212, 164, 74, 0.08);
-  --border-strong: rgba(212, 164, 74, 0.2);
+  --border: rgba(184, 134, 11, 0.18);
+  --border-strong: rgba(184, 134, 11, 0.35);
   
   /* Effects */
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 18px;
   --radius-xl: 26px;
-  --shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 12px 50px rgba(0, 0, 0, 0.55);
-  --shadow-glow: 0 0 40px rgba(212, 164, 74, 0.08);
+  --shadow: 0 4px 20px rgba(139, 101, 8, 0.1);
+  --shadow-lg: 0 12px 40px rgba(139, 101, 8, 0.15);
+  --shadow-glow: 0 0 30px rgba(184, 134, 11, 0.1);
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Dark Theme */
-[data-theme="dark"] {
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-card: #161617;
-  --bg-card-hover: #1e1e1f;
-  --bg-surface: #111111;
-
-  --accent: #d4a44a;
-  --accent-light: #e8c46a;
-  --accent-dim: #a07830;
-  --gold: #d4a44a;
-  --gold-light: #e8c46a;
-  --gold-dim: #a07830;
-
-  --emerald: #c0c0c0;
-  --emerald-dim: #808080;
-
-  --text-primary: #f5f5f7;
-  --text-secondary: #a1a1a6;
-  --text-muted: #6e6e73;
-  --text-arabic: #f5f5f7;
-
-  --border: rgba(192, 192, 192, 0.22);
-  --border-strong: rgba(192, 192, 192, 0.35);
-
-  --shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 12px 50px rgba(0, 0, 0, 0.7);
-  --shadow-glow: none;
 }
 
 *, *::before, *::after {

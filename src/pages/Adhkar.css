@@ -48,7 +48,7 @@
 /* Category card */
 .adhkar-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: var(--transition);
@@ -222,9 +222,4 @@
 
 @media (min-width: 1200px) {
   .adhkar-page { max-width: 900px; }
-}
-
-/* ===== DARK THEME OVERRIDES ===== */
-[data-theme="dark"] .adhkar-card-category-telugu {
-  color: #c0c0c0;
 }

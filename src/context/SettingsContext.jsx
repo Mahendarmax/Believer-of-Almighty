@@ -30,6 +30,7 @@ export const SettingsProvider = ({ children }) => {
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'telugu'))
   const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.alafasy'))
   const [theme, setTheme] = useState(() => loadSetting('theme', 'normal'))
+  const [bgImage, setBgImage] = useState(() => loadSetting('bgImage', 'desert-arch'))
 
   // Debounced localStorage writes — batch rapid changes (e.g. font size)
   const saveTimers = useRef({})
@@ -46,6 +47,7 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => { debouncedSave('transliteration', transliteration, 0) }, [transliteration, debouncedSave])
   useEffect(() => { debouncedSave('reciter', reciter, 0) }, [reciter, debouncedSave])
   useEffect(() => { debouncedSave('theme', theme, 0) }, [theme, debouncedSave])
+  useEffect(() => { debouncedSave('bgImage', bgImage, 0) }, [bgImage, debouncedSave])
 
   // Apply theme to document root
   useEffect(() => {
@@ -86,7 +88,8 @@ export const SettingsProvider = ({ children }) => {
     transliteration, setTransliteration,
     reciter, setReciter,
     theme, setTheme,
-  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, clearLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter, theme])
+    bgImage, setBgImage,
+  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, clearLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter, theme, bgImage])
 
   return (
     <SettingsContext.Provider value={value}>

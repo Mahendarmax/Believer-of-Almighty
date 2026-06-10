@@ -53,7 +53,7 @@
 /* Hero */
 .seerah-hero {
   background: linear-gradient(160deg, var(--bg-card) 0%, rgba(212,164,74,0.06) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
   padding: 2rem 1.25rem;
   text-align: center;
@@ -151,7 +151,7 @@
 /* Chapter card */
 .seerah-chapter {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: var(--transition);
@@ -257,7 +257,7 @@
 
 /* Single event */
 .seerah-event {
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-sm);
   background: var(--bg-primary);
   overflow: hidden;
@@ -401,7 +401,7 @@
   text-align: center;
   padding: 2rem 1.25rem;
   background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212,164,74,0.04) 100%);
-  border: 1px solid var(--border);
+  border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
 }
 .seerah-footer-salawat {
@@ -500,29 +500,4 @@
   .seerah-page { max-width: 900px; }
   .seerah-hero { padding: 3rem 2.5rem; }
   .seerah-hero-name { font-size: 2rem; }
-}
-
-/* ===== DARK THEME OVERRIDES ===== */
-[data-theme="dark"] .seerah-footer-meaning {
-  color: #c0c0c0;
-}
-
-[data-theme="dark"] .telugu-block {
-  background: rgba(192, 192, 192, 0.04);
-  border-color: rgba(192, 192, 192, 0.12);
-}
-
-[data-theme="dark"] .telugu-block .seerah-lang-tag {
-  background: rgba(192, 192, 192, 0.1);
-  color: #c0c0c0;
-}
-
-[data-theme="dark"] .english-block {
-  background: rgba(192, 192, 192, 0.04);
-  border-color: rgba(192, 192, 192, 0.12);
-}
-
-[data-theme="dark"] .english-block .seerah-lang-tag {
-  background: rgba(192, 192, 192, 0.1);
-  color: #c0c0c0;
 }
