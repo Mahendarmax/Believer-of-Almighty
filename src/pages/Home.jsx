@@ -490,7 +490,7 @@ const Home = React.memo(function Home() {
               onClick={() => setBgImage('desert-arch')}
             >
               <img src="/desert-arch.jpg" alt="Golden Arch" className="bg-picker-thumb" />
-              <span className="bg-picker-label">{transliteration === 'telugu' ? 'బంగారు తోరణం' : 'Golden Arch'}</span>
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఎడారి' : 'Desert'}</span>
             </button>
             <button
               className={`bg-picker-card ${bgImage === 'desert-mosque' ? 'active' : ''}`}

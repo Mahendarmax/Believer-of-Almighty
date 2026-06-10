@@ -741,17 +741,17 @@
   align-items: center;
   gap: 16px;
   padding: 20px 24px;
-  background: linear-gradient(160deg, #fdf6e3 0%, #f5e6c8 50%, #fdf6e3 100%);
+  background: linear-gradient(160deg, #f7f0e4 0%, #efe4d0 50%, #f7f0e4 100%);
   border: 2px solid #1a1005;
   border-radius: 6px;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
   box-shadow:
-    0 0 0 1px rgba(184, 134, 11, 0.3),
-    inset 0 0 0 1px rgba(184, 134, 11, 0.25),
-    inset 0 0 20px rgba(184, 134, 11, 0.06),
-    0 4px 20px rgba(139, 101, 8, 0.12);
+    0 0 0 1px rgba(184, 134, 11, 0.2),
+    inset 0 0 0 1px rgba(184, 134, 11, 0.15),
+    inset 0 0 20px rgba(184, 134, 11, 0.04),
+    0 4px 20px rgba(139, 101, 8, 0.08);
 }
 
 .continue-card::before {
@@ -836,17 +836,17 @@
   align-items: center;
   text-align: center;
   padding: 34px 16px 26px;
-  background: linear-gradient(160deg, #fdf6e3 0%, #f5e6c8 50%, #fdf6e3 100%);
+  background: linear-gradient(160deg, #f7f0e4 0%, #efe4d0 50%, #f7f0e4 100%);
   border: 2px solid #1a1005;
   border-radius: 6px;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
   box-shadow:
-    0 0 0 1px rgba(184, 134, 11, 0.3),
-    inset 0 0 0 1px rgba(184, 134, 11, 0.25),
-    inset 0 0 20px rgba(184, 134, 11, 0.06),
-    0 4px 20px rgba(139, 101, 8, 0.12);
+    0 0 0 1px rgba(184, 134, 11, 0.2),
+    inset 0 0 0 1px rgba(184, 134, 11, 0.15),
+    inset 0 0 20px rgba(184, 134, 11, 0.04),
+    0 4px 20px rgba(139, 101, 8, 0.08);
 }
 
 /* Ornate inner border frame */
