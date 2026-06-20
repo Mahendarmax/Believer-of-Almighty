@@ -180,7 +180,13 @@ const Home = React.memo(function Home() {
     }, 280)
   }, [])
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const themes = ['first-theme', 'second-theme']
+    themes.forEach(t => {
+      const img = new Image()
+      img.src = `/${t}.jpg`
+    })
+  }, [])
 
   // Gyroscope / parallax effect for hero
   const heroRef = useRef(null)

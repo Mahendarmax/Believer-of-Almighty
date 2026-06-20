@@ -52,20 +52,23 @@
 
 /* Hero */
 .seerah-hero {
-  background: linear-gradient(160deg, var(--bg-card) 0%, rgba(52,211,153,0.06) 100%);
-  border: 1.5px solid #1a1005;
+  background: rgba(255, 253, 247, 0.88);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 2px solid #000000;
   border-radius: var(--radius-lg);
   padding: 2rem 1.25rem;
   text-align: center;
   margin-bottom: 1.5rem;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 .seerah-hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(52,211,153,0.07) 0%, transparent 70%);
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(184,134,11,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -73,7 +76,7 @@
   font-size: 3.5rem;
   color: var(--accent);
   margin-bottom: 0.5rem;
-  filter: drop-shadow(0 0 20px rgba(52,211,153,0.35));
+  filter: drop-shadow(0 0 20px rgba(184,134,11,0.35));
   animation: seerahFloat 4s ease-in-out infinite;
 }
 @keyframes seerahFloat {
@@ -150,15 +153,18 @@
 
 /* Chapter card */
 .seerah-chapter {
-  background: var(--bg-card);
-  border: 1.5px solid #1a1005;
+  background: rgba(255, 253, 247, 0.88);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 2px solid #000000;
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 .seerah-chapter.open {
-  border-color: rgba(52,211,153,0.18);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-color: #000000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
 .seerah-chapter-btn {
@@ -333,8 +339,8 @@
 
 /* Arabic box */
 .seerah-arabic-box {
-  background: rgba(52,211,153,0.06);
-  border: 1px solid rgba(52,211,153,0.15);
+  background: rgba(184,134,11,0.06);
+  border: 1px solid rgba(184,134,11,0.15);
   border-radius: var(--radius-sm);
   padding: 0.85rem 1rem;
 }
@@ -353,12 +359,12 @@
   padding: 0.85rem;
 }
 .telugu-block {
-  background: rgba(52,211,153,0.05);
-  border: 1px solid rgba(52,211,153,0.15);
+  background: rgba(184,134,11,0.05);
+  border: 1px solid rgba(184,134,11,0.15);
 }
 .english-block {
-  background: rgba(99,179,237,0.05);
-  border: 1px solid rgba(99,179,237,0.12);
+  background: rgba(184,134,11,0.05);
+  border: 1px solid rgba(184,134,11,0.12);
 }
 
 .seerah-lang-tag {
@@ -372,12 +378,12 @@
   margin-bottom: 0.5rem;
 }
 .telugu-block .seerah-lang-tag {
-  background: rgba(52,211,153,0.15);
-  color: #34d399;
+  background: rgba(184,134,11,0.15);
+  color: var(--accent);
 }
 .english-block .seerah-lang-tag {
-  background: rgba(99,179,237,0.15);
-  color: #63b3ed;
+  background: rgba(184,134,11,0.15);
+  color: var(--accent-dim);
 }
 
 .seerah-telugu-text {
@@ -400,9 +406,10 @@
   margin-top: 2.5rem;
   text-align: center;
   padding: 2rem 1.25rem;
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(52,211,153,0.04) 100%);
-  border: 1.5px solid #1a1005;
+  background: rgba(255, 253, 247, 0.88);
+  border: 2px solid #000000;
   border-radius: var(--radius-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 .seerah-footer-salawat {
   margin-bottom: 1.25rem;
@@ -425,7 +432,7 @@
 .seerah-footer-meaning {
   font-family: 'Noto Sans Telugu', sans-serif;
   font-size: 0.8rem;
-  color: #34d399;
+  color: var(--accent);
   margin: 0;
 }
 .seerah-footer-quote {

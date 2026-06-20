@@ -47,9 +47,9 @@
 }
 .tasbih-preset-btn {
   padding: 0.45rem 0.85rem;
-  border: 1.5px solid var(--border);
+  border: 2px solid #000000;
   border-radius: var(--radius-lg);
-  background: var(--bg-card);
+  background: rgba(255, 253, 247, 0.88);
   color: var(--text-muted);
   cursor: pointer;
   font-size: 0.8rem;
@@ -57,7 +57,7 @@
   transition: var(--transition);
 }
 .tasbih-preset-btn.active {
-  background: #fef6e8;
+  background: #fffdf7;
   border-color: var(--accent);
   color: var(--accent);
   font-weight: 700;
@@ -118,10 +118,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(254, 246, 232, 0.7);
+  background: rgba(255, 253, 247, 0.88);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 2px solid var(--border);
+  border: 2px solid #000000;
   border-radius: 50%;
   width: 160px;
   height: 160px;
@@ -181,8 +181,8 @@
 .tasbih-reset-btn {
   padding: 0.55rem 1.75rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--bg-card);
+  border: 2px solid #000000;
+  background: rgba(255, 253, 247, 0.88);
   color: var(--text-muted);
   font-size: 0.85rem;
   font-weight: 600;
@@ -212,8 +212,8 @@
   color: #ef4444;
 }
 .tasbih-custom-form {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: rgba(255, 253, 247, 0.88);
+  border: 2px solid #000000;
   border-radius: var(--radius-md);
   padding: 1rem;
   margin-bottom: 1.5rem;
@@ -224,7 +224,7 @@
 .tasbih-custom-input {
   width: 100%;
   padding: 0.6rem 0.8rem;
-  border: 1px solid var(--border);
+  border: 1.5px solid #000000;
   border-radius: var(--radius-sm);
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -251,7 +251,7 @@
 .tasbih-custom-target {
   width: 70px;
   padding: 0.4rem 0.5rem;
-  border: 1px solid var(--border);
+  border: 1.5px solid #000000;
   border-radius: var(--radius-sm);
   background: var(--bg-primary);
   color: var(--text-primary);

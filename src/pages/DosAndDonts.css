@@ -60,16 +60,19 @@
 
 /* Category Card */
 .dd-card {
-  background: var(--bg-card);
+  background: rgba(255, 253, 247, 0.88);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1.5px solid #1a1005;
+  border: 2px solid #000000;
   transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
 .dd-card.expanded {
-  border-color: rgba(52,211,153,0.18);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-color: #000000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
 .dd-card-header {
@@ -84,7 +87,7 @@
 }
 
 .dd-card-header:hover {
-  background: rgba(52,211,153,0.04);
+  background: rgba(184, 134, 11,0.04);
 }
 
 .dd-card-info {
@@ -123,7 +126,7 @@
 .dd-card-count {
   font-size: 0.72rem;
   color: var(--text-muted);
-  background: rgba(52,211,153,0.1);
+  background: rgba(184, 134, 11,0.1);
   padding: 2px 8px;
   border-radius: 10px;
 }
@@ -142,7 +145,7 @@
   padding: 4px 18px 16px;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(52,211,153,0.1);
+  border-top: 1px solid rgba(184, 134, 11,0.1);
 }
 
 .dd-item {
@@ -166,7 +169,7 @@
   font-size: 0.7rem;
   font-weight: 700;
   color: var(--accent);
-  background: rgba(52,211,153,0.1);
+  background: rgba(184, 134, 11,0.1);
   border-radius: 50%;
   flex-shrink: 0;
   margin-top: 2px;
