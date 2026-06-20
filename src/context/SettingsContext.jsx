@@ -30,7 +30,7 @@ export const SettingsProvider = ({ children }) => {
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'telugu'))
   const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.alafasy'))
   const [theme, setTheme] = useState(() => loadSetting('theme', 'normal'))
-  const [bgImage, setBgImage] = useState(() => loadSetting('bgImage', 'desert-arch'))
+  const [bgImage, setBgImage] = useState(() => loadSetting('bgImage', 'first-theme'))
 
   // Debounced localStorage writes — batch rapid changes (e.g. font size)
   const saveTimers = useRef({})

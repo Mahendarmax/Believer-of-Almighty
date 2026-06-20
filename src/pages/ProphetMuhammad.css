@@ -52,7 +52,7 @@
 
 /* Hero */
 .seerah-hero {
-  background: linear-gradient(160deg, var(--bg-card) 0%, rgba(212,164,74,0.06) 100%);
+  background: linear-gradient(160deg, var(--bg-card) 0%, rgba(52,211,153,0.06) 100%);
   border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
   padding: 2rem 1.25rem;
@@ -65,7 +65,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(212,164,74,0.07) 0%, transparent 70%);
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(52,211,153,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -73,7 +73,7 @@
   font-size: 3.5rem;
   color: var(--accent);
   margin-bottom: 0.5rem;
-  filter: drop-shadow(0 0 20px rgba(212,164,74,0.35));
+  filter: drop-shadow(0 0 20px rgba(52,211,153,0.35));
   animation: seerahFloat 4s ease-in-out infinite;
 }
 @keyframes seerahFloat {
@@ -157,7 +157,7 @@
   transition: var(--transition);
 }
 .seerah-chapter.open {
-  border-color: rgba(212,164,74,0.18);
+  border-color: rgba(52,211,153,0.18);
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
@@ -333,8 +333,8 @@
 
 /* Arabic box */
 .seerah-arabic-box {
-  background: rgba(212,164,74,0.06);
-  border: 1px solid rgba(212,164,74,0.15);
+  background: rgba(52,211,153,0.06);
+  border: 1px solid rgba(52,211,153,0.15);
   border-radius: var(--radius-sm);
   padding: 0.85rem 1rem;
 }
@@ -400,7 +400,7 @@
   margin-top: 2.5rem;
   text-align: center;
   padding: 2rem 1.25rem;
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212,164,74,0.04) 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(52,211,153,0.04) 100%);
   border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
 }

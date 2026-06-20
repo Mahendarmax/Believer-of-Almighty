@@ -40,7 +40,7 @@
 
 /* Intro banner */
 .isa-intro {
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212, 164, 74, 0.06) 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(52, 211, 153, 0.06) 100%);
   border: 1.5px solid #1a1005;
   border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
@@ -162,7 +162,7 @@
   transition: var(--transition);
 }
 .isa-verse.verse-expanded {
-  border-color: rgba(212, 164, 74, 0.25);
+  border-color: rgba(52, 211, 153, 0.25);
 }
 
 .isa-verse-header {
@@ -187,7 +187,7 @@
   font-size: 0.7rem;
   font-weight: 600;
   color: var(--accent);
-  background: rgba(212, 164, 74, 0.1);
+  background: rgba(52, 211, 153, 0.1);
   padding: 0.2rem 0.55rem;
   border-radius: var(--radius-sm);
 }
@@ -199,7 +199,7 @@
   line-height: 1.75;
   margin: 0 0 0.4rem;
   padding-left: 0.75rem;
-  border-left: 2px solid rgba(212, 164, 74, 0.3);
+  border-left: 2px solid rgba(52, 211, 153, 0.3);
 }
 .isa-verse-telugu {
   font-size: 0.95rem;
@@ -230,8 +230,8 @@
 .isa-context-box {
   margin-top: 0.6rem;
   padding: 0.85rem;
-  background: rgba(212, 164, 74, 0.05);
-  border: 1px solid rgba(212, 164, 74, 0.12);
+  background: rgba(52, 211, 153, 0.05);
+  border: 1px solid rgba(52, 211, 153, 0.12);
   border-radius: var(--radius-sm);
   animation: fadeIn 0.25s ease;
 }

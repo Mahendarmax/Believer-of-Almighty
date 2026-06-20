@@ -54,7 +54,7 @@
   transition: var(--transition);
 }
 .adhkar-card.expanded {
-  border-color: rgba(212,164,74,0.18);
+  border-color: rgba(52,211,153,0.18);
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 .adhkar-card-header {

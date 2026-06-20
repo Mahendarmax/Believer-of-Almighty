@@ -11,7 +11,7 @@ export const prophetMuhammadData = [
     eraEn: 'Birth & Early Childhood',
     period: '570–580 CE',
     icon: '',
-    color: '#a855f7',
+    color: '#b8860b',
     events: [
       {
         title: 'మక్కాలో పవిత్ర జన్మ',
@@ -57,7 +57,7 @@ export const prophetMuhammadData = [
     eraEn: 'Youth & Noble Character',
     period: '580–595 CE',
     icon: '',
-    color: '#f59e0b',
+    color: '#d4a44a',
     events: [
       {
         title: 'సిరియా ప్రయాణం — బహీరా సన్యాసి',
@@ -95,7 +95,7 @@ export const prophetMuhammadData = [
     eraEn: 'Marriage to Khadijah (RA)',
     period: '595–610 CE',
     icon: '',
-    color: '#34d399',
+    color: '#b8860b',
     events: [
       {
         title: 'ఖదీజా (రా) ప్రపోజల్ — వివాహం',
@@ -155,7 +155,7 @@ export const prophetMuhammadData = [
     eraEn: 'Early Islam & Persecution in Mecca',
     period: '610–615 CE',
     icon: '',
-    color: '#ef4444',
+    color: '#d4a44a',
     events: [
       {
         title: 'మొదటి ముస్లింలు',
@@ -193,7 +193,7 @@ export const prophetMuhammadData = [
     eraEn: 'Year of Sorrow & Night Journey (Isra Miraj)',
     period: '619–620 CE',
     icon: '',
-    color: '#818cf8',
+    color: '#b8860b',
     events: [
       {
         title: 'దుఃఖ సంవత్సరం — ఖదీజా & అబూ తాలిబ్ మరణాలు',
@@ -223,7 +223,7 @@ export const prophetMuhammadData = [
     eraEn: 'Migration to Medina (Hijra)',
     period: '622 CE',
     icon: '',
-    color: '#34d399',
+    color: '#b8860b',
     events: [
       {
         title: 'హిజ్రత్ — మక్కా నుండి మదీనాకు',
@@ -253,7 +253,7 @@ export const prophetMuhammadData = [
     eraEn: 'Major Battles',
     period: '624–627 CE',
     icon: '',
-    color: '#f59e0b',
+    color: '#d4a44a',
     events: [
       {
         title: 'బద్ర్ యుద్ధం — మొదటి విజయం',
@@ -291,7 +291,7 @@ export const prophetMuhammadData = [
     eraEn: 'Treaty of Hudaybiyyah & Letters to Kings',
     period: '628 CE',
     icon: '',
-    color: '#63b3ed',
+    color: '#d4a44a',
     events: [
       {
         title: 'హుదైబియా ఒప్పందం',
@@ -351,7 +351,7 @@ export const prophetMuhammadData = [
     eraEn: 'Farewell Pilgrimage & Sermon',
     period: '632 CE',
     icon: '',
-    color: '#34d399',
+    color: '#b8860b',
     events: [
       {
         title: 'హజ్జతుల్ వదా — వీడ్కోలు హజ్',
@@ -381,7 +381,7 @@ export const prophetMuhammadData = [
     eraEn: 'The Passing of the Prophet ﷺ',
     period: '632 CE',
     icon: '',
-    color: '#94a3b8',
+    color: '#b8860b',
     events: [
       {
         title: 'చివరి అనారోగ్యం',
@@ -427,7 +427,7 @@ export const prophetMuhammadData = [
     eraEn: 'Great Conversions & The Boycott',
     period: '615–619 CE',
     icon: '',
-    color: '#f97316',
+    color: '#d4a44a',
     events: [
       {
         title: 'హంజా (రా) ఇస్లాం స్వీకరణ',
@@ -481,7 +481,7 @@ export const prophetMuhammadData = [
     eraEn: 'Battles of Khaybar, Mu\'tah & Hunayn',
     period: '628–630 CE',
     icon: '',
-    color: '#ef4444',
+    color: '#d4a44a',
     events: [
       {
         title: 'ఖైబర్ యుద్ధం — అలీ (రా) విజయం',
@@ -527,7 +527,7 @@ export const prophetMuhammadData = [
     eraEn: 'Battle of Tabuk & Year of Delegations',
     period: '630–631 CE',
     icon: '',
-    color: '#06b6d4',
+    color: '#b8860b',
     events: [
       {
         title: 'తబూక్ యుద్ధం — ఇమాన్ పరీక్ష',

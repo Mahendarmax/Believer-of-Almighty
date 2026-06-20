@@ -486,25 +486,18 @@ const Home = React.memo(function Home() {
           <p className="bg-picker-desc">{transliteration === 'telugu' ? 'హోమ్ పేజీ నేపథ్య చిత్రాన్ని ఎంచుకోండి' : 'Choose the home page background image'}</p>
           <div className="bg-picker-options">
             <button
-              className={`bg-picker-card ${bgImage === 'desert-arch' ? 'active' : ''}`}
-              onClick={() => setBgImage('desert-arch')}
+              className={`bg-picker-card ${bgImage === 'first-theme' ? 'active' : ''}`}
+              onClick={() => setBgImage('first-theme')}
             >
-              <img src="/desert-arch.jpg" alt="Golden Arch" className="bg-picker-thumb" />
-              <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఎడారి' : 'Desert'}</span>
+              <img src="/first-theme.jpg" alt="Green Arch" className="bg-picker-thumb" />
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఆర్చ్ థీమ్' : 'Arch Theme'}</span>
             </button>
             <button
-              className={`bg-picker-card ${bgImage === 'desert-mosque' ? 'active' : ''}`}
-              onClick={() => setBgImage('desert-mosque')}
+              className={`bg-picker-card ${bgImage === 'second-theme' ? 'active' : ''}`}
+              onClick={() => setBgImage('second-theme')}
             >
-              <img src="/desert-mosque.jpg" alt="Desert Mosque" className="bg-picker-thumb" />
-              <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఎడారి మసీదు' : 'Desert Mosque'}</span>
-            </button>
-            <button
-              className={`bg-picker-card ${bgImage === 'desert-makka' ? 'active' : ''}`}
-              onClick={() => setBgImage('desert-makka')}
-            >
-              <img src="/desert-makka.jpg" alt="Makkah" className="bg-picker-thumb" />
-              <span className="bg-picker-label">{transliteration === 'telugu' ? 'మక్కా' : 'Makkah'}</span>
+              <img src="/second-theme.jpg" alt="Green Mosque" className="bg-picker-thumb" />
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'మసీదు థీమ్' : 'Mosque Theme'}</span>
             </button>
           </div>
         </section>

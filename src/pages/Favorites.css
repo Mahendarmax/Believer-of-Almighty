@@ -134,7 +134,7 @@
 .fav-card-verse {
   font-size: 0.75rem;
   color: var(--accent);
-  background: rgba(212, 164, 74, 0.1);
+  background: rgba(52, 211, 153, 0.1);
   padding: 3px 12px;
   border-radius: 12px;
   font-weight: 600;
@@ -158,11 +158,11 @@
 
 .fav-card-go {
   color: var(--accent);
-  background: rgba(212, 164, 74, 0.1);
+  background: rgba(52, 211, 153, 0.1);
 }
 
 .fav-card-go:hover {
-  background: rgba(212, 164, 74, 0.2);
+  background: rgba(52, 211, 153, 0.2);
   transform: scale(1.1);
 }
 

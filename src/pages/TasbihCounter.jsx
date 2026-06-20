@@ -4,11 +4,11 @@ import { useSettings } from '../context/SettingsContext'
 import './TasbihCounter.css'
 
 const PRESETS = [
-  { label: 'سُبْحَانَ اللَّهِ', roman: 'SubhanAllah', telugu: 'సుబ్హానల్లాహ్', target: 33, color: '#34d399' },
-  { label: 'ٱلْحَمْدُ لِلَّهِ', roman: 'Alhamdulillah', telugu: 'అల్హందులిల్లాహ్', target: 33, color: '#63b3ed' },
-  { label: 'ٱللَّهُ أَكْبَرُ', roman: 'Allahu Akbar', telugu: 'అల్లాహు అక్బర్', target: 34, color: '#d4a44a' },
-  { label: 'لَا إِلَٰهَ إِلَّا ٱللَّهُ', roman: 'La ilaha illallah', telugu: 'లా ఇలాహ ఇల్లల్లాహ్', target: 100, color: '#a78bfa' },
-  { label: 'أَسْتَغْفِرُ ٱللَّهَ', roman: 'Astaghfirullah', telugu: 'అస్తఘ్ఫిరుల్లాహ్', target: 100, color: '#f472b6' },
+  { label: 'سُبْحَانَ اللَّهِ', roman: 'SubhanAllah', telugu: 'సుబ్హానల్లాహ్', target: 33, color: '#b8860b' },
+  { label: 'ٱلْحَمْدُ لِلَّهِ', roman: 'Alhamdulillah', telugu: 'అల్హందులిల్లాహ్', target: 33, color: '#d4a44a' },
+  { label: 'ٱللَّهُ أَكْبَرُ', roman: 'Allahu Akbar', telugu: 'అల్లాహు అక్బర్', target: 34, color: '#b8860b' },
+  { label: 'لَا إِلَٰهَ إِلَّا ٱللَّهُ', roman: 'La ilaha illallah', telugu: 'లా ఇలాహ ఇల్లల్లాహ్', target: 100, color: '#d4a44a' },
+  { label: 'أَسْتَغْفِرُ ٱللَّهَ', roman: 'Astaghfirullah', telugu: 'అస్తఘ్ఫిరుల్లాహ్', target: 100, color: '#b8860b' },
 ]
 
 Object.freeze(PRESETS)

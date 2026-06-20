@@ -57,7 +57,9 @@
   transition: var(--transition);
 }
 .tasbih-preset-btn.active {
-  background: var(--bg-primary);
+  background: #fef6e8;
+  border-color: var(--accent);
+  color: var(--accent);
   font-weight: 700;
 }
 .tasbih-preset-roman { display: block; }
@@ -82,7 +84,7 @@
 }
 .tasbih-telugu {
   font-size: 0.9rem;
-  color: #34d399;
+  color: var(--accent);
   margin: 0.1rem 0 1.5rem;
   font-weight: 500;
 }
@@ -116,7 +118,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--bg-card);
+  background: rgba(254, 246, 232, 0.7);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
   border: 2px solid var(--border);
   border-radius: 50%;
   width: 160px;
@@ -129,6 +133,7 @@
   transition: var(--transition);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 .tasbih-tap-btn:active {
   transform: translate(-50%, -50%) scale(0.95);
@@ -308,9 +313,4 @@
 
 @media (min-width: 1200px) {
   .tasbih-page { max-width: 700px; }
-}
-
-/* ===== DARK THEME OVERRIDES ===== */
-[data-theme="dark"] .tasbih-telugu {
-  color: #c0c0c0;
 }

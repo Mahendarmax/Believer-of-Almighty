@@ -4,9 +4,8 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 20px 80px;
-  background: rgba(212, 188, 142, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: linear-gradient(180deg, #e8f5e9 0%, #dcedc8 50%, #c8e6c9 100%);
+  min-height: 100vh;
 }
 
 /* Header */
@@ -18,7 +17,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: linear-gradient(180deg, var(--bg-primary) 80%, transparent 100%);
+  background: linear-gradient(180deg, #e8f5e9 80%, transparent 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -47,22 +46,24 @@
 .sl-title {
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #000000;
 }
 
 .sl-subtitle {
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: #333333;
 }
 
 /* ===== Navigator — Surah + Verse selector ===== */
 .sl-navigator {
-  background: rgba(255, 248, 235, 0.88);
+  background: rgba(254, 246, 232, 0.7);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
   border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
   padding: 16px 18px;
   margin-bottom: 14px;
-  box-shadow: 0 4px 20px rgba(139, 101, 8, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
 .sl-nav-title {
@@ -71,12 +72,12 @@
   gap: 6px;
   font-size: 0.92rem;
   font-weight: 700;
-  color: #4a3520;
+  color: #000000;
   margin-bottom: 12px;
 }
 
 .sl-nav-title svg {
-  color: #8b6508;
+  color: #333333;
 }
 
 .sl-nav-controls {
@@ -94,10 +95,10 @@
   width: 100%;
   height: 100%;
   padding: 10px 32px 10px 12px;
-  background: rgba(255, 250, 240, 0.95);
+  background: #fef6e8;
   border: 1.5px solid #1a1005;
   border-radius: var(--radius-sm);
-  color: #1a1005;
+  color: #000000;
   font-size: 0.84rem;
   font-family: inherit;
   cursor: pointer;
@@ -107,8 +108,8 @@
 }
 
 .sl-nav-select option {
-  background: #fff8eb;
-  color: #1a1005;
+  background: #fef6e8;
+  color: #000000;
   padding: 8px;
 }
 
@@ -130,10 +131,10 @@
 .sl-nav-verse {
   width: 100px;
   padding: 10px 12px;
-  background: rgba(255, 250, 240, 0.95);
+  background: #fef6e8;
   border: 1.5px solid #1a1005;
   border-radius: var(--radius-sm);
-  color: #1a1005;
+  color: #000000;
   font-size: 0.84rem;
   font-family: inherit;
   transition: var(--transition);
@@ -220,7 +221,9 @@
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: rgba(255, 248, 235, 0.88);
+  background: rgba(254, 246, 232, 0.7);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
   border: 1.5px solid #1a1005;
   border-radius: var(--radius-md);
   transition: var(--transition);
@@ -229,14 +232,14 @@
   contain: layout style paint;
   content-visibility: auto;
   contain-intrinsic-size: auto 72px;
-  box-shadow: 0 4px 16px rgba(139, 101, 8, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255,255,255,0.4);
 }
 
 .surah-card:hover {
-  background: rgba(255, 245, 225, 0.95);
-  border-color: rgba(184, 134, 11, 0.4);
+  background: rgba(254, 246, 232, 0.85);
+  border-color: #1a1005;
   transform: translateX(6px);
-  box-shadow: 0 8px 24px rgba(139, 101, 8, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
 .sc-number {
@@ -273,20 +276,20 @@
 .sc-name {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000000;
   margin-bottom: 1px;
 }
 
 .sc-english {
   font-size: 0.78rem;
-  color: var(--text-secondary);
+  color: #333333;
   margin-bottom: 1px;
 }
 
 .sc-telugu {
   font-family: 'Noto Sans Telugu', 'Mallanna', sans-serif;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: #333333;
   line-height: 1.4;
 }
 

@@ -56,14 +56,14 @@
 }
 
 .backup-export-btn {
-  background: linear-gradient(135deg, #d4a44a, #a07830);
+  background: linear-gradient(135deg, #34d399, #2a9d6e);
   color: #0d1320;
   border: none;
 }
 
 .backup-export-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(212,164,74,0.35);
+  box-shadow: 0 4px 14px rgba(52,211,153,0.35);
 }
 
 .backup-import-btn {
@@ -157,7 +157,7 @@
 .backup-step-num {
   min-width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, #d4a44a, #a07830);
+  background: linear-gradient(135deg, #34d399, #2a9d6e);
   color: #0d1320;
   border-radius: 50%;
   display: flex;
@@ -219,7 +219,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #d4a44a, #a07830);
+  background: linear-gradient(135deg, #34d399, #2a9d6e);
   color: #0d1320;
   border: none;
   border-radius: var(--radius-sm);
@@ -231,7 +231,7 @@
 
 .backup-btn-download:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(212,164,74,0.35);
+  box-shadow: 0 4px 14px rgba(52,211,153,0.35);
 }
 
 .backup-btn-download:disabled {
@@ -416,7 +416,7 @@
 }
 
 .toggle input:checked + .toggle-track {
-  background: rgba(212, 164, 74, 0.2);
+  background: rgba(52, 211, 153, 0.2);
   border-color: var(--accent);
 }
 
