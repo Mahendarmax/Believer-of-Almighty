@@ -270,230 +270,6 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.quadraticCurveTo(x, y, x + r, y)
   ctx.closePath()
 }
-// ===================== Surah PDF download (zero-dependency) =====================
-// Packs multiple verse cards per A4 page.
-// images: [{ jpegBytes, width, height }]  — shared image pool
-// pages:  [[{ imgIndex, x, y, w, h }]]    — placements per page (PDF coords, origin bottom-left)
-function buildMinimalPDF(images, pages) {
-  const enc = new TextEncoder()
-  const parts = []
-  const offsets = []
-  let pos = 0
-
-  function write(str) {
-    const bytes = enc.encode(str)
-    parts.push(bytes)
-    pos += bytes.length
-  }
-  function writeRaw(arr) {
-    parts.push(arr)
-    pos += arr.length
-  }
-  function objStart(id) { offsets[id] = pos; write(`${id} 0 obj\n`) }
-  function objEnd() { write('endobj\n') }
-
-  const PAGE_W = 595
-  const PAGE_H = 842
-  const imgCount = images.length
-  const pageCount = pages.length
-  const firstImgObj = 4
-  const firstContentObj = firstImgObj + imgCount
-  const firstPageObj = firstContentObj + pageCount
-
-  write('%PDF-1.4\n%\xFF\xFF\xFF\xFF\n')
-
-  // 1: Catalog
-  objStart(1); write(`<< /Type /Catalog /Pages 2 0 R >>\n`); objEnd()
-
-  // 2: Pages
-  objStart(2)
-  const kids = Array.from({ length: pageCount }, (_, i) => `${firstPageObj + i} 0 R`).join(' ')
-  write(`<< /Type /Pages /Kids [${kids}] /Count ${pageCount} /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] >>\n`)
-  objEnd()
-
-  // 3: Resources (shared) — every image registered as /ImgN
-  objStart(3)
-  const xobjs = images.map((_, i) => `/Img${i} ${firstImgObj + i} 0 R`).join(' ')
-  write(`<< /XObject << ${xobjs} >> >>\n`)
-  objEnd()
-
-  // Image XObjects
-  for (let i = 0; i < imgCount; i++) {
-    const { jpegBytes, width, height } = images[i]
-    objStart(firstImgObj + i)
-    write(`<< /Type /XObject /Subtype /Image /Width ${width} /Height ${height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\n`)
-    write('stream\n')
-    writeRaw(jpegBytes)
-    write('\nendstream\n')
-    objEnd()
-  }
-
-  // Page content streams — one per page, drawing all placed images
-  for (let p = 0; p < pageCount; p++) {
-    const ops = pages[p].map(pl =>
-      `q ${pl.w.toFixed(2)} 0 0 ${pl.h.toFixed(2)} ${pl.x.toFixed(2)} ${pl.y.toFixed(2)} cm /Img${pl.imgIndex} Do Q`
-    ).join('\n')
-    objStart(firstContentObj + p)
-    write(`<< /Length ${ops.length} >>\nstream\n${ops}\nendstream\n`)
-    objEnd()
-  }
-
-  // Page objects
-  for (let p = 0; p < pageCount; p++) {
-    objStart(firstPageObj + p)
-    write(`<< /Type /Page /Parent 2 0 R /Resources 3 0 R /Contents ${firstContentObj + p} 0 R >>\n`)
-    objEnd()
-  }
-
-  // Xref
-  const xrefPos = pos
-  const totalObjs = firstPageObj + pageCount
-  write(`xref\n0 ${totalObjs}\n0000000000 65535 f \n`)
-  for (let i = 1; i < totalObjs; i++) {
-    write(`${String(offsets[i]).padStart(10, '0')} 00000 n \n`)
-  }
-  write(`trailer\n<< /Size ${totalObjs} /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF\n`)
-
-  const totalLen = parts.reduce((s, p) => s + p.length, 0)
-  const result = new Uint8Array(totalLen)
-  let off = 0
-  for (const p of parts) { result.set(p, off); off += p.length }
-  return result
-}
-
-// Title banner image for the first PDF page
-async function renderSurahBanner({ title, subtitle, count, width, quality }) {
-  if (document.fonts && document.fonts.ready) { try { await document.fonts.ready } catch { /* ignore */ } }
-  const W = width
-  const H = Math.round(width * 0.30)
-  const TELUGU_FONT = "'Noto Sans Telugu', 'Mallanna', system-ui, sans-serif"
-  const UI_FONT = "'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-  const canvas = document.createElement('canvas')
-  canvas.width = W
-  canvas.height = H
-  const ctx = canvas.getContext('2d')
-  // Accent gradient background
-  const grad = ctx.createLinearGradient(0, 0, W, H)
-  grad.addColorStop(0, '#8b6508')
-  grad.addColorStop(1, '#b8860b')
-  ctx.fillStyle = grad
-  ctx.fillRect(0, 0, W, H)
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  // Subtitle (top)
-  ctx.fillStyle = 'rgba(255,255,255,0.85)'
-  ctx.font = `600 ${Math.round(W * 0.030)}px ${UI_FONT}`
-  ctx.fillText(subtitle, W / 2, H * 0.28)
-  // Title (surah name)
-  const hasTelugu = /[ఀ-౿]/.test(title)
-  ctx.fillStyle = '#ffffff'
-  ctx.font = `700 ${Math.round(W * (hasTelugu ? 0.064 : 0.060))}px ${hasTelugu ? TELUGU_FONT : UI_FONT}`
-  ctx.fillText(title, W / 2, H * 0.52)
-  // Count
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'
-  ctx.font = `500 ${Math.round(W * 0.028)}px ${UI_FONT}`
-  ctx.fillText(count, W / 2, H * 0.76)
-  const jpegBytes = await canvasToJpegBytes(canvas, quality)
-  return { jpegBytes, width: W, height: H }
-}
-
-async function canvasToJpegBytes(canvas, quality) {
-  const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', quality))
-  return new Uint8Array(await blob.arrayBuffer())
-}
-
-async function dataUrlToJpegBytes(dataUrl, quality) {
-  const img = new Image()
-  img.src = dataUrl
-  await new Promise(r => { img.onload = r })
-  const tempCanvas = document.createElement('canvas')
-  tempCanvas.width = img.width
-  tempCanvas.height = img.height
-  tempCanvas.getContext('2d').drawImage(img, 0, 0)
-  const jpegBytes = await canvasToJpegBytes(tempCanvas, quality)
-  return { jpegBytes, width: img.width, height: img.height }
-}
-
-async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verses, transliteration, onProgress }) {
-  const displayName = transliteration === 'telugu' ? (surahNameTelugu || surahName) : surahName
-  const pdfOpts = { dpr: 1, format: 'jpeg', quality: 0.62, width: 560, pdf: true }
-  const QUALITY = pdfOpts.quality
-
-  // Build shared image pool — banner first, then one compact card per verse
-  const images = []
-  const banner = await renderSurahBanner({
-    title: displayName || `Surah ${surahNumber}`,
-    subtitle: 'Holy Quran',
-    count: `${verses.length} ${verses.length === 1 ? 'Verse' : 'Verses'}`,
-    width: pdfOpts.width,
-    quality: QUALITY,
-  })
-  images.push(banner) // imgIndex 0
-
-  for (let i = 0; i < verses.length; i++) {
-    if (onProgress) onProgress(i + 1, verses.length)
-    const v = verses[i]
-    const teluguRoman = v.roman ? romanToTelugu(v.roman) : ''
-    const dataUrl = await renderVerseImage({
-      surahNumber,
-      surahName: displayName,
-      verseNumber: v.number,
-      arabic: v.arabic || '',
-      roman: (transliteration === 'english' || transliteration === 'both') ? (v.roman || '') : '',
-      teluguRoman: (transliteration === 'telugu' || transliteration === 'both') ? teluguRoman : '',
-      telugu: (transliteration === 'telugu' || transliteration === 'both') ? (v.telugu || '') : '',
-      english: (transliteration === 'english' || transliteration === 'both') ? (v.translation || '') : '',
-      opts: pdfOpts,
-    })
-    images.push(await dataUrlToJpegBytes(dataUrl, QUALITY))
-  }
-
-  // Layout: flow images down each A4 page with a small gap; break to a new page when full
-  const PAGE_W = 595, PAGE_H = 842
-  const MARGIN = 32, GAP = 12
-  const usableW = PAGE_W - MARGIN * 2
-  const usableH = PAGE_H - MARGIN * 2
-  const pages = []
-  let current = []
-  let cursorTop = MARGIN
-
-  for (let idx = 0; idx < images.length; idx++) {
-    const im = images[idx]
-    let dispW = usableW
-    let scale = usableW / im.width
-    let dispH = im.height * scale
-    if (dispH > usableH) {
-      scale = Math.min(usableW / im.width, usableH / im.height)
-      dispW = im.width * scale
-      dispH = im.height * scale
-    }
-    // New page if this box would overflow (but always keep at least one per page)
-    if (current.length > 0 && cursorTop + dispH > PAGE_H - MARGIN) {
-      pages.push(current)
-      current = []
-      cursorTop = MARGIN
-    }
-    const x = MARGIN + (usableW - dispW) / 2
-    const y = PAGE_H - cursorTop - dispH
-    current.push({ imgIndex: idx, x, y, w: dispW, h: dispH })
-    cursorTop += dispH + GAP
-  }
-  if (current.length > 0) pages.push(current)
-
-  const pdfBytes = buildMinimalPDF(images, pages)
-  const blob = new Blob([pdfBytes], { type: 'application/pdf' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
-  link.download = `${safeName}_${surahNumber}.pdf`
-  link.href = url
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
-}
-
-// =======================================================================
 
 // Scroll to top button — throttled scroll handler to reduce layout thrashing
 const ScrollToTop = memo(() => {
@@ -790,9 +566,9 @@ function VerseView() {
   const [bismillah, setBismillah] = useState(null)
   const [playingVerse, setPlayingVerse] = useState(null)
   const [isSurahPlaying, setIsSurahPlaying] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const [bookmarkToast, setBookmarkToast] = useState(null)
   const [visibleCount, setVisibleCount] = useState(30)
-  const [pdfProgress, setPdfProgress] = useState(null)
   const surahAudioRef = useRef(null)
   const versePlaylistRef = useRef(null)
   const scrolledToVerse = useRef(false)
@@ -1016,38 +792,32 @@ function VerseView() {
     if (surah) toggleFavorite(surahNumber, surah.name, verseNum, arabic, translation)
   }, [surah, surahNumber, toggleFavorite])
 
-  const handleSurahPlay = useCallback(async () => {
-    if (isSurahPlaying) {
-      surahAudioRef.current?.pause()
-      if (versePlaylistRef.current) {
-        versePlaylistRef.current.stopped = true
-        versePlaylistRef.current.audio?.pause()
-        versePlaylistRef.current = null
-      }
-      setIsSurahPlaying(false)
-      setPlayingVerse(null)
-      return
-    }
-
+  const startSurahPlayback = useCallback((startAyah = 1) => {
     setPlayingVerse(null) // Stop any individual verse audio
 
     const totalAyahs = surah?.ayahs || 0
     if (totalAyahs <= 0) return
 
-    // Stop any previous CDN surah audio
+    // Stop any previous audio
     if (surahAudioRef.current) {
       surahAudioRef.current.pause()
       surahAudioRef.current.src = ''
       surahAudioRef.current = null
     }
+    if (versePlaylistRef.current) {
+      versePlaylistRef.current.stopped = true
+      versePlaylistRef.current.audio?.pause()
+    }
 
     setIsSurahPlaying(true)
+    setIsPaused(false)
     const playlist = { stopped: false, audio: null }
     versePlaylistRef.current = playlist
 
     const playNextVerse = (ayahNum) => {
       if (playlist.stopped || ayahNum > totalAyahs) {
         setIsSurahPlaying(false)
+        setIsPaused(false)
         setPlayingVerse(null)
         versePlaylistRef.current = null
         return
@@ -1063,32 +833,50 @@ function VerseView() {
       })
       audio.play().catch(() => {
         setIsSurahPlaying(false)
+        setIsPaused(false)
         setPlayingVerse(null)
         versePlaylistRef.current = null
       })
     }
 
-    playNextVerse(1)
-  }, [isSurahPlaying, surahNumber, reciter, surah])
+    playNextVerse(startAyah)
+  }, [surahNumber, reciter, surah])
 
-  const handleDownloadPDF = useCallback(async () => {
-    if (pdfProgress) return
-    setPdfProgress({ current: 0, total: verses.length })
-    try {
-      await downloadSurahPDF({
-        surahNumber,
-        surahName: surah.name,
-        surahNameTelugu: surah.nameTelugu,
-        verses,
-        transliteration,
-        onProgress: (current, total) => setPdfProgress({ current, total }),
-      })
-    } catch (err) {
-      console.error('PDF download failed:', err)
-    } finally {
-      setPdfProgress(null)
+  const handleStopSurah = useCallback(() => {
+    if (versePlaylistRef.current) {
+      versePlaylistRef.current.stopped = true
+      versePlaylistRef.current.audio?.pause()
+      versePlaylistRef.current = null
     }
-  }, [pdfProgress, verses, surahNumber, surah, transliteration])
+    if (surahAudioRef.current) {
+      surahAudioRef.current.pause()
+      surahAudioRef.current.src = ''
+      surahAudioRef.current = null
+    }
+    setIsSurahPlaying(false)
+    setIsPaused(false)
+    setPlayingVerse(null)
+  }, [])
+
+  const handlePauseResume = useCallback(() => {
+    const pl = versePlaylistRef.current
+    if (!pl || !pl.audio) return
+    if (isPaused) {
+      pl.audio.play().catch(() => {})
+      setIsPaused(false)
+    } else {
+      pl.audio.pause()
+      setIsPaused(true)
+    }
+  }, [isPaused])
+
+  const handleSurahPlay = useCallback(() => {
+    if (isSurahPlaying) {
+      handleStopSurah()
+      return
+    }
+    startSurahPlayback(1)
+  }, [isSurahPlaying, handleStopSurah, startSurahPlayback])
 
   if (loading) {
     return (
@@ -1138,31 +926,44 @@ function VerseView() {
             </svg>
           )}
         </button>
-        <button
-          className={`vv-download-pdf ${pdfProgress ? 'active' : ''}`}
-          onClick={handleDownloadPDF}
-          disabled={!!pdfProgress}
-          title={pdfProgress ? `Generating PDF... ${pdfProgress.current}/${pdfProgress.total}` : 'Download surah as PDF'}
-          aria-label="Download surah as PDF"
-        >
-          {pdfProgress ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20" className="pdf-spinner">
-              <circle cx="12" cy="12" r="10" strokeDasharray="50" strokeDashoffset="15"/>
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-          )}
-        </button>
       </header>
 
-      {/* PDF progress toast */}
-      {pdfProgress && (
-        <div className="vv-pdf-toast">
-          Generating PDF... {pdfProgress.current}/{pdfProgress.total} verses
+      {/* Playback control popup */}
+      {isSurahPlaying && (
+        <div className="vv-play-controls" role="group" aria-label="Playback controls">
+          <span className="vv-pc-label">
+            <span className="vv-pc-dot" />
+            {isPaused ? 'Paused' : 'Playing'} · Verse {playingVerse || 1}
+          </span>
+          <div className="vv-pc-btns">
+            <button
+              className="vv-pc-btn vv-pc-main"
+              onClick={handlePauseResume}
+              title={isPaused ? 'Resume' : 'Pause'}
+              aria-label={isPaused ? 'Resume' : 'Pause'}
+            >
+              {isPaused ? (
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                  <polygon points="6,3 20,12 6,21"/>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                  <rect x="6" y="4" width="4" height="16" rx="1"/>
+                  <rect x="14" y="4" width="4" height="16" rx="1"/>
+                </svg>
+              )}
+            </button>
+            <button
+              className="vv-pc-btn vv-pc-exit"
+              onClick={handleStopSurah}
+              title="Exit"
+              aria-label="Exit"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" width="18" height="18">
+                <path d="M18 6 6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
         </div>
       )}
 
