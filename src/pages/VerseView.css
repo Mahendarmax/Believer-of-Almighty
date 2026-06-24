@@ -136,6 +136,62 @@
   50% { box-shadow: 0 0 0 10px rgba(212, 164, 74, 0); }
 }
 
+.vv-download-pdf {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 164, 74, 0.08);
+  color: var(--accent);
+  border-radius: 50%;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.vv-download-pdf:hover:not(:disabled) {
+  background: rgba(212, 164, 74, 0.16);
+  transform: scale(1.08);
+}
+
+.vv-download-pdf:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.vv-download-pdf.active {
+  background: rgba(212, 164, 74, 0.12);
+}
+
+.pdf-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.vv-pdf-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  z-index: 100;
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 /* Navigation */
 .vv-nav, .vv-bottom-nav {
   display: flex;
@@ -794,6 +850,7 @@
   .vv-surah-sub { font-size: 0.62rem; }
 
   .vv-play-surah { width: 34px; height: 34px; }
+  .vv-download-pdf { width: 34px; height: 34px; }
 
   .vc-header {
     margin-bottom: 12px;
@@ -885,6 +942,7 @@
   .vv-surah-sub { font-size: 0.78rem; }
 
   .vv-play-surah { width: 44px; height: 44px; }
+  .vv-download-pdf { width: 44px; height: 44px; }
 
   .vc-number { width: 40px; height: 40px; }
   .vc-number span { font-size: 0.88rem; }
@@ -942,6 +1000,19 @@
 
 [data-theme="dark"] .vv-play-surah.active {
   background: var(--accent);
+  color: #0f0f0f;
+}
+
+[data-theme="dark"] .vv-download-pdf {
+  background: rgba(212, 164, 74, 0.1);
+}
+
+[data-theme="dark"] .vv-download-pdf:hover:not(:disabled) {
+  background: rgba(212, 164, 74, 0.2);
+}
+
+[data-theme="dark"] .vv-pdf-toast {
+  background: rgba(255, 255, 255, 0.9);
   color: #0f0f0f;
 }
 

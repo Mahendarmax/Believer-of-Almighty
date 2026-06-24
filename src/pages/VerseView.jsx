@@ -56,14 +56,14 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   const contentW = W - PADDING_X * 2
   const SECTION_GAP = 28 // uniform gap between sections
 
-  // Theme
-  const BG_TOP = '#000000'
-  const BG_BOTTOM = '#000000'
-  const CARD_BG = '#0a0a0a'
-  const BORDER = 'rgba(212,164,74,0.25)'
-  const ACCENT = '#d4a44a'
-  const TEXT = '#e6e6e6'
-  const LABEL_CLR = '#d4a44a'
+  // Theme — light mode for exported images
+  const BG_TOP = '#e8f5e9'
+  const BG_BOTTOM = '#dcedc8'
+  const CARD_BG = '#fffdf7'
+  const BORDER = 'rgba(26,16,5,0.35)'
+  const ACCENT = '#8b6508'
+  const TEXT = '#1a1005'
+  const LABEL_CLR = '#b8860b'
 
   // Font stacks
   const ARABIC_FONT = "'Amiri', 'Scheherazade New', 'Traditional Arabic', serif"
@@ -210,6 +210,67 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.lineTo(x, y + r)
   ctx.quadraticCurveTo(x, y, x + r, y)
   ctx.closePath()
+}
+// ===================== Surah PDF download =====================
+async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verses, transliteration, onProgress }) {
+  const { jsPDF } = await import('jspdf')
+
+  const displayName = transliteration === 'telugu' ? (surahNameTelugu || surahName) : surahName
+  const verseImages = []
+
+  for (let i = 0; i < verses.length; i++) {
+    if (onProgress) onProgress(i + 1, verses.length)
+    const v = verses[i]
+    const teluguRoman = v.roman ? romanToTelugu(v.roman) : ''
+    const dataUrl = await renderVerseImage({
+      surahNumber,
+      surahName: displayName,
+      verseNumber: v.number,
+      arabic: v.arabic || '',
+      roman: (transliteration === 'english' || transliteration === 'both') ? (v.roman || '') : '',
+      teluguRoman: (transliteration === 'telugu' || transliteration === 'both') ? teluguRoman : '',
+      telugu: (transliteration === 'telugu' || transliteration === 'both') ? (v.telugu || '') : '',
+      english: (transliteration === 'english' || transliteration === 'both') ? (v.translation || '') : '',
+    })
+
+    const img = new Image()
+    img.src = dataUrl
+    await new Promise(r => { img.onload = r })
+    verseImages.push({ dataUrl, width: img.width, height: img.height })
+  }
+
+  const PAGE_W = 595.28
+  const PAGE_H = 841.89
+  const MARGIN = 24
+  const usableW = PAGE_W - MARGIN * 2
+  const GAP = 12
+
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' })
+  let cursorY = MARGIN
+
+  for (let i = 0; i < verseImages.length; i++) {
+    const { dataUrl, width, height } = verseImages[i]
+    const scale = usableW / width
+    const imgH = height * scale
+
+    if (cursorY + imgH > PAGE_H - MARGIN && cursorY > MARGIN) {
+      doc.addPage()
+      cursorY = MARGIN
+    }
+
+    if (imgH > PAGE_H - MARGIN * 2) {
+      if (cursorY > MARGIN) { doc.addPage(); cursorY = MARGIN }
+      doc.addImage(dataUrl, 'PNG', MARGIN, MARGIN, usableW, PAGE_H - MARGIN * 2)
+      doc.addPage()
+      cursorY = MARGIN
+    } else {
+      doc.addImage(dataUrl, 'PNG', MARGIN, cursorY, usableW, imgH)
+      cursorY += imgH + GAP
+    }
+  }
+
+  const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
+  doc.save(`${safeName}_${surahNumber}.pdf`)
 }
 // =======================================================================
 
@@ -510,6 +571,7 @@ function VerseView() {
   const [isSurahPlaying, setIsSurahPlaying] = useState(false)
   const [bookmarkToast, setBookmarkToast] = useState(null)
   const [visibleCount, setVisibleCount] = useState(30)
+  const [pdfProgress, setPdfProgress] = useState(null)
   const surahAudioRef = useRef(null)
   const versePlaylistRef = useRef(null)
   const scrolledToVerse = useRef(false)
@@ -788,7 +850,24 @@ function VerseView() {
     playNextVerse(1)
   }, [isSurahPlaying, surahNumber, reciter, surah])
 
-
+  const handleDownloadPDF = useCallback(async () => {
+    if (pdfProgress) return
+    setPdfProgress({ current: 0, total: verses.length })
+    try {
+      await downloadSurahPDF({
+        surahNumber,
+        surahName: surah.name,
+        surahNameTelugu: surah.nameTelugu,
+        verses,
+        transliteration,
+        onProgress: (current, total) => setPdfProgress({ current, total }),
+      })
+    } catch (err) {
+      console.error('PDF download failed:', err)
+    } finally {
+      setPdfProgress(null)
+    }
+  }, [pdfProgress, verses, surahNumber, surah, transliteration])
 
   if (loading) {
     return (
@@ -838,7 +917,33 @@ function VerseView() {
             </svg>
           )}
         </button>
+        <button
+          className={`vv-download-pdf ${pdfProgress ? 'active' : ''}`}
+          onClick={handleDownloadPDF}
+          disabled={!!pdfProgress}
+          title={pdfProgress ? `Generating PDF... ${pdfProgress.current}/${pdfProgress.total}` : 'Download surah as PDF'}
+          aria-label="Download surah as PDF"
+        >
+          {pdfProgress ? (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20" className="pdf-spinner">
+              <circle cx="12" cy="12" r="10" strokeDasharray="50" strokeDashoffset="15"/>
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          )}
+        </button>
       </header>
+
+      {/* PDF progress toast */}
+      {pdfProgress && (
+        <div className="vv-pdf-toast">
+          Generating PDF... {pdfProgress.current}/{pdfProgress.total} verses
+        </div>
+      )}
 
       {/* Surah nav */}
       <div className="vv-nav">
