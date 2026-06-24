@@ -516,14 +516,16 @@ const Home = React.memo(function Home() {
         >
           <span className="dark-theme-track">
             <span className="dark-theme-knob">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
                 <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
               </svg>
             </span>
           </span>
         </button>
         <span className="dark-theme-label">
-          {transliteration === 'telugu' ? 'డార్క్ మోడ్' : 'DARK MODE'}
+          {theme === 'dark'
+            ? (transliteration === 'telugu' ? 'డార్క్ మోడ్' : 'DARK MODE')
+            : (transliteration === 'telugu' ? 'లైట్ మోడ్' : 'LIGHT MODE')}
         </span>
       </section>
 
