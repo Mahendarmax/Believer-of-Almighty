@@ -51,11 +51,12 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   const DPR = opts.dpr || 3
   const W = opts.width || 1080
   const S = W / 1080 // scale factor for fonts/padding relative to 1080 base
-  const PADDING_X = Math.round(60 * S)
-  const PADDING_TOP = Math.round(60 * S)
-  const PADDING_BOTTOM = Math.round(60 * S)
+  const isPdf = !!opts.pdf
+  const PADDING_X = Math.round((isPdf ? 48 : 60) * S)
+  const PADDING_TOP = Math.round((isPdf ? 30 : 60) * S)
+  const PADDING_BOTTOM = Math.round((isPdf ? 32 : 60) * S)
   const contentW = W - PADDING_X * 2
-  const SECTION_GAP = Math.round(28 * S)
+  const SECTION_GAP = Math.round((isPdf ? 16 : 28) * S)
 
   // Theme — light mode for exported images
   const BG_TOP = '#e8f5e9'
@@ -78,8 +79,8 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   const sz = (v) => Math.round(v * S)
 
   // Header — surah name centered at top
-  sections.push({ type: 'header', h: sz(50) })
-  sections.push({ type: 'gap', h: sz(60) })
+  sections.push({ type: 'header', h: sz(isPdf ? 44 : 50) })
+  sections.push({ type: 'gap', h: sz(isPdf ? 22 : 60) })
 
   if (arabic) {
     const fs = sz(56)
@@ -140,27 +141,51 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   ctx.scale(DPR, DPR)
     ctx.textBaseline = 'middle'
 
-  // Background gradient
-  const grad = ctx.createLinearGradient(0, 0, 0, H)
-  grad.addColorStop(0, BG_TOP)
-  grad.addColorStop(1, BG_BOTTOM)
-  ctx.fillStyle = grad
-  ctx.fillRect(0, 0, W, H)
+  if (isPdf) {
+    // Compact card that fills the whole image — tight box for packing in PDF
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, W, H)
+    const m = Math.max(1, sz(4))
+    const cardX = m, cardY = m
+    const cardW = W - m * 2, cardH = H - m * 2
+    const radius = sz(16)
+    ctx.fillStyle = CARD_BG
+    roundRect(ctx, cardX, cardY, cardW, cardH, radius)
+    ctx.fill()
+    // Accent strip down the left edge
+    ctx.save()
+    roundRect(ctx, cardX, cardY, cardW, cardH, radius)
+    ctx.clip()
+    ctx.fillStyle = ACCENT
+    ctx.fillRect(cardX, cardY, sz(6), cardH)
+    ctx.restore()
+    ctx.lineWidth = 1.2
+    ctx.strokeStyle = BORDER
+    roundRect(ctx, cardX, cardY, cardW, cardH, radius)
+    ctx.stroke()
+  } else {
+    // Background gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, H)
+    grad.addColorStop(0, BG_TOP)
+    grad.addColorStop(1, BG_BOTTOM)
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, W, H)
 
-  // Inner "card" with subtle border — equal margin all sides
-  const CARD_MARGIN = sz(30)
-  const cardX = CARD_MARGIN
-  const cardY = CARD_MARGIN
-  const cardW = W - CARD_MARGIN * 2
-  const cardH = H - CARD_MARGIN * 2
-  const radius = sz(20)
-  ctx.fillStyle = CARD_BG
-  roundRect(ctx, cardX, cardY, cardW, cardH, radius)
-  ctx.fill()
-  ctx.lineWidth = 1.5
-  ctx.strokeStyle = BORDER
-  roundRect(ctx, cardX, cardY, cardW, cardH, radius)
-  ctx.stroke()
+    // Inner "card" with subtle border — equal margin all sides
+    const CARD_MARGIN = sz(30)
+    const cardX = CARD_MARGIN
+    const cardY = CARD_MARGIN
+    const cardW = W - CARD_MARGIN * 2
+    const cardH = H - CARD_MARGIN * 2
+    const radius = sz(20)
+    ctx.fillStyle = CARD_BG
+    roundRect(ctx, cardX, cardY, cardW, cardH, radius)
+    ctx.fill()
+    ctx.lineWidth = 1.5
+    ctx.strokeStyle = BORDER
+    roundRect(ctx, cardX, cardY, cardW, cardH, radius)
+    ctx.stroke()
+  }
 
   // Render sections
   let y = PADDING_TOP
@@ -171,10 +196,30 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
       // Surah name centered — vertically middle of header height
       // Use Telugu font if name contains Telugu characters
       const hasTelugu = /[\u0C00-\u0C7F]/.test(surahName)
+      if (isPdf) {
+        const cy = y + sec.h / 2
+        const r = sz(15)
+        const cx = PADDING_X + r
+        ctx.fillStyle = ACCENT
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill()
+        ctx.fillStyle = '#ffffff'
+        ctx.font = `700 ${sz(15)}px ${UI_FONT}`
+        ctx.textAlign = 'center'
+        ctx.fillText(String(verseNumber), cx, cy + sz(1))
+        ctx.fillStyle = ACCENT
+        ctx.font = hasTelugu ? `600 ${sz(18)}px ${TELUGU_FONT}` : `600 ${sz(17)}px ${UI_FONT}`
+        ctx.textAlign = 'left'
+        ctx.fillText(`${surahName || `Surah ${surahNumber}`}   ${surahNumber}:${verseNumber}`, cx + r + sz(14), cy)
+        ctx.strokeStyle = 'rgba(184,134,11,0.25)'
+        ctx.lineWidth = 1
+        ctx.beginPath(); ctx.moveTo(PADDING_X, y + sec.h - sz(2)); ctx.lineTo(W - PADDING_X, y + sec.h - sz(2)); ctx.stroke()
+        ctx.textAlign = 'left'
+      } else {
       ctx.fillStyle = ACCENT
       ctx.font = hasTelugu ? `600 ${sz(26)}px ${TELUGU_FONT}` : `600 ${sz(24)}px ${UI_FONT}`
       ctx.textAlign = 'center'
       ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W / 2, y + sec.h / 2)
+      }
       ctx.textAlign = 'left'
     } else if (sec.type === 'arabic') {
       ctx.fillStyle = TEXT
@@ -226,7 +271,10 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath()
 }
 // ===================== Surah PDF download (zero-dependency) =====================
-function buildMinimalPDF(jpegPages) {
+// Packs multiple verse cards per A4 page.
+// images: [{ jpegBytes, width, height }]  — shared image pool
+// pages:  [[{ imgIndex, x, y, w, h }]]    — placements per page (PDF coords, origin bottom-left)
+function buildMinimalPDF(images, pages) {
   const enc = new TextEncoder()
   const parts = []
   const offsets = []
@@ -246,9 +294,11 @@ function buildMinimalPDF(jpegPages) {
 
   const PAGE_W = 595
   const PAGE_H = 842
-  const pageCount = jpegPages.length
-  const firstImgObj = 5
-  const pageObjStart = firstImgObj + pageCount * 2
+  const imgCount = images.length
+  const pageCount = pages.length
+  const firstImgObj = 4
+  const firstContentObj = firstImgObj + imgCount
+  const firstPageObj = firstContentObj + pageCount
 
   write('%PDF-1.4\n%\xFF\xFF\xFF\xFF\n')
 
@@ -257,58 +307,47 @@ function buildMinimalPDF(jpegPages) {
 
   // 2: Pages
   objStart(2)
-  const kids = Array.from({ length: pageCount }, (_, i) => `${pageObjStart + i} 0 R`).join(' ')
+  const kids = Array.from({ length: pageCount }, (_, i) => `${firstPageObj + i} 0 R`).join(' ')
   write(`<< /Type /Pages /Kids [${kids}] /Count ${pageCount} /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] >>\n`)
   objEnd()
 
-  // 3: Resources (shared)
+  // 3: Resources (shared) — every image registered as /ImgN
   objStart(3)
-  const xobjs = jpegPages.map((_, i) => `/Img${i} ${firstImgObj + i * 2} 0 R`).join(' ')
+  const xobjs = images.map((_, i) => `/Img${i} ${firstImgObj + i} 0 R`).join(' ')
   write(`<< /XObject << ${xobjs} >> >>\n`)
   objEnd()
 
-  // 4: (reserved)
-  objStart(4); write(`<< >>\n`); objEnd()
-
-  // Image XObjects + streams
-  for (let i = 0; i < pageCount; i++) {
-    const { jpegBytes, width, height } = jpegPages[i]
-
-    const imgObjId = firstImgObj + i * 2
-    const streamObjId = imgObjId + 1
-
-    // Image XObject
-    objStart(imgObjId)
+  // Image XObjects
+  for (let i = 0; i < imgCount; i++) {
+    const { jpegBytes, width, height } = images[i]
+    objStart(firstImgObj + i)
     write(`<< /Type /XObject /Subtype /Image /Width ${width} /Height ${height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\n`)
     write('stream\n')
     writeRaw(jpegBytes)
     write('\nendstream\n')
     objEnd()
+  }
 
-    // Content stream for page
-    const MARGIN = 30
-    const usableW = PAGE_W - MARGIN * 2
-    const scale = usableW / width
-    const imgH = height * scale
-    const imgY = PAGE_H - Math.max(MARGIN, (PAGE_H - imgH) / 2) - imgH
-    const content = `q ${usableW} 0 0 ${imgH} ${MARGIN} ${imgY} cm /Img${i} Do Q`
-    objStart(streamObjId)
-    write(`<< /Length ${content.length} >>\nstream\n${content}\nendstream\n`)
+  // Page content streams — one per page, drawing all placed images
+  for (let p = 0; p < pageCount; p++) {
+    const ops = pages[p].map(pl =>
+      `q ${pl.w.toFixed(2)} 0 0 ${pl.h.toFixed(2)} ${pl.x.toFixed(2)} ${pl.y.toFixed(2)} cm /Img${pl.imgIndex} Do Q`
+    ).join('\n')
+    objStart(firstContentObj + p)
+    write(`<< /Length ${ops.length} >>\nstream\n${ops}\nendstream\n`)
     objEnd()
   }
 
   // Page objects
-  for (let i = 0; i < pageCount; i++) {
-    const pageObjId = pageObjStart + i
-    const streamObjId = firstImgObj + i * 2 + 1
-    objStart(pageObjId)
-    write(`<< /Type /Page /Parent 2 0 R /Resources 3 0 R /Contents ${streamObjId} 0 R >>\n`)
+  for (let p = 0; p < pageCount; p++) {
+    objStart(firstPageObj + p)
+    write(`<< /Type /Page /Parent 2 0 R /Resources 3 0 R /Contents ${firstContentObj + p} 0 R >>\n`)
     objEnd()
   }
 
   // Xref
   const xrefPos = pos
-  const totalObjs = pageObjStart + pageCount
+  const totalObjs = firstPageObj + pageCount
   write(`xref\n0 ${totalObjs}\n0000000000 65535 f \n`)
   for (let i = 1; i < totalObjs; i++) {
     write(`${String(offsets[i]).padStart(10, '0')} 00000 n \n`)
@@ -322,15 +361,74 @@ function buildMinimalPDF(jpegPages) {
   return result
 }
 
+// Title banner image for the first PDF page
+async function renderSurahBanner({ title, subtitle, count, width, quality }) {
+  if (document.fonts && document.fonts.ready) { try { await document.fonts.ready } catch { /* ignore */ } }
+  const W = width
+  const H = Math.round(width * 0.30)
+  const TELUGU_FONT = "'Noto Sans Telugu', 'Mallanna', system-ui, sans-serif"
+  const UI_FONT = "'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+  const canvas = document.createElement('canvas')
+  canvas.width = W
+  canvas.height = H
+  const ctx = canvas.getContext('2d')
+  // Accent gradient background
+  const grad = ctx.createLinearGradient(0, 0, W, H)
+  grad.addColorStop(0, '#8b6508')
+  grad.addColorStop(1, '#b8860b')
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, W, H)
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  // Subtitle (top)
+  ctx.fillStyle = 'rgba(255,255,255,0.85)'
+  ctx.font = `600 ${Math.round(W * 0.030)}px ${UI_FONT}`
+  ctx.fillText(subtitle, W / 2, H * 0.28)
+  // Title (surah name)
+  const hasTelugu = /[ఀ-౿]/.test(title)
+  ctx.fillStyle = '#ffffff'
+  ctx.font = `700 ${Math.round(W * (hasTelugu ? 0.064 : 0.060))}px ${hasTelugu ? TELUGU_FONT : UI_FONT}`
+  ctx.fillText(title, W / 2, H * 0.52)
+  // Count
+  ctx.fillStyle = 'rgba(255,255,255,0.9)'
+  ctx.font = `500 ${Math.round(W * 0.028)}px ${UI_FONT}`
+  ctx.fillText(count, W / 2, H * 0.76)
+  const jpegBytes = await canvasToJpegBytes(canvas, quality)
+  return { jpegBytes, width: W, height: H }
+}
+
 async function canvasToJpegBytes(canvas, quality) {
   const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', quality))
   return new Uint8Array(await blob.arrayBuffer())
 }
 
+async function dataUrlToJpegBytes(dataUrl, quality) {
+  const img = new Image()
+  img.src = dataUrl
+  await new Promise(r => { img.onload = r })
+  const tempCanvas = document.createElement('canvas')
+  tempCanvas.width = img.width
+  tempCanvas.height = img.height
+  tempCanvas.getContext('2d').drawImage(img, 0, 0)
+  const jpegBytes = await canvasToJpegBytes(tempCanvas, quality)
+  return { jpegBytes, width: img.width, height: img.height }
+}
+
 async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verses, transliteration, onProgress }) {
   const displayName = transliteration === 'telugu' ? (surahNameTelugu || surahName) : surahName
-  const pdfOpts = { dpr: 1, format: 'jpeg', quality: 0.6, width: 540 }
-  const jpegPages = []
+  const pdfOpts = { dpr: 1, format: 'jpeg', quality: 0.62, width: 560, pdf: true }
+  const QUALITY = pdfOpts.quality
+
+  // Build shared image pool — banner first, then one compact card per verse
+  const images = []
+  const banner = await renderSurahBanner({
+    title: displayName || `Surah ${surahNumber}`,
+    subtitle: 'Holy Quran',
+    count: `${verses.length} ${verses.length === 1 ? 'Verse' : 'Verses'}`,
+    width: pdfOpts.width,
+    quality: QUALITY,
+  })
+  images.push(banner) // imgIndex 0
 
   for (let i = 0; i < verses.length; i++) {
     if (onProgress) onProgress(i + 1, verses.length)
@@ -347,21 +445,42 @@ async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verse
       english: (transliteration === 'english' || transliteration === 'both') ? (v.translation || '') : '',
       opts: pdfOpts,
     })
-
-    const img = new Image()
-    img.src = dataUrl
-    await new Promise(r => { img.onload = r })
-
-    const tempCanvas = document.createElement('canvas')
-    tempCanvas.width = img.width
-    tempCanvas.height = img.height
-    const tctx = tempCanvas.getContext('2d')
-    tctx.drawImage(img, 0, 0)
-    const jpegBytes = await canvasToJpegBytes(tempCanvas, pdfOpts.quality)
-    jpegPages.push({ jpegBytes, width: img.width, height: img.height })
+    images.push(await dataUrlToJpegBytes(dataUrl, QUALITY))
   }
 
-  const pdfBytes = buildMinimalPDF(jpegPages)
+  // Layout: flow images down each A4 page with a small gap; break to a new page when full
+  const PAGE_W = 595, PAGE_H = 842
+  const MARGIN = 32, GAP = 12
+  const usableW = PAGE_W - MARGIN * 2
+  const usableH = PAGE_H - MARGIN * 2
+  const pages = []
+  let current = []
+  let cursorTop = MARGIN
+
+  for (let idx = 0; idx < images.length; idx++) {
+    const im = images[idx]
+    let dispW = usableW
+    let scale = usableW / im.width
+    let dispH = im.height * scale
+    if (dispH > usableH) {
+      scale = Math.min(usableW / im.width, usableH / im.height)
+      dispW = im.width * scale
+      dispH = im.height * scale
+    }
+    // New page if this box would overflow (but always keep at least one per page)
+    if (current.length > 0 && cursorTop + dispH > PAGE_H - MARGIN) {
+      pages.push(current)
+      current = []
+      cursorTop = MARGIN
+    }
+    const x = MARGIN + (usableW - dispW) / 2
+    const y = PAGE_H - cursorTop - dispH
+    current.push({ imgIndex: idx, x, y, w: dispW, h: dispH })
+    cursorTop += dispH + GAP
+  }
+  if (current.length > 0) pages.push(current)
+
+  const pdfBytes = buildMinimalPDF(images, pages)
   const blob = new Blob([pdfBytes], { type: 'application/pdf' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
@@ -373,6 +492,7 @@ async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verse
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
 }
+
 // =======================================================================
 
 // Scroll to top button — throttled scroll handler to reduce layout thrashing
