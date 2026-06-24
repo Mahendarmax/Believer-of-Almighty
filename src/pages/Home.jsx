@@ -110,7 +110,7 @@ ReciterPicker.displayName = 'ReciterPicker'
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, bgImage, setBgImage } = useSettings()
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, bgImage, setBgImage, theme, setTheme } = useSettings()
 
   // Quick Verse Lookup state
   const [qvSurah, setQvSurah] = useState('')
@@ -507,6 +507,25 @@ const Home = React.memo(function Home() {
             </button>
           </div>
         </section>
+
+      {/* Dark Theme Toggle */}
+      <section className="dark-theme-section">
+        <button
+          className={`dark-theme-toggle ${theme === 'dark' ? 'active' : ''}`}
+          onClick={() => setTheme(theme === 'dark' ? 'normal' : 'dark')}
+        >
+          <span className="dark-theme-track">
+            <span className="dark-theme-knob">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+              </svg>
+            </span>
+          </span>
+        </button>
+        <span className="dark-theme-label">
+          {transliteration === 'telugu' ? 'డార్క్ మోడ్' : 'DARK MODE'}
+        </span>
+      </section>
 
       {/* Quote */}
       <footer className="home-footer">

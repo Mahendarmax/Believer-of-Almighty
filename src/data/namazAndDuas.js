@@ -6,6 +6,7 @@ export const namazSurahs = [
     nameArabic: 'الفاتحة',
     nameTelugu: 'అల్-ఫాతిహా',
     note: 'Recited in every Rakat',
+    noteTelugu: 'ప్రతి రకాత్‌లో చదవబడుతుంది',
     verses: [
       {
         arabic: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ',
@@ -64,6 +65,7 @@ export const namazSurahs = [
     nameArabic: 'الإخلاص',
     nameTelugu: 'అల్-ఇఖ్లాస్',
     note: 'Equal to 1/3 of Quran',
+    noteTelugu: 'ఖురాన్‌లో 1/3 కి సమానం',
     verses: [
       { arabic: 'قُلْ هُوَ ٱللَّهُ أَحَدٌ', roman: 'Qul Huwal laahu Ahad', romanTelugu: 'ఖుల్ హువల్ లాహు అహద్', english: 'Say, He is Allah, the One.', telugu: 'చెప్పు, ఆయన అల్లాహ్, ఏకైకుడు.' },
       { arabic: 'ٱللَّهُ ٱلصَّمَدُ', roman: 'Allahus-Samad', romanTelugu: 'అల్లహుస్-సమద్', english: 'Allah, the Eternal Refuge.', telugu: 'అల్లాహ్ నిరపేక్షకుడు.' },
@@ -77,6 +79,7 @@ export const namazSurahs = [
     nameArabic: 'الفلق',
     nameTelugu: 'అల్-ఫలక్',
     note: 'Protection from evil',
+    noteTelugu: 'చెడు నుండి రక్షణ',
     verses: [
       { arabic: 'قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ', roman: 'Qul a-oozu bi Rabbil-falaq', romanTelugu: 'ఖుల్ అ-ఊజు బి రబ్బిల్-ఫలఖ్', english: 'Say, I seek refuge in the Lord of daybreak.', telugu: 'చెప్పు, తెల్లవారుజాము ప్రభువు శరణు కోరుతాను.' },
       { arabic: 'مِن شَرِّ مَا خَلَقَ', roman: 'Min sharri maa khalaq', romanTelugu: 'మిన్ షర్రి మా ఖలఖ్', english: 'From the evil of that which He created.', telugu: 'ఆయన సృష్టించిన వాటి కీడు నుండి.' },
@@ -91,6 +94,7 @@ export const namazSurahs = [
     nameArabic: 'الناس',
     nameTelugu: 'అన్-నాస్',
     note: 'Protection from whisperers',
+    noteTelugu: 'దుర్బోధకుల నుండి రక్షణ',
     verses: [
       { arabic: 'قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ', roman: 'Qul a-oozu bi Rabbin-naas', romanTelugu: 'ఖుల్ అ-ఊజు బి రబ్బిన్-నాస్', english: 'Say, I seek refuge in the Lord of mankind.', telugu: 'చెప్పు, మానవుల ప్రభువు శరణు కోరుతాను.' },
       { arabic: 'مَلِكِ ٱلنَّاسِ', roman: 'Malikin-naas', romanTelugu: 'మలికిన్-నాస్', english: 'The Sovereign of mankind.', telugu: 'మానవుల రాజు.' },
@@ -106,6 +110,7 @@ export const namazSurahs = [
     nameArabic: 'الكافرون',
     nameTelugu: 'అల్-కాఫిరూన్',
     note: 'Declaration of faith',
+    noteTelugu: 'విశ్వాస ప్రకటన',
     verses: [
       { arabic: 'قُلْ يَـٰٓأَيُّهَا ٱلْكَـٰفِرُونَ', roman: 'Qul yaaa-ayyuhal kaafiroon', romanTelugu: 'ఖుల్ యా-అయ్యుహల్ కాఫిరూన్', english: 'Say, O disbelievers.', telugu: 'చెప్పు, ఓ అవిశ్వాసులారా.' },
       { arabic: 'لَآ أَعْبُدُ مَا تَعْبُدُونَ', roman: "Laaa a'budu maa ta'budoon", romanTelugu: 'లా అబుదు మా తబుదూన్', english: 'I do not worship what you worship.', telugu: 'మీరు పూజించేది నేను పూజించను.' },
@@ -121,6 +126,7 @@ export const namazSurahs = [
     nameArabic: 'الكوثر',
     nameTelugu: 'అల్-కౌథర్',
     note: 'Shortest surah',
+    noteTelugu: 'అతి చిన్న సూరా',
     verses: [
       { arabic: 'إِنَّآ أَعْطَيْنَـٰكَ ٱلْكَوْثَرَ', roman: "Innaaa a'tainaakal Kawthar", romanTelugu: 'ఇన్నా అతైనాకల్ కౌథర్', english: 'Indeed, We have granted you Al-Kawthar.', telugu: 'నిశ్చయంగా, మేము నీకు కౌథర్ ప్రసాదించాము.' },
       { arabic: 'فَصَلِّ لِرَبِّكَ وَٱنْحَرْ', roman: 'Fasalli li Rabbika wanhar', romanTelugu: 'ఫసల్లి లి రబ్బిక వన్హర్', english: 'So pray to your Lord and sacrifice.', telugu: 'కావున నీ ప్రభువు కొరకు నమాజ్ చెయ్యి, ఖుర్బానీ ఇవ్వు.' },
@@ -133,6 +139,7 @@ export const namazSurahs = [
     nameArabic: 'العصر',
     nameTelugu: 'అల్-అస్ర్',
     note: 'Time & salvation',
+    noteTelugu: 'సమయం & మోక్షం',
     verses: [
       { arabic: 'وَٱلْعَصْرِ', roman: "Wal 'Asr", romanTelugu: 'వల్ అస్ర్', english: 'By time.', telugu: 'కాలం సాక్షిగా.' },
       { arabic: 'إِنَّ ٱلْإِنسَـٰنَ لَفِى خُسْرٍ', roman: 'Innal insaana lafee khusr', romanTelugu: 'ఇన్నల్ ఇంసాన లఫీ ఖుస్ర్', english: 'Indeed, mankind is in loss.', telugu: 'నిశ్చయంగా, మానవుడు నష్టంలో ఉన్నాడు.' },
@@ -145,6 +152,7 @@ export const namazSurahs = [
     nameArabic: 'النصر',
     nameTelugu: 'అన్-నస్ర్',
     note: 'Victory & help',
+    noteTelugu: 'విజయం & సహాయం',
     verses: [
       { arabic: 'إِذَا جَآءَ نَصْرُ ٱللَّهِ وَٱلْفَتْحُ', roman: 'Izaa jaaa-a nasrul laahi wal-fath', romanTelugu: 'ఇజా జా-అ నస్రుల్ లాహి వల్-ఫథ్', english: 'When the victory of Allah has come and the conquest.', telugu: 'అల్లాహ్ సహాయం మరియు విజయం వచ్చినప్పుడు.' },
       { arabic: 'وَرَأَيْتَ ٱلنَّاسَ يَدْخُلُونَ فِى دِينِ ٱللَّهِ أَفْوَاجًا', roman: 'Wa ra-aitan naasa yadkhuloona fee deenil laahi afwaajaa', romanTelugu: 'వ ర-ఐతన్ నాస యద్ఖులూన ఫీ దీనిల్ లాహి అఫ్వాజా', english: 'And you see the people entering into the religion of Allah in multitudes.', telugu: 'ప్రజలు గుంపులు గుంపులుగా అల్లాహ్ ధర్మంలో ప్రవేశించడం నీవు చూసినప్పుడు.' },
@@ -157,6 +165,7 @@ export const namazSurahs = [
     nameArabic: 'الضحى',
     nameTelugu: 'అద్-దుహా',
     note: 'The Morning Hours',
+    noteTelugu: 'ఉదయ సమయాలు',
     verses: [
       { arabic: 'وَالضُّحَىٰ', roman: 'Wad-duhaa', romanTelugu: 'వద్-దుహా', english: 'By the morning brightness.', telugu: 'ఉదయపు వెలుతురు సాక్షిగా.' },
       { arabic: 'وَاللَّيْلِ إِذَا سَجَىٰ', roman: 'Wal-layli izaa sajaa', romanTelugu: 'వల్-లైలి ఇజా సజా', english: 'And by the night when it covers with darkness.', telugu: 'చీకటి కమ్ముకున్న రాత్రి సాక్షిగా.' },

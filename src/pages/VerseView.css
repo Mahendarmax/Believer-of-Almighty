@@ -913,3 +913,144 @@
 @media (min-width: 1600px) {
   .verse-view { max-width: 1060px; }
 }
+
+/* ===== DARK THEME ===== */
+[data-theme="dark"] .verse-view {
+  background: linear-gradient(180deg, #0f0f0f 0%, #141414 50%, #0f0f0f 100%);
+}
+
+[data-theme="dark"] .vv-header {
+  background: linear-gradient(180deg, #0f0f0f 85%, transparent 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .vv-surah-name {
+  color: #e8e4de;
+}
+
+[data-theme="dark"] .vv-surah-sub {
+  color: #9a9490;
+}
+
+[data-theme="dark"] .vv-play-surah {
+  background: rgba(212, 164, 74, 0.1);
+}
+
+[data-theme="dark"] .vv-play-surah:hover {
+  background: rgba(212, 164, 74, 0.2);
+}
+
+[data-theme="dark"] .vv-play-surah.active {
+  background: var(--accent);
+  color: #0f0f0f;
+}
+
+[data-theme="dark"] .vv-reciter-toggle {
+  background: #1c1c1e;
+  border-color: rgba(212, 164, 74, 0.25);
+  color: #e8e4de;
+}
+
+[data-theme="dark"] .vv-reciter-dropdown {
+  background: #1c1c1e;
+  border-color: rgba(212, 164, 74, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .vv-reciter-search input {
+  background: #242426;
+  border-color: rgba(212, 164, 74, 0.2);
+  color: #e8e4de;
+}
+
+[data-theme="dark"] .vv-reciter-option:hover {
+  background: rgba(212, 164, 74, 0.08);
+}
+
+[data-theme="dark"] .vv-nav-btn {
+  color: #e8e4de;
+  background: #1c1c1e;
+  border-color: rgba(212, 164, 74, 0.25);
+}
+
+[data-theme="dark"] .vv-nav-btn:hover:not(:disabled) {
+  background: #242426;
+  border-color: rgba(212, 164, 74, 0.4);
+}
+
+[data-theme="dark"] .vv-bismillah {
+  background: #1c1c1e;
+  border-color: rgba(212, 164, 74, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .vv-bismillah-arabic {
+  color: #f0ece6;
+}
+
+[data-theme="dark"] .vv-bismillah-roman {
+  color: #9a9490;
+}
+
+[data-theme="dark"] .verse-card {
+  background: rgba(28, 28, 30, 0.95);
+  border-color: rgba(212, 164, 74, 0.18);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+[data-theme="dark"] .verse-card:hover {
+  border-color: rgba(212, 164, 74, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(212, 164, 74, 0.08);
+}
+
+[data-theme="dark"] .vc-number {
+  background: rgba(212, 164, 74, 0.12);
+  border-color: rgba(212, 164, 74, 0.2);
+}
+
+[data-theme="dark"] .vc-arabic {
+  border-bottom-color: rgba(212, 164, 74, 0.12);
+}
+
+[data-theme="dark"] .vc-arabic p {
+  color: #f0ece6;
+}
+
+[data-theme="dark"] .vc-roman {
+  color: #c4bfb6;
+}
+
+[data-theme="dark"] .vc-telugu {
+  color: #e8e4de;
+}
+
+[data-theme="dark"] .vc-translation {
+  border-top-color: rgba(212, 164, 74, 0.10);
+}
+
+[data-theme="dark"] .vc-translation p {
+  color: #9a9490;
+}
+
+[data-theme="dark"] .vc-action-btn {
+  color: #d4a44a;
+}
+
+[data-theme="dark"] .vc-action-btn:hover {
+  background: rgba(212, 164, 74, 0.15);
+  color: #e8c36a;
+}
+
+[data-theme="dark"] .vv-bottom-nav {
+  border-top-color: rgba(212, 164, 74, 0.12);
+}
+
+[data-theme="dark"] .vv-toast {
+  background: linear-gradient(135deg, #d4a44a, #b8860b);
+  color: #0f0f0f;
+}
+
+[data-theme="dark"] .scroll-top-btn {
+  background: linear-gradient(135deg, #d4a44a, #b8860b);
+  color: #0f0f0f;
+}

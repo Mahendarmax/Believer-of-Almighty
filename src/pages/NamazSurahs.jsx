@@ -76,12 +76,12 @@ function NamazSurahs() {
               <div className="namaz-card-info">
                 <span className="namaz-card-num">{s.number}</span>
                 <div>
-                  <span className="namaz-card-name">{s.name}</span>
+                  <span className="namaz-card-name">{transliteration === 'telugu' ? s.nameTelugu : s.name}</span>
                   <span className="namaz-card-arabic">{s.nameArabic}</span>
                 </div>
               </div>
               <div className="namaz-card-right">
-                <span className="namaz-card-note">{s.note}</span>
+                <span className="namaz-card-note">{transliteration === 'telugu' ? (s.noteTelugu || s.note) : s.note}</span>
                 <svg
                   className={`namaz-chevron ${expandedNamaz === s.number ? 'open' : ''}`}
                   viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"
