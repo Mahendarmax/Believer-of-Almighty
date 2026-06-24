@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react'
+import { createPortal } from 'react-dom'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
@@ -987,8 +988,8 @@ function VerseView() {
         )}
       </div>
 
-      {/* Fixed playback controls — stays in place while verses change */}
-      {isSurahPlaying && (
+      {/* Fixed playback controls — portaled to body so it stays pinned to the viewport */}
+      {isSurahPlaying && createPortal(
         <div className="vv-play-controls" role="group" aria-label="Playback controls">
           <span className="vv-pc-verse">Verse {playingVerse || 1}</span>
           <button
@@ -1018,7 +1019,8 @@ function VerseView() {
               <path d="M18 6 6 18M6 6l12 12"/>
             </svg>
           </button>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Bottom nav */}
