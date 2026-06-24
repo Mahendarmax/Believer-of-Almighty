@@ -306,7 +306,7 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, isPaused, onPauseResume, onStopSurah, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [shareToast, setShareToast] = useState(null)
@@ -545,50 +545,6 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
           <p style={{ fontSize: `${fontSize - 1}px` }}>
             {verse.translation || '—'}
           </p>
-        </div>
-      )}
-
-      {/* Playback controls below the currently-playing verse */}
-      {isActive && (
-        <div className={`vv-play-controls ${isPaused ? 'is-paused' : ''}`} role="group" aria-label="Playback controls">
-          <span className="vv-pc-label">
-            <span className="vv-pc-eq" aria-hidden="true">
-              <i /><i /><i /><i />
-            </span>
-            <span className="vv-pc-text">
-              <span className="vv-pc-status">{isPaused ? 'Paused' : 'Now Playing'}</span>
-              <span className="vv-pc-verse">Verse {verse.number}</span>
-            </span>
-          </span>
-          <div className="vv-pc-btns">
-            <button
-              className="vv-pc-btn vv-pc-main"
-              onClick={onPauseResume}
-              title={isPaused ? 'Resume' : 'Pause'}
-              aria-label={isPaused ? 'Resume' : 'Pause'}
-            >
-              {isPaused ? (
-                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                  <polygon points="6,3 20,12 6,21"/>
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                  <rect x="6" y="4" width="4" height="16" rx="1"/>
-                  <rect x="14" y="4" width="4" height="16" rx="1"/>
-                </svg>
-              )}
-            </button>
-            <button
-              className="vv-pc-btn vv-pc-exit"
-              onClick={onStopSurah}
-              title="Exit"
-              aria-label="Exit"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" width="18" height="18">
-                <path d="M18 6 6 18M6 6l12 12"/>
-              </svg>
-            </button>
-          </div>
         </div>
       )}
     </div>
@@ -1012,9 +968,6 @@ function VerseView() {
                 playingVerse={playingVerse}
                 isActive={isSurahPlaying && playingVerse === verse.number}
                 isSurahPlaying={isSurahPlaying}
-                isPaused={isPaused}
-                onPauseResume={handlePauseResume}
-                onStopSurah={handleStopSurah}
                 onPlay={handleVersePlay}
                 onBookmark={handleBookmark}
                 isFav={favSet.has(`${surahNumber}:${verse.number}`)}
@@ -1033,6 +986,40 @@ function VerseView() {
           </>
         )}
       </div>
+
+      {/* Fixed playback controls — stays in place while verses change */}
+      {isSurahPlaying && (
+        <div className="vv-play-controls" role="group" aria-label="Playback controls">
+          <span className="vv-pc-verse">Verse {playingVerse || 1}</span>
+          <button
+            className="vv-pc-btn vv-pc-main"
+            onClick={handlePauseResume}
+            title={isPaused ? 'Resume' : 'Pause'}
+            aria-label={isPaused ? 'Resume' : 'Pause'}
+          >
+            {isPaused ? (
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <polygon points="6,3 20,12 6,21"/>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <rect x="6" y="4" width="4" height="16" rx="1"/>
+                <rect x="14" y="4" width="4" height="16" rx="1"/>
+              </svg>
+            )}
+          </button>
+          <button
+            className="vv-pc-btn vv-pc-exit"
+            onClick={handleStopSurah}
+            title="Exit"
+            aria-label="Exit"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" width="18" height="18">
+              <path d="M18 6 6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      )}
 
       {/* Bottom nav */}
       <div className="vv-bottom-nav">
