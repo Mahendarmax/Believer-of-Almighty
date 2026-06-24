@@ -136,94 +136,172 @@
   50% { box-shadow: 0 0 0 10px rgba(212, 164, 74, 0); }
 }
 
-/* Playback control popup */
+/* Playback control popup — sits below the active verse box */
 .vv-play-controls {
-  position: sticky;
-  top: 72px;
-  z-index: 60;
-  margin: 10px auto 0;
+  position: relative;
+  margin: 18px auto 4px;
   width: fit-content;
-  max-width: calc(100% - 16px);
+  max-width: 100%;
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 8px 8px 8px 16px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(212, 164, 74, 0.3);
+  gap: 16px;
+  padding: 7px 7px 7px 18px;
+  background: linear-gradient(135deg, rgba(255, 252, 244, 0.98), rgba(250, 240, 220, 0.98));
+  border: 1px solid rgba(212, 164, 74, 0.35);
   border-radius: 999px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16);
-  animation: vv-pc-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0 10px 30px rgba(120, 90, 30, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  animation: vv-pc-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* soft glowing aura behind the pill */
+.vv-play-controls::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(212, 164, 74, 0.5), rgba(212, 164, 74, 0));
+  opacity: 0.5;
+  z-index: -1;
+  filter: blur(8px);
+  animation: vv-pc-aura 3s ease-in-out infinite;
+}
+
+.vv-play-controls.is-paused::before {
+  animation-play-state: paused;
+  opacity: 0.25;
+}
+
+@keyframes vv-pc-aura {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.65; }
 }
 
 @keyframes vv-pc-in {
-  from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+  from { opacity: 0; transform: translateY(12px) scale(0.92); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .vv-pc-label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text);
+  gap: 11px;
   white-space: nowrap;
 }
 
-.vv-pc-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 0 rgba(212, 164, 74, 0.5);
-  animation: vv-pc-pulse 1.6s ease-in-out infinite;
+/* Animated equalizer / sound bars */
+.vv-pc-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 18px;
 }
 
-@keyframes vv-pc-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 164, 74, 0.5); }
-  50% { box-shadow: 0 0 0 6px rgba(212, 164, 74, 0); }
+.vv-pc-eq i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(to top, var(--accent), #e8c479);
+  transform-origin: bottom;
+  animation: vv-pc-eq-bar 1s ease-in-out infinite;
+}
+
+.vv-pc-eq i:nth-child(1) { animation-delay: -0.8s; }
+.vv-pc-eq i:nth-child(2) { animation-delay: -0.4s; }
+.vv-pc-eq i:nth-child(3) { animation-delay: -0.6s; }
+.vv-pc-eq i:nth-child(4) { animation-delay: -0.2s; }
+
+@keyframes vv-pc-eq-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* freeze bars at a low resting state when paused */
+.vv-play-controls.is-paused .vv-pc-eq i {
+  animation-play-state: paused;
+  transform: scaleY(0.35);
+}
+
+.vv-pc-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.vv-pc-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.vv-pc-verse {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .vv-pc-btns {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 
 .vv-pc-btn {
-  width: 38px;
-  height: 38px;
+  position: relative;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(212, 164, 74, 0.1);
+  background: rgba(212, 164, 74, 0.12);
   color: var(--accent);
   border-radius: 50%;
-  transition: var(--transition);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.2s ease;
   flex-shrink: 0;
 }
 
 .vv-pc-btn:hover {
-  background: rgba(212, 164, 74, 0.2);
-  transform: scale(1.08);
+  background: rgba(212, 164, 74, 0.22);
+  transform: scale(1.1);
 }
 
 .vv-pc-btn:active {
-  transform: scale(0.94);
+  transform: scale(0.92);
 }
 
 .vv-pc-main {
-  width: 46px;
-  height: 46px;
-  background: var(--accent);
-  color: #000;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #e8c479, var(--accent));
+  color: #1a1005;
+  box-shadow: 0 4px 14px rgba(212, 164, 74, 0.45);
+}
+
+/* radiating ring pulse around the play/pause button while playing */
+.vv-pc-main::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(212, 164, 74, 0.55);
+  animation: vv-pc-ring 1.8s ease-out infinite;
+}
+
+.vv-play-controls.is-paused .vv-pc-main::after {
+  animation-play-state: paused;
+}
+
+@keyframes vv-pc-ring {
+  0% { box-shadow: 0 0 0 0 rgba(212, 164, 74, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 12px rgba(212, 164, 74, 0); }
 }
 
 .vv-pc-main:hover {
-  background: var(--accent);
-  filter: brightness(1.05);
+  filter: brightness(1.06);
+  transform: scale(1.08);
 }
 
 .vv-pc-exit {
@@ -233,6 +311,16 @@
 
 .vv-pc-exit:hover {
   background: rgba(200, 60, 60, 0.22);
+  box-shadow: 0 4px 12px rgba(200, 60, 60, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vv-play-controls,
+  .vv-play-controls::before,
+  .vv-pc-eq i,
+  .vv-pc-main::after {
+    animation: none;
+  }
 }
 
 /* Navigation */
@@ -1105,25 +1193,27 @@
 }
 
 [data-theme="dark"] .vv-play-controls {
-  background: rgba(28, 28, 30, 0.92);
-  border-color: rgba(212, 164, 74, 0.35);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(34, 32, 28, 0.96), rgba(26, 24, 20, 0.96));
+  border-color: rgba(212, 164, 74, 0.4);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-[data-theme="dark"] .vv-pc-label {
+[data-theme="dark"] .vv-pc-verse {
   color: #e8e4de;
 }
 
 [data-theme="dark"] .vv-pc-btn {
-  background: rgba(212, 164, 74, 0.14);
+  background: rgba(212, 164, 74, 0.16);
 }
 
 [data-theme="dark"] .vv-pc-btn:hover {
-  background: rgba(212, 164, 74, 0.24);
+  background: rgba(212, 164, 74, 0.26);
 }
 
 [data-theme="dark"] .vv-pc-main {
-  background: var(--accent);
+  background: linear-gradient(135deg, #e8c479, var(--accent));
   color: #0f0f0f;
 }
 
