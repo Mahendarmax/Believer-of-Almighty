@@ -41,20 +41,21 @@ function wrapLines(ctx, text, maxWidth) {
   return lines
 }
 
-async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, roman, teluguRoman, telugu, english }) {
+async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, roman, teluguRoman, telugu, english, opts = {} }) {
   // Wait for any web fonts so measurements are accurate
   if (document.fonts && document.fonts.ready) {
     try { await document.fonts.ready } catch { /* ignore */ }
   }
 
   // Design canvas at "logical" CSS px, then upscale via dpr for HD output
-  const DPR = 3
-  const W = 1080
-  const PADDING_X = 60
-  const PADDING_TOP = 60
-  const PADDING_BOTTOM = 60
+  const DPR = opts.dpr || 3
+  const W = opts.width || 1080
+  const S = W / 1080 // scale factor for fonts/padding relative to 1080 base
+  const PADDING_X = Math.round(60 * S)
+  const PADDING_TOP = Math.round(60 * S)
+  const PADDING_BOTTOM = Math.round(60 * S)
   const contentW = W - PADDING_X * 2
-  const SECTION_GAP = 28 // uniform gap between sections
+  const SECTION_GAP = Math.round(28 * S)
 
   // Theme — light mode for exported images
   const BG_TOP = '#e8f5e9'
@@ -74,46 +75,58 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   const measure = document.createElement('canvas').getContext('2d')
   const sections = []
 
+  const sz = (v) => Math.round(v * S)
+
   // Header — surah name centered at top
-  sections.push({ type: 'header', h: 50 })
-  sections.push({ type: 'gap', h: 60 })
+  sections.push({ type: 'header', h: sz(50) })
+  sections.push({ type: 'gap', h: sz(60) })
 
   if (arabic) {
-    measure.font = `56px ${ARABIC_FONT}`
+    const fs = sz(56)
+    measure.font = `${fs}px ${ARABIC_FONT}`
     const lines = wrapLines(measure, arabic, contentW)
-    sections.push({ type: 'arabic', lines, lineHeight: 140, h: lines.length * 140 + 40 })
+    const lh = sz(140)
+    sections.push({ type: 'arabic', lines, lineHeight: lh, h: lines.length * lh + sz(40), fontSize: fs })
     sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (roman) {
-    sections.push({ type: 'label', text: 'Transliteration', h: 30 })
-    measure.font = `italic 26px ${UI_FONT}`
+    const fs = sz(26)
+    sections.push({ type: 'label', text: 'Transliteration', h: sz(30) })
+    measure.font = `italic ${fs}px ${UI_FONT}`
     const lines = wrapLines(measure, roman, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 40, font: `italic 26px ${UI_FONT}`, color: TEXT, h: lines.length * 40 + 16 })
+    const lh = sz(40)
+    sections.push({ type: 'body', lines, lineHeight: lh, font: `italic ${fs}px ${UI_FONT}`, color: TEXT, h: lines.length * lh + sz(16) })
     sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (teluguRoman) {
-    sections.push({ type: 'label', text: 'తెలుగు లిప్యంతరీకరణ', h: 30, font: TELUGU_FONT })
-    measure.font = `26px ${TELUGU_FONT}`
+    const fs = sz(26)
+    sections.push({ type: 'label', text: 'తెలుగు లిప్యంతరీకరణ', h: sz(30), font: TELUGU_FONT })
+    measure.font = `${fs}px ${TELUGU_FONT}`
     const lines = wrapLines(measure, teluguRoman, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 42, font: `26px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 42 + 16 })
+    const lh = sz(42)
+    sections.push({ type: 'body', lines, lineHeight: lh, font: `${fs}px ${TELUGU_FONT}`, color: TEXT, h: lines.length * lh + sz(16) })
     sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (telugu) {
-    sections.push({ type: 'label', text: 'తెలుగు', h: 30, font: TELUGU_FONT })
-    measure.font = `28px ${TELUGU_FONT}`
+    const fs = sz(28)
+    sections.push({ type: 'label', text: 'తెలుగు', h: sz(30), font: TELUGU_FONT })
+    measure.font = `${fs}px ${TELUGU_FONT}`
     const lines = wrapLines(measure, telugu, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 44, font: `28px ${TELUGU_FONT}`, color: TEXT, h: lines.length * 44 + 16 })
+    const lh = sz(44)
+    sections.push({ type: 'body', lines, lineHeight: lh, font: `${fs}px ${TELUGU_FONT}`, color: TEXT, h: lines.length * lh + sz(16) })
     sections.push({ type: 'gap', h: SECTION_GAP })
   }
 
   if (english) {
-    sections.push({ type: 'label', text: 'English', h: 30 })
-    measure.font = `26px ${UI_FONT}`
+    const fs = sz(26)
+    sections.push({ type: 'label', text: 'English', h: sz(30) })
+    measure.font = `${fs}px ${UI_FONT}`
     const lines = wrapLines(measure, english, contentW)
-    sections.push({ type: 'body', lines, lineHeight: 40, font: `26px ${UI_FONT}`, color: TEXT, h: lines.length * 40 + 16 })
+    const lh = sz(40)
+    sections.push({ type: 'body', lines, lineHeight: lh, font: `${fs}px ${UI_FONT}`, color: TEXT, h: lines.length * lh + sz(16) })
   }
 
   const contentH = sections.reduce((s, sec) => s + sec.h, 0)
@@ -135,12 +148,12 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
   ctx.fillRect(0, 0, W, H)
 
   // Inner "card" with subtle border — equal margin all sides
-  const CARD_MARGIN = 30
+  const CARD_MARGIN = sz(30)
   const cardX = CARD_MARGIN
   const cardY = CARD_MARGIN
   const cardW = W - CARD_MARGIN * 2
   const cardH = H - CARD_MARGIN * 2
-  const radius = 20
+  const radius = sz(20)
   ctx.fillStyle = CARD_BG
   roundRect(ctx, cardX, cardY, cardW, cardH, radius)
   ctx.fill()
@@ -159,13 +172,13 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
       // Use Telugu font if name contains Telugu characters
       const hasTelugu = /[\u0C00-\u0C7F]/.test(surahName)
       ctx.fillStyle = ACCENT
-      ctx.font = hasTelugu ? `600 26px ${TELUGU_FONT}` : `600 24px ${UI_FONT}`
+      ctx.font = hasTelugu ? `600 ${sz(26)}px ${TELUGU_FONT}` : `600 ${sz(24)}px ${UI_FONT}`
       ctx.textAlign = 'center'
       ctx.fillText(`${surahName || `Surah ${surahNumber}`} • ${surahNumber}:${verseNumber}`, W / 2, y + sec.h / 2)
       ctx.textAlign = 'left'
     } else if (sec.type === 'arabic') {
       ctx.fillStyle = TEXT
-      ctx.font = `56px ${ARABIC_FONT}`
+      ctx.font = `${sec.fontSize}px ${ARABIC_FONT}`
       ctx.direction = 'rtl'
       ctx.textAlign = 'right'
       // Center each line in its slot — prevents diacritics sinking/clipping
@@ -178,7 +191,7 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
       ctx.textAlign = 'left'
     } else if (sec.type === 'label') {
       ctx.fillStyle = LABEL_CLR
-      ctx.font = `600 15px ${sec.font || UI_FONT}`
+      ctx.font = `600 ${sz(15)}px ${sec.font || UI_FONT}`
       ctx.textAlign = 'left'
       ctx.fillText(sec.text, PADDING_X, y + sec.h / 2)
     } else if (sec.type === 'body') {
@@ -195,6 +208,7 @@ async function renderVerseImage({ surahNumber, surahName, verseNumber, arabic, r
     y += sec.h
   }
 
+  if (opts.format === 'jpeg') return canvas.toDataURL('image/jpeg', opts.quality || 0.85)
   return canvas.toDataURL('image/png')
 }
 
@@ -211,12 +225,112 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.quadraticCurveTo(x, y, x + r, y)
   ctx.closePath()
 }
-// ===================== Surah PDF download =====================
-async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verses, transliteration, onProgress }) {
-  const { jsPDF } = await import('jspdf')
+// ===================== Surah PDF download (zero-dependency) =====================
+function buildMinimalPDF(jpegPages) {
+  const enc = new TextEncoder()
+  const parts = []
+  const offsets = []
+  let pos = 0
 
+  function write(str) {
+    const bytes = enc.encode(str)
+    parts.push(bytes)
+    pos += bytes.length
+  }
+  function writeRaw(arr) {
+    parts.push(arr)
+    pos += arr.length
+  }
+  function objStart(id) { offsets[id] = pos; write(`${id} 0 obj\n`) }
+  function objEnd() { write('endobj\n') }
+
+  const PAGE_W = 595
+  const PAGE_H = 842
+  const pageCount = jpegPages.length
+  const firstImgObj = 5
+  const pageObjStart = firstImgObj + pageCount * 2
+
+  write('%PDF-1.4\n%\xFF\xFF\xFF\xFF\n')
+
+  // 1: Catalog
+  objStart(1); write(`<< /Type /Catalog /Pages 2 0 R >>\n`); objEnd()
+
+  // 2: Pages
+  objStart(2)
+  const kids = Array.from({ length: pageCount }, (_, i) => `${pageObjStart + i} 0 R`).join(' ')
+  write(`<< /Type /Pages /Kids [${kids}] /Count ${pageCount} /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] >>\n`)
+  objEnd()
+
+  // 3: Resources (shared)
+  objStart(3)
+  const xobjs = jpegPages.map((_, i) => `/Img${i} ${firstImgObj + i * 2} 0 R`).join(' ')
+  write(`<< /XObject << ${xobjs} >> >>\n`)
+  objEnd()
+
+  // 4: (reserved)
+  objStart(4); write(`<< >>\n`); objEnd()
+
+  // Image XObjects + streams
+  for (let i = 0; i < pageCount; i++) {
+    const { jpegBytes, width, height } = jpegPages[i]
+
+    const imgObjId = firstImgObj + i * 2
+    const streamObjId = imgObjId + 1
+
+    // Image XObject
+    objStart(imgObjId)
+    write(`<< /Type /XObject /Subtype /Image /Width ${width} /Height ${height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\n`)
+    write('stream\n')
+    writeRaw(jpegBytes)
+    write('\nendstream\n')
+    objEnd()
+
+    // Content stream for page
+    const MARGIN = 30
+    const usableW = PAGE_W - MARGIN * 2
+    const scale = usableW / width
+    const imgH = height * scale
+    const imgY = PAGE_H - Math.max(MARGIN, (PAGE_H - imgH) / 2) - imgH
+    const content = `q ${usableW} 0 0 ${imgH} ${MARGIN} ${imgY} cm /Img${i} Do Q`
+    objStart(streamObjId)
+    write(`<< /Length ${content.length} >>\nstream\n${content}\nendstream\n`)
+    objEnd()
+  }
+
+  // Page objects
+  for (let i = 0; i < pageCount; i++) {
+    const pageObjId = pageObjStart + i
+    const streamObjId = firstImgObj + i * 2 + 1
+    objStart(pageObjId)
+    write(`<< /Type /Page /Parent 2 0 R /Resources 3 0 R /Contents ${streamObjId} 0 R >>\n`)
+    objEnd()
+  }
+
+  // Xref
+  const xrefPos = pos
+  const totalObjs = pageObjStart + pageCount
+  write(`xref\n0 ${totalObjs}\n0000000000 65535 f \n`)
+  for (let i = 1; i < totalObjs; i++) {
+    write(`${String(offsets[i]).padStart(10, '0')} 00000 n \n`)
+  }
+  write(`trailer\n<< /Size ${totalObjs} /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF\n`)
+
+  const totalLen = parts.reduce((s, p) => s + p.length, 0)
+  const result = new Uint8Array(totalLen)
+  let off = 0
+  for (const p of parts) { result.set(p, off); off += p.length }
+  return result
+}
+
+async function canvasToJpegBytes(canvas, quality) {
+  const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', quality))
+  return new Uint8Array(await blob.arrayBuffer())
+}
+
+async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verses, transliteration, onProgress }) {
   const displayName = transliteration === 'telugu' ? (surahNameTelugu || surahName) : surahName
-  const verseImages = []
+  const pdfOpts = { dpr: 1, format: 'jpeg', quality: 0.6, width: 540 }
+  const jpegPages = []
 
   for (let i = 0; i < verses.length; i++) {
     if (onProgress) onProgress(i + 1, verses.length)
@@ -231,46 +345,33 @@ async function downloadSurahPDF({ surahNumber, surahName, surahNameTelugu, verse
       teluguRoman: (transliteration === 'telugu' || transliteration === 'both') ? teluguRoman : '',
       telugu: (transliteration === 'telugu' || transliteration === 'both') ? (v.telugu || '') : '',
       english: (transliteration === 'english' || transliteration === 'both') ? (v.translation || '') : '',
+      opts: pdfOpts,
     })
 
     const img = new Image()
     img.src = dataUrl
     await new Promise(r => { img.onload = r })
-    verseImages.push({ dataUrl, width: img.width, height: img.height })
+
+    const tempCanvas = document.createElement('canvas')
+    tempCanvas.width = img.width
+    tempCanvas.height = img.height
+    const tctx = tempCanvas.getContext('2d')
+    tctx.drawImage(img, 0, 0)
+    const jpegBytes = await canvasToJpegBytes(tempCanvas, pdfOpts.quality)
+    jpegPages.push({ jpegBytes, width: img.width, height: img.height })
   }
 
-  const PAGE_W = 595.28
-  const PAGE_H = 841.89
-  const MARGIN = 24
-  const usableW = PAGE_W - MARGIN * 2
-  const GAP = 12
-
-  const doc = new jsPDF({ unit: 'pt', format: 'a4' })
-  let cursorY = MARGIN
-
-  for (let i = 0; i < verseImages.length; i++) {
-    const { dataUrl, width, height } = verseImages[i]
-    const scale = usableW / width
-    const imgH = height * scale
-
-    if (cursorY + imgH > PAGE_H - MARGIN && cursorY > MARGIN) {
-      doc.addPage()
-      cursorY = MARGIN
-    }
-
-    if (imgH > PAGE_H - MARGIN * 2) {
-      if (cursorY > MARGIN) { doc.addPage(); cursorY = MARGIN }
-      doc.addImage(dataUrl, 'PNG', MARGIN, MARGIN, usableW, PAGE_H - MARGIN * 2)
-      doc.addPage()
-      cursorY = MARGIN
-    } else {
-      doc.addImage(dataUrl, 'PNG', MARGIN, cursorY, usableW, imgH)
-      cursorY += imgH + GAP
-    }
-  }
-
+  const pdfBytes = buildMinimalPDF(jpegPages)
+  const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
   const safeName = (surahName || `surah-${surahNumber}`).replace(/[^\w\-]+/g, '_')
-  doc.save(`${safeName}_${surahNumber}.pdf`)
+  link.download = `${safeName}_${surahNumber}.pdf`
+  link.href = url
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
 }
 // =======================================================================
 
@@ -309,7 +410,7 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [shareToast, setShareToast] = useState(null)
@@ -434,7 +535,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
 
   return (
-    <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''}`} id={`verse-${verse.number}`}>
+    <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''} ${isActive ? 'vv-verse-active' : ''} ${isSurahPlaying && !isActive ? 'vv-verse-dimmed' : ''}`} id={`verse-${verse.number}`}>
       {/* Verse header with number, bookmark, favorite, and audio */}
       <div className="vc-header">
         <div className="vc-number">
@@ -967,7 +1068,7 @@ function VerseView() {
       )}
 
       {/* Verses — progressively rendered */}
-      <div className="vv-verses">
+      <div className={`vv-verses ${isSurahPlaying && playingVerse ? 'vv-playing-mode' : ''}`}>
         {verses.length === 0 ? (
           <div className="vv-empty">
             <p>Unable to load verses. Please check your internet connection.</p>
@@ -982,10 +1083,11 @@ function VerseView() {
                 surahNumber={surahNumber}
                 surahName={surah?.name}
                 surahNameTelugu={surah?.nameTelugu}
-                surahNameTelugu={surah?.nameTelugu}
                 showArabic={showArabic}
                 fontSize={fontSize}
                 playingVerse={playingVerse}
+                isActive={isSurahPlaying && playingVerse === verse.number}
+                isSurahPlaying={isSurahPlaying}
                 onPlay={handleVersePlay}
                 onBookmark={handleBookmark}
                 isFav={favSet.has(`${surahNumber}:${verse.number}`)}
