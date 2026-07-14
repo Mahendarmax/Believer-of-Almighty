@@ -387,12 +387,16 @@ const WORD_CORRECTIONS = {
   'sammaaa\'i': 'samaaa\'i',
   'sammaawaati': 'samaawaati',
   // Wrong vowel (verified against Arabic)
+  // API artifact: stray trailing y in "min" before next word (e.g. "miny yawmil")
+  'miny': 'min',
   'zulamoo': 'zalamoo',
   'yikhrijul': 'yukhrijul',
   'yadlilil': 'yudlilil',
   'yu\'miinoon': 'yu\'minoon',
   'mujremeen': 'mujrimeen',
   'yudallu': 'yudillu',
+  // API artifact: stray trailing y in "in" before a hyphenated next word (e.g. "Wa iny-yakaadul")
+  'iny': 'in',
   // Extra character mid-word (verified)
   '\'alaikhim': '\'alaihim',
   'aarmanoo': 'aamanoo',
@@ -447,12 +451,15 @@ const WORD_CORRECTIONS = {
   // Other verified errors
   'insaaanu': 'insaanu',
   '\'azdaabun': '\'azaabun',
+  'saml\'uz': 'sami\'uz',
 }
 
 const fixRomanText = (text) => {
   if (!text) return ''
   // Fix API typo: 'lyyaaka' should be 'Iyyaaka'
   let fixed = text.replace(/\blyyaaka\b/gi, 'Iyyaaka')
+  // Fix malformed sequence seen in 68:51: "iny-yakaadul" -> "in yakaadul"
+  fixed = fixed.replace(/\biny-yakaadul\b/gi, 'in yakaadul')
   // Fix API quirk: triple+ consonants → double (e.g. "innnaa" → "innaa")
   fixed = fixed.replace(/([bcdfghjklmnpqrstvwxyz])\1{2,}/gi, '$1$1')
   // Fix API quirk: quadruple+ vowels → triple (e.g. "moosaaaa" → "moosaaa")
