@@ -458,6 +458,32 @@ export const fixRomanText = (text) => {
   if (!text) return ''
   // Fix API typo: 'lyyaaka' should be 'Iyyaaka'
   let fixed = text.replace(/\blyyaaka\b/gi, 'Iyyaaka')
+  // Fix known API transliteration typos in 3:66
+  fixed = fixed.replace(/\bbaajajtum\b/gi, 'haajajtum')
+  fixed = fixed.replace(/\btuhaaajjoonaa\b/gi, 'tuhaajjoona')
+  // Fix additional verified transliteration typo patterns
+  fixed = fixed.replace(/\bmaaootiya\b/gi, 'maaa ootiya')
+  fixed = fixed.replace(/\bulaaaika\b/gi, "ulaaa'ika")
+  fixed = fixed.replace(/\bmutrafooaa\b/gi, 'mutrafoohaa')
+  fixed = fixed.replace(/\bwallaeee\b/gi, 'Wallazee')
+  fixed = fixed.replace(/\bsoooud\b/gi, "soo'ud")
+  fixed = fixed.replace(/\baraiaitum\b/gi, "ara'aitum")
+  fixed = fixed.replace(/\babuaaa'akum\b/gi, "abnaaa'akum")
+  fixed = fixed.replace(/\bwa'lamoooannakum\b/gi, "wa'lamoo annakum")
+  fixed = fixed.replace(/\bfa'um miyat\b/gi, "fa'ummiyat")
+  fixed = fixed.replace(/\bkafar tum\b/gi, 'kafartum')
+  fixed = fixed.replace(/\bahwaaa;ahum\b/gi, "ahwaaa'ahum")
+  fixed = fixed.replace(/\bturja;ul\b/gi, "turja'ul")
+  fixed = fixed.replace(/\bma;akum\b/gi, "ma'akum")
+  fixed = fixed.replace(/\bba;d\b/gi, "ba'd")
+  fixed = fixed.replace(/rabbih;;\s*kadhaalika/gi, 'rabbih; kadhaalika')
+  fixed = fixed.replace(/\blilmu;mineena\b/gi, "lilmu'mineena")
+  fixed = fixed.replace(/\byu;minoo\b/gi, "yu'minoo")
+  fixed = fixed.replace(/\bfabu;dal\b/gi, "fabu'dal")
+  fixed = fixed.replace(/\bfaddalnaahum;alal\b/gi, "faddalnaahum 'alal")
+  fixed = fixed.replace(/\btanzi;un\b/gi, "tanzi'un")
+  fixed = fixed.replace(/\bshai;in\b/gi, "shai'in")
+  fixed = fixed.replace(/\bya;mal\b/gi, "ya'mal")
   // Fix malformed sequence seen in 68:51: "iny-yakaadul" -> "in yakaadul"
   fixed = fixed.replace(/\biny-yakaadul\b/gi, 'in yakaadul')
   // Fix API quirk: triple+ consonants → double (e.g. "innnaa" → "innaa")
