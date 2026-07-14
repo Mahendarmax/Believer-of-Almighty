@@ -1,0 +1,13 @@
+---
+description: Quran support data editing rules
+globs:
+alwaysApply: true
+---
+
+When updating Quran verse wording in this repository:
+
+- Treat `public/quran-support/*.json` as the source of truth for Roman English, English meaning, and Telugu meaning.
+- Fix wording mistakes in the matching local JSON file first.
+- Keep the app's local-first loading behavior intact.
+- Preserve fallback correction logic in `src/data/quranData.js`.
+- Do not overwrite intentional manual fixes during regeneration without review.
