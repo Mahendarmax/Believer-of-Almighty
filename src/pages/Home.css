@@ -361,7 +361,9 @@
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: #fdfbf7;
+  background: rgba(255, 253, 247, 0.94);
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
   border: 1.5px solid #1a1005;
   border-radius: 10px;
   z-index: 100;
@@ -371,9 +373,9 @@
 .qv-drop-search {
   width: 100%;
   padding: 12px 14px;
-  background: #f5f2ec;
+  background: rgba(255, 253, 247, 0.96);
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(26, 16, 5, 0.16);
   color: var(--text-primary);
   font-size: 0.84rem;
   outline: none;
@@ -396,15 +398,16 @@
   padding: 10px 14px;
   font-size: 0.84rem;
   color: #3d2b1a;
+  background: rgba(255, 253, 247, 0.95);
   cursor: pointer;
   transition: background 0.15s;
 }
 .qv-drop-item:hover {
-  background: rgba(184, 134, 11, 0.1);
+  background: rgba(184, 134, 11, 0.12);
   color: #3d2b1a;
 }
 .qv-drop-item.active {
-  background: rgba(184, 134, 11, 0.15);
+  background: rgba(184, 134, 11, 0.18);
   color: var(--accent);
 }
 .qv-drop-empty {
@@ -496,8 +499,10 @@
 }
 
 .qv-modal {
-  background: #fdfbf7;
-  border: 1.5px solid #1a1005;
+  background: rgba(255, 253, 247, 0.94);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 2px solid #1a1005;
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 520px;
@@ -505,7 +510,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 8px 40px rgba(139, 101, 8, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.5);
   animation: qvModalIn 0.3s cubic-bezier(0.32,0.72,0,1) forwards;
   overflow: hidden;
 }
@@ -528,7 +533,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(26, 16, 5, 0.16);
   flex-shrink: 0;
 }
 
@@ -545,12 +550,13 @@
   justify-content: center;
   border-radius: 50%;
   color: var(--text-muted);
-  background: rgba(255,255,255,0.06);
+  background: rgba(253, 250, 244, 0.92);
+  border: 1px solid rgba(26, 16, 5, 0.2);
   transition: var(--transition);
 }
 .qv-modal-close:hover {
   color: #ef4444;
-  background: rgba(239,68,68,0.12);
+  background: rgba(239, 68, 68, 0.1);
 }
 
 /* Header */
@@ -599,7 +605,7 @@
   text-align: center;
   padding: 18px 0;
   margin-bottom: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(26, 16, 5, 0.12);
 }
 .qv-modal-arabic p {
   font-family: 'Amiri', 'Scheherazade New', serif;
@@ -616,9 +622,9 @@
 
 .qv-modal-block {
   padding: 12px 14px;
-  background: rgba(0,0,0,0.25);
+  background: rgba(253, 250, 244, 0.95);
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(148,163,184,0.08);
+  border: 1.5px solid rgba(26, 16, 5, 0.18);
 }
 
 .qv-modal-label {
@@ -634,7 +640,7 @@
 .qv-modal-roman {
   font-size: 0.92rem;
   line-height: 1.75;
-  color: var(--text-secondary);
+  color: #3d2b1a;
   font-style: italic;
 }
 
@@ -648,7 +654,7 @@
 .qv-modal-english {
   font-size: 0.92rem;
   line-height: 1.75;
-  color: var(--text-secondary);
+  color: #3d2b1a;
   font-style: italic;
 }
 

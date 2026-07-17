@@ -1,0 +1,1080 @@
+{
+  "generatedAt": "2026-07-17T01:04:01.580Z",
+  "sourceReport": "reports/quran-roman-anomalies.json",
+  "anomaliesFound": 200,
+  "highConfidenceCount": 68,
+  "highConfidence": [
+    {
+      "token": "ladheena'",
+      "frequency": 1,
+      "suggestedToken": "ladheena",
+      "suggestedFrequency": 688,
+      "score": 687,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 65,
+          "roman": "Wa laqad 'alimtumul ladheena'-tadaw minkum fis Sabti faqulnaa lahum koonoo qiradatan khaasi'een"
+        }
+      ]
+    },
+    {
+      "token": "ladheenah",
+      "frequency": 1,
+      "suggestedToken": "ladheena",
+      "suggestedFrequency": 688,
+      "score": 687,
+      "locations": [
+        {
+          "surah": 19,
+          "ayah": 76,
+          "roman": "Wa yazeedul laahul ladheenah tadaw hudaa; wal baaqiyaatus saalihaatu khairun 'inda Rabbika sawaabanw wa khairum maraddaa"
+        }
+      ]
+    },
+    {
+      "token": "ladheenaj",
+      "frequency": 1,
+      "suggestedToken": "ladheena",
+      "suggestedFrequency": 688,
+      "score": 687,
+      "locations": [
+        {
+          "surah": 45,
+          "ayah": 21,
+          "roman": "Am hasibal ladheenaj tarahus saiyiaati an naj'alahum kalladheena aamanoo wa 'amilu saalihaati sawaaa'am mahyaahum wa mamaatuhum; saaa'a maa yahkumoon"
+        }
+      ]
+    },
+    {
+      "token": "ladheenar",
+      "frequency": 1,
+      "suggestedToken": "ladheena",
+      "suggestedFrequency": 688,
+      "score": 687,
+      "locations": [
+        {
+          "surah": 47,
+          "ayah": 25,
+          "roman": "Innal ladheenar taddoo 'alaaa adbaarihim mim ba'di maa tabaiyana lahumul hudash Shaitaanu sawwala lahum wa amlaa lahum"
+        }
+      ]
+    },
+    {
+      "token": "ladheenam",
+      "frequency": 1,
+      "suggestedToken": "ladheena",
+      "suggestedFrequency": 688,
+      "score": 687,
+      "locations": [
+        {
+          "surah": 49,
+          "ayah": 3,
+          "roman": "Innal ladheena yaghud doona aswaatahum 'inda Rasoolil laahi ulaaa'ikal ladheenam tah anal laahu quloobahum littaqwaa; lahum maghfiratunw waajrun 'adheem"
+        }
+      ]
+    },
+    {
+      "token": "laah'",
+      "frequency": 1,
+      "suggestedToken": "laahi",
+      "suggestedFrequency": 628,
+      "score": 627,
+      "locations": [
+        {
+          "surah": 44,
+          "ayah": 42,
+          "roman": "Illaa mar rahimal laah' innahoo huwal 'azeezur raheem"
+        }
+      ]
+    },
+    {
+      "token": "laahin",
+      "frequency": 2,
+      "suggestedToken": "laahi",
+      "suggestedFrequency": 628,
+      "score": 626,
+      "locations": [
+        {
+          "surah": 22,
+          "ayah": 40,
+          "roman": "Alladheena ukhrijoo min diyaarihim bighairi haqqin illaaa any yaqooloo rabbunallaah; wa law laa daf'ul laahin naasa ba'dahum biba'dil lahuddimat sawaami'u wa biya'unw wa salawaatunw wa masaajidu yuzkaru feehasmul laahi kaseeraa; wa layansurannal laahu mai yansuruh; innal laaha la qawiyyun 'Azeez"
+        },
+        {
+          "surah": 41,
+          "ayah": 28,
+          "roman": "Dhaalika jazaaa'u a'daaa'il laahin Naaru lahum feehaa daarul khuld, jazaaa'am bimaa kaanoo bi aayaatinaa yajhdoon"
+        }
+      ]
+    },
+    {
+      "token": "ilaahi",
+      "frequency": 2,
+      "suggestedToken": "laahi",
+      "suggestedFrequency": 628,
+      "score": 626,
+      "locations": [
+        {
+          "surah": 28,
+          "ayah": 38,
+          "roman": "Wa qaala Fir'awnu yaaa aiyuhal mala-u maa 'alimtu lakum min ilaahin ghairee fa awqid lee yaa Haamaanu 'alatteeni faj'al lee sarhal la'alleee attali'u ilaaa ilaahi Moosaa wa innee la azunnuhoo minal kaazibeen"
+        },
+        {
+          "surah": 40,
+          "ayah": 37,
+          "roman": "Asbaabas samaawaati faattali'a ilaaa ilaahi Moosaa wa innee la azunnuhoo kaazibaa; wa kadhaalika zuyyina li-Fir'awna sooo'u 'amalihee wa sudda 'anis sabeel; wa maa kaidu Fir'awna illaa fee tabaab"
+        }
+      ]
+    },
+    {
+      "token": "laahu'",
+      "frequency": 1,
+      "suggestedToken": "laahu",
+      "suggestedFrequency": 536,
+      "score": 535,
+      "locations": [
+        {
+          "surah": 4,
+          "ayah": 93,
+          "roman": "Wa mai yaqtul mu'minammuta 'ammidan fajazaaa'uhoo Jahannamu khaalidan feehaa wa ghadibal laahu' alaihi wa la'anahoo wa a'adda lahoo 'adhaaban 'adheemaa"
+        }
+      ]
+    },
+    {
+      "token": "laahuf",
+      "frequency": 1,
+      "suggestedToken": "laahu",
+      "suggestedFrequency": 536,
+      "score": 535,
+      "locations": [
+        {
+          "surah": 6,
+          "ayah": 140,
+          "roman": "Qad khasiral ladheena qatalooo awlaadahum safaham bighairi 'ilminw wa harramoo maa razaqahumul laahuf tiraaa'an 'alal laah; qad dalloo wa maa kaanoo muhtadeen"
+        }
+      ]
+    },
+    {
+      "token": "laahuz",
+      "frequency": 1,
+      "suggestedToken": "laahu",
+      "suggestedFrequency": 536,
+      "score": 535,
+      "locations": [
+        {
+          "surah": 14,
+          "ayah": 27,
+          "roman": "Yusabbitul laahul ladheena aamanoo bilqawlis saabiti fil hayaatid dunyaa wa fil Aakhirati wa yudillul laahuz dhaalimeen; wa yaf'alul laahu maa yashaaa'"
+        }
+      ]
+    },
+    {
+      "token": "ilaahu",
+      "frequency": 1,
+      "suggestedToken": "laahu",
+      "suggestedFrequency": 536,
+      "score": 535,
+      "locations": [
+        {
+          "surah": 20,
+          "ayah": 88,
+          "roman": "Fa akhraja lahum 'ijlan jasadal lahoo khuwaarun faqaaloo haadhaaa ilaahukum wa ilaahu Moosaa fanasee"
+        }
+      ]
+    },
+    {
+      "token": "laahud",
+      "frequency": 1,
+      "suggestedToken": "laahu",
+      "suggestedFrequency": 536,
+      "score": 535,
+      "locations": [
+        {
+          "surah": 28,
+          "ayah": 77,
+          "roman": "Wabtaghi feemaaa aataakal laahud Daaral Aakhirata wa laa tansa naseebaka minad dunyaa wa ahsin kamaaa ahsanal laahu ilaika wa laa tabghil fasaada fil ardi innal laaha laa yuhibbul mufsideen"
+        }
+      ]
+    },
+    {
+      "token": "'aaha",
+      "frequency": 2,
+      "suggestedToken": "laaha",
+      "suggestedFrequency": 522,
+      "score": 520,
+      "locations": [
+        {
+          "surah": 9,
+          "ayah": 75,
+          "roman": "Wa minhum man 'aaha dal laaha la'in aataanaa min fadlihee lanas saddaqanna wa lanakoonanna minassaaliheen"
+        },
+        {
+          "surah": 79,
+          "ayah": 31,
+          "roman": "Akhraja minha maa-aha wa mar 'aaha."
+        }
+      ]
+    },
+    {
+      "token": "aminal",
+      "frequency": 1,
+      "suggestedToken": "minal",
+      "suggestedFrequency": 489,
+      "score": 488,
+      "locations": [
+        {
+          "surah": 16,
+          "ayah": 45,
+          "roman": "Afa aminal ladheena makarus saiyi aati ai yakhsifal laahu bihimul arda aw yaaa tiyahumul 'adhaabu min haisu laa yash'uroon"
+        }
+      ]
+    },
+    {
+      "token": "illa'",
+      "frequency": 1,
+      "suggestedToken": "illaa",
+      "suggestedFrequency": 453,
+      "score": 452,
+      "locations": [
+        {
+          "surah": 11,
+          "ayah": 54,
+          "roman": "In naqoolu illa' taraaka ba'du aalihatinaa bisooo'; qaala inneee ushhidul laaha wash hadooo annee bareee'um mimmaa tushrikoon"
+        }
+      ]
+    },
+    {
+      "token": "illaar",
+      "frequency": 1,
+      "suggestedToken": "illaa",
+      "suggestedFrequency": 453,
+      "score": 452,
+      "locations": [
+        {
+          "surah": 67,
+          "ayah": 19,
+          "roman": "Awalam yaraw ilat tairi fawqahum saaaffaatinw wa yaqbidn; maa yumsikuhunna illaar rahmaan; innahoo bikulli shai im baseer"
+        }
+      ]
+    },
+    {
+      "token": "qaalab",
+      "frequency": 1,
+      "suggestedToken": "qaala",
+      "suggestedFrequency": 411,
+      "score": 410,
+      "locations": [
+        {
+          "surah": 7,
+          "ayah": 150,
+          "roman": "Wa lammaa raja'a Moosaaa ilaa qawmihee ghadbaana asifan qaala bi'samaa khalaftumoonee mim ba'dee a-'ajiltum amra Rabbikum wa alqal alwaaha wa akhaza biraasi akheehi yajurruhoo ilaih; qaalab na umma innal qawmas tad'afoonee wa kadoo yaqtu loonanee; falaa tushmit biyal a'daaa'a wa laa taj'alnee ma'al qawmiz dhaalimeen"
+        }
+      ]
+    },
+    {
+      "token": "qaalaj",
+      "frequency": 1,
+      "suggestedToken": "qaala",
+      "suggestedFrequency": 411,
+      "score": 410,
+      "locations": [
+        {
+          "surah": 12,
+          "ayah": 55,
+          "roman": "Qaalaj 'alnee 'alaa khazaaa'inil ardi innee hafeezun 'aleem"
+        }
+      ]
+    },
+    {
+      "token": "qaala'",
+      "frequency": 1,
+      "suggestedToken": "qaala",
+      "suggestedFrequency": 411,
+      "score": 410,
+      "locations": [
+        {
+          "surah": 12,
+          "ayah": 59,
+          "roman": "Wa lammaa jahhazahum bijahaazihim qaala' toonee bi akhil lakum min abeekum; alaa tarawna anneee oofil kaila wa ana khairul munzileen"
+        }
+      ]
+    },
+    {
+      "token": "qaalan",
+      "frequency": 2,
+      "suggestedToken": "qaala",
+      "suggestedFrequency": 411,
+      "score": 409,
+      "locations": [
+        {
+          "surah": 6,
+          "ayah": 128,
+          "roman": "Wa yamwa yahshuruhum jamee'ai yaa ma'sharal jinni qadistaksartum minal insi wa qaala awliyaaa'uhy minal insi Rabbanas tamta'a ba'dunaa biba'dinw wa balaghnaaa ajalannal ladhee ajjalta lanaa; qaalan Naaru maswaakum khaalideena feehaaa illaa maa shaaa'allaah; inna Rabbaka Hakeemun 'Aleem"
+        },
+        {
+          "surah": 18,
+          "ayah": 96,
+          "roman": "Aatoonee zubaral hadeed, hattaaa idhaa saawaa bainas sadafaini qaalan fukhoo hattaaa idhaa ja'alahoo naaran qaala aatooneee ufrigh 'alaihi qitraa"
+        }
+      ]
+    },
+    {
+      "token": "qaalah",
+      "frequency": 2,
+      "suggestedToken": "qaala",
+      "suggestedFrequency": 411,
+      "score": 409,
+      "locations": [
+        {
+          "surah": 7,
+          "ayah": 24,
+          "roman": "Qaalah bitoo ba'dukum liba'din aduwwunw wa lakum fil ardi mmustaqarrunw wa mataa'un ilaaheen"
+        },
+        {
+          "surah": 20,
+          "ayah": 123,
+          "roman": "Qaalah bita minhaa jamee'am ba'dukum liba'din 'aduww; fa immaa yaati yannakum minnee hudan famanit taba'a hudaaya falaa yadillu wa laa yashhqaa"
+        }
+      ]
+    },
+    {
+      "token": "qaalad",
+      "frequency": 2,
+      "suggestedToken": "qaala",
+      "suggestedFrequency": 411,
+      "score": 409,
+      "locations": [
+        {
+          "surah": 7,
+          "ayah": 38,
+          "roman": "Qaalad khuloo feee umamin qad khalat min qablikum minal jinni wal insifin naari kullamaa dakhalat ummatul la'anat ukhtahaa hattaaa izad daarakoo feehaa jamee'an qaalat ukhraahum li oolaahum Rabbannaa haaa'u laaa'i adalloonaa fa aatihim 'adhaaban di'fam minan naari qaala likullin di funw wa laakil laa ta'lamoon"
+        },
+        {
+          "surah": 12,
+          "ayah": 99,
+          "roman": "Falammaa dakhaloo 'alaa Yoosufa aawaaa ilaihi abayaihi wa qaalad khuloo Misra inshaaa'al laahu aamineen"
+        }
+      ]
+    },
+    {
+      "token": "qaalaz",
+      "frequency": 2,
+      "suggestedToken": "qaala",
+      "suggestedFrequency": 411,
+      "score": 409,
+      "locations": [
+        {
+          "surah": 17,
+          "ayah": 63,
+          "roman": "Qaalaz hab faman tabi'aka minhum fa inna Jahannama jazaaa'ukum jazaaa'am mawfooraa"
+        },
+        {
+          "surah": 25,
+          "ayah": 8,
+          "roman": "Aw yulqaaa ilaihi kanzun aw takoonu lahoo jannatuny yaakulu minhaa; wa qaalaz dhaalimoona in tattabi'oona illaa rajulam mas hooraa"
+        }
+      ]
+    },
+    {
+      "token": "alahum",
+      "frequency": 2,
+      "suggestedToken": "lahum",
+      "suggestedFrequency": 369,
+      "score": 367,
+      "locations": [
+        {
+          "surah": 8,
+          "ayah": 48,
+          "roman": "Wa idh zaiyana lahumush shaitaanu a'ma alahum wa qaala laa ghaaliba lakumul yawma minan naasi wa innee jaarul lakum falammaa taraaa'atil fi'ataani nakasa 'alaa aqibaihi wa qaala innee bareee'um minkum innee araa maa laa tarawna inneee akhaaful laah; wallaahu shadeedul 'iqaab"
+        },
+        {
+          "surah": 67,
+          "ayah": 8,
+          "roman": "Takaadu tamayyazu minal ghaizi kullamaaa uliqya feehaa fawjun sa alahum khazanatuhaaa alam yaatikum nadheer"
+        }
+      ]
+    },
+    {
+      "token": "'adlaa",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 6,
+          "ayah": 115,
+          "roman": "Wa tammat Kalimatu Rabbika sidqanw wa 'adlaa; laa mubaddila li Kalimaatih; wa Huwas Samee'ul 'Aleem"
+        }
+      ]
+    },
+    {
+      "token": "'allaa",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 24,
+          "ayah": 27,
+          "roman": "Yaaa aiyuhal ladheena aamanoo laa tadkhuloo buyootan ghaira buyootikum hatta tastaanisoo wa tusallimoo 'allaa ahlihaa; dhaalikum khairul lakum la'allakum tadhakkaroon"
+        }
+      ]
+    },
+    {
+      "token": "'alnaa",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 25,
+          "ayah": 74,
+          "roman": "Walladheena yaqooloona Rabbanaa hab lanaa min azwaajinaa wa zurriyaatinaa qurrata a'yuninw waj 'alnaa lilmuttaqeena Imaamaa"
+        }
+      ]
+    },
+    {
+      "token": "'alla",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 26,
+          "ayah": 49,
+          "roman": "Qaala aamantum lahoo qabla an aadhana lakum innahoo lakabeerukumul ladhee 'alla makumus sihra falasawfa ta'lamoon; la uqatti'anna aidiyakum wa arjulakum min khilaafinw wa la usallibanna kum ajma'een"
+        }
+      ]
+    },
+    {
+      "token": "'anaa",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 26,
+          "ayah": 74,
+          "roman": "Qaaloo bal wajadnaaa aabaaa 'anaa kadhaalika yaf'aloon"
+        }
+      ]
+    },
+    {
+      "token": "'alaal",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 39,
+          "ayah": 5,
+          "roman": "Khalaqas samaawaati wal arda bilhaqq; yukawwirul laila 'alan nahaari wa yukawwirun nahaara 'alaal laili wa sakhkharash shamsa walqamara kulluny yajree li ajalim musammaa; alaa Huwal 'Azeezul Ghaffaar"
+        }
+      ]
+    },
+    {
+      "token": "'laa",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 92,
+          "ayah": 20,
+          "roman": "Illab tighaaa'a wajhi rabbihil a 'laa"
+        }
+      ]
+    },
+    {
+      "token": "'alaq",
+      "frequency": 1,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 350,
+      "locations": [
+        {
+          "surah": 96,
+          "ayah": 2,
+          "roman": "Khalaqal insaana min 'alaq"
+        }
+      ]
+    },
+    {
+      "token": "'alaz",
+      "frequency": 2,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 349,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 193,
+          "roman": "Wa qaatiloohum hatta laa takoona fitnatunw wa yakoonad deenu lillaahi fa-inin tahaw falaa 'udwaana illaa 'alaz dhaalimeen"
+        },
+        {
+          "surah": 7,
+          "ayah": 44,
+          "roman": "Wa naadaa Ashaabul jannati ashaaban Naari an qad wajadnaa maa wa'adannaa Rabbunaa haqqan fahal wajattum maa wa'ada Rabbukum haqqan qaaloo na'am; fa adhdhana mu'azzinum bainahum al la'natul laahi 'alaz dhaalimeen"
+        }
+      ]
+    },
+    {
+      "token": "a'alaa",
+      "frequency": 2,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 349,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 260,
+          "roman": "Wa idh qaala Ibraaheemu Rabbi arinee kaifa tuhyil mawtaa qaala awa lam tu'min qaala balaa wa laakil liyatma'inna qalbee qaala fakhuz arab'atam minal tairi fasurhunna ilaika summaj 'al a'alaa kulli jabalim minhunna juz'an sumaad 'uhunna yaateenaka sa'yaa; wa'lam annal laaha 'Azeezun Hakeem"
+        },
+        {
+          "surah": 37,
+          "ayah": 8,
+          "roman": "Laa yassamma 'oona ilal mala il a'alaa wa yuqzafoona min kulli jaanib"
+        }
+      ]
+    },
+    {
+      "token": "'alat",
+      "frequency": 2,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 349,
+      "locations": [
+        {
+          "surah": 9,
+          "ayah": 108,
+          "roman": "Laa taqum feehi abadaa; lamasjidun ussisa 'alat taqwaa min awwali yawmin ahaqqu an taqooma feeh; feehi rijaaluny yuhibbona ai yatatahharoo, wallaahu yuhibbul mmuttah hireen"
+        },
+        {
+          "surah": 72,
+          "ayah": 16,
+          "roman": "Wa alla wis taqaamoo 'alat tareeqati la asqaynaahum maa'an ghadaqaa"
+        }
+      ]
+    },
+    {
+      "token": "'amaa",
+      "frequency": 2,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 349,
+      "locations": [
+        {
+          "surah": 16,
+          "ayah": 5,
+          "roman": "Wal an 'amaa khalaqahaa; lakum feehaa dif'unw wa manaafi'u wa minhaa taakuloon"
+        },
+        {
+          "surah": 41,
+          "ayah": 44,
+          "roman": "Wa law ja'alnaahu Qur-aanan A'jamiyyal laqaaloo law laa fussilat Aayaatuhoo 'a A'jamiyyunw wa 'Arabiyy; qul huwa lilladheena aamanoo hudanw wa shifaaa'unw walladheena la yu'minoona feee aadhaanihim waqrunw wa huwa 'alaihim 'amaa; ulaaa'ika yunaadawna mim maakaanim ba'eed"
+        }
+      ]
+    },
+    {
+      "token": "'alai",
+      "frequency": 2,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 349,
+      "locations": [
+        {
+          "surah": 16,
+          "ayah": 32,
+          "roman": "Alladheena tatawaf faahumul malaaa'ikatu taiyibeena yaqooloona salaamun 'alai kumud khulul Jannata bimaa kuntum ta'maloon"
+        },
+        {
+          "surah": 16,
+          "ayah": 115,
+          "roman": "Innamaa harrma 'alai kumul maitata waddama wa lahmal khinzeeri wa maaa uhilla lighairil laahi bihee famanid turra ghaira baaghinw wa laa 'aadin fa innal laaha Ghafoorur Raheem"
+        }
+      ]
+    },
+    {
+      "token": "'ulaa",
+      "frequency": 2,
+      "suggestedToken": "'alaa",
+      "suggestedFrequency": 351,
+      "score": 349,
+      "locations": [
+        {
+          "surah": 20,
+          "ayah": 4,
+          "roman": "Tanzeelam mimman khalaqal arda was samaawaatil 'ulaa"
+        },
+        {
+          "surah": 20,
+          "ayah": 75,
+          "roman": "Wa mai yaatihee mu'minan qad 'amilas saalihaati fa ulaaa'ika lahumud dara jaatul 'ulaa"
+        }
+      ]
+    },
+    {
+      "token": "kaanas",
+      "frequency": 1,
+      "suggestedToken": "kaana",
+      "suggestedFrequency": 338,
+      "score": 337,
+      "locations": [
+        {
+          "surah": 9,
+          "ayah": 114,
+          "roman": "Wa maa kaanas tighfaaru ibraaheema li abeehi illaa 'ammaw 'idatinw wa 'adahaaa iyyaahu falammaa tabaiyana lahooo annahoo 'aduwwul lillaahi tabarra a minh; inna Ibraaheema la awwaahum haleem"
+        }
+      ]
+    },
+    {
+      "token": "kaanaa",
+      "frequency": 2,
+      "suggestedToken": "kaana",
+      "suggestedFrequency": 338,
+      "score": 336,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 36,
+          "roman": "Fa azallahumash Shaitaanu 'anhaa fa akhrajahumaa mimmaa kaanaa fee wa qulnah bitoo ba'dukum liba'din 'aduwwunw wa lakum fil ardi mustaqarrunw wa mataa'un ilaa heen"
+        },
+        {
+          "surah": 5,
+          "ayah": 75,
+          "roman": "Mal Maseehub nu Maryama illaa Rasoolun qad khalat min qablihir Rusulu wa ummuhoo siddeeqatun kaanaa yaa kulaanit ta'aam; unzur kaifa nubaiyinu lahumul Aayaati suman zur annaa yu'fakoon"
+        }
+      ]
+    },
+    {
+      "token": "kaanan",
+      "frequency": 2,
+      "suggestedToken": "kaana",
+      "suggestedFrequency": 338,
+      "score": 336,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 213,
+          "roman": "Kaanan naasu ummatanw waahidatan fab'asal laahun Nabiyyeena mubashshireena wa mundhireena wa anzala ma'ahumul kitaaba bilhaqqi liyahkuma bainan naasi feemakh talafoo feeh; wa makh talafa feehi 'illallazeena ootoohu mim ba'di maa jaaa'athumul baiyinaatu baghyam bainahm fahadal laahul ladheena aamanoo limakh talafoo feehi minal haqqi bi idhnih; wallaahu yahdee mai yashaaa'u ilaa Siraatim Mustaqeem"
+        },
+        {
+          "surah": 10,
+          "ayah": 19,
+          "roman": "Wa maa kaanan naasu illaaa ummatanw waahidatan fakh talafoo; wa law laa kalimatun sabaqat mir Rabbika laqudiya bainahum fee maa feehi yakhtalifoon"
+        }
+      ]
+    },
+    {
+      "token": "'idhaa",
+      "frequency": 1,
+      "suggestedToken": "idhaa",
+      "suggestedFrequency": 319,
+      "score": 318,
+      "locations": [
+        {
+          "surah": 79,
+          "ayah": 11,
+          "roman": "Aizaa kunna 'idhaa man-nakhirah"
+        }
+      ]
+    },
+    {
+      "token": "binna",
+      "frequency": 1,
+      "suggestedToken": "inna",
+      "suggestedFrequency": 311,
+      "score": 310,
+      "locations": [
+        {
+          "surah": 55,
+          "ayah": 41,
+          "roman": "Yu'raful mujrimoona biseemaahum fa'yu'khazu binna waasi wal aqdaam"
+        }
+      ]
+    },
+    {
+      "token": "'akum",
+      "frequency": 1,
+      "suggestedToken": "lakum",
+      "suggestedFrequency": 304,
+      "score": 303,
+      "locations": [
+        {
+          "surah": 9,
+          "ayah": 23,
+          "roman": "Yaaa aiyuhal ladheena aamanoo laa tattakhizooo aabaaa 'akum wa ikhwaanakum awliyaaa'a inis tahabbul kufra 'alal eemaan; wa mai yatawal lahum minkum fa ulaaa'ika humuz dhaalimoon"
+        }
+      ]
+    },
+    {
+      "token": "alakum",
+      "frequency": 1,
+      "suggestedToken": "lakum",
+      "suggestedFrequency": 304,
+      "score": 303,
+      "locations": [
+        {
+          "surah": 26,
+          "ayah": 155,
+          "roman": "Qaala haazihee naaqatul lahaa shirbunw w alakum shirbu yawmim ma'loom"
+        }
+      ]
+    },
+    {
+      "token": "asumma",
+      "frequency": 1,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 277,
+      "locations": [
+        {
+          "surah": 10,
+          "ayah": 51,
+          "roman": "Asumma idhaa maa waqa'a aamantum bih; aaal'aana wa qad kuntum bihee tasta'jiloon"
+        }
+      ]
+    },
+    {
+      "token": "summaq",
+      "frequency": 1,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 277,
+      "locations": [
+        {
+          "surah": 10,
+          "ayah": 71,
+          "roman": "Watlu 'alaihim naba-a-Noohin idh qaala liqawmihee yaa qawmi in kaana kabura 'alaikum maqaamee wa tazkeeree bi Aayaatil laahi fa'alal laahi tawakkaltu fa ajmi'ooo amrakum wa shurakaaa'akum summa laa yakun amrukum 'alaikum ghummatan summaq dooo ilaiya wa laa tundhiroon"
+        }
+      ]
+    },
+    {
+      "token": "summah",
+      "frequency": 1,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 277,
+      "locations": [
+        {
+          "surah": 20,
+          "ayah": 82,
+          "roman": "Wa innee la Ghaffaarul liman taaba wa aamana wa 'amila saalihan summah tadaa"
+        }
+      ]
+    },
+    {
+      "token": "summar",
+      "frequency": 1,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 277,
+      "locations": [
+        {
+          "surah": 67,
+          "ayah": 4,
+          "roman": "Summar ji'il basara karrataini yanqalib ilaikal basaru khaasi'anw wa huwa haseer"
+        }
+      ]
+    },
+    {
+      "token": "summaj",
+      "frequency": 2,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 276,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 260,
+          "roman": "Wa idh qaala Ibraaheemu Rabbi arinee kaifa tuhyil mawtaa qaala awa lam tu'min qaala balaa wa laakil liyatma'inna qalbee qaala fakhuz arab'atam minal tairi fasurhunna ilaika summaj 'al a'alaa kulli jabalim minhunna juz'an sumaad 'uhunna yaateenaka sa'yaa; wa'lam annal laaha 'Azeezun Hakeem"
+        },
+        {
+          "surah": 20,
+          "ayah": 122,
+          "roman": "Summaj tabbahu Rabbuhoo fataaba 'alaihi wa hadaa"
+        }
+      ]
+    },
+    {
+      "token": "summaz",
+      "frequency": 2,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 276,
+      "locations": [
+        {
+          "surah": 3,
+          "ayah": 90,
+          "roman": "Innal ladheena kafaroo ba'da eemaanihim summaz daadoo kufral lan tuqbala tawbatuhum wa ulaaa'ika humud daaalloon"
+        },
+        {
+          "surah": 4,
+          "ayah": 137,
+          "roman": "Innal ladheena aamanoo summa kafaroo summa aamanoo summa kafaroo summaz daado kufral lam yakunil laahu liyaghfira lahum wa laa liyahdiyahum sabeelaa"
+        }
+      ]
+    },
+    {
+      "token": "summan",
+      "frequency": 2,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 276,
+      "locations": [
+        {
+          "surah": 6,
+          "ayah": 11,
+          "roman": "Qul seeroo fil ardi summan zuroo kaifa kaana 'aaqibatul mukazzibeen"
+        },
+        {
+          "surah": 9,
+          "ayah": 127,
+          "roman": "Wa idhaa maaa unzilat Sooratun nazara ba'duhum ilaa ba'din hal yaraakum min ahadin summan sarafoo; sarafal laahu quloobahum bi annahum qawmul laa yafqahoon"
+        }
+      ]
+    },
+    {
+      "token": "summad",
+      "frequency": 2,
+      "suggestedToken": "summa",
+      "suggestedFrequency": 278,
+      "score": 276,
+      "locations": [
+        {
+          "surah": 27,
+          "ayah": 80,
+          "roman": "Innaka laa tusmi'ul mawtaa wa laa tusmi'us summad du'aaa idhaa wallaw mudbireen"
+        },
+        {
+          "surah": 30,
+          "ayah": 52,
+          "roman": "Fa innaka laa tusmi'ul mawtaa wa laa tusmi'us summad du'aaa'a idhaa wallaw mudbireen"
+        }
+      ]
+    },
+    {
+      "token": "dhaalikab",
+      "frequency": 1,
+      "suggestedToken": "dhaalika",
+      "suggestedFrequency": 260,
+      "score": 259,
+      "locations": [
+        {
+          "surah": 4,
+          "ayah": 114,
+          "roman": "laa khaira fee kaseerim min najwaahum illaa man amara bisadaqatin aw ma'roofin aw islaahim bainan naas; wa mai yaf'al dhaalikab tighaaa'a mardaatil laahi fa sawfa nu'teehi ajran 'adheemaa"
+        }
+      ]
+    },
+    {
+      "token": "aardi",
+      "frequency": 1,
+      "suggestedToken": "ardi",
+      "suggestedFrequency": 256,
+      "score": 255,
+      "locations": [
+        {
+          "surah": 30,
+          "ayah": 22,
+          "roman": "Wa min Aayaatihee khalqus samaawaati wal aardi wakhtilaafu alsinatikum wa alwaanikum; inna fee dhaalika la Aayaatil lil'aalimeen"
+        }
+      ]
+    },
+    {
+      "token": "ardin",
+      "frequency": 1,
+      "suggestedToken": "ardi",
+      "suggestedFrequency": 256,
+      "score": 255,
+      "locations": [
+        {
+          "surah": 31,
+          "ayah": 34,
+          "roman": "Innal laaha 'indahoo 'ilmus saa'ati wa yunazzilul ghaisa wa ya'lamu maa fil arhaami wa maa tadree nafsum maadhaa takisbu ghadaa; wa maa tadree nafsum bi ayyi ardin tamoot; innal laaha 'Aleemun Khabeer"
+        }
+      ]
+    },
+    {
+      "token": "sardi",
+      "frequency": 1,
+      "suggestedToken": "ardi",
+      "suggestedFrequency": 256,
+      "score": 255,
+      "locations": [
+        {
+          "surah": 34,
+          "ayah": 11,
+          "roman": "Ani'mal saabighaatinw wa qaddir fis sardi wa'maloo saalihan innee bimaa ta'maloona Baseer"
+        }
+      ]
+    },
+    {
+      "token": "maaa'",
+      "frequency": 2,
+      "suggestedToken": "maaa",
+      "suggestedFrequency": 249,
+      "score": 247,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 74,
+          "roman": "Summa qasat quloobukum mim ba'di dhaalika fahiya kalhijaarati aw-ashaadu qaswah; wa inna minal hijaarati lamaa yatafajjaru minhul anhaar; wa inna minhaa lamaa yash shaqqaqu fayakhruju minhul maaa'; wa inna minhaa lamaa yahbitu min khashyatil laa; wa mal laahu bighaafilin 'ammaa ta'maloon"
+        },
+        {
+          "surah": 11,
+          "ayah": 43,
+          "roman": "Qaala sa aaweee ilaa jabaliny ya'simunee minal maaa'; qaala laa 'aasimal yawma min amril laahi illaa mar rahim; wa haala bainahumal mawju fakaana minal mughraqeen"
+        }
+      ]
+    },
+    {
+      "token": "'ahoo",
+      "frequency": 2,
+      "suggestedToken": "lahoo",
+      "suggestedFrequency": 223,
+      "score": 221,
+      "locations": [
+        {
+          "surah": 17,
+          "ayah": 11,
+          "roman": "Wa yad'ul insaanu bishsharri du'aaa 'ahoo bilkhayr; wa kaanal insaanu 'ajoola"
+        },
+        {
+          "surah": 48,
+          "ayah": 29,
+          "roman": "Muhammadur Rasoolul laah; walladheena ma'ahooo ashiddaaa'u 'alal kuffaaari ruhamaaa'u bainahum taraahum rukka'an sujjadany yabtaghoona fadlam minal laahi wa ridwaanan seemaahum fee wujoohihim min asaris sujood; dhaalika masaluhum fit tawraah; wa masaluhum fil Injeeli kazar'in akhraja shat 'ahoo fa 'aazarahoo fastaghlaza fastawaa 'alaa sooqihee yu'jibuz zurraa'a liyagheeza bihimul kuffaar; wa'adal laahul ladheena aamanoo wa 'amilus saalihaati minhum maghfiratanw wa ajran 'adheemaa"
+        }
+      ]
+    },
+    {
+      "token": "wallaahum",
+      "frequency": 1,
+      "suggestedToken": "wallaahu",
+      "suggestedFrequency": 218,
+      "score": 217,
+      "locations": [
+        {
+          "surah": 2,
+          "ayah": 142,
+          "roman": "Sayaqoolus sufahaaa'u minan naasi maa wallaahum 'an Qiblatihimul latee kaanoo 'alaihaa; qulo lillaahil mashriqu walmaghrib; yahdee mai yashaaa'u ilaa Siraatim Mustaqeem"
+        }
+      ]
+    },
+    {
+      "token": "wallaahul",
+      "frequency": 2,
+      "suggestedToken": "wallaahu",
+      "suggestedFrequency": 218,
+      "score": 216,
+      "locations": [
+        {
+          "surah": 12,
+          "ayah": 18,
+          "roman": "Wa jaaa'oo 'alaa qamee shihee bidamin kazi' qaala bal sawwalat lakum anfusukum amraa; fasabrun jameel; wallaahul musta'aanu 'alaa man tasifoon"
+        },
+        {
+          "surah": 35,
+          "ayah": 9,
+          "roman": "Wallaahul ladhee arsalar riyaaha fatuseeru shaaban fasuqnaahu ilaa baladim maiyitin fa ahyaynaa bihil arda ba'da mawtihaa; kadhaalikan nushoor"
+        }
+      ]
+    },
+    {
+      "token": "ilaah",
+      "frequency": 2,
+      "suggestedToken": "ilaa",
+      "suggestedFrequency": 215,
+      "score": 213,
+      "locations": [
+        {
+          "surah": 23,
+          "ayah": 91,
+          "roman": "Mat takhazal laahu minw waladinw wa maa kaana ma'ahoo min ilaah; idhal ladhahaba kullu ilaahim bimaa khalaqa wa la'alaa ba'duhum 'alaa ba'd; Subhaannal laahi 'ammaa yasifoon"
+        },
+        {
+          "surah": 43,
+          "ayah": 84,
+          "roman": "Wa Huwal ladhee fissamaaa'i Ilaahunw wa fil ardi Ilaah; wa Huwal Hakeemul'Aleem"
+        }
+      ]
+    },
+    {
+      "token": "yaamanoo",
+      "frequency": 1,
+      "suggestedToken": "aamanoo",
+      "suggestedFrequency": 202,
+      "score": 201,
+      "locations": [
+        {
+          "surah": 4,
+          "ayah": 91,
+          "roman": "Satajidoona aakhareena yureedoona ai yaamanookum wa yaamanoo qawmahum kullamaa ruddooo ilal itnati urkisoo feehaa; fa il lam ya'tazilookum wa yulqooo ilai kumus salama wa yakuffooo aidiyahum fakhuzoohum waqtuloohum haisu saqif tumoohum; wa ulaaa'ikum ja'alnaa lakum 'alaihim sultaanam mubeenaa"
+        }
+      ]
+    },
+    {
+      "token": "'ahal",
+      "frequency": 1,
+      "suggestedToken": "'alal",
+      "suggestedFrequency": 199,
+      "score": 198,
+      "locations": [
+        {
+          "surah": 19,
+          "ayah": 23,
+          "roman": "Fa ajaaa 'ahal makhaadu ilaa jiz'in nakhlati qaalat yaa laitanee mittu qabla haadhaa wa kuntu nasyam mansiyyaa"
+        }
+      ]
+    },
+    {
+      "token": "'ajal",
+      "frequency": 1,
+      "suggestedToken": "'alal",
+      "suggestedFrequency": 199,
+      "score": 198,
+      "locations": [
+        {
+          "surah": 21,
+          "ayah": 37,
+          "roman": "Khuliqal insaanu min 'ajal; sa ureekum Aayaatee falaa tasta'jiloon"
+        }
+      ]
+    },
+    {
+      "token": "'akal",
+      "frequency": 1,
+      "suggestedToken": "'alal",
+      "suggestedFrequency": 199,
+      "score": 198,
+      "locations": [
+        {
+          "surah": 26,
+          "ayah": 111,
+          "roman": "Qaalooo anu'minu laka wattaba 'akal arzaloon"
+        }
+      ]
+    },
+    {
+      "token": "linnaa",
+      "frequency": 1,
+      "suggestedToken": "innaa",
+      "suggestedFrequency": 179,
+      "score": 178,
+      "locations": [
+        {
+          "surah": 26,
+          "ayah": 33,
+          "roman": "Wa naza'a yadahoo faidhaa hiya baidaaa'u linnaa zireen"
+        }
+      ]
+    }
+  ]
+}
