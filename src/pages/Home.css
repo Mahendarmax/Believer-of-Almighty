@@ -373,13 +373,25 @@
 .qv-drop-search {
   width: 100%;
   padding: 12px 14px;
-  background: var(--bg-primary);
+  background-color: var(--bg-primary) !important;
   border: none;
   border-bottom: 1px solid rgba(26, 16, 5, 0.16);
   color: var(--text-primary);
   font-size: 0.84rem;
   outline: none;
   box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.qv-drop-search:focus {
+  background-color: var(--bg-primary) !important;
+}
+.qv-drop-search:-webkit-autofill,
+.qv-drop-search:-webkit-autofill:hover,
+.qv-drop-search:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-primary) inset;
+  box-shadow: 0 0 0 1000px var(--bg-primary) inset;
 }
 .qv-drop-search::placeholder {
   color: var(--text-muted);
