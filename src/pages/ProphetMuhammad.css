@@ -50,6 +50,45 @@
   font-family: 'Amiri', serif;
 }
 
+.seerah-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 253, 247, 0.9);
+  border: 1.5px solid #1a1005;
+  border-radius: 999px;
+  padding: 0.28rem;
+  margin: 0 0 1rem;
+}
+
+.seerah-mode-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  transition: var(--transition);
+}
+
+.seerah-mode-btn:hover {
+  color: var(--text-primary);
+  background: rgba(184,134,11,0.1);
+}
+
+.seerah-mode-btn.active {
+  color: #ffffff;
+  border-color: #0f6d48;
+  background: linear-gradient(135deg, #1f8f5f, #0f6d48);
+}
+
+.seerah-mode-hint {
+  margin: -0.35rem 0 1rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
 /* Hero */
 .seerah-hero {
   background: rgba(255, 253, 247, 0.88);
@@ -366,6 +405,10 @@
   background: rgba(184,134,11,0.05);
   border: 1px solid rgba(184,134,11,0.12);
 }
+.urdu-block {
+  background: rgba(15,109,72,0.06);
+  border: 1px solid rgba(15,109,72,0.2);
+}
 
 .seerah-lang-tag {
   display: inline-block;
@@ -385,6 +428,10 @@
   background: rgba(184,134,11,0.15);
   color: var(--accent-dim);
 }
+.urdu-block .seerah-lang-tag {
+  background: rgba(15,109,72,0.14);
+  color: #0f6d48;
+}
 
 .seerah-telugu-text {
   font-family: 'Noto Sans Telugu', sans-serif;
@@ -399,6 +446,19 @@
   line-height: 1.75;
   font-style: italic;
   margin: 0;
+}
+
+.seerah-urdu-note {
+  font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', 'Amiri', serif;
+  font-size: 0.88rem;
+  color: #0f6d48;
+  line-height: 1.8;
+  margin: 0 0 0.55rem;
+}
+
+.seerah-english-fallback {
+  direction: ltr;
+  text-align: left;
 }
 
 /* Footer */
@@ -451,6 +511,8 @@
 @media (max-width: 480px) {
   .seerah-page { padding: 0 14px 70px; }
   .seerah-header { gap: 10px; padding: 16px 0 14px; }
+  .seerah-mode-toggle { margin-bottom: 0.8rem; }
+  .seerah-mode-btn { font-size: 0.68rem; padding: 0.3rem 0.62rem; }
   .seerah-hero { padding: 1.5rem 1rem; }
   .seerah-hero-basmala { font-size: 2.5rem; }
   .seerah-hero-name { font-size: 1.3rem; }
