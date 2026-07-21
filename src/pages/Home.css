@@ -808,41 +808,6 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
-.seerah-action-card {
-  cursor: pointer;
-}
-
-.seerah-action-card:focus-visible {
-  outline: 3px solid rgba(26, 16, 5, 0.28);
-  outline-offset: 2px;
-}
-
-.seerah-urdu-toggle {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 4;
-  border: 1.5px solid #1a1005;
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 0.66rem;
-  font-weight: 700;
-  color: #4a3618;
-  background: rgba(255, 255, 255, 0.85);
-  transition: var(--transition);
-}
-
-.seerah-urdu-toggle:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.seerah-urdu-toggle.active {
-  background: linear-gradient(135deg, #1f8f5f, #0f6d48);
-  color: #ffffff;
-  border-color: #0f6d48;
-}
-
 .action-card::after {
   content: '';
   position: absolute;

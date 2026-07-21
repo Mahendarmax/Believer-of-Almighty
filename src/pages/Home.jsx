@@ -123,13 +123,6 @@ const Home = React.memo(function Home() {
   const [qvDropOpen, setQvDropOpen] = useState(false)
   const [qvFilter, setQvFilter] = useState('')
   const qvDropRef = useRef(null)
-  const [seerahUrduMode, setSeerahUrduMode] = useState(() => {
-    try {
-      return localStorage.getItem('seerahHomeUrduMode') === '1'
-    } catch {
-      return false
-    }
-  })
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -252,22 +245,11 @@ const Home = React.memo(function Home() {
 
   const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
-  const handleOpenSeerah = useCallback(() => {
-    navigate(seerahUrduMode ? '/prophet-muhammad?lang=urdu' : '/prophet-muhammad')
-  }, [navigate, seerahUrduMode])
   const handleContinue = useCallback(() => {
     if (lastRead) {
       navigate(`/surah/${lastRead.surahNumber}?verse=${lastRead.verseNumber || 1}&t=${Date.now()}`)
     }
   }, [navigate, lastRead])
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('seerahHomeUrduMode', seerahUrduMode ? '1' : '0')
-    } catch {
-      // Ignore storage issues in private browsing or restricted contexts
-    }
-  }, [seerahUrduMode])
 
   return (
     <div className="home" data-bg={bgImage}>
@@ -438,34 +420,11 @@ const Home = React.memo(function Home() {
           <span className="action-meta">{COUNTS.isa} {transliteration === 'telugu' ? 'వచనాలు' : 'Verses'}</span>
         </button>
 
-        <div
-          className="action-card seerah-action-card"
-          role="button"
-          tabIndex={0}
-          onClick={handleOpenSeerah}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              handleOpenSeerah()
-            }
-          }}
-          aria-label={seerahUrduMode ? 'Open Seerah in Urdu mode' : 'Open Seerah'}
-        >
-          <button
-            type="button"
-            className={`seerah-urdu-toggle ${seerahUrduMode ? 'active' : ''}`}
-            aria-pressed={seerahUrduMode}
-            onClick={(e) => {
-              e.stopPropagation()
-              setSeerahUrduMode(prev => !prev)
-            }}
-          >
-            Urdu
-          </button>
-          <h3>{seerahUrduMode ? 'سیرت النبی ﷺ' : (transliteration === 'telugu' ? 'ప్రవక్త ﷺ జీవిత చరిత్ర' : 'Seerah — Prophet ﷺ Life')}</h3>
-          {seerahUrduMode ? <p dir="rtl">نبی ﷺ کی زندگی</p> : (transliteration !== 'telugu' && <p>ప్రవక్త ﷺ జీవిత చరిత్ర</p>)}
-          <span className="action-meta">{COUNTS.seerah} {seerahUrduMode ? 'واقعات' : (transliteration === 'telugu' ? 'సంఘటనలు' : 'Events')}</span>
-        </div>
+        <button className="action-card seerah-action-card" onClick={() => navigate('/prophet-muhammad')}>
+          <h3>{transliteration === 'telugu' ? 'ప్రవక్త ﷺ జీవిత చరిత్ర' : 'Seerah — Prophet ﷺ Life'}</h3>
+          {transliteration !== 'telugu' && <p>ప్రవక్త ﷺ జీవిత చరిత్ర</p>}
+          <span className="action-meta">{COUNTS.seerah} {transliteration === 'telugu' ? 'సంఘటనలు' : 'Events'}</span>
+        </button>
 
         <button className="action-card fav-card" onClick={handleFavorites}>
           <h3>{transliteration === 'telugu' ? 'ఇష్టమైనవి' : 'Favorites'}</h3>
