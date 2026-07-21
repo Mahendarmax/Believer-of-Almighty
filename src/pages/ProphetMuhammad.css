@@ -113,6 +113,7 @@
   padding: 6px 10px;
   font-size: 0.68rem;
   font-weight: 700;
+  white-space: nowrap;
   transition: var(--transition);
 }
 
