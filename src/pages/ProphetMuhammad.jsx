@@ -28,8 +28,16 @@ function ProphetMuhammad() {
           </svg>
         </button>
         <div className="seerah-title-group">
-          <h1 className="seerah-title" dir={isUrdu ? 'rtl' : undefined}>{isUrdu ? 'سیرت النبی ﷺ' : 'సీరత్-ఉన్-నబీ ﷺ'}</h1>
-          <span className="seerah-subtitle" dir={isUrdu ? 'rtl' : undefined}>{isUrdu ? 'سِيرَةُ النَّبِيِّ مُحَمَّدٍ ﷺ — حیاتِ نبی محمد ﷺ' : 'سِيرَةُ النَّبِيِّ مُحَمَّدٍ ﷺ — Life of Prophet Muhammad'}</span>
+          <h1 className="seerah-title" dir={isUrdu ? 'rtl' : undefined}>
+            {isUrdu ? 'سیرت النبی ﷺ' : (effectiveTransliteration === 'english' ? 'Seerah-un-Nabi ﷺ' : 'సీరత్-ఉన్-నబీ ﷺ')}
+          </h1>
+          <span className="seerah-subtitle" dir={isUrdu ? 'rtl' : undefined}>
+            {isUrdu
+              ? 'سِيرَةُ النَّبِيِّ مُحَمَّدٍ ﷺ — حیاتِ نبی محمد ﷺ'
+              : (effectiveTransliteration === 'english'
+                ? 'Life of Prophet Muhammad ﷺ'
+                : 'سِيرَةُ النَّبِيِّ مُحَمَّدٍ ﷺ — Life of Prophet Muhammad')}
+          </span>
         </div>
       </header>
 
