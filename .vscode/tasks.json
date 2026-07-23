@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Commit and push final cleanup",
+			"type": "shell",
+			"command": "git add -A; git commit -m 'Remove remaining local tafsir helper files'; git push",
+			"isBackground": false
+		}
+	]
+}
