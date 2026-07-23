@@ -374,6 +374,116 @@ const toKeyPoints = (text, limit = 3) => {
   return sentences.slice(0, limit)
 }
 
+const splitSentences = (text) => String(text || '')
+  .replace(/\s+/g, ' ')
+  .split(/(?<=[.!?])\s+/u)
+  .map((part) => part.trim())
+  .filter(Boolean)
+
+const getAudienceFromTafsir = (text) => {
+  const lower = String(text || '').toLowerCase()
+  const picks = []
+
+  if (/\bdisbelievers?\b/.test(lower)) picks.push({ en: 'Disbelievers', te: 'అవిశ్వాసులు' })
+  if (/\bbelievers?\b/.test(lower)) picks.push({ en: 'Believers', te: 'విశ్వాసులు' })
+  if (/\bhypocrites?\b/.test(lower)) picks.push({ en: 'Hypocrites', te: 'కపట విశ్వాసులు' })
+  if (/\bpeople of the book\b|\bjews?\b|\bchristians?\b/.test(lower)) picks.push({ en: 'People of the Book', te: 'గ్రంథధారులు' })
+  if (/\bprophet\b|\bmessenger\b/.test(lower)) picks.push({ en: 'The Prophet and his community', te: 'ప్రవక్త మరియు ఆయన సమాజం' })
+  if (/\bmankind\b|\bhumanity\b|\bpeople\b/.test(lower)) picks.push({ en: 'General people', te: 'సామాన్య ప్రజలు' })
+
+  return picks.slice(0, 2)
+}
+
+const extractRevelationContext = (text) => {
+  const cleaned = stripTafsirPrefix(text)
+  if (!cleaned) return null
+
+  const sentences = splitSentences(cleaned)
+  const revealSentence = sentences.find((s) => /revealed\s+in|which\s+was\s+revealed\s+in|sent\s+down\s+in/iu.test(s)) || ''
+  const contextSentences = sentences.filter((s) => /when|because|concerning|about|occasion|incident|after|before|questioned|asked/iu.test(s))
+  const snippets = []
+  if (revealSentence) snippets.push(revealSentence)
+  for (const sentence of contextSentences) {
+    if (snippets.length >= 3) break
+    if (!snippets.includes(sentence)) snippets.push(sentence)
+  }
+
+  const placeMatch = cleaned.match(/revealed\s+in\s+([A-Za-z\-\s]{3,40})/iu)
+  const place = placeMatch ? placeMatch[1].replace(/\s+/g, ' ').trim().replace(/[.,;:]+$/u, '') : ''
+  const audience = getAudienceFromTafsir(cleaned)
+
+  return {
+    place,
+    audience,
+    snippets
+  }
+}
+
+const buildRevelationContext = ({ verse, offlineTafsir, transliteration, surahNumber }) => {
+  const key = `${surahNumber}:${verse?.number}`
+  const override = VERSE_CONTEXT_OVERRIDES[key]
+  if (override) {
+    if (transliteration === 'telugu') return override.telugu
+    if (transliteration === 'both') return `${override.telugu}\n\n${override.english}`
+    return override.english
+  }
+
+  const sourceType = String(offlineTafsir?.sourceType || 'local-meaning-summary')
+  const tafsirText = String(offlineTafsir?.text || '').trim()
+  const parsed = extractRevelationContext(tafsirText)
+
+  if (!parsed || (!parsed.place && !parsed.audience.length && !parsed.snippets.length)) {
+    if (sourceType === 'local-meaning-summary') {
+      if (transliteration === 'telugu') {
+        return 'ఈ ఆయత్‌కు ప్రత్యేక అవతరణ సందర్భం (Asbab al-Nuzul) స్థానిక తఫ్సీర్‌లో స్పష్టంగా లేదు. ప్రస్తుతం స్థానిక అర్థం మాత్రమే అందుబాటులో ఉంది.'
+      }
+      if (transliteration === 'both') {
+        return 'ఈ ఆయత్‌కు ప్రత్యేక అవతరణ సందర్భం (Asbab al-Nuzul) స్థానిక తఫ్సీర్‌లో స్పష్టంగా లేదు.\n\nSpecific revelation circumstance (Asbab al-Nuzul) is not clearly available in the local tafsir for this verse.'
+      }
+      return 'Specific revelation circumstance (Asbab al-Nuzul) is not clearly available in the local tafsir for this verse. Only local meaning summary is available.'
+    }
+
+    if (transliteration === 'telugu') {
+      return `తఫ్సీర్ నుండి నేపథ్య సంగ్రహం:\n${tafsirText || 'ఈ ఆయత్‌కు సంబంధిత వివరణ అందుబాటులో లేదు.'}`
+    }
+    if (transliteration === 'both') {
+      return `తఫ్సీర్ నుండి నేపథ్య సంగ్రహం:\n${tafsirText || '—'}`
+    }
+    return `Context note from tafsir:\n${tafsirText || 'No tafsir context available.'}`
+  }
+
+  const audienceTe = parsed.audience.map((x) => x.te).join(', ') || 'స్పష్టంగా పేర్కొనబడలేదు'
+  const audienceEn = parsed.audience.map((x) => x.en).join(', ') || 'Not explicitly stated'
+  const snippetsTe = parsed.snippets.slice(0, 2).join(' ')
+  const snippetsEn = parsed.snippets.slice(0, 2).join(' ')
+
+  if (transliteration === 'telugu') {
+    return [
+      `• అవతరణ స్థలం: ${parsed.place ? `${parsed.place}` : 'స్పష్టంగా పేర్కొనబడలేదు'}`,
+      `• లక్ష్య వర్గం: ${audienceTe}`,
+      `• తఫ్సీర్ సూచన: ${snippetsTe || 'సూచన వాక్యం లభించలేదు.'}`
+    ].join('\n')
+  }
+
+  if (transliteration === 'both') {
+    return [
+      `• అవతరణ స్థలం: ${parsed.place ? `${parsed.place}` : 'స్పష్టంగా పేర్కొనబడలేదు'}`,
+      `• లక్ష్య వర్గం: ${audienceTe}`,
+      `• తఫ్సీర్ సూచన: ${snippetsTe || 'సూచన వాక్యం లభించలేదు.'}`,
+      '',
+      `• Place of revelation: ${parsed.place || 'Not explicitly stated'}`,
+      `• Addressed group: ${audienceEn}`,
+      `• Tafsir clue: ${snippetsEn || 'No direct clue sentence found.'}`
+    ].join('\n')
+  }
+
+  return [
+    `• Place of revelation: ${parsed.place || 'Not explicitly stated'}`,
+    `• Addressed group: ${audienceEn}`,
+    `• Tafsir clue: ${snippetsEn || 'No direct clue sentence found.'}`
+  ].join('\n')
+}
+
 const buildDetailedExplanation = ({ verse, verseContext, offlineTafsir, transliteration, surahNumber }) => {
   const key = `${surahNumber}:${verse?.number}`
   const override = VERSE_CONTEXT_OVERRIDES[key]
@@ -392,13 +502,13 @@ const buildDetailedExplanation = ({ verse, verseContext, offlineTafsir, translit
   const context = stripTafsirPrefix(verseContext?.text)
 
   const points = toKeyPoints(tafsir || context || meaning, 3)
-  const bulletLines = (points.length ? points : [meaning || '—']).map((p) => `• ${p}`)
+  const bulletLines = (points.length ? points : [tafsir || context || '—']).map((p) => `• ${p}`)
 
   if (isTeluguMode) {
-    return `${bulletLines.join('\n')}\n\nసులభమైన అర్థం:\n${meaning || 'ఈ ఆయత్‌కు స్థానిక అర్థం అందుబాటులో లేదు.'}`
+    return bulletLines.join('\n')
   }
 
-  return `${bulletLines.join('\n')}\n\nSimple Meaning:\n${meaning || 'No local verse meaning available.'}`
+  return bulletLines.join('\n')
 }
 
 // Single verse card
@@ -533,6 +643,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
     transliteration,
     surahNumber
   }), [verse, verseContext, offlineTafsir, transliteration, surahNumber])
+  const revelationContext = useMemo(() => buildRevelationContext({
+    verse,
+    offlineTafsir,
+    transliteration,
+    surahNumber
+  }), [verse, offlineTafsir, transliteration, surahNumber])
 
   return (
     <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''} ${isActive ? 'vv-verse-active' : ''} ${isSurahPlaying && !isActive ? 'vv-verse-dimmed' : ''}`} id={`verse-${verse.number}`}>
@@ -677,6 +793,15 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
                 {(transliteration === 'telugu' || transliteration === 'both') ? 'విస్తృత వివరణ' : 'Detailed Explanation'}
               </span>
               <p>{detailedExplanation}</p>
+            </>
+          )}
+
+          {!!revelationContext && (
+            <>
+              <span className="vc-label vc-context-label">
+                {(transliteration === 'telugu' || transliteration === 'both') ? 'ఈ ఆయత్ ఏ సందర్భంలో, ఎవరికి?' : 'When and for whom was this verse revealed?'}
+              </span>
+              <p>{revelationContext}</p>
             </>
           )}
 
