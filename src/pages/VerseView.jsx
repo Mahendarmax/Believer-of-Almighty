@@ -306,11 +306,107 @@ const ScrollToTop = memo(() => {
 })
 ScrollToTop.displayName = 'ScrollToTop'
 
+const OFFLINE_TAFSIR_SOURCE_LABEL = 'Ibn Kathir (Abridged)'
+const OFFLINE_TAFSIR_SECONDARY_SOURCE_LABEL = 'Tafsir Muyassar'
+
+const VERSE_CONTEXT_OVERRIDES = {
+  '2:6': {
+    english: 'These verses (2:6-7) are connected in meaning. Verse 2:6 states that when someone knowingly and persistently rejects clear truth, repeated warnings may no longer benefit them. This is not about people who are sincerely searching, but about deliberate and stubborn denial after clarity.',
+    telugu: 'ఈ ఆయతులు (2:6-7) పరస్పరంగా అనుసంధానమై ఉన్నాయి. 2:6లో, సత్యం స్పష్టంగా తెలిసిన తర్వాత కూడా దానిని మొండిగా తిరస్కరించే వారిని గురించి చెప్పబడింది. అలాంటి వారికి హెచ్చరిక చేసినా, చేయకపోయినా ఒకేలా ఉండొచ్చు. ఇది నిజాయితీగా సత్యాన్ని వెతికేవారి గురించి కాదు; స్పష్టత వచ్చిన తరువాత కూడా ఉద్దేశపూర్వకంగా తిరస్కరించేవారి గురించి.'
+  },
+  '2:7': {
+    english: 'Verse 2:7 explains the spiritual consequence of repeated, conscious rejection of truth: hearts, hearing, and sight become veiled. This is a moral-spiritual condition produced by persistent denial, not a random injustice. The closing phrase is: "Wa lahum \u2018adhabun \u2018azim" (وَلَهُمْ عَذَابٌ عَظِيمٌ), which carries the sense of a great or severe punishment.',
+    telugu: '2:7 ఆయత్, సత్యాన్ని పదేపదే తెలిసి తిరస్కరించే స్థితి చివరికి ఎలా ఆధ్యాత్మిక మూసివేతకు దారితీస్తుందో వివరిస్తుంది.\n\n• హృదయంపై ముద్ర: సత్యాన్ని స్వీకరించే అంతరంగ సిద్ధత తగ్గిపోవడం.\n• చెవులపై ముద్ర: ఉపదేశం వినిపించినా ప్రభావం తగ్గిపోవడం.\n• కళ్లపై తెర: నిజాన్ని చూడగల నైతిక స్పష్టత మందగించడం.\n\nచివరి భాగం: "వ లహుం అఽధాబున్ అఽజీమ్" (وَلَهُمْ عَذَابٌ عَظِيمٌ)\nఇక్కడ "అఽజీమ్" భావం: గొప్ప / పెద్ద / తీవ్రమైన.\nఅందుకే ఈ సందర్భంలో "వారికి తీవ్రమైన శిక్ష ఉంది" అనే అనువాదం సహజంగా, భావానికి దగ్గరగా ఉంటుంది.'
+  }
+}
+
+const buildVerseContext = (verse, surahNumber, verseNumber, transliteration) => {
+  const override = VERSE_CONTEXT_OVERRIDES[`${surahNumber}:${verseNumber}`]
+  if (override) {
+    if (transliteration === 'telugu') {
+      return { title: 'వివరణ', text: override.telugu }
+    }
+    if (transliteration === 'both') {
+      return { title: 'Context', text: `${override.telugu}\n\n${override.english}` }
+    }
+    return { title: 'Context', text: override.english }
+  }
+
+  if (transliteration === 'telugu') {
+    return {
+      title: 'వివరణ',
+      text: verse?.telugu || 'ఈ ఆయత్‌కు తెలుగు అర్థం అందుబాటులో లేదు.'
+    }
+  }
+  if (transliteration === 'both') {
+    return {
+      title: 'Context',
+      text: `తెలుగు:\n${verse?.telugu || '—'}\n\nEnglish:\n${verse?.translation || '—'}`
+    }
+  }
+  return {
+    title: 'Context',
+    text: verse?.translation || 'No local verse meaning available.'
+  }
+}
+
+const stripTafsirPrefix = (text) => String(text || '')
+  .replace(/^సరళ తఫ్సీర్ భావం:\s*/u, '')
+  .replace(/^స్థానిక అర్థ సారాంశం:\s*/u, '')
+  .replace(/^Meaning-based local note:\s*/u, '')
+  .trim()
+
+const toKeyPoints = (text, limit = 3) => {
+  const cleaned = String(text || '').trim()
+  if (!cleaned) return []
+
+  const lines = cleaned
+    .split(/\n+/)
+    .map((line) => line.replace(/^[•\-]\s*/u, '').trim())
+    .filter(Boolean)
+
+  const sentences = lines.flatMap((line) => line
+    .split(/(?<=[.!?;:])\s+/u)
+    .map((part) => part.trim())
+    .filter(Boolean)
+  )
+
+  return sentences.slice(0, limit)
+}
+
+const buildDetailedExplanation = ({ verse, verseContext, offlineTafsir, transliteration, surahNumber }) => {
+  const key = `${surahNumber}:${verse?.number}`
+  const override = VERSE_CONTEXT_OVERRIDES[key]
+
+  if (override) {
+    if (transliteration === 'telugu') return override.telugu
+    if (transliteration === 'both') return `${override.telugu}\n\n${override.english}`
+    return override.english
+  }
+
+  const isTeluguMode = transliteration === 'telugu' || transliteration === 'both'
+  const meaning = isTeluguMode
+    ? String(verse?.telugu || '').trim()
+    : String(verse?.translation || '').trim()
+  const tafsir = stripTafsirPrefix(offlineTafsir?.text)
+  const context = stripTafsirPrefix(verseContext?.text)
+
+  const points = toKeyPoints(tafsir || context || meaning, 3)
+  const bulletLines = (points.length ? points : [meaning || '—']).map((p) => `• ${p}`)
+
+  if (isTeluguMode) {
+    return `${bulletLines.join('\n')}\n\nసులభమైన అర్థం:\n${meaning || 'ఈ ఆయత్‌కు స్థానిక అర్థం అందుబాటులో లేదు.'}`
+  }
+
+  return `${bulletLines.join('\n')}\n\nSimple Meaning:\n${meaning || 'No local verse meaning available.'}`
+}
+
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter, verseContext, offlineTafsir }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [shareToast, setShareToast] = useState(null)
+  const [showContext, setShowContext] = useState(false)
   const cardRef = useRef(null)
 
   const handleDownload = useCallback(async () => {
@@ -430,6 +526,13 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
 
   // Memoize Telugu transliteration to avoid recomputing on every render
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
+  const detailedExplanation = useMemo(() => buildDetailedExplanation({
+    verse,
+    verseContext,
+    offlineTafsir,
+    transliteration,
+    surahNumber
+  }), [verse, verseContext, offlineTafsir, transliteration, surahNumber])
 
   return (
     <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''} ${isActive ? 'vv-verse-active' : ''} ${isSurahPlaying && !isActive ? 'vv-verse-dimmed' : ''}`} id={`verse-${verse.number}`}>
@@ -490,6 +593,14 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
             </svg>
           </button>
+          <button
+            className={`vc-action-btn vc-context-btn ${showContext ? 'active' : ''}`}
+            onClick={() => setShowContext(prev => !prev)}
+            title={showContext ? 'Hide context' : 'Show context'}
+            aria-label={showContext ? 'Hide context' : 'Show context'}
+          >
+            i
+          </button>
           <AudioPlayer
             audioUrl={getVerseAudioUrl(surahNumber, verse.number, reciter)}
             verseNumber={verse.number}
@@ -548,6 +659,42 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
           </p>
         </div>
       )}
+
+      {showContext && (
+        <div className="vc-context-panel">
+          {verseContext?.text && (
+            <>
+              <span className="vc-label vc-context-label">
+                {(transliteration === 'telugu' || transliteration === 'both') ? 'సులభమైన అర్థం' : 'Simple Meaning'}
+              </span>
+              <p>{verseContext.text}</p>
+            </>
+          )}
+
+          {!!detailedExplanation && (
+            <>
+              <span className="vc-label vc-context-label">
+                {(transliteration === 'telugu' || transliteration === 'both') ? 'విస్తృత వివరణ' : 'Detailed Explanation'}
+              </span>
+              <p>{detailedExplanation}</p>
+            </>
+          )}
+
+          <span className="vc-label vc-context-label vc-context-source">
+            {(transliteration === 'telugu' || transliteration === 'both')
+              ? `తఫ్సీర్ (${offlineTafsir?.sourceType === 'ibn-kathir-section' ? `Local Offline Source: ${OFFLINE_TAFSIR_SOURCE_LABEL}` : offlineTafsir?.sourceType === 'tafsir-muyassar-section' ? `Local Offline Source: ${OFFLINE_TAFSIR_SECONDARY_SOURCE_LABEL}` : 'Local Meaning Summary'})`
+              : `Tafsir (${offlineTafsir?.sourceType === 'ibn-kathir-section' ? `Local Offline Source: ${OFFLINE_TAFSIR_SOURCE_LABEL}` : offlineTafsir?.sourceType === 'tafsir-muyassar-section' ? `Local Offline Source: ${OFFLINE_TAFSIR_SECONDARY_SOURCE_LABEL}` : 'Local Meaning Summary'})`}
+          </span>
+          {!!offlineTafsir?.text && <p>{offlineTafsir.text}</p>}
+          {!offlineTafsir?.text && (
+            <p className="vc-context-error">
+              {(transliteration === 'telugu' || transliteration === 'both')
+                ? 'ఈ ఆయత్‌కు స్థానిక తఫ్సీర్ ఇంకా జోడించలేదు.'
+                : 'Local tafsir is not available for this verse yet.'}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   )
 })
@@ -568,6 +715,7 @@ function VerseView() {
   const [isPaused, setIsPaused] = useState(false)
   const [bookmarkToast, setBookmarkToast] = useState(null)
   const [visibleCount, setVisibleCount] = useState(30)
+  const [tafsirByVerse, setTafsirByVerse] = useState({})
   const surahAudioRef = useRef(null)
   const versePlaylistRef = useRef(null)
   const scrolledToVerse = useRef(false)
@@ -576,6 +724,33 @@ function VerseView() {
 
   const surahNumber = parseInt(number)
   const surah = useMemo(() => getSurahByNumber(surahNumber), [surahNumber])
+
+  useEffect(() => {
+    let cancelled = false
+    setTafsirByVerse({})
+
+    const loadLocalTafsir = async () => {
+      try {
+        const res = await fetch(`/tafsir-support/${surahNumber}.json`, { cache: 'force-cache' })
+        if (!res.ok) throw new Error(`tafsir-local-${res.status}`)
+        const data = await res.json()
+        const next = {}
+        for (const row of data?.verses || []) {
+          const sourceType = String(row.sourceType || 'local-meaning-summary')
+          const text = (transliteration === 'telugu' || transliteration === 'both')
+            ? String(row.tafsirTelugu || '').trim()
+            : String(row.tafsirEnglish || '').trim()
+          next[String(row.number)] = { sourceType, text }
+        }
+        if (!cancelled) setTafsirByVerse(next)
+      } catch {
+        if (!cancelled) setTafsirByVerse({})
+      }
+    }
+
+    loadLocalTafsir()
+    return () => { cancelled = true }
+  }, [surahNumber, transliteration])
 
   // O(1) favorites lookup — avoids calling isFavorite(n) per verse in render loop
   const favSet = useMemo(() => {
@@ -976,6 +1151,8 @@ function VerseView() {
                 onToggleFav={handleToggleFav}
                 transliteration={transliteration}
                 reciter={reciter}
+                verseContext={buildVerseContext(verse, surahNumber, verse.number, transliteration)}
+                offlineTafsir={tafsirByVerse[String(verse.number)] || null}
               />
             ))}
             {visibleCount < verses.length && (
