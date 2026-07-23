@@ -727,48 +727,6 @@
   background: rgba(212, 164, 74, 0.12);
 }
 
-.vc-context-btn {
-  position: relative;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  font-weight: 700;
-  font-size: 0.9rem;
-  line-height: 1;
-  border: 1px solid rgba(212, 164, 74, 0.45);
-  color: #e6bc60;
-  background:
-    radial-gradient(circle at 28% 24%, rgba(255, 233, 174, 0.28), rgba(255, 233, 174, 0.02) 48%),
-    linear-gradient(140deg, rgba(13, 89, 72, 0.28), rgba(212, 164, 74, 0.2));
-  box-shadow:
-    inset 0 0 0 1px rgba(212, 164, 74, 0.15),
-    0 4px 10px rgba(13, 89, 72, 0.16);
-  text-shadow: 0 1px 2px rgba(15, 25, 24, 0.4);
-}
-
-.vc-context-btn:hover,
-.vc-context-btn.active {
-  color: #f7d488;
-  border-color: rgba(212, 164, 74, 0.72);
-  background:
-    radial-gradient(circle at 28% 24%, rgba(255, 240, 194, 0.35), rgba(255, 240, 194, 0.04) 48%),
-    linear-gradient(140deg, rgba(13, 89, 72, 0.35), rgba(212, 164, 74, 0.28));
-  box-shadow:
-    inset 0 0 0 1px rgba(212, 164, 74, 0.2),
-    0 6px 14px rgba(13, 89, 72, 0.22);
-}
-
-.vc-context-btn.active {
-  color: #0f3b31;
-  text-shadow: none;
-  background:
-    radial-gradient(circle at 28% 24%, rgba(255, 246, 212, 0.4), rgba(255, 246, 212, 0.08) 52%),
-    linear-gradient(140deg, rgba(212, 164, 74, 0.9), rgba(184, 134, 11, 0.82));
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 233, 173, 0.35),
-    0 8px 16px rgba(184, 134, 11, 0.24);
-}
-
 .vc-share-toast {
   position: absolute;
   right: 0;
@@ -857,41 +815,6 @@
   color: #333333;
   line-height: 1.75;
   font-style: italic;
-}
-
-/* Revelation Context / Tafsir */
-.vc-context-panel {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border: 1px dashed rgba(212, 164, 74, 0.55);
-  border-radius: var(--radius-sm);
-  background: rgba(212, 164, 74, 0.08);
-}
-
-.vc-context-label {
-  margin-bottom: 6px;
-}
-
-.vc-context-panel p {
-  margin: 0;
-  white-space: pre-line;
-  color: #1a1005;
-  line-height: 1.65;
-  font-size: 0.9rem;
-}
-
-.vc-context-source {
-  display: block;
-  margin-top: 10px;
-}
-
-.vc-context-loading,
-.vc-context-error {
-  margin-top: 4px;
-}
-
-.vc-context-error {
-  color: #7a3f10;
 }
 
 /* Bottom nav */
@@ -1015,8 +938,6 @@
   .vc-action-btn { width: 28px; height: 28px; }
   .vc-action-btn svg { width: 14px; height: 14px; }
 
-  .vc-context-btn { width: 28px; height: 28px; font-size: 0.72rem; }
-
   .vv-nav, .vv-bottom-nav {
     padding: 10px 0;
     gap: 8px;
@@ -1054,7 +975,6 @@
   .vc-number span { font-size: 0.65rem; }
   .vc-action-btn { width: 26px; height: 26px; }
   .vc-action-btn svg { width: 13px; height: 13px; }
-  .vc-context-btn { width: 26px; height: 26px; font-size: 0.68rem; }
   .vc-actions { gap: 2px; }
 
   .vv-nav-btn, .vv-bottom-nav .vv-nav-btn { font-size: 0.72rem; padding: 7px 10px; }
@@ -1308,19 +1228,6 @@
   color: #9a9490;
 }
 
-[data-theme="dark"] .vc-context-panel {
-  border-color: rgba(212, 164, 74, 0.45);
-  background: rgba(212, 164, 74, 0.1);
-}
-
-[data-theme="dark"] .vc-context-panel p {
-  color: #e8e4de;
-}
-
-[data-theme="dark"] .vc-context-error {
-  color: #efb58c;
-}
-
 [data-theme="dark"] .vc-action-btn {
   color: #d4a44a;
 }
@@ -1328,33 +1235,6 @@
 [data-theme="dark"] .vc-action-btn:hover {
   background: rgba(212, 164, 74, 0.15);
   color: #e8c36a;
-}
-
-[data-theme="dark"] .vc-context-btn {
-  color: #efc86f;
-  border-color: rgba(212, 164, 74, 0.56);
-  background:
-    radial-gradient(circle at 28% 24%, rgba(255, 234, 179, 0.2), rgba(255, 234, 179, 0.02) 52%),
-    linear-gradient(140deg, rgba(9, 62, 51, 0.44), rgba(122, 90, 28, 0.4));
-  box-shadow:
-    inset 0 0 0 1px rgba(212, 164, 74, 0.2),
-    0 4px 10px rgba(0, 0, 0, 0.26);
-}
-
-[data-theme="dark"] .vc-context-btn:hover,
-[data-theme="dark"] .vc-context-btn.active {
-  color: #ffe29e;
-  border-color: rgba(232, 195, 106, 0.72);
-  background:
-    radial-gradient(circle at 28% 24%, rgba(255, 242, 210, 0.24), rgba(255, 242, 210, 0.04) 52%),
-    linear-gradient(140deg, rgba(12, 86, 70, 0.52), rgba(166, 124, 34, 0.46));
-}
-
-[data-theme="dark"] .vc-context-btn.active {
-  color: #102f2a;
-  background:
-    radial-gradient(circle at 28% 24%, rgba(255, 246, 212, 0.34), rgba(255, 246, 212, 0.1) 52%),
-    linear-gradient(140deg, rgba(212, 164, 74, 0.9), rgba(184, 134, 11, 0.84));
 }
 
 [data-theme="dark"] .vv-bottom-nav {
