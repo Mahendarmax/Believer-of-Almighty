@@ -114,7 +114,7 @@ export const adhkarData = [
       },
       {
         arabic: 'حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ۖ عَلَيْهِ تَوَكَّلْتُ ۖ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ',
-        roman: "Hasbiyal-laahu laa ilaaha illaa Huwa, 'alayhi tawakkaltu, wa Huwa Rabbul-'Arshil-'Azeem",
+        roman: "Hasbiyal-laahu laa ilaaha illaa Huwa, 'alayhi tawakkaltu, wa Huwa Rabbul-'Arshil-'Adheem",
         english: 'Allah is sufficient for me. There is no god but He. In Him I put my trust, and He is the Lord of the Mighty Throne.',
         telugu: 'అల్లాహ్ నాకు చాలు. ఆయన తప్ప వేరే ఆరాధ్యుడు లేడు. ఆయనపైనే నేను భరోసా ఉంచాను, ఆయన గొప్ప సింహాసనం యొక్క ప్రభువు.',
         repeat: '7x',

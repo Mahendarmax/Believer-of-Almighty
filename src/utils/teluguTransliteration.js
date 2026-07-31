@@ -32,8 +32,6 @@ const WORD_OVERRIDES = {
   "tu'izzu": 'తుఇజ్జు',
   // 3:26 — kulli (كُلِّ)
   'kulli': 'కుల్లి',
-  // 3:26 — tuzillu (تُذِلُّ)
-  'tuzillu': 'తుజిల్లు',
 }
 
 // Nasals that use anusvara (ం) before a different consonant in natural Telugu.
