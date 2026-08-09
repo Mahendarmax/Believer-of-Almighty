@@ -161,11 +161,18 @@ function transliterateSegment(text, options = {}) {
         if (!vowelMatched) {
           // Decide: anusvara (ం) or halant (్)?
           const nextChar = i < lower.length ? lower[i] : ''
-          const useAnusvara = (
+          // If the next consonant is an h-suffix digraph (dh, th, sh, kh, gh, ph, ch, zh, jh, bh),
+          // it represents a distinct Arabic letter (ذ/ظ, ث/ط, ش, خ, غ, ف, ...) and should
+          // take halant + ZWNJ, not anusvara. e.g. yundharoon → యున్‌ధరూన్ (not యుంధరూన్).
+          const nextIsHDigraph = (
+            nextChar && i + 1 < lower.length && lower[i + 1] === 'h' &&
+            'dtszkgpcjb'.includes(nextChar)
+          )
+          const useAnusvara = !nextIsHDigraph && ((
             roman === 'n' && nextChar && isLetter(nextChar) && nextChar !== 'n' && nextChar !== 'f' && ANUSVARA_N_BEFORE.has(nextChar)
           ) || (
             !options.noMAnusvara && roman === 'm' && nextChar && isLetter(nextChar) && nextChar !== 'm' && ANUSVARA_M_BEFORE.has(nextChar)
-          )
+          ))
 
           if (useAnusvara) {
             result += ANUSVARA
