@@ -3,7 +3,9 @@
 // into Telugu script (e.g. "బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్")
 
 const VIRAMA = '\u0C4D' // Telugu halant (్)
-const ANUSVARA = '\u0C02' // Telugu anusvara (ం)
+// Note: Telugu anusvara (ం) is intentionally NOT used. Arabic ن and م are
+// distinct letters and must survive transliteration as base consonants (halant
+// + ZWNJ) rather than collapse into anusvara — e.g. antum → అన్‌తుమ్.
 const ZWNJ = '\u200C'    // Zero-width non-joiner — prevents conjunct formation
 
 // Consonant mappings — longest match first
@@ -33,19 +35,6 @@ const WORD_OVERRIDES = {
   // 3:26 — kulli (كُلِّ)
   'kulli': 'కుల్లి',
 }
-
-// Nasals that use anusvara (ం) before a different consonant in natural Telugu.
-// Maps nasal letter → set of following consonants where anusvara is used.
-// n before: t, d, th, dh, s, k, b, p, f, g, ch, kh, gh, sh
-// NOT when the same consonant follows (nn→న్న, mm→మ్మ stay halant for geminate)
-// NOT for 'nf' — Arabic nun+fa should stay halant న్ఫ (e.g. munfiqeena → మున్ఫిఖీన)
-// NOT before 'y' — Telugu uses halant న్య/మ్య not anusvara ంయ (e.g. dunyaa → దున్యా)
-// NOT before 'z' or 'j' — both map to జ in Telugu; Arabic نز/نج/مز/مج clusters need halant
-//   (e.g. tanzi'u → తన్‌జిఉ, tanzeel → తన్‌జీల్, munjaa → మున్‌జా)
-// n before certain consonants → anusvara (e.g. antum → అంతుమ్)
-const ANUSVARA_N_BEFORE = new Set(['t', 'd', 's', 'k', 'b', 'p', 'g', 'c', 'q', 'v', 'w', 'h', 'l', 'r', 'm'])
-// m before certain consonants → anusvara (default for Quran page)
-const ANUSVARA_M_BEFORE = new Set(['d', 't', 'b', 'h', 'p', 's', 'k', 'f', 'g', 'c', 'q', 'v', 'w', 'l', 'r'])
 
 // Vowel mappings — [roman, standalone, matra (after consonant)]
 // Longest match first to avoid partial matches.
@@ -77,7 +66,7 @@ const isApostrophe = (ch) => ch === "'" || ch === '\u2018' || ch === '\u2019' ||
  * @param {string} text - Roman English text (e.g. "Bismillaahir Rahmaanir Raheem")
  * @returns {string} Telugu script text (e.g. "బిస్మిల్లాహిర్ రహ్మానిర్ రహీమ్")
  */
-export function romanToTelugu(text, options = {}) {
+export function romanToTelugu(text) {
   if (!text) return ''
 
   // Split into words and whitespace, check overrides per word
@@ -86,11 +75,11 @@ export function romanToTelugu(text, options = {}) {
     const normalizedKey = segment.toLowerCase().replace(/[\u2018\u2019\u02BB\u02BC]/g, "'")
     const override = WORD_OVERRIDES[normalizedKey]
     if (override) return override
-    return transliterateSegment(segment, options)
+    return transliterateSegment(segment)
   }).join('')
 }
 
-function transliterateSegment(text, options = {}) {
+function transliterateSegment(text) {
   const lower = text.toLowerCase()
   let result = ''
   let i = 0
@@ -157,38 +146,16 @@ function transliterateSegment(text, options = {}) {
           }
         }
 
-        // No vowel follows
+        // No vowel follows — render as halant, preserving each Arabic consonant
+        // as a distinct Telugu base letter (including ن and م, which must NEVER
+        // collapse to anusvara — see file header). Insert ZWNJ after the halant
+        // when a DIFFERENT consonant follows to block unwanted font ligatures;
+        // skip ZWNJ for geminates (nn, ll, dd, mm, …) so they form proper
+        // conjuncts (e.g. కుల్లి, అన్న, తవద్దు, ఉమ్మీ).
         if (!vowelMatched) {
-          // Decide: anusvara (ం) or halant (్)?
-          const nextChar = i < lower.length ? lower[i] : ''
-          // If the next consonant is an h-suffix digraph (dh, th, sh, kh, gh, ph, ch, zh, jh, bh),
-          // it represents a distinct Arabic letter (ذ/ظ, ث/ط, ش, خ, غ, ف, ...) and should
-          // take halant + ZWNJ, not anusvara. e.g. yundharoon → యున్‌ధరూన్ (not యుంధరూన్).
-          const nextIsHDigraph = (
-            nextChar && i + 1 < lower.length && lower[i + 1] === 'h' &&
-            'dtszkgpcjb'.includes(nextChar)
-          )
-          const useAnusvara = !nextIsHDigraph && ((
-            roman === 'n' && nextChar && isLetter(nextChar) && nextChar !== 'n' && nextChar !== 'f' && ANUSVARA_N_BEFORE.has(nextChar)
-          ) || (
-            !options.noMAnusvara && roman === 'm' && nextChar && isLetter(nextChar) && nextChar !== 'm' && ANUSVARA_M_BEFORE.has(nextChar)
-          ))
-
-          if (useAnusvara) {
-            result += ANUSVARA
-          } else {
-            result += telugu + VIRAMA
-            // Insert ZWNJ after virama when followed by a DIFFERENT consonant
-            // to prevent Telugu fonts from forming unwanted conjunct ligatures.
-            // Skip ZWNJ for geminate (doubled) consonants like ll, nn, dd —
-            // they should form proper Telugu conjuncts (e.g. కుల్లు, అన్న, తవద్దు).
-            if (i < lower.length && isLetter(lower[i]) && !lower.startsWith(roman, i)) {
-              result += ZWNJ
-            }
-            // Handle tanween: 'nw' at word boundary (e.g. "qaleelanw", "shai'anw")
-            if (roman === 'n' && i < lower.length && lower[i] === 'w' && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
-              i++ // skip the silent trailing 'w'
-            }
+          result += telugu + VIRAMA
+          if (i < lower.length && isLetter(lower[i]) && !lower.startsWith(roman, i)) {
+            result += ZWNJ
           }
         }
 

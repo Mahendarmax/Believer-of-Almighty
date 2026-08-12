@@ -67,7 +67,7 @@ function Duas() {
                 {(transliteration === 'telugu' || transliteration === 'both') && (
                   <div className="dua-text-block">
                     <span className="dua-label">తెలుగు లిప్యంతరీకరణ</span>
-                    <p className="dua-telugu-translit">{romanToTelugu(d.roman, { noMAnusvara: true })}</p>
+                    <p className="dua-telugu-translit">{romanToTelugu(d.roman)}</p>
                   </div>
                 )}
                 {(transliteration === 'english' || transliteration === 'both') && (

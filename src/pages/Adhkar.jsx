@@ -69,7 +69,7 @@ function Adhkar() {
                       <p className="adhkar-item-roman">{item.roman}</p>
                     )}
                     {(transliteration === 'telugu' || transliteration === 'both') && (
-                      <p className="adhkar-item-telugu-translit">{romanToTelugu(item.roman, { noMAnusvara: true })}</p>
+                      <p className="adhkar-item-telugu-translit">{romanToTelugu(item.roman)}</p>
                     )}
                     {(transliteration === 'english' || transliteration === 'both') && (
                       <p className="adhkar-item-english">{item.english}</p>

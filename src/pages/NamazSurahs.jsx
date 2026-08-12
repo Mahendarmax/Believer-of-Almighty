@@ -12,7 +12,7 @@ const NamazVerse = memo(({ v, transliteration }) => (
       <p className="namaz-verse-roman">{v.roman}</p>
     )}
     {(transliteration === 'telugu' || transliteration === 'both') && (
-      <p className="namaz-verse-telugu-translit">{romanToTelugu(v.roman, { noMAnusvara: true })}</p>
+      <p className="namaz-verse-telugu-translit">{romanToTelugu(v.roman)}</p>
     )}
     {(transliteration === 'english' || transliteration === 'both') && (
       <p className="namaz-verse-english">{v.english}</p>
