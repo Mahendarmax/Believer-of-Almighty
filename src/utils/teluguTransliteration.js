@@ -8,12 +8,16 @@ const VIRAMA = '\u0C4D' // Telugu halant (్)
 // + ZWNJ) rather than collapse into anusvara — e.g. antum → అన్‌తుమ్.
 const ZWNJ = '\u200C'    // Zero-width non-joiner — prevents conjunct formation
 
-// Consonant mappings — longest match first
+// Consonant mappings — longest match first.
+// h-digraphs sh, zh, kh, gh, ch, th, dh, ph represent single Arabic phonemes
+// (ش, ذ, خ, غ, چ, ث/ط, ذ/ظ, ف). 'bh' maps to the aspirated Telugu letter భ per
+// traditional Telugu Islamic convention (e.g. Subhaana → సుభాన). 'nh' is NOT
+// a digraph — Telugu has no aspirated nha letter, so ن+ه must render as
+// separate base letters via halant + ZWNJ — e.g. anhu → అన్‌హు.
 const CONSONANTS = [
   ['shh', 'ష'], ['sh', 'ష'], ['zh', 'జ'],
-  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'జ\u0C4Dహ'],
-  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'బ\u0C4Dహ'],
-  ['nh', 'న\u0C4Dహ'],
+  ['kh', 'ఖ'], ['gh', 'ఘ'], ['ch', 'చ'], ['jh', 'ఝ'],
+  ['th', 'థ'], ['dh', 'ధ'], ['ph', 'ఫ'], ['bh', 'భ'],
   ['k', 'క'], ['g', 'గ'], ['c', 'చ'], ['j', 'జ'],
   ['t', 'త'], ['d', 'ద'], ['n', 'న'],
   ['p', 'ప'], ['f', 'ఫ'], ['b', 'బ'], ['m', 'మ'],
@@ -34,6 +38,11 @@ const WORD_OVERRIDES = {
   "tu'izzu": 'తుఇజ్జు',
   // 3:26 — kulli (كُلِّ)
   'kulli': 'కుల్లి',
+  // 3:104 — yanhawna (يَنْهَوْنَ): final long ā matches pronunciation (auto path yields
+  // యన్‌హౌన with short 'a'; override adds ా).
+  'yanhawna': 'యన్‌హౌనా',
+  // Subhaana family (سُبْحَان) — final ā matches natural pronunciation.
+  'subhaana': 'సుభానా',
 }
 
 // Vowel mappings — [roman, standalone, matra (after consonant)]
