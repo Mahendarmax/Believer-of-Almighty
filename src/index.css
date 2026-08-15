@@ -60,6 +60,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  /* iPhone-style momentum scrolling */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -70,6 +72,27 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   text-rendering: optimizeSpeed;
+  /* iPhone-like scroll feel: native momentum + rubber-band contained to page */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+}
+
+/* Any nested scrollable region also gets iOS-style momentum */
+[class$="-page"],
+.home,
+.verse-view,
+.surah-list-page,
+.settings-page,
+.favorites-page,
+.namaz-page,
+.duas-page,
+.dosdonts-page,
+.asma-page,
+.tasbih-page,
+.adhkar-page,
+.isa-page {
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
