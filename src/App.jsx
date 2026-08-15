@@ -1,45 +1,8 @@
 import React, { lazy, Suspense, useEffect, useLayoutEffect, useCallback } from 'react'
 import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
-import Lenis from 'lenis'
 import { SettingsProvider } from './context/SettingsContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
-
-// Buttery 120Hz-style smooth scroll on touch + wheel (Android/iOS/desktop).
-// syncTouch: true routes finger drags through Lenis' interpolator for that
-// MacBook-trackpad feel on Android instead of native chunky flick.
-function SmoothScroll() {
-  useEffect(() => {
-    // Skip smoothing when user prefers reduced motion — respects accessibility
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      syncTouch: true,
-      syncTouchLerp: 0.075,
-      touchMultiplier: 1.5,
-      wheelMultiplier: 1,
-    })
-
-    window.__lenis = lenis
-
-    let rafId
-    function raf(time) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
-    rafId = requestAnimationFrame(raf)
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      lenis.destroy()
-      delete window.__lenis
-    }
-  }, [])
-  return null
-}
 
 // Lazy-load route components for code splitting
 const Home = lazy(() => import('./pages/Home'))
@@ -78,8 +41,7 @@ function ScrollToTop() {
   // useLayoutEffect fires synchronously BEFORE the browser paints, so the new
   // page is never briefly visible at the old scroll position (no scroll-flash).
   useLayoutEffect(() => {
-    if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true })
-    else window.scrollTo(0, 0)
+    window.scrollTo(0, 0)
   }, [pathname])
   return null
 }
@@ -121,7 +83,6 @@ function App() {
     <ErrorBoundary>
       <SettingsProvider>
         <HashRouter>
-          <SmoothScroll />
           <ScrollToTop />
           <BackButtonHandler />
           <div className="app">
