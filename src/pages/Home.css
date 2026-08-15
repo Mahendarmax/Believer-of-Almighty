@@ -446,7 +446,8 @@
   border: none;
   border-bottom: 1px solid rgba(26, 16, 5, 0.16);
   color: var(--text-primary);
-  font-size: 0.84rem;
+  /* 16px required to prevent iOS Safari auto-zoom-on-focus */
+  font-size: 16px;
   outline: none;
   box-sizing: border-box;
   -webkit-appearance: none;
@@ -505,7 +506,8 @@
   border: 1.5px solid #000000;
   border-radius: 10px;
   color: var(--text-primary);
-  font-size: 0.78rem;
+  /* 16px required to prevent iOS Safari auto-zoom-on-focus */
+  font-size: 16px;
   text-align: center;
   transition: var(--transition);
 }
@@ -1053,7 +1055,8 @@
   border: 1.5px solid #1a1005;
   border-radius: var(--radius-lg);
   color: var(--text-primary);
-  font-size: 0.85rem;
+  /* 16px required to prevent iOS Safari auto-zoom-on-focus */
+  font-size: 16px;
   transition: var(--transition);
 }
 
@@ -1269,7 +1272,10 @@
   border: 1.5px solid #1a1005;
   border-radius: 10px;
   color: var(--text-primary);
-  font-size: 0.85rem;
+  /* MUST be >= 16px — iOS Safari auto-zooms into any input with a smaller
+     font-size on focus, which shifts the whole page. Using 16px explicitly
+     (not rem) so it stays 16px regardless of the app's mobile 14px root. */
+  font-size: 16px;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
@@ -1284,18 +1290,21 @@
 }
 
 .home-reciter-list {
+  position: relative;                    /* iOS Safari needs a positioned scroll container */
   max-height: 320px;
-  overflow-y: auto;
+  overflow-y: scroll;                    /* `scroll` (not `auto`) gives iOS Safari a stable scroll region */
   overflow-x: hidden;
-  /* iOS momentum scroll — critical for smooth flick on older iOS Safari */
-  -webkit-overflow-scrolling: touch;
-  /* Explicitly allow vertical panning so touch scroll is never blocked
-     by an ambiguous inherited value. */
-  touch-action: pan-y;
-  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;     /* iOS momentum flick */
+  touch-action: pan-y;                   /* explicitly allow vertical panning */
+  /* NOTE: `overscroll-behavior: contain` removed — it can silently block
+     touch scroll on iOS Safari 14–16 when the list is inside a rounded
+     container with `overflow: hidden`. Chain-scrolling to the page below
+     isn't a real problem here because the dropdown is short. */
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
   padding: 4px 0;
+  /* GPU-promote once so iOS composites the scroll layer stably */
+  transform: translate3d(0, 0, 0);
 }
 
 .home-reciter-list::-webkit-scrollbar {

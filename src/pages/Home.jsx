@@ -11,12 +11,13 @@ import './Home.css'
 const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, seerah: 48 }
 
 // Theme image URLs — JPG for all themes for universal compatibility
-// (iPhone iOS < 16 can't decode AVIF).
+// (iPhone iOS < 16 can't decode AVIF). Version query strings bust cached
+// copies on devices where a previous file at the same URL is still stored.
 const THEME_URL = {
   'first-theme':  '/first-theme.jpg',
   'second-theme': '/second-theme.png',
   'third-theme':  '/third-theme.jpg',
-  'fourth-theme': '/fourth-theme.jpg',
+  'fourth-theme': '/fourth-theme.jpg?v=kaba2',
 }
 
 // Memoized reciter picker for Home page
@@ -88,7 +89,6 @@ const ReciterPicker = memo(({ reciter, onSelect, transliteration }) => {
               placeholder={transliteration === 'telugu' ? 'రీసైటర్ వెతకండి...' : 'Search reciter...'}
               value={filter}
               onChange={e => setFilter(e.target.value)}
-              autoFocus
               aria-label="Search reciters"
             />
           </div>
@@ -558,7 +558,7 @@ const Home = React.memo(function Home() {
               className={`bg-picker-card ${bgImage === 'fourth-theme' ? 'active' : ''}`}
               onClick={() => setBgImage('fourth-theme')}
             >
-              <img src="/fourth-theme.jpg" alt="Makkah - Kaaba" className="bg-picker-thumb" />
+              <img src="/fourth-theme.jpg?v=kaba2" alt="Makkah - Kaaba" className="bg-picker-thumb" />
               <span className="bg-picker-label">{transliteration === 'telugu' ? 'మక్కా - కాబా' : 'Makkah — Kaaba'}</span>
             </button>
           </div>

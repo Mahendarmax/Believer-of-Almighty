@@ -173,6 +173,13 @@ a {
   button:hover, a:hover { transform: none !important; }
   ::-webkit-scrollbar { display: none; }
   * { scrollbar-width: none; }
+
+  /* Prevent iOS Safari from auto-zooming into any input on focus. iOS zooms
+     whenever a focused input has font-size < 16px — bumping them all here
+     stops the annoying page-zoom flash without changing desktop typography. */
+  input, select, textarea {
+    font-size: 16px;
+  }
 }
 
 /* Small mobile — tighter spacing */
