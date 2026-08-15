@@ -1,8 +1,45 @@
-import React, { lazy, Suspense, useEffect, useCallback } from 'react'
+import React, { lazy, Suspense, useEffect, useLayoutEffect, useCallback } from 'react'
 import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import Lenis from 'lenis'
 import { SettingsProvider } from './context/SettingsContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
+
+// Buttery 120Hz-style smooth scroll on touch + wheel (Android/iOS/desktop).
+// syncTouch: true routes finger drags through Lenis' interpolator for that
+// MacBook-trackpad feel on Android instead of native chunky flick.
+function SmoothScroll() {
+  useEffect(() => {
+    // Skip smoothing when user prefers reduced motion — respects accessibility
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      syncTouch: true,
+      syncTouchLerp: 0.075,
+      touchMultiplier: 1.5,
+      wheelMultiplier: 1,
+    })
+
+    window.__lenis = lenis
+
+    let rafId
+    function raf(time) {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
+    rafId = requestAnimationFrame(raf)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      lenis.destroy()
+      delete window.__lenis
+    }
+  }, [])
+  return null
+}
 
 // Lazy-load route components for code splitting
 const Home = lazy(() => import('./pages/Home'))
@@ -18,10 +55,15 @@ const Adhkar = lazy(() => import('./pages/Adhkar'))
 const ProphetIsa = lazy(() => import('./pages/ProphetIsa'))
 const ProphetMuhammad = lazy(() => import('./pages/ProphetMuhammad'))
 
+// Suspense fallback: matches app background to avoid any color-flash between
+// lazy-loaded route transitions. Spinner fades in only after 200ms so cached
+// chunks (which mount instantly) don't briefly show the loader.
 const PageLoader = () => (
   <div style={{
     display: 'flex', flexDirection: 'column', alignItems: 'center',
-    justifyContent: 'center', minHeight: '60vh', gap: '12px', color: '#94a3b8'
+    justifyContent: 'center', minHeight: '60vh', gap: '12px',
+    background: 'var(--bg-primary)',
+    animation: 'pageLoaderFadeIn 0.2s ease-out 0.2s both'
   }}>
     <div style={{
       width: 40, height: 40, border: '3px solid rgba(212,164,74,0.15)',
@@ -33,8 +75,11 @@ const PageLoader = () => (
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => {
-    window.scrollTo(0, 0)
+  // useLayoutEffect fires synchronously BEFORE the browser paints, so the new
+  // page is never briefly visible at the old scroll position (no scroll-flash).
+  useLayoutEffect(() => {
+    if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true })
+    else window.scrollTo(0, 0)
   }, [pathname])
   return null
 }
@@ -76,6 +121,7 @@ function App() {
     <ErrorBoundary>
       <SettingsProvider>
         <HashRouter>
+          <SmoothScroll />
           <ScrollToTop />
           <BackButtonHandler />
           <div className="app">
