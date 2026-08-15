@@ -38,7 +38,10 @@ const ReciterPicker = memo(({ reciter, onSelect, transliteration }) => {
     if (!open) return
     const handler = (e) => { if (barRef.current && !barRef.current.contains(e.target)) setOpen(false) }
     document.addEventListener('mousedown', handler)
-    document.addEventListener('touchstart', handler)
+    // Passive: true tells the browser this touch handler will NEVER call
+    // preventDefault, so scroll gestures inside the dropdown list don't get
+    // held up waiting to see if we might cancel them.
+    document.addEventListener('touchstart', handler, { passive: true })
     return () => { document.removeEventListener('mousedown', handler); document.removeEventListener('touchstart', handler) }
   }, [open])
 
@@ -233,7 +236,10 @@ const Home = React.memo(function Home() {
 
   const applyTilt = useCallback(() => {
     if (bgRef.current) {
-      bgRef.current.style.transform = `translate(${tilt.current.x * 10}px, ${tilt.current.y * 8}px) scale(1.04)`
+      // Lightly zoom out — scale reduced from 1.04 → 1.0 so the image sits at
+      // its natural cover size (more of the photo visible, less cropped).
+      // Parallax translate also halved so edges never expose during tilt.
+      bgRef.current.style.transform = `translate(${tilt.current.x * 5}px, ${tilt.current.y * 4}px) scale(1.0)`
     }
     if (contentRef.current) {
       contentRef.current.style.transform = `translate(${tilt.current.x * -6}px, ${tilt.current.y * -4}px)`

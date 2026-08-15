@@ -1286,6 +1286,12 @@
 .home-reciter-list {
   max-height: 320px;
   overflow-y: auto;
+  overflow-x: hidden;
+  /* iOS momentum scroll — critical for smooth flick on older iOS Safari */
+  -webkit-overflow-scrolling: touch;
+  /* Explicitly allow vertical panning so touch scroll is never blocked
+     by an ambiguous inherited value. */
+  touch-action: pan-y;
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
