@@ -11,13 +11,20 @@ import './Home.css'
 const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, seerah: 48 }
 
 // Theme image URLs — extension per file so we can mix jpg/png/avif without a
-// broken preload or hero background.
+// broken preload or hero background. fourth-theme uses a runtime AVIF probe
+// with JPG fallback so iOS Safari < 16 (which can't decode AVIF) still sees
+// the Kaaba photo.
 const THEME_URL = {
   'first-theme':  '/first-theme.jpg',
   'second-theme': '/second-theme.png',
   'third-theme':  '/third-theme.jpg',
-  'fourth-theme': '/fourth-theme.avif',
+  // Resolved by state below — default JPG until we confirm AVIF support
+  'fourth-theme': '/fourth-theme.jpg',
 }
+
+// Tiny 8-byte valid AVIF data URL used to feature-test decoding support.
+// If the browser can decode this, we can safely serve AVIF for the Kaaba theme.
+const _avifProbe = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK'
 
 // Memoized reciter picker for Home page
 const ReciterPicker = memo(({ reciter, onSelect, transliteration }) => {
@@ -136,6 +143,20 @@ const Home = React.memo(function Home() {
   const [qvFilter, setQvFilter] = useState('')
   const qvDropRef = useRef(null)
 
+  // AVIF decode support — probes at mount and upgrades the fourth-theme URL
+  // to the smaller AVIF when the browser can decode it (iOS 16+, all modern
+  // Chromium/Firefox). Older iPhones stay on the JPG fallback.
+  const [themeUrls, setThemeUrls] = useState(THEME_URL)
+  useEffect(() => {
+    const img = new Image()
+    img.onload = () => {
+      if (img.naturalWidth > 0) {
+        setThemeUrls(prev => ({ ...prev, 'fourth-theme': '/fourth-theme.avif' }))
+      }
+    }
+    img.src = _avifProbe
+  }, [])
+
   // Contact / info modal — separate open + closing states so exit animation runs
   const [infoOpen, setInfoOpen] = useState(false)
   const [infoClosing, setInfoClosing] = useState(false)
@@ -206,17 +227,17 @@ const Home = React.memo(function Home() {
     const themes = ['first-theme', 'second-theme', 'third-theme', 'fourth-theme']
     themes.forEach(t => {
       const img = new Image()
-      img.src = THEME_URL[t]
+      img.src = themeUrls[t]
     })
     // Migration: if a previously-selected theme is no longer valid, fall back
     if (bgImage && !themes.includes(bgImage)) setBgImage('first-theme')
-  }, [bgImage, setBgImage])
+  }, [bgImage, setBgImage, themeUrls])
 
   // High-priority preload for the ACTIVE theme — tells the browser to fetch
   // it as part of the critical rendering path, so route-return re-mounts
   // paint the hero image without a visible gap.
   useEffect(() => {
-    const url = THEME_URL[bgImage] || THEME_URL['first-theme']
+    const url = themeUrls[bgImage] || themeUrls['first-theme']
     const link = document.createElement('link')
     link.rel = 'preload'
     link.as = 'image'
@@ -225,7 +246,7 @@ const Home = React.memo(function Home() {
     link.fetchPriority = 'high'
     document.head.appendChild(link)
     return () => { document.head.removeChild(link) }
-  }, [bgImage])
+  }, [bgImage, themeUrls])
 
   // Gyroscope / parallax effect for hero
   const heroRef = useRef(null)
@@ -298,7 +319,7 @@ const Home = React.memo(function Home() {
 
       {/* Hero Section */}
       <header className="home-hero hero-no-blur" ref={heroRef}>
-        <div className="hero-bg-img" ref={bgRef} style={{ backgroundImage: `url(${THEME_URL[bgImage] || THEME_URL['first-theme']})` }} />
+        <div className="hero-bg-img" ref={bgRef} style={{ backgroundImage: `url(${themeUrls[bgImage] || themeUrls['first-theme']})` }} />
         <div className="hero-pattern" />
         <div className="hero-content" ref={contentRef}>
           <div className="hero-icon">﷽</div>
