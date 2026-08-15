@@ -550,11 +550,7 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
-/* Stagger animations — only first few visible cards */
-.verse-card:nth-child(1) { animation: verseSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both; animation-delay: 0s; }
-.verse-card:nth-child(2) { animation: verseSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both; animation-delay: 0.03s; }
-.verse-card:nth-child(3) { animation: verseSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both; animation-delay: 0.06s; }
-.verse-card:nth-child(n+4) { animation: none; }
+/* Verse card entry stagger is defined at end of file (uses shared boxLand keyframe) */
 
 /* ── Playback focus animation ── */
 /* While a surah is auto-playing, the active verse comes forward and the rest recede & blur */
@@ -1249,4 +1245,30 @@
 [data-theme="dark"] .scroll-top-btn {
   background: linear-gradient(135deg, #d4a44a, #b8860b);
   color: #0f0f0f;
+}
+
+/* ==================================================================
+   Verse cards — stagger the visible above-fold verses, then instant.
+   VerseView renders 30 verses initially and lazy-loads more on scroll.
+   Only the first 8 cards use staggered delays; positions 9+ have zero
+   delay so lazy-loaded batches appear immediately as they mount (no
+   awkward 800ms wait on scroll).
+   =================================================================== */
+.verse-card {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: boxLand 0.55s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+}
+.verse-card:nth-of-type(1) { animation-delay: 0.05s; }
+.verse-card:nth-of-type(2) { animation-delay: 0.11s; }
+.verse-card:nth-of-type(3) { animation-delay: 0.17s; }
+.verse-card:nth-of-type(4) { animation-delay: 0.23s; }
+.verse-card:nth-of-type(5) { animation-delay: 0.29s; }
+.verse-card:nth-of-type(6) { animation-delay: 0.35s; }
+.verse-card:nth-of-type(7) { animation-delay: 0.41s; }
+.verse-card:nth-of-type(8) { animation-delay: 0.47s; }
+/* Positions 9+ inherit animation-delay: 0 → lazy-loaded verses appear immediately */
+
+@media (prefers-reduced-motion: reduce) {
+  .verse-card { animation: none !important; opacity: 1 !important; transform: none !important; }
 }

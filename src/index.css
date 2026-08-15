@@ -94,8 +94,11 @@ a {
 }
 
 /* Smooth page transitions — pure fade, no translateY, so no "pop-in" flicker.
-   Shorter duration + GPU hint keeps the swap imperceptible on Android. */
-.home,
+   Shorter duration + GPU hint keeps the swap imperceptible on Android.
+   NOTE: .home is intentionally NOT in this list. The Home page has its own
+   layered animations (hero content, action-card stagger, section rise) — a
+   parent-level fade would drop opacity on the hero background image and cause
+   a visible flicker every time the user returns to Home. */
 .surah-list-page,
 .verse-view,
 .settings-page,
@@ -131,6 +134,7 @@ a {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 
 /* PageLoader fade-in (delayed 200ms so cached chunks don't flash the loader) */
 @keyframes pageLoaderFadeIn {
@@ -174,6 +178,15 @@ a {
 /* Small mobile — tighter spacing */
 @media (max-width: 360px) {
   html { font-size: 14px; }
+}
+
+/* ==================================================================
+   Shared "box lands into position" animation used across all pages.
+   Cards on any page can opt-in via `animation: boxLand ...`.
+   =================================================================== */
+@keyframes boxLand {
+  from { opacity: 0; transform: translateY(24px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
 }
 
 /* Large desktop — comfortable reading */

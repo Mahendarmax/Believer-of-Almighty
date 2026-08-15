@@ -10,6 +10,15 @@ import './Home.css'
 // Static counts — avoid importing large data modules on the home page
 const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60, seerah: 48 }
 
+// Theme image URLs — extension per file so we can mix jpg/png/avif without a
+// broken preload or hero background.
+const THEME_URL = {
+  'first-theme':  '/first-theme.jpg',
+  'second-theme': '/second-theme.png',
+  'third-theme':  '/third-theme.jpg',
+  'fourth-theme': '/fourth-theme.avif',
+}
+
 // Memoized reciter picker for Home page
 const ReciterPicker = memo(({ reciter, onSelect, transliteration }) => {
   const [open, setOpen] = useState(false)
@@ -124,6 +133,15 @@ const Home = React.memo(function Home() {
   const [qvFilter, setQvFilter] = useState('')
   const qvDropRef = useRef(null)
 
+  // Contact / info modal — separate open + closing states so exit animation runs
+  const [infoOpen, setInfoOpen] = useState(false)
+  const [infoClosing, setInfoClosing] = useState(false)
+  const closeInfoModal = useCallback(() => {
+    setInfoClosing(true)
+    // Match the reverse-stagger exit (~360ms) + modal 3D-tilt out (320ms)
+    setTimeout(() => { setInfoOpen(false); setInfoClosing(false) }, 380)
+  }, [])
+
   // Close dropdown on outside click
   useEffect(() => {
     if (!qvDropOpen) return
@@ -174,19 +192,37 @@ const Home = React.memo(function Home() {
   const closeQvModal = useCallback(() => {
     setQvClosing(true)
     setQvPlaying(null)
+    // Wait for the reverse-stagger children (~120ms) + modal 3D-tilt out (320ms)
     setTimeout(() => {
       setQvData(null)
       setQvClosing(false)
-    }, 280)
+    }, 380)
   }, [])
 
   useEffect(() => {
-    const themes = ['first-theme', 'second-theme']
+    const themes = ['first-theme', 'second-theme', 'third-theme', 'fourth-theme']
     themes.forEach(t => {
       const img = new Image()
-      img.src = `/${t}.jpg`
+      img.src = THEME_URL[t]
     })
-  }, [])
+    // Migration: if a previously-selected theme is no longer valid, fall back
+    if (bgImage && !themes.includes(bgImage)) setBgImage('first-theme')
+  }, [bgImage, setBgImage])
+
+  // High-priority preload for the ACTIVE theme — tells the browser to fetch
+  // it as part of the critical rendering path, so route-return re-mounts
+  // paint the hero image without a visible gap.
+  useEffect(() => {
+    const url = THEME_URL[bgImage] || THEME_URL['first-theme']
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = url
+    if (url.endsWith('.avif')) link.type = 'image/avif'
+    link.fetchPriority = 'high'
+    document.head.appendChild(link)
+    return () => { document.head.removeChild(link) }
+  }, [bgImage])
 
   // Gyroscope / parallax effect for hero
   const heroRef = useRef(null)
@@ -256,7 +292,7 @@ const Home = React.memo(function Home() {
 
       {/* Hero Section */}
       <header className="home-hero hero-no-blur" ref={heroRef}>
-        <div className="hero-bg-img" ref={bgRef} style={{ backgroundImage: `url(/${bgImage}.jpg)` }} />
+        <div className="hero-bg-img" ref={bgRef} style={{ backgroundImage: `url(${THEME_URL[bgImage] || THEME_URL['first-theme']})` }} />
         <div className="hero-pattern" />
         <div className="hero-content" ref={contentRef}>
           <div className="hero-icon">﷽</div>
@@ -502,8 +538,22 @@ const Home = React.memo(function Home() {
               className={`bg-picker-card ${bgImage === 'second-theme' ? 'active' : ''}`}
               onClick={() => setBgImage('second-theme')}
             >
-              <img src="/second-theme.jpg" alt="Green Mosque" className="bg-picker-thumb" />
+              <img src="/second-theme.png" alt="Mosque at Dusk" className="bg-picker-thumb" />
               <span className="bg-picker-label">{transliteration === 'telugu' ? 'మసీదు థీమ్' : 'Mosque Theme'}</span>
+            </button>
+            <button
+              className={`bg-picker-card ${bgImage === 'third-theme' ? 'active' : ''}`}
+              onClick={() => setBgImage('third-theme')}
+            >
+              <img src="/third-theme.jpg" alt="Quba Masjid" className="bg-picker-thumb" />
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఖుబా మసీదు' : 'Quba Masjid'}</span>
+            </button>
+            <button
+              className={`bg-picker-card ${bgImage === 'fourth-theme' ? 'active' : ''}`}
+              onClick={() => setBgImage('fourth-theme')}
+            >
+              <img src="/fourth-theme.avif" alt="Makkah - Kaaba" className="bg-picker-thumb" />
+              <span className="bg-picker-label">{transliteration === 'telugu' ? 'మక్కా - కాబా' : 'Makkah — Kaaba'}</span>
             </button>
           </div>
         </section>
@@ -527,6 +577,31 @@ const Home = React.memo(function Home() {
             ? (transliteration === 'telugu' ? 'డార్క్ మోడ్' : 'DARK MODE')
             : (transliteration === 'telugu' ? 'లైట్ మోడ్' : 'LIGHT MODE')}
         </span>
+      </section>
+
+      {/* Contact / Info */}
+      <section className="info-section">
+        <button
+          className="info-btn"
+          onClick={() => { setInfoOpen(true); setInfoClosing(false) }}
+          aria-label={transliteration === 'telugu' ? 'సపోర్ట్' : 'Support'}
+        >
+          <span className="info-btn-icon" aria-hidden="true">
+            {/* Proper filled 'i' letter — round dot + rounded vertical bar */}
+            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+              <circle cx="12" cy="6" r="1.8"/>
+              <rect x="10.4" y="9.6" width="3.2" height="9.4" rx="1.6"/>
+            </svg>
+          </span>
+          <span className="info-btn-text">
+            {transliteration === 'telugu' ? 'సపోర్ట్' : 'SUPPORT'}
+          </span>
+          <span className="info-btn-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" width="14" height="14">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </span>
+        </button>
       </section>
 
       {/* Quote */}
@@ -600,6 +675,86 @@ const Home = React.memo(function Home() {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Info / Contact Modal */}
+      {infoOpen && createPortal(
+        <div
+          className={`info-overlay${infoClosing ? ' closing' : ''}`}
+          onClick={closeInfoModal}
+        >
+          <div
+            className={`info-modal${infoClosing ? ' closing' : ''}`}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Corner ornaments */}
+            <span className="info-corner info-corner-tl" aria-hidden="true"></span>
+            <span className="info-corner info-corner-tr" aria-hidden="true"></span>
+            <span className="info-corner info-corner-bl" aria-hidden="true"></span>
+            <span className="info-corner info-corner-br" aria-hidden="true"></span>
+
+            <button
+              className="info-modal-close"
+              onClick={closeInfoModal}
+              aria-label="Close"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="16" height="16">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+
+            <div className="info-modal-body">
+              {/* Medallion icon at the top */}
+              <div className="info-medallion" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="26" height="26">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+              </div>
+
+              <p className="info-salam" dir="rtl">
+                السلام عليكم ورحمة الله وبركاته
+              </p>
+              {(transliteration === 'english' || transliteration === 'both') && (
+                <p className="info-salam-roman">
+                  Asalam alaikum wa rahamatullahi wa barakatuhu
+                </p>
+              )}
+              {(transliteration === 'telugu' || transliteration === 'both') && (
+                <p className="info-salam-telugu">
+                  {romanToTelugu('Assalaamu alaikum wa rahmatullaahi wa barakaatuhu')}
+                </p>
+              )}
+
+              <span className="info-divider" aria-hidden="true">
+                <span className="info-divider-dot"></span>
+              </span>
+
+              <p className="info-message">
+                {transliteration === 'telugu'
+                  ? 'యాప్‌లో ఏవైనా టెక్స్ట్ లోపాలు లేదా తప్పులు కనిపించినా, లేదా ఈ వెబ్‌సైట్‌లో మీకు ఏదైనా ఇస్లామిక్ కంటెంట్ కావాలనుకుంటే, దయచేసి ఈ ఇమెయిల్ ద్వారా మమ్మల్ని సంప్రదించండి:'
+                  : 'If you notice any text errors or mistakes in the app, or if you would like any Islamic content added to this website, please contact us via this email:'}
+              </p>
+
+              <a
+                href="mailto:quranintelugu.support@gmail.com"
+                className="info-email"
+              >
+                <span className="info-email-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </span>
+                <span className="info-email-text">quranintelugu.support@gmail.com</span>
+              </a>
+
+              <p className="info-jazak">
+                {transliteration === 'telugu' ? '— జజాకల్లాహు ఖైరన్ —' : '— JazakAllahu Khairan —'}
+              </p>
             </div>
           </div>
         </div>,

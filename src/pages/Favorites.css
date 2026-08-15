@@ -213,3 +213,27 @@
 @media (min-width: 1200px) {
   .favorites-page { max-width: 1000px; }
 }
+
+/* Stagger-in: each card lands into place with a spring bounce.
+   First 12 cascade at 60ms intervals; items 13+ fade in together at 0.80s. */
+.fav-list .fav-card {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: boxLand 0.65s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+}
+.fav-list .fav-card:nth-child(1) { animation-delay: 0.08s; }
+.fav-list .fav-card:nth-child(2) { animation-delay: 0.14s; }
+.fav-list .fav-card:nth-child(3) { animation-delay: 0.2s; }
+.fav-list .fav-card:nth-child(4) { animation-delay: 0.26s; }
+.fav-list .fav-card:nth-child(5) { animation-delay: 0.32s; }
+.fav-list .fav-card:nth-child(6) { animation-delay: 0.38s; }
+.fav-list .fav-card:nth-child(7) { animation-delay: 0.44s; }
+.fav-list .fav-card:nth-child(8) { animation-delay: 0.5s; }
+.fav-list .fav-card:nth-child(9) { animation-delay: 0.56s; }
+.fav-list .fav-card:nth-child(10) { animation-delay: 0.62s; }
+.fav-list .fav-card:nth-child(11) { animation-delay: 0.68s; }
+.fav-list .fav-card:nth-child(12) { animation-delay: 0.74s; }
+.fav-list .fav-card:nth-child(n+13) { animation-delay: 0.80s; }
+@media (prefers-reduced-motion: reduce) {
+  .fav-list .fav-card { animation: none !important; opacity: 1 !important; transform: none !important; }
+}

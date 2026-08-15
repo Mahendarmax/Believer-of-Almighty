@@ -18,18 +18,26 @@
   width: 100%;
   background: var(--bg-primary);
   min-height: 620px;
+  /* Rendering isolation — reflows/repaints of siblings can't invalidate this
+     region, so the hero image never gets a spurious repaint (a common source
+     of flicker on theme swap or scroll-driven layout shifts). */
+  contain: layout paint style;
 }
 
 /* Background image element */
 .hero-bg-img {
   position: absolute;
   inset: 0;
+  background-color: var(--bg-primary);   /* fallback while image loads → no white flash */
   background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 0;
-  transition: transform 0.3s ease-out;
-  will-change: transform;
+  /* No transition on transform — the 0.3s ease-out caused a visible repaint
+     between the outgoing and incoming background-image on theme swap. Instant
+     swap looks cleaner because the pixels are already cached from preload. */
+  transform: translate3d(0, 0, 0);       /* GPU-promote once, statically */
+  backface-visibility: hidden;
   width: 100%;
   height: 100%;
 }
@@ -48,6 +56,67 @@
 .home-hero.hero-no-blur .hero-desc {
   text-shadow: none;
   filter: none;
+}
+
+/* ==================================================================
+   Per-theme hero background positioning — each photo has a different
+   focal subject (mosque, minaret, Kaaba). Cover fills the hero, position
+   keeps the important part visible without awkward cropping.
+   =================================================================== */
+.home[data-bg="second-theme"] .hero-bg-img {
+  /* Sunset mosque with reflection pool — mosque is centered horizontally,
+     reflection sits at bottom. Anchor slightly below center so the dome +
+     minarets + reflection all frame nicely on tall mobile viewports. */
+  background-position: center 55%;
+  background-size: cover;
+}
+
+.home[data-bg="third-theme"] .hero-bg-img {
+  /* Quba Masjid photo — the mosque sits in the lower-middle. Center-vertical
+     keeps the minarets + domes visible without cropping the sky or ground. */
+  background-position: center 40%;
+  background-size: cover;
+}
+
+.home[data-bg="fourth-theme"] .hero-bg-img {
+  /* Kaaba — the sacred cube is centered horizontally in the frame. Anchor to
+     just below center so the Kaaba structure remains fully visible on all
+     phone aspect ratios. */
+  background-position: center 55%;
+  background-size: cover;
+}
+
+/* ==================================================================
+   Kaaba theme (fourth-theme) is a busy photograph — the light-text
+   overlay used for the illustrated themes doesn't give enough contrast.
+   Darken the top of the overlay and switch hero text to white with a
+   strong shadow so "The Holy Quran" and the salam text stay readable.
+   =================================================================== */
+.home[data-bg="fourth-theme"] .hero-pattern {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.35) 25%,
+    rgba(0, 0, 0, 0.18) 45%,
+    rgba(232, 245, 233, 0.55) 78%,
+    var(--bg-primary) 100%
+  );
+}
+
+.home[data-bg="fourth-theme"] .hero-icon,
+.home[data-bg="fourth-theme"] .hero-title,
+.home[data-bg="fourth-theme"] .hero-subtitle,
+.home[data-bg="fourth-theme"] .hero-telugu,
+.home[data-bg="fourth-theme"] .hero-desc,
+.home[data-bg="fourth-theme"] .divider-ornament {
+  color: #ffffff;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.75),
+    0 0 20px rgba(0, 0, 0, 0.35);
+}
+
+.home[data-bg="fourth-theme"] .hero-icon {
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.65));
 }
 
 .home-settings-section {
@@ -129,14 +198,10 @@
   z-index: 2;
   max-width: 700px;
   margin: 0 auto;
-  animation: heroFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  /* Removed heroFadeIn — the 0.8s opacity fade caused visible pop-in on every
+     route-return to Home. Text now paints immediately for stability. */
   transition: transform 0.3s ease-out;
-  will-change: transform;
-}
-
-@keyframes heroFadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  /* will-change removed too — was promoting a layer every render */
 }
 
 .hero-icon {
@@ -144,12 +209,8 @@
   color: #2a1c0e;
   margin-bottom: 28px;
   filter: none;
-  animation: heroIconFloat 4s ease-in-out infinite;
-}
-
-@keyframes heroIconFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  /* Removed heroIconFloat — the continuous 4s translate can cause visible
+     shimmer on lower-refresh screens and creates ongoing repaints. */
 }
 
 .hero-title {
@@ -369,6 +430,14 @@
   z-index: 100;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(139, 101, 8, 0.15);
+  transform-origin: top center;
+  will-change: transform, opacity;
+  animation: qvDropdownIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes qvDropdownIn {
+  from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)     scale(1);    }
 }
 .qv-drop-search {
   width: 100%;
@@ -495,10 +564,12 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  animation: qvOverlayIn 0.3s ease forwards;
+  perspective: 1200px;
+  perspective-origin: center 60%;
+  animation: qvOverlayIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 .qv-overlay.closing {
-  animation: qvOverlayOut 0.28s ease forwards;
+  animation: qvOverlayOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 @keyframes qvOverlayIn {
@@ -523,20 +594,52 @@
   flex-direction: column;
   position: relative;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.5);
-  animation: qvModalIn 0.3s cubic-bezier(0.32,0.72,0,1) forwards;
+  animation: qvModalIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: center 60%;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
   overflow: hidden;
 }
 .qv-modal.closing {
-  animation: qvModalOut 0.28s ease forwards;
+  animation: qvModalOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
+/* 3D landing entry — same premium tilt as the info modal */
 @keyframes qvModalIn {
-  from { transform: scale(0.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from { transform: perspective(1200px) rotateX(-8deg) translateY(28px) translateZ(-40px) scale(0.94); opacity: 0; }
+  to   { transform: perspective(1200px) rotateX(0deg)  translateY(0)    translateZ(0)     scale(1);    opacity: 1; }
 }
 @keyframes qvModalOut {
-  from { transform: scale(1); opacity: 1; }
-  to { transform: scale(0.92); opacity: 0; }
+  from { transform: perspective(1200px) rotateX(0deg) translateY(0)   translateZ(0)     scale(1);    opacity: 1; }
+  to   { transform: perspective(1200px) rotateX(4deg) translateY(10px) translateZ(-30px) scale(0.96); opacity: 0; }
+}
+
+/* Stagger the internal blocks in — each slides + fades with the smooth ease-out-quart */
+.qv-modal > * {
+  opacity: 0;
+  animation: qvChildIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+.qv-modal > .qv-modal-topbar { animation-delay: 0.10s; }
+.qv-modal > .qv-modal-header { animation-delay: 0.18s; }
+.qv-modal > .qv-modal-scroll { animation-delay: 0.26s; }
+
+@keyframes qvChildIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Reverse-stagger exit — bottom-up cascade on close, matches info-modal */
+.qv-modal.closing > * {
+  animation: qvChildOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.qv-modal.closing > .qv-modal-scroll { animation-delay: 0s;    }
+.qv-modal.closing > .qv-modal-header { animation-delay: 0.05s; }
+.qv-modal.closing > .qv-modal-topbar { animation-delay: 0.10s; }
+
+@keyframes qvChildOut {
+  from { opacity: 1; transform: translateY(0);    }
+  to   { opacity: 0; transform: translateY(-6px); }
 }
 
 /* Top bar — audio + close */
@@ -1022,6 +1125,12 @@
   max-width: 720px;
   margin: 0 auto 32px;
   width: 100%;
+  /* Lift above sibling sections so the open dropdown never gets crossed by
+     .translit-section's stacking context (which the stagger animation creates
+     via its transform). Without this, the later section paints over the
+     absolute-positioned dropdown. */
+  position: relative;
+  z-index: 20;
 }
 
 .home-reciter-title {
@@ -1137,13 +1246,15 @@
   border: 1.5px solid var(--border-strong);
   border-radius: var(--radius-lg);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 164, 74, 0.05);
-  animation: homeReciterSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: homeReciterSlide 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: top center;
+  will-change: transform, opacity;
   overflow: hidden;
 }
 
 @keyframes homeReciterSlide {
-  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)     scale(1);    }
 }
 
 .home-reciter-search {
@@ -1365,12 +1476,13 @@
 }
 
 .bg-picker-options {
-  display: flex;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
 .bg-picker-card {
-  flex: 1;
+  min-width: 0; /* allow shrinking below content width so 3 cards always fit */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1414,9 +1526,12 @@
 }
 
 @media (max-width: 480px) {
-  .bg-picker-section { padding: 0 16px; }
-  .bg-picker-options { gap: 10px; }
-  .bg-picker-thumb { height: 80px; }
+  .bg-picker-section { padding: 0 14px; }
+  /* 2×2 grid on mobile — 4 thumbnails fit comfortably without cramping */
+  .bg-picker-options { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .bg-picker-card { padding: 6px; border-width: 1.5px; }
+  .bg-picker-thumb { height: 80px; margin-bottom: 6px; border-radius: 8px; }
+  .bg-picker-label { font-size: 0.74rem; line-height: 1.25; text-align: center; }
 }
 
 /* ===== NAMAZ SURAHS ===== */
@@ -1866,8 +1981,11 @@
 
 /* Responsive */
 @media (max-width: 480px) {
-  .home-hero { padding: 60px 16px 50px; min-height: auto; }
-  .hero-bg-img { background-size: cover; background-position: center top; }
+  /* Screen-fit hero on mobile — taller frame gives the theme images (mosque,
+     Kaaba, minaret art) enough vertical space to show without being cramped. */
+  .home-hero { padding: 60px 16px 50px; min-height: 520px; }
+  /* Only set generic bg-size; positioning is theme-specific above. */
+  .hero-bg-img { background-size: cover; }
   .hero-icon { font-size: 44px; margin-bottom: 16px; }
   .hero-title { font-size: 1.9rem; }
   .hero-subtitle { font-size: 1.5rem; }
@@ -2021,5 +2139,613 @@
   color: #1a1005;
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+/* ===== Info / Contact button (below dark-mode toggle) ===== */
+.info-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 36px;
+  width: 100%;
+}
+
+/* Support button — matches Home page action-card theme (cream + dark border) */
+.info-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px 12px 12px;
+  background: rgba(255, 253, 247, 0.88);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 2px solid #1a1005;
+  border-radius: 10px;
+  color: #1a1005;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: var(--transition);
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+}
+.info-btn::after {
+  /* Diagonal shine sweep on hover — same as action-card::after */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 45%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.25) 55%, transparent 60%);
+  pointer-events: none;
+  z-index: 3;
+  transition: left 0.6s ease;
+}
+.info-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+  border-color: #1a1005;
+}
+.info-btn:hover::after { left: 125%; }
+.info-btn:hover .info-btn-arrow { transform: translateX(3px); }
+.info-btn:active { transform: translateY(-2px) scale(0.98); }
+
+/* Icon medallion — small gold circle keeps the accent color */
+.info-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: linear-gradient(135deg, #d4a44a, #8b6508);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 2px 4px rgba(60, 40, 8, 0.15);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.info-btn-text {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #1a1005;
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.info-btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(26, 16, 5, 0.55);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 380px) {
+  .info-btn { padding: 10px 14px 10px 10px; gap: 10px; }
+  .info-btn-icon { width: 26px; height: 26px; }
+  .info-btn-text { font-size: 0.76rem; letter-spacing: 1.4px; }
+}
+
+/* ===== Modal overlay + card ===== */
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 12, 4, 0.62);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  /* Perspective enables 3D depth for the modal landing */
+  perspective: 1200px;
+  perspective-origin: center 60%;
+  animation: infoOverlayIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.info-overlay.closing { animation: infoOverlayOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards; }
+
+@keyframes infoOverlayIn {
+  from { background: rgba(20,12,4,0); backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); }
+  to   { background: rgba(20,12,4,0.62); backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1); }
+}
+@keyframes infoOverlayOut {
+  from { background: rgba(20,12,4,0.62); }
+  to   { background: rgba(20,12,4,0); }
+}
+
+.info-modal {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  padding: 40px 28px 28px;
+  border-radius: 22px;
+  border: 1.5px solid rgba(184, 134, 11, 0.55);
+  background:
+    radial-gradient(ellipse at top, rgba(212,164,74,0.14) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(255,253,247,0.98) 0%, rgba(250,244,232,0.98) 100%);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow:
+    0 24px 70px rgba(60, 40, 8, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.55) inset,
+    0 40px 80px -20px rgba(184, 134, 11, 0.35);
+  animation: infoModalIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: center 60%;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+.info-modal.closing { animation: infoModalOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards; }
+
+/* 3D landing — modal tilts forward from -8deg rotateX, translates in from
+   behind (translateZ negative), and slides up gently. Feels like premium glass. */
+@keyframes infoModalIn {
+  from { transform: perspective(1200px) rotateX(-8deg) translateY(28px) translateZ(-40px) scale(0.94); opacity: 0; }
+  to   { transform: perspective(1200px) rotateX(0deg)  translateY(0)    translateZ(0)     scale(1);    opacity: 1; }
+}
+@keyframes infoModalOut {
+  from { transform: perspective(1200px) rotateX(0deg) translateY(0)   translateZ(0)     scale(1);    opacity: 1; }
+  to   { transform: perspective(1200px) rotateX(4deg) translateY(10px) translateZ(-30px) scale(0.96); opacity: 0; }
+}
+
+/* Corner ornaments — 8-pointed rub-el-hizb stars (۞), the classic Islamic
+   Quran-manuscript motif. Built from two overlapping gold rhombs so they
+   render crisply at any zoom without SVG bloat. */
+.info-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  opacity: 0.85;
+  filter: drop-shadow(0 1px 2px rgba(184, 134, 11, 0.35));
+}
+.info-corner::before,
+.info-corner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #d4a44a 0%, #b8860b 50%, #8b6508 100%);
+  border-radius: 2px;
+}
+/* First rhomb sits square, second overlays at 45° → 8-pointed star */
+.info-corner::before { transform: rotate(0deg); }
+.info-corner::after  { transform: rotate(45deg); }
+
+.info-corner-tl { top: 12px;    left: 12px;  }
+/* Top-right star omitted — close button (×) occupies this corner as the
+   natural top-right visual anchor. Three stars + close button gives a
+   balanced 4-corner frame without collision. */
+.info-corner-tr { display: none; }
+.info-corner-bl { bottom: 12px; left: 12px;  }
+.info-corner-br { bottom: 12px; right: 12px; }
+
+.info-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #6b4d06;
+  background: rgba(255, 253, 247, 0.95);
+  border: 1px solid rgba(184, 134, 11, 0.3);
+  box-shadow: 0 2px 6px rgba(60, 40, 8, 0.12);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+  cursor: pointer;
+}
+.info-modal-close:hover {
+  color: #b8860b;
+  background: #fff;
+  border-color: #b8860b;
+  transform: rotate(90deg) scale(1.05);
+  box-shadow: 0 3px 10px rgba(184, 134, 11, 0.25);
+}
+.info-modal-close:active {
+  transform: rotate(90deg) scale(0.94);
+}
+
+/* Body — silky orchestrated entry using only transform + opacity (GPU-accelerated).
+   Consistent easing curve `cubic-bezier(0.22, 1, 0.36, 1)` (ease-out-quart)
+   makes every element decelerate identically — reads as one flowing gesture. */
+.info-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.info-modal-body > * {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* 1. Medallion — soft scale-in, then continuous gentle breathing after entry */
+.info-medallion {
+  animation:
+    infoMedallionIn 0.55s cubic-bezier(0.34, 1.35, 0.64, 1) 0.08s forwards,
+    infoMedallionBreath 4.5s ease-in-out 0.9s infinite;
+}
+@keyframes infoMedallionIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+@keyframes infoMedallionBreath {
+  0%, 100% { transform: scale(1)    translateY(0);    }
+  50%      { transform: scale(1.04) translateY(-2px); }
+}
+
+/* 2. Arabic salam — gentle fade + slide down (no blur / no letter-spacing jank) */
+.info-salam {
+  animation: infoSalamIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.16s forwards;
+}
+@keyframes infoSalamIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+
+/* 3. Roman / Telugu salam */
+.info-salam-roman,
+.info-salam-telugu {
+  animation: infoFadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.24s forwards;
+}
+
+/* 4. Divider — expands from center, then the diamond dot pops */
+.info-divider {
+  animation: infoDividerExpand 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.32s forwards;
+  transform-origin: center;
+}
+@keyframes infoDividerExpand {
+  from { opacity: 0; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+.info-divider-dot {
+  opacity: 0;
+  animation:
+    infoDotIn 0.45s cubic-bezier(0.34, 1.35, 0.64, 1) 0.62s forwards,
+    infoDotSpin 12s linear 1.2s infinite;
+}
+@keyframes infoDotIn {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(45deg) scale(0); }
+  to   { opacity: 1; transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+}
+@keyframes infoDotSpin {
+  from { transform: translate(-50%, -50%) rotate(45deg); }
+  to   { transform: translate(-50%, -50%) rotate(405deg); }
+}
+
+/* 5. Message — flowing continuation of the sequence */
+.info-message {
+  animation: infoFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.42s forwards;
+}
+
+/* 6. Email pill — gentle rise + soft overshoot */
+.info-email {
+  animation: infoEmailIn 0.6s cubic-bezier(0.34, 1.35, 0.64, 1) 0.54s forwards;
+}
+@keyframes infoEmailIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* 7. JazakAllah — soft closing beat */
+.info-jazak {
+  animation: infoFadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+}
+
+@keyframes infoFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Corner ornaments — fade in smoothly overlapping with medallion */
+.info-corner {
+  opacity: 0;
+  animation: infoCornerIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.info-corner-tl { animation-delay: 0.20s; }
+.info-corner-tr { animation-delay: 0.24s; }
+.info-corner-bl { animation-delay: 0.28s; }
+.info-corner-br { animation-delay: 0.32s; }
+@keyframes infoCornerIn {
+  from { opacity: 0; }
+  to   { opacity: 0.8; }
+}
+
+/* Reverse-stagger exit — children fade out bottom-up when modal is closing.
+   Each `nth-child` overrides its entry animation so nothing "pops" back to
+   opacity 1 during the closing sequence. */
+.info-modal.closing .info-modal-body > * {
+  animation: infoExit 0.24s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.info-modal.closing .info-jazak       { animation-delay: 0s;    }
+.info-modal.closing .info-email       { animation-delay: 0.04s; }
+.info-modal.closing .info-message     { animation-delay: 0.06s; }
+.info-modal.closing .info-divider     { animation-delay: 0.08s; }
+.info-modal.closing .info-salam-roman,
+.info-modal.closing .info-salam-telugu { animation-delay: 0.10s; }
+.info-modal.closing .info-salam       { animation-delay: 0.10s; }
+.info-modal.closing .info-medallion   { animation-delay: 0.12s; }
+.info-modal.closing .info-corner      { animation: infoCornerOut 0.2s ease forwards; }
+
+@keyframes infoExit {
+  from { opacity: 1; transform: translateY(0)    scale(1);    }
+  to   { opacity: 0; transform: translateY(-6px) scale(0.97); }
+}
+@keyframes infoCornerOut {
+  from { opacity: 0.8; }
+  to   { opacity: 0; }
+}
+
+/* Medallion at the top — a gold circular icon with soft glow */
+.info-medallion {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #d4a44a 0%, #b8860b 50%, #8b6508 100%);
+  box-shadow:
+    0 8px 24px rgba(184, 134, 11, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -3px 6px rgba(0,0,0,0.12),
+    0 0 0 6px rgba(212, 164, 74, 0.12);
+  position: relative;
+  margin-bottom: 2px;
+}
+.info-medallion::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(160deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 45%);
+  pointer-events: none;
+}
+.info-medallion svg {
+  position: relative;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+
+.info-salam {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6b4d06;
+  line-height: 1.55;
+  margin: 4px 0 0;
+  font-family: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.info-salam-roman {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #4a2f0e;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+.info-salam-telugu {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #4a2f0e;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Ornamental divider — thin gold line with a center diamond */
+.info-divider {
+  position: relative;
+  display: block;
+  width: 70%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(184,134,11,0.6) 50%, transparent 100%);
+  margin: 4px 0;
+}
+.info-divider-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: linear-gradient(135deg, #d4a44a, #8b6508);
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(184, 134, 11, 0.4);
+}
+
+.info-message {
+  font-size: 0.97rem;
+  color: #2a1c0e;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 92%;
+}
+
+/* Email — pill with icon block + hover shimmer */
+.info-email {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px 12px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fffbe8 0%, #fff5d0 100%);
+  border: 1.5px solid rgba(184, 134, 11, 0.5);
+  color: #6b4d06;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  word-break: break-word;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 14px rgba(184, 134, 11, 0.2), inset 0 1px 0 rgba(255,255,255,0.6);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.info-email::before {
+  /* Continuous ambient sheen — sweeps left→right slowly every 5s */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.7s ease;
+  pointer-events: none;
+  animation: infoEmailShine 5s cubic-bezier(0.5, 0, 0.5, 1) 1.5s infinite;
+}
+@keyframes infoEmailShine {
+  0%       { left: -60%; }
+  55%,100% { left: 120%; }
+}
+.info-email:hover {
+  transform: translateY(-2px);
+  border-color: #b8860b;
+  box-shadow: 0 10px 24px rgba(184, 134, 11, 0.35), inset 0 1px 0 rgba(255,255,255,0.7);
+}
+.info-email:hover::before { left: 120%; }
+.info-email:active { transform: translateY(0); }
+
+.info-email-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4a44a, #8b6508);
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.info-email-text {
+  position: relative;
+  z-index: 1;
+}
+
+.info-jazak {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #8b6508;
+  letter-spacing: 3px;
+  margin: 6px 0 0;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+@media (max-width: 480px) {
+  .info-modal { padding: 34px 20px 22px; border-radius: 20px; }
+  .info-salam { font-size: 1.3rem; }
+  .info-salam-roman { font-size: 0.88rem; }
+  .info-message { font-size: 0.92rem; }
+  .info-email { font-size: 0.86rem; padding: 10px 14px 10px 10px; gap: 8px; }
+  .info-email-icon { width: 28px; height: 28px; }
+  .info-medallion { width: 54px; height: 54px; }
+  .info-corner { width: 18px; height: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-modal-body > *,
+  .info-divider-dot,
+  .info-corner { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+
+/* ===================================================================
+   HOME PAGE — cards & sections arrange into position on entry
+   Cascade + spring stagger so the layout feels intentional, not chaotic.
+   All animations are GPU-only (transform + opacity), consistent easing.
+   =================================================================== */
+
+/* Every action card lands into its grid slot with a spring bounce.
+   Staggered ~60ms apart so the 10 tiles read as a flowing wave, not a pop. */
+.action-card {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: homeCardLand 0.7s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+}
+.action-card:nth-child(1)  { animation-delay: 0.20s; }
+.action-card:nth-child(2)  { animation-delay: 0.26s; }
+.action-card:nth-child(3)  { animation-delay: 0.32s; }
+.action-card:nth-child(4)  { animation-delay: 0.38s; }
+.action-card:nth-child(5)  { animation-delay: 0.44s; }
+.action-card:nth-child(6)  { animation-delay: 0.50s; }
+.action-card:nth-child(7)  { animation-delay: 0.56s; }
+.action-card:nth-child(8)  { animation-delay: 0.62s; }
+.action-card:nth-child(9)  { animation-delay: 0.68s; }
+.action-card:nth-child(10) { animation-delay: 0.74s; }
+.action-card:nth-child(11) { animation-delay: 0.80s; }
+.action-card:nth-child(12) { animation-delay: 0.86s; }
+
+@keyframes homeCardLand {
+  from { opacity: 0; transform: translateY(28px) scale(0.88); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* Surrounding major sections cascade in with the smooth ease-out-quart.
+   Above-fold sections arrive first (before cards); below-fold cascade after. */
+.home > .stats-row,
+.home > .continue-section,
+.home > .bg-picker-section,
+.home > .dark-theme-section,
+.home > .info-section,
+.home > .home-reciter-section,
+.home > .translit-section,
+.home > .home-footer {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: homeSectionRise 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Above-the-fold: stats + continue-reading arrive right after the hero */
+.home > .stats-row         { animation-delay: 0.05s; }
+.home > .continue-section  { animation-delay: 0.11s; }
+
+/* Below-the-fold: settings sections cascade after the last card lands (~1.44s) */
+.home > .bg-picker-section    { animation-delay: 0.95s; }
+.home > .dark-theme-section   { animation-delay: 1.02s; }
+.home > .info-section         { animation-delay: 1.09s; }
+.home > .home-reciter-section { animation-delay: 1.16s; }
+.home > .translit-section     { animation-delay: 1.23s; }
+.home > .home-footer          { animation-delay: 1.32s; }
+
+@keyframes homeSectionRise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Respect accessibility — no motion for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .action-card,
+  .home > .stats-row,
+  .home > .continue-section,
+  .home > .bg-picker-section,
+  .home > .dark-theme-section,
+  .home > .info-section,
+  .home > .home-reciter-section,
+  .home > .translit-section,
+  .home > .home-footer {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
