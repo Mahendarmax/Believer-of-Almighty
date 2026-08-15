@@ -28,7 +28,7 @@ export const SettingsProvider = ({ children }) => {
   const [lastRead, setLastRead] = useState(() => loadSetting('lastRead', null))
   const [favorites, setFavorites] = useState(() => loadSetting('favorites', []))
   const [transliteration, setTransliteration] = useState(() => loadSetting('transliteration', 'telugu'))
-  const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.alafasy'))
+  const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.yasserdussary'))
   const [theme, setTheme] = useState(() => loadSetting('theme', 'normal'))
   const [bgImage, setBgImage] = useState(() => loadSetting('bgImage', 'first-theme'))
 
