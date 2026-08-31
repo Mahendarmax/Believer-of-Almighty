@@ -67,12 +67,12 @@ export const SettingsProvider = ({ children }) => {
     localStorage.removeItem('quran_lastRead')
   }, [])
 
-  const toggleFavorite = useCallback((surahNumber, surahName, verseNumber, arabicText, translationText) => {
+  const toggleFavorite = useCallback((surahNumber, surahName, verseNumber, arabicText, translationText, teluguText) => {
     setFavorites(prev => {
       const key = `${surahNumber}:${verseNumber}`
       const exists = prev.find(f => f.key === key)
       if (exists) return prev.filter(f => f.key !== key)
-      return [...prev, { key, surahNumber, surahName, verseNumber, arabic: arabicText, translation: translationText, timestamp: Date.now() }]
+      return [...prev, { key, surahNumber, surahName, verseNumber, arabic: arabicText, translation: translationText, telugu: teluguText, timestamp: Date.now() }]
     })
   }, [])
 

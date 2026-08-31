@@ -59,7 +59,7 @@ function Favorites() {
                   </button>
                   <button
                     className="fav-card-remove"
-                    onClick={() => toggleFavorite(fav.surahNumber, fav.surahName, fav.verseNumber, fav.arabic, fav.translation)}
+                    onClick={() => toggleFavorite(fav.surahNumber, fav.surahName, fav.verseNumber, fav.arabic, fav.translation, fav.telugu)}
                     title="Remove from favorites"
                   >
                     <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" width="16" height="16">
@@ -70,6 +70,9 @@ function Favorites() {
               </div>
               {showArabic && fav.arabic && (
                 <p className="fav-card-arabic" dir="rtl">{fav.arabic}</p>
+              )}
+              {fav.telugu && (
+                <p className="fav-card-telugu">{fav.telugu}</p>
               )}
               {fav.translation && (
                 <p className="fav-card-translation">{fav.translation}</p>

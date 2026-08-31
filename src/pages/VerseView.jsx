@@ -451,7 +451,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
           </button>
           <button
             className={`vc-action-btn fav-btn ${isFav ? 'active' : ''}`}
-            onClick={() => onToggleFav(verse.number, verse.arabic, verse.translation)}
+            onClick={() => onToggleFav(verse.number, verse.arabic, verse.translation, verse.telugu)}
             title={isFav ? 'Remove from favorites' : 'Add to favorites'}
             aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
           >
@@ -787,8 +787,8 @@ function VerseView() {
     }
   }, [surah, surahNumber, updateLastRead, clearLastRead, lastRead])
 
-  const handleToggleFav = useCallback((verseNum, arabic, translation) => {
-    if (surah) toggleFavorite(surahNumber, surah.name, verseNum, arabic, translation)
+  const handleToggleFav = useCallback((verseNum, arabic, translation, telugu) => {
+    if (surah) toggleFavorite(surahNumber, surah.name, verseNum, arabic, translation, telugu)
   }, [surah, surahNumber, toggleFavorite])
 
   const startSurahPlayback = useCallback((startAyah = 1) => {
