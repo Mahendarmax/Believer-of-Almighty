@@ -914,6 +914,10 @@ export const fixRomanText = (text) => {
   fixed = fixed.replace(/\bya;mal\b/gi, "ya'mal")
   // Fix malformed sequence seen in 68:51: "iny-yakaadul" -> "in yakaadul"
   fixed = fixed.replace(/\biny-yakaadul\b/gi, 'in yakaadul')
+  // Arabic لِلَّهِ has a doubled laam (shadda); API drops one (3:129, 62:1, 31:26) → "lillaahi"
+  fixed = fixed.replace(/\blilaahi\b/gi, m => (m[0] === 'L' ? 'Lillaahi' : 'lillaahi'))
+  // Arabic مُسَوِّمِينَ is "musawwimeen" (waw+shadda+kasra); API adds a stray "a" (3:125)
+  fixed = fixed.replace(/\bmusawwaimeen\b/gi, 'musawwimeen')
   // Fix API quirk: triple+ consonants → double (e.g. "innnaa" → "innaa")
   fixed = fixed.replace(/([bcdfghjklmnpqrstvwxyz])\1{2,}/gi, '$1$1')
   // Fix API quirk: quadruple+ vowels → triple (e.g. "moosaaaa" → "moosaaa")
