@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
 import './Favorites.css'
@@ -6,6 +6,31 @@ import './Favorites.css'
 function Favorites() {
   const navigate = useNavigate()
   const { favorites, toggleFavorite, showArabic } = useSettings()
+  const [teluguLookup, setTeluguLookup] = useState({})
+
+  // Backfill Telugu for favorites saved before it was stored, by surah+verse
+  useEffect(() => {
+    const missing = favorites.filter(f => !f.telugu)
+    if (missing.length === 0) return
+    const surahNums = [...new Set(missing.map(f => f.surahNumber))]
+    let cancelled = false
+    Promise.all(surahNums.map(async (n) => {
+      try {
+        const res = await fetch(`/quran-support/${n}.json`)
+        if (!res.ok) return []
+        const data = await res.json()
+        return (data.verses || []).map(v => [`${n}:${v.number}`, v.telugu || ''])
+      } catch {
+        return []
+      }
+    })).then(results => {
+      if (cancelled) return
+      const map = {}
+      results.flat().forEach(([k, t]) => { if (t) map[k] = t })
+      setTeluguLookup(map)
+    })
+    return () => { cancelled = true }
+  }, [favorites])
 
   const handleBack = useCallback(() => navigate(-1), [navigate])
   const handleGoToVerse = useCallback((surahNumber, verseNumber) => {
@@ -40,7 +65,9 @@ function Favorites() {
         </div>
       ) : (
         <div className="fav-list">
-          {sortedFavorites.map((fav) => (
+          {sortedFavorites.map((fav) => {
+            const telugu = fav.telugu || teluguLookup[fav.key]
+            return (
             <div key={fav.key} className="fav-card">
               <div className="fav-card-header">
                 <div className="fav-card-info">
@@ -71,14 +98,15 @@ function Favorites() {
               {showArabic && fav.arabic && (
                 <p className="fav-card-arabic" dir="rtl">{fav.arabic}</p>
               )}
-              {fav.telugu && (
-                <p className="fav-card-telugu">{fav.telugu}</p>
+              {telugu && (
+                <p className="fav-card-telugu">{telugu}</p>
               )}
               {fav.translation && (
                 <p className="fav-card-translation">{fav.translation}</p>
               )}
             </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>
