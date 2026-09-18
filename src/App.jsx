@@ -8,6 +8,8 @@ import './App.css'
 const Home = lazy(() => import('./pages/Home'))
 const SurahList = lazy(() => import('./pages/SurahList'))
 const VerseView = lazy(() => import('./pages/VerseView'))
+const ParahList = lazy(() => import('./pages/ParahList'))
+const ParahView = lazy(() => import('./pages/ParahView'))
 const Favorites = lazy(() => import('./pages/Favorites'))
 const NamazSurahs = lazy(() => import('./pages/NamazSurahs'))
 const Duas = lazy(() => import('./pages/Duas'))
@@ -91,6 +93,8 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/surahs" element={<SurahList />} />
                 <Route path="/surah/:number" element={<VerseView />} />
+                <Route path="/parah" element={<ParahList />} />
+                <Route path="/parah/:number" element={<ParahView />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/namaz" element={<NamazSurahs />} />
                 <Route path="/duas" element={<Duas />} />

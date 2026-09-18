@@ -63,21 +63,6 @@
    focal subject (mosque, minaret, Kaaba). Cover fills the hero, position
    keeps the important part visible without awkward cropping.
    =================================================================== */
-.home[data-bg="second-theme"] .hero-bg-img {
-  /* Sunset mosque with reflection pool — mosque is centered horizontally,
-     reflection sits at bottom. Anchor slightly below center so the dome +
-     minarets + reflection all frame nicely on tall mobile viewports. */
-  background-position: center 55%;
-  background-size: cover;
-}
-
-.home[data-bg="third-theme"] .hero-bg-img {
-  /* Quba Masjid photo — the mosque sits in the lower-middle. Center-vertical
-     keeps the minarets + domes visible without cropping the sky or ground. */
-  background-position: center 40%;
-  background-size: cover;
-}
-
 .home[data-bg="fourth-theme"] .hero-bg-img {
   /* Kaaba — the sacred cube is centered horizontally in the frame. Anchor to
      just below center so the Kaaba structure remains fully visible on all
@@ -814,6 +799,145 @@
   .qv-modal-arabic p {
     font-size: 1.25rem;
   }
+}
+
+/* ===== Read Quran — Surah/Parah choice modal ===== */
+.rc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  perspective: 1200px;
+  perspective-origin: center 60%;
+  animation: qvOverlayIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.rc-overlay.closing {
+  animation: qvOverlayOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.rc-modal {
+  background: rgba(255, 253, 247, 0.96);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 2px solid #1a1005;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  padding: 26px 22px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255,255,255,0.5);
+  animation: qvModalIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform-origin: center 60%;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+.rc-modal.closing {
+  animation: qvModalOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.rc-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-muted);
+  background: rgba(253, 250, 244, 0.92);
+  border: 1px solid rgba(26, 16, 5, 0.2);
+  transition: var(--transition);
+}
+.rc-close:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.rc-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.rc-title {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #8b6508;
+  margin-bottom: 4px;
+}
+
+.rc-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.rc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rc-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 22px 18px;
+  background: #fffdf7;
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.rc-option:hover {
+  transform: translateY(-3px);
+  border-color: #b8860b;
+  box-shadow: 0 10px 28px rgba(184, 134, 11, 0.18);
+}
+
+.rc-option-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  color: #8b6508;
+  background: rgba(212, 164, 74, 0.12);
+  border: 1px solid rgba(184, 134, 11, 0.4);
+  margin-bottom: 4px;
+}
+
+.rc-option-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.rc-option-desc {
+  font-size: 0.74rem;
+  color: #333333;
+  line-height: 1.5;
+  font-family: 'Noto Sans Telugu', system-ui, sans-serif;
+}
+
+@media (max-width: 480px) {
+  .rc-modal { padding: 22px 16px 20px; max-width: 100%; }
+  .rc-title { font-size: 1.15rem; }
+  .rc-option { padding: 18px 14px; }
 }
 
 /* Continue Reading */

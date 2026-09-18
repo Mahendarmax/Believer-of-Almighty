@@ -1147,3 +1147,91 @@ export const fetchBismillah = async () => {
   } catch (_) { /* silent fail */ }
   return null
 }
+
+// ===================== Juz / Parah (Hafiz Quran) =====================
+// The 30 parts (ajza') of the Quran. Each entry records the surah:ayah the
+// part begins at (informational — the actual verse set comes from the API).
+// `name` is the traditional first-word title used to identify each juz.
+export const juzList = [
+  { number: 1,  name: 'Alif Lam Meem',        arabicName: 'الم',              startSurah: 1,  startAyah: 1 },
+  { number: 2,  name: 'Sayaqul',              arabicName: 'سَيَقُولُ',        startSurah: 2,  startAyah: 142 },
+  { number: 3,  name: 'Tilkal Rusul',         arabicName: 'تِلْكَ ٱلرُّسُلُ', startSurah: 2,  startAyah: 253 },
+  { number: 4,  name: 'Lan Tanaloo',          arabicName: 'لَن تَنَالُوا',    startSurah: 3,  startAyah: 92 },
+  { number: 5,  name: "Wal Mohsanat",         arabicName: 'وَٱلْمُحْصَنَاتُ', startSurah: 4,  startAyah: 24 },
+  { number: 6,  name: "La Yuhibbullah",       arabicName: 'لَا يُحِبُّ ٱللَّهُ', startSurah: 4, startAyah: 148 },
+  { number: 7,  name: "Wa Iza Sami'oo",       arabicName: 'وَإِذَا سَمِعُوا', startSurah: 5,  startAyah: 82 },
+  { number: 8,  name: 'Wa Lau Annana',        arabicName: 'وَلَوْ أَنَّنَا',  startSurah: 6,  startAyah: 111 },
+  { number: 9,  name: "Qalal Mala'u",         arabicName: 'قَالَ ٱلْمَلَأُ',  startSurah: 7,  startAyah: 88 },
+  { number: 10, name: "Wa A'lamu",            arabicName: 'وَٱعْلَمُوا',      startSurah: 8,  startAyah: 41 },
+  { number: 11, name: "Ya'tazeroon",          arabicName: 'يَعْتَذِرُونَ',    startSurah: 9,  startAyah: 93 },
+  { number: 12, name: 'Wa Mamin Dabbah',      arabicName: 'وَمَا مِن دَآبَّةٍ', startSurah: 11, startAyah: 6 },
+  { number: 13, name: "Wa Ma Ubarri'u",       arabicName: 'وَمَا أُبَرِّئُ',  startSurah: 12, startAyah: 53 },
+  { number: 14, name: 'Rubama',               arabicName: 'رُبَمَا',          startSurah: 15, startAyah: 1 },
+  { number: 15, name: 'Subhanallazi',         arabicName: 'سُبْحَانَ ٱلَّذِى', startSurah: 17, startAyah: 1 },
+  { number: 16, name: 'Qal Alam',             arabicName: 'قَالَ أَلَمْ',     startSurah: 18, startAyah: 75 },
+  { number: 17, name: 'Iqtarabath',           arabicName: 'ٱقْتَرَبَ',        startSurah: 21, startAyah: 1 },
+  { number: 18, name: 'Qadd Aflaha',          arabicName: 'قَدْ أَفْلَحَ',    startSurah: 23, startAyah: 1 },
+  { number: 19, name: 'Wa Qalallazina',       arabicName: 'وَقَالَ ٱلَّذِينَ', startSurah: 25, startAyah: 21 },
+  { number: 20, name: "A'man Khalaqa",        arabicName: 'أَمَّنْ خَلَقَ',   startSurah: 27, startAyah: 56 },
+  { number: 21, name: 'Utlu Ma Oohiya',       arabicName: 'ٱتْلُ مَآ أُوحِىَ', startSurah: 29, startAyah: 46 },
+  { number: 22, name: 'Wa Manyaqnut',         arabicName: 'وَمَن يَقْنُتْ',   startSurah: 33, startAyah: 31 },
+  { number: 23, name: 'Wa Mali',              arabicName: 'وَمَا لِىَ',       startSurah: 36, startAyah: 28 },
+  { number: 24, name: 'Faman Azlam',          arabicName: 'فَمَنْ أَظْلَمُ',  startSurah: 39, startAyah: 32 },
+  { number: 25, name: 'Ilayhi Yuraddu',       arabicName: 'إِلَيْهِ يُرَدُّ',  startSurah: 41, startAyah: 47 },
+  { number: 26, name: 'Ha Meem',              arabicName: 'حم',               startSurah: 46, startAyah: 1 },
+  { number: 27, name: "Qala Fama Khatbukum",  arabicName: 'قَالَ فَمَا خَطْبُكُمْ', startSurah: 51, startAyah: 31 },
+  { number: 28, name: "Qad Sami' Allah",      arabicName: 'قَدْ سَمِعَ ٱللَّهُ', startSurah: 58, startAyah: 1 },
+  { number: 29, name: 'Tabarakallazi',        arabicName: 'تَبَارَكَ ٱلَّذِى', startSurah: 67, startAyah: 1 },
+  { number: 30, name: "'Amma",                arabicName: 'عَمَّ',            startSurah: 78, startAyah: 1 },
+]
+
+// Cache + in-flight dedup for juz Arabic (same pattern as verse cache)
+const juzCache = {}
+const juzPending = {}
+
+// Fetch Arabic-only verses for a full juz (parah), grouped by surah.
+// Returns an array of { surah, verses: [{ ayah, arabic }] } groups in order.
+// The shared request is intentionally NOT tied to a caller's abort signal —
+// otherwise a StrictMode/unmount abort would poison the cached promise for the
+// remount. Callers guard their own state with a cancelled flag instead.
+export const getJuzArabic = async (juzNumber) => {
+  if (juzCache[juzNumber]) return juzCache[juzNumber]
+  if (juzPending[juzNumber]) return juzPending[juzNumber]
+
+  const promise = (async () => {
+    const res = await fetchWithTimeout(
+      `https://api.quran.com/api/v4/quran/verses/uthmani?juz_number=${juzNumber}`
+    )
+    const data = await res.json()
+    const rawVerses = data?.verses || []
+
+    // Bismillah is embedded in the first ayah of most surahs — strip it so the
+    // opening verse reads cleanly (except Al-Fatiha and At-Tawbah).
+    const bismillahText = rawVerses.length ? await getBismillahText() : ''
+    const normBismillah = bismillahText.replace(/\s+/g, ' ').trim()
+
+    const groups = []
+    let currentGroup = null
+    for (const v of rawVerses) {
+      const [s, a] = (v.verse_key || '').split(':').map(Number)
+      if (!s || !a) continue
+      let arabic = (v.text_uthmani || '').trim()
+      if (a === 1 && s !== 1 && s !== 9 && normBismillah) {
+        const normalized = arabic.replace(/\s+/g, ' ').trim()
+        if (normalized.startsWith(normBismillah)) {
+          arabic = normalized.substring(normBismillah.length).trim()
+        }
+      }
+      if (!currentGroup || currentGroup.surah !== s) {
+        currentGroup = { surah: s, verses: [] }
+        groups.push(currentGroup)
+      }
+      currentGroup.verses.push({ ayah: a, arabic })
+    }
+    juzCache[juzNumber] = groups
+    return groups
+  })().finally(() => { delete juzPending[juzNumber] })
+
+  juzPending[juzNumber] = promise
+  return promise
+}

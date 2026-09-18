@@ -15,8 +15,6 @@ const COUNTS = { namaz: 8, duas: 24, dosdonts: 45, asma: 99, adhkar: 14, isa: 60
 // copies on devices where a previous file at the same URL is still stored.
 const THEME_URL = {
   'first-theme':  '/first-theme.jpg',
-  'second-theme': '/second-theme.png',
-  'third-theme':  '/third-theme.jpg',
   'fourth-theme': '/fourth-theme.jpg?v=kaba2',
 }
 
@@ -136,6 +134,10 @@ const Home = React.memo(function Home() {
   const [qvFilter, setQvFilter] = useState('')
   const qvDropRef = useRef(null)
 
+  // Read Quran choice modal (Surah wise vs Parah wise)
+  const [readChoiceOpen, setReadChoiceOpen] = useState(false)
+  const [readChoiceClosing, setReadChoiceClosing] = useState(false)
+
   // Contact / info modal — separate open + closing states so exit animation runs
   const [infoOpen, setInfoOpen] = useState(false)
   const [infoClosing, setInfoClosing] = useState(false)
@@ -203,7 +205,7 @@ const Home = React.memo(function Home() {
   }, [])
 
   useEffect(() => {
-    const themes = ['first-theme', 'second-theme', 'third-theme', 'fourth-theme']
+    const themes = ['first-theme', 'fourth-theme']
     themes.forEach(t => {
       const img = new Image()
       img.src = THEME_URL[t]
@@ -285,7 +287,13 @@ const Home = React.memo(function Home() {
     }
   }, [applyTilt])
 
-  const handleReadQuran = useCallback(() => navigate('/surahs'), [navigate])
+  const handleReadQuran = useCallback(() => { setReadChoiceOpen(true); setReadChoiceClosing(false) }, [])
+  const closeReadChoice = useCallback(() => {
+    setReadChoiceClosing(true)
+    setTimeout(() => { setReadChoiceOpen(false); setReadChoiceClosing(false) }, 380)
+  }, [])
+  const handleChooseSurah = useCallback(() => { closeReadChoice(); navigate('/surahs') }, [closeReadChoice, navigate])
+  const handleChooseParah = useCallback(() => { closeReadChoice(); navigate('/parah') }, [closeReadChoice, navigate])
   const handleFavorites = useCallback(() => navigate('/favorites'), [navigate])
   const handleContinue = useCallback(() => {
     if (lastRead) {
@@ -541,20 +549,6 @@ const Home = React.memo(function Home() {
               <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఆర్చ్ థీమ్' : 'Arch Theme'}</span>
             </button>
             <button
-              className={`bg-picker-card ${bgImage === 'second-theme' ? 'active' : ''}`}
-              onClick={() => setBgImage('second-theme')}
-            >
-              <img src="/second-theme.png" alt="Mosque at Dusk" className="bg-picker-thumb" />
-              <span className="bg-picker-label">{transliteration === 'telugu' ? 'మసీదు థీమ్' : 'Mosque Theme'}</span>
-            </button>
-            <button
-              className={`bg-picker-card ${bgImage === 'third-theme' ? 'active' : ''}`}
-              onClick={() => setBgImage('third-theme')}
-            >
-              <img src="/third-theme.jpg" alt="Quba Masjid" className="bg-picker-thumb" />
-              <span className="bg-picker-label">{transliteration === 'telugu' ? 'ఖుబా మసీదు' : 'Quba Masjid'}</span>
-            </button>
-            <button
               className={`bg-picker-card ${bgImage === 'fourth-theme' ? 'active' : ''}`}
               onClick={() => setBgImage('fourth-theme')}
             >
@@ -761,6 +755,47 @@ const Home = React.memo(function Home() {
               <p className="info-jazak">
                 {transliteration === 'telugu' ? '— జజాకల్లాహు ఖైరన్ —' : '— JazakAllahu Khairan —'}
               </p>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Read Quran — Surah wise vs Parah wise choice */}
+      {readChoiceOpen && createPortal(
+        <div className={`rc-overlay${readChoiceClosing ? ' closing' : ''}`} onClick={closeReadChoice}>
+          <div className={`rc-modal${readChoiceClosing ? ' closing' : ''}`} onClick={e => e.stopPropagation()}>
+            <button className="rc-close" onClick={closeReadChoice} aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="18" height="18">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+
+            <div className="rc-header">
+              <span className="rc-title">{transliteration === 'telugu' ? 'ఖురాన్ చదవండి' : 'Read Quran'}</span>
+              <span className="rc-subtitle">{transliteration === 'telugu' ? 'ఎలా చదవాలో ఎంచుకోండి' : 'Choose how you want to read'}</span>
+            </div>
+
+            <div className="rc-options">
+              <button className="rc-option rc-option-surah" onClick={handleChooseSurah}>
+                <span className="rc-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="26" height="26">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </span>
+                <span className="rc-option-title">{transliteration === 'telugu' ? 'సూరా వారీగా' : 'Surah Wise'}</span>
+                <span className="rc-option-desc">{transliteration === 'telugu' ? 'అనువాదం & లిప్యంతరీకరణతో 114 సూరాలు' : '114 Surahs with translation & transliteration'}</span>
+              </button>
+
+              <button className="rc-option rc-option-parah" onClick={handleChooseParah}>
+                <span className="rc-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="26" height="26">
+                    <path d="M12 3v18"/><path d="M3 6h6a3 3 0 0 1 3 3M21 6h-6a3 3 0 0 0-3 3"/><rect x="3" y="6" width="18" height="14" rx="1"/>
+                  </svg>
+                </span>
+                <span className="rc-option-title">{transliteration === 'telugu' ? 'పారా వారీగా' : 'Parah Wise'}</span>
+                <span className="rc-option-desc">{transliteration === 'telugu' ? 'హఫీజ్ ఖురాన్ · 30 పారాలు (అరబిక్ మాత్రమే)' : 'Hafiz Quran · 30 Parts (Arabic only)'}</span>
+              </button>
             </div>
           </div>
         </div>,
