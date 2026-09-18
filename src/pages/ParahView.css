@@ -219,6 +219,112 @@
   color: var(--text-secondary);
 }
 
+/* Waqf (pause) signs reference */
+.pv-waqf {
+  margin-bottom: 16px;
+  background: #fffdf7;
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.pv-waqf-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #000000;
+  transition: var(--transition);
+}
+
+.pv-waqf-toggle:hover {
+  background: rgba(212, 164, 74, 0.08);
+}
+
+.pv-waqf-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pv-waqf-toggle-mark {
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: 1.2rem;
+  color: #b8860b;
+}
+
+.pv-waqf-chevron {
+  font-size: 0.6rem;
+  color: #8b6508;
+}
+
+.pv-waqf-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 14px 14px;
+  border-top: 1px dashed rgba(184, 134, 11, 0.35);
+}
+
+.pv-waqf-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(26, 16, 5, 0.08);
+}
+
+.pv-waqf-item:last-child {
+  border-bottom: none;
+}
+
+.pv-waqf-sign {
+  flex-shrink: 0;
+  min-width: 3.2em;
+  text-align: center;
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #b8860b;
+}
+
+.pv-waqf-meaning {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pv-waqf-ar {
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #8b6508;
+}
+
+.pv-waqf-latin {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Waqf pause marks highlighted inside the flowing Arabic text */
+.pv-waqf-mark {
+  color: #c0392b;
+  cursor: help;
+  border-radius: 3px;
+  transition: background 0.15s ease;
+}
+
+.pv-waqf-mark:hover,
+.pv-waqf-mark:focus {
+  background: rgba(192, 57, 43, 0.14);
+  outline: none;
+}
+
 /* Content */
 .pv-content {
   display: flex;

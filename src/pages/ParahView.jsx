@@ -39,6 +39,84 @@ ScrollToTop.displayName = 'ScrollToTop'
 // Fraction printed next to the ۞ Rub-el-Hizb symbol (position within the hizb).
 const RUB_FRACTION = ['', '¼', '½', '¾']
 
+// Waqf (pause) signs printed inside the Uthmani text — a reference so readers
+// know where to stop while reciting. `sign` uses the glyph as it appears in the
+// Mushaf; meanings are shown in English and Telugu.
+const WAQF_SIGNS = [
+  { sign: 'مـ', ar: 'يجب الوقف — الوصل يغيّر المعنى', en: 'Must stop (compulsory) — continuing changes the meaning', te: 'తప్పనిసరిగా ఆగాలి — కొనసాగిస్తే అర్థం మారుతుంది' },
+  { sign: 'قلى', ar: 'الوقف أولى', en: 'Stopping is preferred', te: 'ఆగడం ఉత్తమం' },
+  { sign: 'ج', ar: 'وقف جائز — يجوز الوقف والوصل', en: 'Optional — stop or continue, both allowed', te: 'ఐచ్ఛికం — ఆగవచ్చు లేదా కొనసాగవచ్చు' },
+  { sign: 'صلى', ar: 'الوصل أولى', en: 'Continuing is preferred', te: 'కొనసాగించడం ఉత్తమం' },
+  { sign: 'لا', ar: 'لا تقف — وإن وقفت فأعد', en: 'Do not stop (if you do, repeat from before)', te: 'ఆగకూడదు (ఆగితే మళ్లీ చదవండి)' },
+  { sign: '؞ ... ؞', ar: 'وقف المعانقة — قف عند إحدى العلامتين فقط', en: 'Embracing stop — pause at only one of the two marks', te: 'రెండు గుర్తులలో ఒకచోట మాత్రమే ఆగాలి' },
+]
+
+// Waqf marks as they are actually embedded (as combining Unicode characters)
+// inside the Uthmani text. Keyed by code point so we can wrap and colour each
+// mark in the flowing Arabic and show its meaning on tap/hover.
+const WAQF_MARKS = {
+  'ۖ': { ar: 'الوصل أولى', en: 'Continuing is preferred', te: 'కొనసాగించడం ఉత్తమం' },        // ۖ
+  'ۗ': { ar: 'الوقف أولى', en: 'Stopping is preferred', te: 'ఆగడం ఉత్తమం' },                  // ۗ
+  'ۘ': { ar: 'يجب الوقف', en: 'Must stop (compulsory)', te: 'తప్పనిసరిగా ఆగాలి' },             // ۘ
+  'ۙ': { ar: 'لا تقف', en: 'Do not stop', te: 'ఆగకూడదు' },                                     // ۙ
+  'ۚ': { ar: 'وقف جائز', en: 'Optional — stop or continue', te: 'ఐచ్ఛికం — ఆగవచ్చు/కొనసాగవచ్చు' }, // ۚ
+  'ۛ': { ar: 'وقف المعانقة — قف عند إحداهما', en: 'Embracing stop — pause at one only', te: 'ఒకచోట మాత్రమే ఆగాలి' }, // ۛ
+  'ۜ': { ar: 'سكتة — وقفة يسيرة بلا تنفّس', en: 'Sakta — brief pause without breath', te: 'శ్వాస తీసుకోకుండా చిన్న విరామం' }, // ۜ
+}
+
+// Render flowing Arabic with each embedded waqf mark wrapped so it stands out
+// and shows its meaning on tap/hover.
+const renderArabicWithWaqf = (text, lang) => {
+  const nodes = []
+  let buf = ''
+  let key = 0
+  for (const ch of text) {
+    const mark = WAQF_MARKS[ch]
+    if (mark) {
+      if (buf) { nodes.push(buf); buf = '' }
+      const meaning = lang === 'telugu' ? mark.te : lang === 'english' ? mark.en : `${mark.ar} · ${mark.en}`
+      nodes.push(
+        <span className="pv-waqf-mark" key={`w${key++}`} tabIndex={0} title={meaning} aria-label={meaning}>{ch}</span>
+      )
+    } else {
+      buf += ch
+    }
+  }
+  if (buf) nodes.push(buf)
+  return nodes
+}
+
+// Collapsible reference for the waqf (pause) signs found in the text.
+const WaqfLegend = memo(({ transliteration }) => {
+  const [open, setOpen] = useState(false)
+  const te = transliteration === 'telugu'
+  return (
+    <div className={`pv-waqf ${open ? 'open' : ''}`}>
+      <button className="pv-waqf-toggle" onClick={() => setOpen(o => !o)} aria-expanded={open}>
+        <span className="pv-waqf-toggle-label">
+          <span className="pv-waqf-toggle-mark">ۖ</span>
+          {te ? 'విరామ గుర్తులు (వఖ్ఫ్)' : 'Waqf — where to stop'}
+        </span>
+        <span className="pv-waqf-chevron" aria-hidden="true">{open ? '▲' : '▼'}</span>
+      </button>
+      {open && (
+        <ul className="pv-waqf-list">
+          {WAQF_SIGNS.map((w) => (
+            <li className="pv-waqf-item" key={w.sign}>
+              <span className="pv-waqf-sign" dir="rtl">{w.sign}</span>
+              <span className="pv-waqf-meaning">
+                <span className="pv-waqf-ar" dir="rtl">{w.ar}</span>
+                <span className="pv-waqf-latin">{te ? w.te : w.en}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+})
+WaqfLegend.displayName = 'WaqfLegend'
+
 // One surah section within the juz — decorative name header + continuous Arabic
 const SurahSection = memo(({ surahNumber, verses, showBismillah, transliteration }) => {
   const surah = getSurahByNumber(surahNumber)
@@ -74,7 +152,7 @@ const SurahSection = memo(({ surahNumber, verses, showBismillah, transliteration
                 {v.rub.quarter !== 0 && <span className="pv-rub-frac">{RUB_FRACTION[v.rub.quarter]}</span>}
               </span>
             )}
-            {v.arabic}
+            {renderArabicWithWaqf(v.arabic, transliteration)}
             {v.sajda && (
               <span className="pv-sajda" role="img" aria-label="Place of prostration (sajda)" title="Sajda — place of prostration">۩</span>
             )}
@@ -200,6 +278,9 @@ function ParahView() {
           <button className="pv-font-btn" onClick={increaseFontSize} disabled={fontSize >= 28} aria-label="Increase text size">A+</button>
         </div>
       </div>
+
+      {/* Waqf (pause) signs reference */}
+      <WaqfLegend transliteration={transliteration} />
 
       {/* Arabic content — grouped by surah */}
       <div className="pv-content">
