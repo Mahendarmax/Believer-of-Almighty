@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, memo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getJuzArabic, juzList, getSurahByNumber } from '../data/quranData'
+import { getJuzArabic, juzList, getSurahByNumber, BISMILLAH_ARABIC } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import './ParahView.css'
 
@@ -36,8 +36,11 @@ const ScrollToTop = memo(() => {
 })
 ScrollToTop.displayName = 'ScrollToTop'
 
+// Fraction printed next to the ۞ Rub-el-Hizb symbol (position within the hizb).
+const RUB_FRACTION = ['', '¼', '½', '¾']
+
 // One surah section within the juz — decorative name header + continuous Arabic
-const SurahSection = memo(({ surahNumber, verses, transliteration }) => {
+const SurahSection = memo(({ surahNumber, verses, showBismillah, transliteration }) => {
   const surah = getSurahByNumber(surahNumber)
   return (
     <section className="pv-surah-section">
@@ -52,11 +55,42 @@ const SurahSection = memo(({ surahNumber, verses, transliteration }) => {
         </div>
         <span className="pv-divider-ornament">﴿</span>
       </div>
+
+      {showBismillah && (
+        <p className="pv-bismillah" dir="rtl">{BISMILLAH_ARABIC}</p>
+      )}
+
       <div className="pv-arabic-flow" dir="rtl">
         {verses.map((v) => (
           <span className="pv-ayah" key={v.ayah}>
+            {v.rub && (
+              <span
+                className="pv-rub"
+                role="img"
+                aria-label={v.rub.quarter === 0 ? `Hizb ${v.rub.hizb}` : `Rub ${RUB_FRACTION[v.rub.quarter]} hizb`}
+                title={v.rub.quarter === 0 ? `Hizb ${v.rub.hizb}` : `${RUB_FRACTION[v.rub.quarter]} of Hizb ${v.rub.hizb}`}
+              >
+                <span className="pv-rub-glyph">۞</span>
+                {v.rub.quarter !== 0 && <span className="pv-rub-frac">{RUB_FRACTION[v.rub.quarter]}</span>}
+              </span>
+            )}
             {v.arabic}
+            {v.sajda && (
+              <span className="pv-sajda" role="img" aria-label="Place of prostration (sajda)" title="Sajda — place of prostration">۩</span>
+            )}
             <span className="pv-ayah-num" aria-label={`Ayah ${v.ayah}`}>{v.ayah}</span>
+            {v.ruku && (
+              <span
+                className="pv-ruku"
+                role="img"
+                aria-label={`Ruku ${v.ruku.inSurah}`}
+                title={`Ruku ${v.ruku.inSurah} · Juz ruku ${v.ruku.inJuz}`}
+              >
+                <span className="pv-ruku-top">{v.ruku.inSurah}</span>
+                <span className="pv-ruku-ain">ع</span>
+                <span className="pv-ruku-bot">{v.ruku.inJuz}</span>
+              </span>
+            )}
           </span>
         ))}
       </div>
@@ -68,7 +102,7 @@ SurahSection.displayName = 'SurahSection'
 function ParahView() {
   const { number } = useParams()
   const navigate = useNavigate()
-  const { transliteration } = useSettings()
+  const { transliteration, fontSize, increaseFontSize, decreaseFontSize } = useSettings()
 
   const juzNumber = parseInt(number)
   const juz = useMemo(() => juzList.find(j => j.number === juzNumber), [juzNumber])
@@ -127,7 +161,7 @@ function ParahView() {
   }
 
   return (
-    <div className="parah-view">
+    <div className="parah-view" style={{ '--pv-scale': fontSize / 16 }}>
       {/* Sticky header */}
       <header className="pv-header">
         <button className="pv-back" onClick={handleBack} aria-label="Back">
@@ -157,6 +191,16 @@ function ParahView() {
         </button>
       </div>
 
+      {/* Font size control */}
+      <div className="pv-fontbar">
+        <span className="pv-fontbar-label">{transliteration === 'telugu' ? 'అక్షర పరిమాణం' : 'Text size'}</span>
+        <div className="pv-fontbar-controls">
+          <button className="pv-font-btn" onClick={decreaseFontSize} disabled={fontSize <= 12} aria-label="Decrease text size">A−</button>
+          <span className="pv-font-value">{fontSize}</span>
+          <button className="pv-font-btn" onClick={increaseFontSize} disabled={fontSize >= 28} aria-label="Increase text size">A+</button>
+        </div>
+      </div>
+
       {/* Arabic content — grouped by surah */}
       <div className="pv-content">
         {groups.length === 0 ? (
@@ -165,14 +209,25 @@ function ParahView() {
             <button onClick={() => window.location.reload()}>Retry</button>
           </div>
         ) : (
-          groups.map((g) => (
-            <SurahSection
-              key={g.surah}
-              surahNumber={g.surah}
-              verses={g.verses}
-              transliteration={transliteration}
-            />
-          ))
+          <>
+            {groups.map((g) => (
+              <SurahSection
+                key={g.surah}
+                surahNumber={g.surah}
+                verses={g.verses}
+                showBismillah={g.showBismillah}
+                transliteration={transliteration}
+              />
+            ))}
+            {/* End of Juz marker */}
+            <div className="pv-juz-end">
+              <span className="pv-juz-end-ornament">۞</span>
+              <span className="pv-juz-end-text">
+                {transliteration === 'telugu' ? `పారా ${juzNumber} సమాప్తం` : `End of Juz ${juzNumber}`}
+              </span>
+              <span className="pv-juz-end-ornament">۞</span>
+            </div>
+          </>
         )}
       </div>
 

@@ -164,6 +164,61 @@
   cursor: not-allowed;
 }
 
+/* Font-size control */
+.pv-fontbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  background: #fffdf7;
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-sm);
+}
+
+.pv-fontbar-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8b6508;
+}
+
+.pv-fontbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pv-font-btn {
+  min-width: 40px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #000000;
+  background: rgba(212, 164, 74, 0.12);
+  border: 1.5px solid rgba(184, 134, 11, 0.5);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.pv-font-btn:hover:not(:disabled) {
+  background: rgba(212, 164, 74, 0.25);
+  transform: translateY(-1px);
+}
+
+.pv-font-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pv-font-value {
+  min-width: 1.6em;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
 /* Content */
 .pv-content {
   display: flex;
@@ -231,10 +286,23 @@
   letter-spacing: 0.3px;
 }
 
+/* Bismillah header at the start of a surah */
+.pv-bismillah {
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: calc(1.5rem * var(--pv-scale, 1));
+  font-weight: 700;
+  text-align: center;
+  color: #8b6508;
+  line-height: 1.8;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(184, 134, 11, 0.35);
+}
+
 /* Continuous Arabic flow — the hafiz reading area */
 .pv-arabic-flow {
   font-family: 'Amiri', 'Scheherazade New', serif;
-  font-size: 1.9rem;
+  font-size: calc(1.9rem * var(--pv-scale, 1));
   line-height: 2.5;
   color: #000000;
   text-align: justify;
@@ -267,6 +335,101 @@
   line-height: 1;
 }
 
+/* Ruku (رکوع) section marker — a compact stack mirroring the traditional
+   Mushaf sign: ruku-in-surah on top, the ع glyph, ruku-in-juz below. */
+.pv-ruku {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 6px;
+  padding: 2px 5px;
+  vertical-align: middle;
+  line-height: 1;
+  background: rgba(212, 164, 74, 0.1);
+  border: 1px solid rgba(184, 134, 11, 0.45);
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45);
+}
+
+.pv-ruku-top,
+.pv-ruku-bot {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.28em;
+  font-weight: 700;
+  color: #8b6508;
+}
+
+.pv-ruku-ain {
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: 0.5em;
+  font-weight: 700;
+  line-height: 1;
+  color: #b8860b;
+  margin: 1px 0;
+}
+
+/* Sajda (place of prostration) marker */
+.pv-sajda {
+  display: inline-block;
+  margin: 0 4px;
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: 0.75em;
+  color: #b8860b;
+  vertical-align: middle;
+  text-shadow: 0 0 1px rgba(184, 134, 11, 0.4);
+}
+
+/* Rub-el-Hizb (¼ hizb) quarter marker */
+.pv-rub {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  margin: 0 6px;
+  vertical-align: middle;
+  color: #b8860b;
+}
+
+.pv-rub-glyph {
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: 0.85em;
+  line-height: 1;
+}
+
+.pv-rub-frac {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.34em;
+  font-weight: 700;
+  color: #8b6508;
+}
+
+/* End of Juz marker */
+.pv-juz-end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+  padding: 20px;
+  background: #fffdf7;
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.pv-juz-end-ornament {
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  font-size: 1.5rem;
+  color: var(--accent-dim);
+}
+
+.pv-juz-end-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #8b6508;
+  letter-spacing: 0.3px;
+}
+
 /* Scroll to top */
 .scroll-top-btn {
   position: fixed;
@@ -296,6 +459,6 @@
   .pv-juz-name { font-size: 1.2rem; }
   .pv-surah-section { padding: 18px 16px 22px; }
   .pv-surah-arabic { font-size: 1.35rem; }
-  .pv-arabic-flow { font-size: 1.65rem; line-height: 2.4; }
+  .pv-arabic-flow { font-size: calc(1.65rem * var(--pv-scale, 1)); line-height: 2.4; }
   .pv-nav-btn { padding: 9px 14px; font-size: 0.78rem; }
 }

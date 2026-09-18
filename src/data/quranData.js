@@ -1185,6 +1185,26 @@ export const juzList = [
   { number: 30, name: "'Amma",                arabicName: 'عَمَّ',            startSurah: 78, startAyah: 1 },
 ]
 
+// Global (Quran-wide) `ruku_number` of the FIRST ayah of each surah, indexed by
+// surah number. Lets us compute a surah-relative ruku count that stays correct
+// even when a surah spans a juz boundary (the API only gives a running index).
+// Generated from the quran.com `ruku_number` field across all 30 juz.
+const SURAH_RUKU_BASE = [
+  0, // 1-based padding
+  1, 2, 42, 62, 86, 102, 122, 146, 156, 172, 183, 193, 205, 211, 218, 224, 240,
+  252, 264, 270, 278, 285, 295, 301, 310, 316, 327, 334, 343, 350, 356, 360, 363,
+  372, 378, 383, 388, 393, 398, 406, 415, 421, 426, 433, 436, 440, 444, 448, 452,
+  454, 457, 460, 462, 465, 468, 471, 474, 478, 481, 484, 486, 488, 490, 492, 494,
+  496, 498, 500, 502, 504, 506, 508, 510, 512, 514, 516, 518, 520, 522, 524, 525,
+  526, 527, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541,
+  542, 543, 544, 545, 546, 547, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557,
+  558,
+]
+
+// Uthmani Bismillah — rendered as a header at the start of each surah (except
+// Al-Fatiha, where it is ayah 1, and At-Tawbah, which has none).
+export const BISMILLAH_ARABIC = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ'
+
 // Cache + in-flight dedup for juz Arabic (same pattern as verse cache)
 const juzCache = {}
 const juzPending = {}
@@ -1199,8 +1219,11 @@ export const getJuzArabic = async (juzNumber) => {
   if (juzPending[juzNumber]) return juzPending[juzNumber]
 
   const promise = (async () => {
+    // `by_juz` (per_page large enough for the biggest juz — 564 verses) returns
+    // the Uthmani text plus each verse's running ruku / rub-el-hizb / sajda
+    // metadata in one request, so we can render all the traditional Mushaf marks.
     const res = await fetchWithTimeout(
-      `https://api.quran.com/api/v4/quran/verses/uthmani?juz_number=${juzNumber}`
+      `https://api.quran.com/api/v4/verses/by_juz/${juzNumber}?fields=text_uthmani,ruku_number,rub_el_hizb_number,hizb_number,sajdah_number&per_page=1000`
     )
     const data = await res.json()
     const rawVerses = data?.verses || []
@@ -1210,8 +1233,8 @@ export const getJuzArabic = async (juzNumber) => {
     const bismillahText = rawVerses.length ? await getBismillahText() : ''
     const normBismillah = bismillahText.replace(/\s+/g, ' ').trim()
 
-    const groups = []
-    let currentGroup = null
+    // First pass: parse each verse (surah, ayah, cleaned Arabic, + metadata).
+    const parsed = []
     for (const v of rawVerses) {
       const [s, a] = (v.verse_key || '').split(':').map(Number)
       if (!s || !a) continue
@@ -1222,11 +1245,71 @@ export const getJuzArabic = async (juzNumber) => {
           arabic = normalized.substring(normBismillah.length).trim()
         }
       }
-      if (!currentGroup || currentGroup.surah !== s) {
-        currentGroup = { surah: s, verses: [] }
+      parsed.push({
+        surah: s,
+        ayah: a,
+        arabic,
+        ruku: v.ruku_number,
+        rub: v.rub_el_hizb_number,
+        hizb: v.hizb_number,
+        sajda: v.sajdah_number != null,
+      })
+    }
+
+    // `ruku_number` / `rub_el_hizb_number` are Quran-wide running indices.
+    // Surah-relative ruku uses the static base map; juz-relative ruku offsets
+    // from the first ruku in this juz.
+    const juzBaseRuku = parsed.length ? parsed[0].ruku : 0
+
+    const groups = []
+    let currentGroup = null
+    for (let i = 0; i < parsed.length; i++) {
+      const p = parsed[i]
+      const next = parsed[i + 1]
+      const prev = parsed[i - 1]
+
+      if (!currentGroup || currentGroup.surah !== p.surah) {
+        currentGroup = {
+          surah: p.surah,
+          // Show a Bismillah header only when this group begins the surah
+          // (ayah 1) — not when a surah continues from the previous juz —
+          // and never for Al-Fatiha (bismillah is its ayah 1) or At-Tawbah.
+          showBismillah: p.ayah === 1 && p.surah !== 1 && p.surah !== 9,
+          verses: [],
+        }
         groups.push(currentGroup)
       }
-      currentGroup.verses.push({ ayah: a, arabic })
+
+      // Ruku ends on this ayah when the next ayah (same surah) is a new ruku
+      // (an internal boundary), OR the surah itself ends here — but a surah's
+      // final ruku is only marked if the surah has more than one ruku, so short
+      // single-ruku surahs aren't cluttered with a redundant "1" beside the
+      // divider (matching typical Mushaf layout).
+      const surahMeta = getSurahByNumber(p.surah)
+      const isSurahEnd =
+        (next && next.surah !== p.surah) ||
+        (!next && surahMeta && p.ayah === surahMeta.ayahs)
+      const inSurahRuku = p.ruku - (SURAH_RUKU_BASE[p.surah] || p.ruku) + 1
+      const endsRuku =
+        (next && next.surah === p.surah && next.ruku !== p.ruku) ||
+        (isSurahEnd && inSurahRuku > 1)
+      const ruku = endsRuku
+        ? { inSurah: inSurahRuku, inJuz: p.ruku - juzBaseRuku + 1 }
+        : null
+
+      // Rub-el-Hizb (¼-hizb) marker starts a new quarter mid-text (skip the very
+      // first ayah of the juz — the juz header already marks that boundary).
+      const rubStart = prev && prev.rub !== p.rub
+        ? { quarter: (p.rub - 1) % 4, hizb: p.hizb }
+        : null
+
+      currentGroup.verses.push({
+        ayah: p.ayah,
+        arabic: p.arabic,
+        ruku,
+        sajda: p.sajda,
+        rub: rubStart,
+      })
     }
     juzCache[juzNumber] = groups
     return groups
