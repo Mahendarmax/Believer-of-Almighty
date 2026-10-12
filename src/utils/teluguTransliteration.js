@@ -69,6 +69,16 @@ const VOWELS = [
 
 const isLetter = (ch) => /[a-z]/i.test(ch)
 const isApostrophe = (ch) => ch === "'" || ch === '\u2018' || ch === '\u2019' || ch === '\u02BB' || ch === '\u02BC'
+const isVowel = (ch) => !!ch && 'aeiou'.includes(ch)
+
+// 'ay'/'aw' is a diphthong (\u0C10/\u0C14) only when the glide is NOT followed by a vowel
+// (bayaan \u2192 \u0C2C\u0C2F\u0C3E\u0C28\u0C4D) and NOT doubled (ayy/aww geminate \u2192 \u0C39\u0C2F\u0C4D\u0C2F\u0C4D, \u0C24\u0C35\u0C4D\u0C35\u0C3E\u0C2C\u0C4D).
+const isDiphthongAt = (lower, i, vRoman) => {
+  const after = lower[i + vRoman.length]
+  if (after === undefined || !isLetter(after)) return true
+  const glide = vRoman === 'ay' ? 'y' : 'w'
+  return !isVowel(after) && after !== glide
+}
 
 /**
  * Convert Roman English transliteration to Telugu script
@@ -96,24 +106,30 @@ function transliterateSegment(text) {
   while (i < lower.length) {
     // Skip non-letter characters (spaces, punctuation, numbers)
     if (!isLetter(lower[i])) {
-      // Apostrophe/ain (') before 'ay'/'a' vowels — check for diphthong first
+      // Hyphen joining two letters (as-haab, Is-haaq, walfat-h, Siraatal-ladheena):
+      // a silent separator — emit ZWNJ so no conjunct forms, and drop the hyphen.
+      if (text[i] === '-' && i > 0 && isLetter(lower[i - 1]) && isLetter(lower[i + 1] || '')) {
+        result += ZWNJ
+        i++
+        continue
+      }
+      // Apostrophe/ain (') before 'ay'/'aw' vowels — check for diphthong first
       if (isApostrophe(lower[i])) {
         // Trailing apostrophe at end of word — skip it (e.g. "Baari'" → బారి)
         if (i + 1 >= lower.length || !isLetter(lower[i + 1])) {
           i++
           continue
         }
-        // 'ay after apostrophe → treat as standalone ఐ diphthong (e.g. "'ayni" → ఐని)
-        if (lower.startsWith('ay', i + 1)) {
-          result += 'ఐ'
-          i += 3 // skip apostrophe + 'ay'
+        // 'ay / 'aw after apostrophe → standalone diphthong (e.g. "'ayni" → ఐని, "Fir'awna" → ఫిర్ఔన)
+        const dip = ['ay', 'aw'].find(d => lower.startsWith(d, i + 1) && isDiphthongAt(lower, i + 1, d))
+        if (dip) {
+          result += dip === 'ay' ? 'ఐ' : 'ఔ'
+          i += 3 // skip apostrophe + diphthong
           continue
         }
-        // Apostrophe before other vowels — skip it
-        if (isLetter(lower[i + 1])) {
-          i++
-          continue
-        }
+        // Apostrophe before other letters — skip it
+        i++
+        continue
       }
       result += text[i]
       i++
@@ -137,16 +153,8 @@ function transliterateSegment(text) {
             // "hayaata" → హయాత (not హైఆత), but "bayna" → బైన ✓
             // If followed by same letter (ayy/aww), it's a geminate — not a diphthong.
             // e.g. "Hayy" → హయ్య్, "Qayyoom" → ఖయ్యూమ్, "Tawwaab" → తవ్వాబ్
-            if ((vRoman === 'ay' || vRoman === 'aw') && i + vRoman.length < lower.length) {
-              const afterDiphthong = lower[i + vRoman.length]
-              if ('aeiou'.includes(afterDiphthong)) {
-                continue // skip diphthong, fall through to 'a' (inherent vowel)
-              }
-              // Geminate: 'ayy' or 'aww' — treat as inherent 'a' + geminate consonant
-              const diphEnd = vRoman === 'ay' ? 'y' : 'w'
-              if (afterDiphthong === diphEnd) {
-                continue // skip diphthong, fall through to 'a' (inherent vowel)
-              }
+            if ((vRoman === 'ay' || vRoman === 'aw') && !isDiphthongAt(lower, i, vRoman)) {
+              continue // not a diphthong — fall through to 'a' (inherent vowel)
             }
             result += telugu + vMatra
             i += vRoman.length
@@ -162,6 +170,15 @@ function transliterateSegment(text) {
         // skip ZWNJ for geminates (nn, ll, dd, mm, …) so they form proper
         // conjuncts (e.g. కుల్లి, అన్న, తవద్దు, ఉమ్మీ).
         if (!vowelMatched) {
+          const nextChar = i < lower.length ? lower[i] : ''
+          // Tanween written as a silent trailing 'w' (qaleelanw, shai'anw, nooranw):
+          // render న్ and drop the w.
+          if (roman === 'n' && nextChar === 'w' && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
+            result += telugu + VIRAMA
+            i++
+            matched = true
+            break
+          }
           result += telugu + VIRAMA
           if (i < lower.length && isLetter(lower[i]) && !lower.startsWith(roman, i)) {
             result += ZWNJ
@@ -177,8 +194,17 @@ function transliterateSegment(text) {
     // Try matching a standalone vowel (skip entries with null standalone — those are consonant-only matras)
     let vowelMatched = false
     for (const [vRoman, vStandalone] of VOWELS) {
-      if (vStandalone !== null && lower.startsWith(vRoman, i)) {
+      if (!lower.startsWith(vRoman, i)) continue
+      if (vStandalone !== null) {
         result += vStandalone
+        i += vRoman.length
+        vowelMatched = true
+        break
+      }
+      // Word-initial 'ay'/'aw' + consonant is a diphthong (aydeehim → ఐదీహిమ్, awliyaaa → ఔలియా,
+      // aw → ఔ). Otherwise (ayyuhaa, awwal, ayaa) fall through to 'a' + consonant.
+      if (isDiphthongAt(lower, i, vRoman)) {
+        result += vRoman === 'ay' ? 'ఐ' : 'ఔ'
         i += vRoman.length
         vowelMatched = true
         break

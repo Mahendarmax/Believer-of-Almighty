@@ -61,7 +61,7 @@ export const surahs = [
   { id: 59, number: 59, name: 'Al-Hashr', nameEnglish: 'The Exile', nameTelugu: 'అల్-హష్ర్', ayahs: 24, revelationType: 'Medinan' },
   { id: 60, number: 60, name: 'Al-Mumtahanah', nameEnglish: 'She That is to be Examined', nameTelugu: 'అల్-ముంతహనా', ayahs: 13, revelationType: 'Medinan' },
   { id: 61, number: 61, name: 'As-Saff', nameEnglish: 'The Ranks', nameTelugu: 'అస్-సఫ్ఫ్', ayahs: 14, revelationType: 'Medinan' },
-  { id: 62, number: 62, name: "Al-Jumu'ah", nameEnglish: 'Friday', nameTelugu: 'అల్-జుముఅహా', ayahs: 11, revelationType: 'Medinan' },
+  { id: 62, number: 62, name: "Al-Jumu'ah", nameEnglish: 'Friday', nameTelugu: 'అల్-జుముఆ', ayahs: 11, revelationType: 'Medinan' },
   { id: 63, number: 63, name: 'Al-Munafiqun', nameEnglish: 'The Hypocrites', nameTelugu: 'అల్-మునాఫికూన్', ayahs: 11, revelationType: 'Medinan' },
   { id: 64, number: 64, name: 'At-Taghabun', nameEnglish: 'The Mutual Disillusion', nameTelugu: 'అత్-తఘాబూన్', ayahs: 18, revelationType: 'Medinan' },
   { id: 65, number: 65, name: 'At-Talaq', nameEnglish: 'The Divorce', nameTelugu: 'అత్-తలాఖ్', ayahs: 12, revelationType: 'Medinan' },
@@ -78,7 +78,7 @@ export const surahs = [
   { id: 76, number: 76, name: 'Al-Insan', nameEnglish: 'The Human', nameTelugu: 'అల్-ఇన్సాన్', ayahs: 31, revelationType: 'Medinan' },
   { id: 77, number: 77, name: 'Al-Mursalat', nameEnglish: 'The Emissaries', nameTelugu: 'అల్-ముర్సలాత్', ayahs: 50, revelationType: 'Meccan' },
   { id: 78, number: 78, name: 'An-Naba', nameEnglish: 'The Tidings', nameTelugu: 'అన్-నబా', ayahs: 40, revelationType: 'Meccan' },
-  { id: 79, number: 79, name: "An-Nazi'at", nameEnglish: 'Those Who Drag Forth', nameTelugu: 'అన్-నజీఅత్', ayahs: 46, revelationType: 'Meccan' },
+  { id: 79, number: 79, name: "An-Nazi'at", nameEnglish: 'Those Who Drag Forth', nameTelugu: 'అన్-నాజిఆత్', ayahs: 46, revelationType: 'Meccan' },
   { id: 80, number: 80, name: 'Abasa', nameEnglish: 'He Frowned', nameTelugu: 'అబసా', ayahs: 42, revelationType: 'Meccan' },
   { id: 81, number: 81, name: 'At-Takwir', nameEnglish: 'The Overthrowing', nameTelugu: 'అత్-తక్వీర్', ayahs: 29, revelationType: 'Meccan' },
   { id: 82, number: 82, name: 'Al-Infitar', nameEnglish: 'The Cleaving', nameTelugu: 'అల్-ఇన్ఫితార్', ayahs: 19, revelationType: 'Meccan' },
@@ -770,7 +770,7 @@ const DHAAL_WORDS = {
   'zunoobi': 'dhunoobi', 'zunoobihim': 'dhunoobihim', 'zunoobihimul': 'dhunoobihimul',
   'zunoobikum': 'dhunoobikum', 'zunoonaa': 'dhunoonaa', 'zuntiqaam': 'dhuntiqaam',
   'zuq': 'dhuq', 'zur': 'dhur', 'zurnaa': 'dhurnaa',
-  'zuroo': 'dhuroo', 'zuroonaa': 'dhuroonaa', 'zurriyaatinaa': 'dhurriyaatinaa',
+  'zuroonaa': 'dhuroonaa', 'zurriyaatinaa': 'dhurriyaatinaa',
   'zurriyatahooo': 'dhurriyatahooo', 'zurriyatahum': 'dhurriyatahum', 'zurriyya': 'dhurriyya',
   'zurriyyaatihim': 'dhurriyyaatihim', 'zurriyyah': 'dhurriyyah', 'zurriyyat': 'dhurriyyat',
   'zurriyyata': 'dhurriyyata', 'zurriyyatahaa': 'dhurriyyatahaa', 'zurriyyatahoo': 'dhurriyyatahoo',
@@ -873,6 +873,15 @@ const WORD_CORRECTIONS = {
   'insaaanu': 'insaanu',
   '\'azdaabun': '\'azaabun',
   'saml\'uz': 'sami\'uz',
+  // Verified against Uthmani Arabic (62:7, 10:88, 10:34, 2:282, 10:5)
+  'bix': 'bidh',
+  'mosaa': 'moosaa',
+  'suma': 'summa',
+  'liyudillo': 'liyudilloo',
+  'bidinin': 'bidainin',
+  'illa': 'illaa',
+  // 7:92, 24:35 — لَّمْ; "alm" is not an Arabic word
+  'alm': 'lam',
 }
 
 export const fixRomanText = (text) => {
@@ -922,7 +931,62 @@ export const fixRomanText = (text) => {
   fixed = fixed.replace(/([bcdfghjklmnpqrstvwxyz])\1{2,}/gi, '$1$1')
   // Fix API quirk: quadruple+ vowels → triple (e.g. "moosaaaa" → "moosaaa")
   fixed = fixed.replace(/([aeiou])\1{3,}/gi, '$1$1$1')
-  return fixed.replace(/[a-zA-Z']+/g, word => {
+  // Stray section marker leaked into the API text (25:34 "... sabeelaa )section 3)")
+  fixed = fixed.replace(/\s*\)?\s*section\s*\d+\)?\s*$/i, '')
+  // API 'l' for 'I' (42:7 "awhainaaa llaika" → ilaika)
+  fixed = fixed.replace(/\bllaika\b/gi, 'ilaika')
+  // Doubled lam after an assimilated article — no Arabic word starts with lh/ll
+  // (khairul lhaakimeen → haakimeen, 'alaihil lhaqqu → haqqu, innaa llanahnu → lanahnu)
+  fixed = fixed.replace(/\bl(h[a-z])/gi, '$1')
+  fixed = fixed.replace(/\bll([a-z])/gi, 'l$1')
+  // API letter typos at verse start: 5:20 وَإِذْ قَالَ, 7:107 فَأَلْقَىٰ
+  fixed = fixed.replace(/^Qa idh qaala\b/, 'Wa idh qaala')
+  fixed = fixed.replace(/^Qa alqaa\b/, 'Fa alqaa')
+  // Split before a real word: 7:150 ٱبْنَ أُمَّ, 30:6 وَلَـٰكِنَّ أَكْثَرَ
+  fixed = fixed.replace(/\b[Qq]aalab ?na umma\b/g, 'qaalabna umma')
+  // 37:165 لَنَحْنُ ٱلصَّآفُّونَ, 110:1 نَصْرُ ٱللَّهِ
+  fixed = fixed.replace(/\blanah nus\b/gi, 'lanahnus')
+  fixed = fixed.replace(/\bnas rullahi\b/gi, 'nasrul laahi')
+  fixed = fixed.replace(/\blaakin na aksaran\b/gi, 'laakinna aksaran')
+  // Dropped hamza rendered as a space — ٱمْرَأَة forms after an assimilated -m
+  // (qaalatim ra atu → qaalatimra'atu, wajattum ra atan → wajattumra'atan, kafarum ra ata → kafarumra'ata)
+  fixed = fixed.replace(/\b(\w*(?:tim|tum|mum|rum)) ra a/gi, "$1ra'a")
+  fixed = fixed.replace(/\bawim ra a/gi, "awimra'a")
+  // Word splits the general hamza rule below cannot reach (each verified against the Arabic)
+  fixed = fixed.replace(/\bjamee '/gi, "jamee'")
+  fixed = fixed.replace(/\bmala ahoo\b/gi, "mala'ahoo")
+  fixed = fixed.replace(/\bRabbanat mis\b/gi, 'Rabbanatmis')
+  fixed = fixed.replace(/\bqaala tikh ruj\b/gi, 'qaalatikhruj')
+  fixed = fixed.replace(/\blayum ba dhanna\b/gi, 'layumbadhanna')
+  fixed = fixed.replace(/\bna'bu da\b/gi, "na'buda")
+  fixed = fixed.replace(/\bta koonul\b/gi, 'takoonul')
+  fixed = fixed.replace(/\bbimak rihinna\b/gi, 'bimakrihinna')
+  fixed = fixed.replace(/\bmuttaka anw\b/gi, "muttaka'anw")
+  fixed = fixed.replace(/\bfiddun yaa\b/gi, 'fid dunyaa')
+  fixed = fixed.replace(/\bfilma deenatim/gi, 'fil madeenatim')
+  fixed = fixed.replace(/\bmawaa liya\b/gi, 'mawaaliya')
+  fixed = fixed.replace(/\bbiqit 'im\b/gi, "biqit'im")
+  fixed = fixed.replace(/\bnaba-a-Noohin\b/gi, "naba'a Noohin")
+  fixed = fixed.replace(/\bmanaaz zila\b/gi, 'manaazila')
+  fixed = fixed.replace(/\bbi ayddhim\b/gi, 'bi aydeehim')
+  fixed = fixed.replace(/\bajalimmusamman\b/gi, 'ajalim musamman')
+  fixed = fixed.replace(/\b([Qq])ulnah bitoo\b/g, '$1ulnahbitoo')
+  fixed = fixed.replace(/\bWalwaa lidaatu\b/gi, 'Walwaalidaatu')
+  fixed = fixed.replace(/\bwastash hidoo\b/gi, 'wastash-hidoo')
+  fixed = fixed.replace(/\btabarra al\b/gi, "tabarra'al")
+  fixed = fixed.replace(/\b([Ww])amra a/g, "$1amra'a")
+  fixed = fixed.replace(/\b(ulaaa|malaaa|shurakaaa) '/gi, "$1'")
+  fixed = fixed.replace(/\bshai an/gi, "shai'an")
+  fixed = fixed.replace(/\b(\w*yu) min(oo|oon|u)\b/gi, "$1'min$2")
+  // General hamza rule: none of these syllables is ever a standalone Arabic word, so a
+  // following vowel-initial word is a dropped hamza (ra aytu → ra'aytu, sa altum → sa'altum,
+  // ka annamaa → ka'annamaa). wa/fa/yaa/laa/maa are real words and are deliberately excluded,
+  // and so is "na" — it is usually the tail of a split -nna word (laakin na, Qaalab na).
+  // Must be preceded by whitespace or start of text — NOT \b, which would treat the
+  // apostrophe in "ba'da idh" / "taba'ta ahwaaa'ahum" as a boundary and corrupt them.
+  fixed = fixed.replace(/(^|\s)(ra|sa|ta|ka|da|ba|ja|za|qa|kha|sha|tha|dha) ([aeiou])/gi, "$1$2'$3")
+  fixed = fixed.replace(/\byu '/gi, "yu'")
+  const out = fixed.replace(/[a-zA-Z']+/g, word => {
     const lower = word.toLowerCase()
     // Check general word corrections first
     const corrected = WORD_CORRECTIONS[lower]
@@ -960,6 +1024,19 @@ export const fixRomanText = (text) => {
     }
     return word
   })
+  // Post-pass. An assimilated article (wal-/bil-/lil-/minal-) always matches the first
+  // letter of the next word, so when that word starts with z (ز) the prefix is z too:
+  // "waz Zuburi", "liz Zakaati", "minaz zaahideen" — not wadh/lidh/minadh.
+  // Restricted to article prefixes so "idh zaiyana" (إِذْ, 8:48) is left alone.
+  return out
+    .replace(/\b(wa|bi|li|mina|fi)dh (z)/gi, '$1z $2')
+    // 99:1 zulzilat / zilzaal are ز, not ذو / ذي
+    .replace(/\bdh([ui])l (z)/gi, 'z$1l $2')
+    // ص+ح / س+ح / ت+ح clusters: the hyphen stops the Telugu sh/th digraph from firing
+    // (as-haabun naar, Is-haaq, walfat-h) and matches standard English practice.
+    .replace(/\b([Aa])s ?haab/g, '$1s-haab')
+    .replace(/\b([Ii])shaaq/g, '$1s-haaq')
+    .replace(/\bwalfath\b/gi, 'walfat-h')
 }
 
 const getLocalSupportDataUrl = (surahNumber) => `/quran-support/${surahNumber}.json`
