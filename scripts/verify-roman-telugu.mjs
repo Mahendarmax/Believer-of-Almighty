@@ -4,6 +4,7 @@
 //   node scripts/verify-roman-telugu.mjs
 import { fixRomanText } from '../src/data/quranData.js'
 import { romanToTelugu, romanToTeluguRecited } from '../src/utils/teluguTransliteration.js'
+import { romanToRecited } from '../src/utils/recitation.js'
 
 // Written as an escape so the invisible character survives copy/paste.
 const ZWNJ = '‌'
@@ -112,6 +113,30 @@ const recitedCases = [
   ['word-internal نْ untouched', 'dunyaa', `దున్${ZWNJ}యా`],
   ['izhār untouched', 'min aayaati', 'మిన్ ఆయాతి'],
 ]
+
+// Roman counterpart — must agree with the Telugu recited rules above
+const romanRecitedCases = [
+  ['idghām → w', 'hudanw wa', 'hudaw wa'],
+  ['idghām → y', 'liqawminy yattaqoon', 'liqawmiy yattaqoon'],
+  ['idghām → w (noon sakinah)', 'min waliyyin', 'miw waliyyin'],
+  ['idghām → m', "min maa'in", "mim maa'in"],
+  ['idghām → r', 'min rabbihim', 'mir rabbihim'],
+  ['idghām → r keeps case', 'min Rabbihim', 'mir Rabbihim'],
+  ['iqlāb → b', "min ba'di", "mim ba'di"],
+  ['hyphenated glide', "shai'anw-wa", "shai'aw-wa"],
+  ['word-internal n untouched', 'dunyaa', 'dunyaa'],
+  ['izhār untouched', 'min aayaati', 'min aayaati'],
+  ['3:138 full', "Haadhaa bayaanul linnaasi wa hudanw wa maw'idhatul lilmuttaqeen", "Haadhaa bayaanul linnaasi wa hudaw wa maw'idhatul lilmuttaqeen"],
+]
+
+console.log('\n=== romanToRecited ===')
+for (const [name, input, expected] of romanRecitedCases) {
+  const got = romanToRecited(input)
+  const ok = got === expected
+  if (!ok) fail++
+  console.log(`${ok ? 'PASS' : 'FAIL'}  ${name.padEnd(28)} ${input.padEnd(22)} → ${got}`)
+  if (!ok) console.log(`      expected: ${expected}`)
+}
 
 console.log('\n=== romanToTeluguRecited ===')
 for (const [name, input, expected] of recitedCases) {

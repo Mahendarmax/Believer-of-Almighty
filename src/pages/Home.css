@@ -1654,20 +1654,35 @@
   line-height: 1.4;
 }
 
+.recite-row-sub em {
+  font-family: 'Noto Sans Telugu', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* "What's this?" pill — label + filled ⓘ so it reads as tappable */
 .recite-info-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
   flex-shrink: 0;
-  width: 30px;
   height: 30px;
-  padding: 0;
+  padding: 0 12px 0 8px;
   border: 2px solid #000000;
-  border-radius: 50%;
-  background: transparent;
-  color: #5c3a10;
+  border-radius: 15px;
+  background: #ffffff;
+  color: #1a1005;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
+  --recite-info-fg: #ffffff;
   transition: background 0.15s, color 0.15s;
+}
+
+.recite-info-btn svg {
+  color: #111111;
 }
 
 .recite-info-btn:hover,
@@ -1676,52 +1691,145 @@
   color: #ffffff;
 }
 
+.recite-info-btn:hover svg,
+.recite-info-btn.active svg {
+  color: #ffffff;
+  --recite-info-fg: #111111;
+}
+
+/* Explainer panel */
 .recite-info {
   margin-top: 10px;
-  padding: 14px 16px;
-  background: rgba(253, 250, 244, 0.90);
-  border: 2px dashed #000000;
+  padding: 16px;
+  background: rgba(253, 250, 244, 0.95);
+  border: 3px solid #000000;
   border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-.recite-info-block h4 {
-  margin: 0 0 4px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.recite-info-block h4 span {
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-left: 6px;
-}
-
-.recite-info-block p {
+.recite-info-title {
   margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.55;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #1a1005;
+}
+
+.recite-info-compare {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.recite-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: var(--radius-md);
+}
+
+.recite-info-card-recited {
+  background: #fff8e8;
+}
+
+.recite-info-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #5c3a10;
+}
+
+.recite-info-card p {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
   color: #2a1c0e;
 }
 
 .recite-info-example {
   font-family: 'Noto Sans Telugu', sans-serif;
-  font-size: 0.98rem !important;
-  margin-top: 6px !important;
-  color: var(--text-primary) !important;
+  font-size: 1.25rem !important;
+  line-height: 1.4 !important;
+  color: #1a1005 !important;
+  margin: 2px 0 4px !important;
 }
 
 .recite-info-example strong {
+  color: var(--accent);
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  padding: 0 3px;
+}
+
+.recite-info-example-roman {
+  font-size: 0.9rem !important;
+  font-weight: 600;
+  color: #1a1005 !important;
+  margin: -2px 0 4px !important;
+}
+
+.recite-info-example-roman strong {
+  color: var(--accent);
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  padding: 0 3px;
+}
+
+/* Roman examples inside otherwise-Telugu-styled emphasis */
+.recite-row-sub em.recite-roman,
+.recite-info-rule strong.recite-roman {
+  font-family: inherit;
+}
+
+.recite-info-arrow {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #5c3a10;
+}
+
+.recite-info-rule {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-left: 4px solid #111111;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.recite-info-rule-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #5c3a10;
+}
+
+.recite-info-rule p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #1a1005;
+}
+
+.recite-info-rule strong {
+  font-family: 'Noto Sans Telugu', sans-serif;
   color: var(--accent);
 }
 
 .recite-info-note {
   margin: 0;
-  padding-top: 10px;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
   font-size: 0.74rem;
   line-height: 1.5;
   color: #2a1c0e;
@@ -1732,7 +1840,18 @@
     flex-wrap: wrap;
   }
   .recite-row-text {
-    flex-basis: calc(100% - 52px - 14px - 30px - 14px);
+    order: 3;
+    flex-basis: 100%;
+  }
+  .recite-info-btn {
+    margin-left: auto;
+  }
+  .recite-info-compare {
+    grid-template-columns: 1fr;
+  }
+  .recite-info-arrow {
+    justify-content: center;
+    transform: rotate(90deg);
   }
 }
 

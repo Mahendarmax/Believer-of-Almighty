@@ -4,6 +4,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
 import { romanToTelugu, romanToTeluguRecited } from '../utils/teluguTransliteration'
+import { romanToRecited } from '../utils/recitation'
 import AudioPlayer from '../components/AudioPlayer'
 import './VerseView.css'
 
@@ -430,12 +431,17 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
 
   // Memoize Telugu transliteration to avoid recomputing on every render
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
-  // Recited form is only shown when the setting is on AND it actually differs from the written form
+  // Recited forms are only shown when the setting is on AND they actually differ from the written form
   const teluguRecited = useMemo(() => {
     if (!showRecitation || !verse.roman) return null
     const recited = romanToTeluguRecited(verse.roman)
     return recited !== teluguTranslit ? recited : null
   }, [showRecitation, verse.roman, teluguTranslit])
+  const romanRecited = useMemo(() => {
+    if (!showRecitation || !verse.roman) return null
+    const recited = romanToRecited(verse.roman)
+    return recited !== verse.roman ? recited : null
+  }, [showRecitation, verse.roman])
 
   return (
     <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''} ${isActive ? 'vv-verse-active' : ''} ${isSurahPlaying && !isActive ? 'vv-verse-dimmed' : ''}`} id={`verse-${verse.number}`}>
@@ -521,6 +527,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
             <p className="vc-roman" style={{ fontSize: `${fontSize}px` }}>
               {verse.roman || '\u2014'}
             </p>
+            {romanRecited && (
+              <p className="vc-roman vc-recited" style={{ fontSize: `${fontSize - 1}px` }}>
+                <span className="vc-recited-tag">Recited</span>
+                {romanRecited}
+              </p>
+            )}
           </div>
         )}
         {(transliteration === 'telugu' || transliteration === 'both') && (
@@ -531,7 +543,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
             </p>
             {teluguRecited && (
               <p className="vc-telugu vc-recited" style={{ fontSize: `${fontSize - 1}px` }}>
-                <span className="vc-recited-tag">\u0c2a\u0c20\u0c28\u0c02</span>
+                <span className="vc-recited-tag">{'\u0c2a\u0c20\u0c28\u0c02 \u00b7 Recited'}</span>
                 {teluguRecited}
               </p>
             )}

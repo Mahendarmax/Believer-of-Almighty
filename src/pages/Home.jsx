@@ -529,8 +529,8 @@ const Home = React.memo(function Home() {
           </button>
         </div>
 
-        {/* Recitation line (tajweed) — only relevant when a Telugu line is shown */}
-        {(transliteration === 'telugu' || transliteration === 'both') && (
+        {/* Recitation line (tajweed) — applies to both Roman English and Telugu lines */}
+        {(
           <>
             <div className="recite-row">
               <button
@@ -548,42 +548,72 @@ const Home = React.memo(function Home() {
                 </span>
                 <span className="recite-row-sub">
                   {transliteration === 'telugu'
-                    ? 'తజ్వీద్ ప్రకారం పదాలు కలిసే చోట రెండవ తెలుగు పంక్తి'
-                    : 'Second Telugu line where tajweed joins words (hudan wa → hudaw-wa)'}
+                    ? <>పదాలు కలిసే చోట రెండవ పంక్తి. ఉదా: <em>హుదన్ వ</em> → <em>హుదవ్ వ</em></>
+                    : <>Second line showing how words join when recited. Example: <em className="recite-roman">hudan wa</em> → <em className="recite-roman">hudaw wa</em></>}
                 </span>
               </div>
               <button
                 className={`recite-info-btn ${showReciteInfo ? 'active' : ''}`}
                 onClick={() => setShowReciteInfo(v => !v)}
-                aria-label="What is the difference between written and recited form?"
                 aria-expanded={showReciteInfo}
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 16v-4M12 8h.01"/>
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <circle cx="12" cy="12" r="11" fill="currentColor"/>
+                  <circle cx="12" cy="7.2" r="1.6" fill="var(--recite-info-fg, #fff)"/>
+                  <rect x="10.6" y="10.2" width="2.8" height="8" rx="1.4" fill="var(--recite-info-fg, #fff)"/>
                 </svg>
+                <span>{transliteration === 'telugu' ? 'ఇది ఏమిటి?' : "What's this?"}</span>
               </button>
             </div>
             {showReciteInfo && (
               <div className="recite-info">
-                <div className="recite-info-block">
-                  <h4>{transliteration === 'telugu' ? 'లిఖిత రూపం' : 'Written form'} <span>{transliteration === 'telugu' ? 'Written' : 'లిఖిత రూపం'}</span></h4>
-                  <p>{transliteration === 'telugu'
-                    ? 'ఖురాన్‌లో ఉన్నట్లే ప్రతి పదం. ఇది ప్రధాన తెలుగు పంక్తి.'
-                    : 'Each word exactly as it appears in the Quran text. This is the main Telugu line.'}</p>
-                  <p className="recite-info-example">హుద<strong>న్</strong> వ మౌఇధతుల్</p>
+                <h4 className="recite-info-title">
+                  {transliteration === 'telugu' ? 'ఒకే ఆయత్ — రెండు రూపాలు' : 'Same verse — two ways to show it'}
+                </h4>
+
+                <div className="recite-info-compare">
+                  <div className="recite-info-card">
+                    <div className="recite-info-card-head">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/>
+                      </svg>
+                      <span>{transliteration === 'telugu' ? 'రాసినట్లు' : 'As written'}</span>
+                    </div>
+                    <p className="recite-info-example">హుద<strong>న్</strong> వ</p>
+                    <p className="recite-info-example-roman">huda<strong>n</strong> wa</p>
+                    <p>{transliteration === 'telugu'
+                      ? 'ఖురాన్‌లో పదం ఎలా ఉందో అలాగే. ఎప్పుడూ ఒకేలా ఉంటుంది.'
+                      : 'The word exactly as it is in the Quran. Always looks the same.'}</p>
+                  </div>
+
+                  <div className="recite-info-arrow" aria-hidden="true">→</div>
+
+                  <div className="recite-info-card recite-info-card-recited">
+                    <div className="recite-info-card-head">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
+                        <path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                      </svg>
+                      <span>{transliteration === 'telugu' ? 'వినిపించినట్లు' : 'As you hear it'}</span>
+                    </div>
+                    <p className="recite-info-example">హుద<strong>వ్</strong> వ</p>
+                    <p className="recite-info-example-roman">huda<strong>w</strong> wa</p>
+                    <p>{transliteration === 'telugu'
+                      ? 'ఖారీ చదివేటప్పుడు రెండు పదాలు కలిసిపోతాయి. ఆడియోలో ఇదే వినిపిస్తుంది.'
+                      : 'How it sounds when a reciter joins the two words. This matches the audio.'}</p>
+                  </div>
                 </div>
-                <div className="recite-info-block">
-                  <h4>{transliteration === 'telugu' ? 'పఠన రూపం' : 'Recited form'} <span>{transliteration === 'telugu' ? 'Recited' : 'పఠన రూపం'}</span></h4>
+
+                <div className="recite-info-rule">
+                  <span className="recite-info-rule-label">{transliteration === 'telugu' ? 'నియమం' : 'The rule'}</span>
                   <p>{transliteration === 'telugu'
-                    ? 'ఖారీ పదాల మధ్య శబ్దాలను ఎలా కలుపుతారో (తజ్వీద్). చివరి న్ తర్వాత వ, య, మ, ల, ర వస్తే అందులో కలుస్తుంది; బ ముందు మ్ అవుతుంది.'
-                    : 'How a reciter joins sounds between words (tajweed). A final న్ merges into a following వ, య, మ, ల or ర, and becomes మ్ before బ.'}</p>
-                  <p className="recite-info-example">హుద<strong>వ్</strong> వ మౌఇధతుల్</p>
+                    ? <>పదం చివర <strong>న్</strong> ఉండి, తర్వాతి పదం <strong>వ, య, మ, ల, ర</strong>తో మొదలైతే — ఆ న్ శబ్దం ఆ అక్షరంలో కలిసిపోతుంది. <strong>బ</strong> ముందు అది <strong>మ్</strong> అవుతుంది.</>
+                    : <>When a word ends in <strong className="recite-roman">n</strong> and the next word starts with <strong className="recite-roman">w, y, m, l</strong> or <strong className="recite-roman">r</strong>, the n sound melts into that letter. Before <strong className="recite-roman">b</strong> it becomes <strong className="recite-roman">m</strong>. Same for Telugu: <strong>న్</strong> → <strong>వ్ య్ మ్ ల్ ర్</strong>, and <strong>మ్</strong> before <strong>బ</strong>.</>}</p>
                 </div>
+
                 <p className="recite-info-note">
                   {transliteration === 'telugu'
-                    ? 'రెండు రూపాలు వేరుగా ఉన్న ఆయతుల్లోనే పఠన పంక్తి కనిపిస్తుంది. ఖచ్చితమైన ఉచ్ఛారణ కోసం ఆడియో వినండి.'
-                    : 'The recited line appears only on verses where the two differ. Telugu letters cannot show nasalisation or vowel length — follow the audio for exact pronunciation.'}
+                    ? 'ఆడియోతో పాటు చదివేవారికి ఇది ఉపయోగం. శబ్దం మారే ఆయతుల్లోనే రెండవ పంక్తి కనిపిస్తుంది.'
+                    : 'Turn this on if you read along with the audio. The second line only shows up where the sound actually changes.'}
                 </p>
               </div>
             )}
