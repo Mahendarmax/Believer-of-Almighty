@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "vite",
+    "test": "node scripts/verify-roman-telugu.mjs",
     "generate:quran-support": "node scripts/generate-quran-support.mjs"
   },
   "dependencies": {

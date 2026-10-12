@@ -106,9 +106,10 @@ function transliterateSegment(text) {
   while (i < lower.length) {
     // Skip non-letter characters (spaces, punctuation, numbers)
     if (!isLetter(lower[i])) {
-      // Hyphen joining two letters (as-haab, Is-haaq, walfat-h, Siraatal-ladheena):
-      // a silent separator — emit ZWNJ so no conjunct forms, and drop the hyphen.
-      if (text[i] === '-' && i > 0 && isLetter(lower[i - 1]) && isLetter(lower[i + 1] || '')) {
+      // Hyphen that only exists to stop an h-digraph from firing (as-haab ≠ ashaab,
+      // Is-haaq, walfat-h, wastash-hidoo): emit ZWNJ and drop it. Every other hyphen
+      // (Ar-Rahmaan, Alif-Laaam-Meeem, Wal-Fajr) is a real separator and stays visible.
+      if (text[i] === '-' && i > 0 && 'szkgcjtdpbh'.includes(lower[i - 1]) && lower[i + 1] === 'h') {
         result += ZWNJ
         i++
         continue

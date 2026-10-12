@@ -32,11 +32,20 @@ const romanCases = [
   ['2:38 / 2:233 / 2:282 joins', "Qulnah bitoo; Walwaa lidaatu; wastash hidoo; wamra ataani; fa ulaaa 'ika; malaaa 'ikata; shai anw; walyu minoo; tabarra al ladheenat", "Qulnahbitoo; Walwaalidaatu; wastash-hidoo; wamra'ataani; fa ulaaa'ika; malaaa'ikata; shai'anw; walyu'minoo; tabarra'al ladheenat"],
   ['5:20 / 7:107 Qa typo', "Qa idh qaala Moosaa", "Wa idh qaala Moosaa"],
   ['7:107 Qa alqaa', "Qa alqaa 'asaahu", "Fa alqaa 'asaahu"],
-  ['7:150 / 30:6 -nna splits', "Qaalab na umma; wa laakin na aksaran naasi", "qaalabna umma; wa laakinna aksaran naasi"],
-  ['second-pass leftovers', "ulaaa'ika As haabun Naari; as haabul; filma deenatim ra atul; lanah nus saaffoon; ka'al alm yaghnaw; nas rullahi walfath; Qaalabna umma", "ulaaa'ika As-haabun Naari; as-haabul; fil madeenatimra'atul; lanahnus saaffoon; ka'al lam yaghnaw; nasrul laahi walfat-h; qaalabna umma"],
+  ['7:150 / 30:6 -nna splits', "Qaalab na umma; wa laakin na aksaran naasi", "Qaalabna umma; wa laakinna aksaran naasi"],
+  ['second-pass leftovers', "ulaaa'ika As haabun Naari; as haabul; filma deenatim ra atul; lanah nus saaffoon; ka'al alm yaghnaw; nas rullahi walfath; Qaalabna umma", "ulaaa'ika As-haabun Naari; as-haabul; fil madeenatimra'atul; lanahnus saaffoon; ka'al lam yaghnaw; nasrul laahi walfat-h; Qaalabna umma"],
   ['case kept: Wamra / qulnah', "Wamra atuhoo; qulnah bitoo", "Wamra'atuhoo; qulnahbitoo"],
   ["imra'at after -tum/-mum/-rum", "wajattum ra atan; doonihimum ra ataini; kafarum ra ata", "wajattumra'atan; doonihimumra'ataini; kafarumra'ata"],
   ['controls untouched', "wa aatat fa in kaana yaa Moosaa laa ilaaha maa sa yubtiluhoo minadh dhaalimeen lidh dhaakireen", "wa aatat fa in kaana yaa Moosaa laa ilaaha maa sa yubtiluhoo minadh dhaalimeen lidh dhaakireen"],
+  ["6:71 huda'tinaa", "ilal huda' tinaa; qul inna", "ilal huda'tinaa; qul inna"],
+  ["5:41 Aakhirati 'adhaabun", "fil Aakhirati'adhaabun 'adheem", "fil Aakhirati 'adhaabun 'adheem"],
+  ['2:166 ladheenattubi\'oo', "tabarra'al ladheenat tubi'oo minal ladheenattaba'oo", "tabarra'al ladheenattubi'oo minal ladheenattaba'oo"],
+  // Review follow-ups
+  ["7:77 Saalihu' tinaa", "yaa Saalihu' tinaa bimaa ta'idunaaa", "yaa Saalihu'tinaa bimaa ta'idunaaa"],
+  ["29:29 qaalu' tinaaa", "an qaalu' tinaaa bi'adhaabil laahi", "an qaalu'tinaaa bi'adhaabil laahi"],
+  ["13:37 ahwaaa 'ahum", "wa la'init taba'ta ahwaaa 'ahum", "wa la'init taba'ta ahwaaa'ahum"],
+  ['19:5 kaana tim ra atee', "wa kaana tim ra atee 'aaqiran", "wa kaanatimra'atee 'aaqiran"],
+  ["8:41 / 17:74 shai'", "min sha in; sha an qaleelaa", "min shai'in; shai'an qaleelaa"],
 ]
 
 // Expectations follow the no-anusvara design: ن/م before another consonant are
@@ -56,6 +65,11 @@ const teluguCases = [
   ['A4 hyphen → ZWNJ', 'As-haabun', `అస్${ZWNJ}హాబున్`],
   ['A4 hyphen → ZWNJ', 'Is-haaq', `ఇస్${ZWNJ}హాఖ్`],
   ['A5 hyphen → ZWNJ', 'walfat-h', `వల్${ZWNJ}ఫత్${ZWNJ}హ్`],
+  ['A5 sh-h → ZWNJ', 'wastash-hidoo', `వస్${ZWNJ}తష్${ZWNJ}హిదూ`],
+  // Hyphens that are real separators must stay visible (99 Names, muqatta'at, 1:3, 1:6)
+  ['hyphen kept: Ar-Rahmaan', 'Ar-Rahmaan', `అర్-రహ్${ZWNJ}మాన్`],
+  ['hyphen kept: muqatta\'at', 'Alif-Laaam-Meeem', 'అలిఫ్-లామ్-మీమ్'],
+  ['hyphen kept: Wal-Fajr', 'Wal-Fajr', `వల్-ఫజ్${ZWNJ}ర్`],
   ['regression: bayaan', 'bayaan', 'బయాన్'],
   ['regression: bayna', 'bayna', 'బైన'],
   ['regression: Yawmid', 'Yawmid', 'యౌమిద్'],

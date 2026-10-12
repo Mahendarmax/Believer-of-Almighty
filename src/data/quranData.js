@@ -882,6 +882,9 @@ const WORD_CORRECTIONS = {
   'illa': 'illaa',
   // 7:92, 24:35 — لَّمْ; "alm" is not an Arabic word
   'alm': 'lam',
+  // 8:41 شَىْءٍ, 17:74 شَيْـًٔا — the hamza rule yields sha'in/sha'an; corpus spelling is shai'
+  'sha\'in': 'shai\'in',
+  'sha\'an': 'shai\'an',
 }
 
 export const fixRomanText = (text) => {
@@ -943,7 +946,7 @@ export const fixRomanText = (text) => {
   fixed = fixed.replace(/^Qa idh qaala\b/, 'Wa idh qaala')
   fixed = fixed.replace(/^Qa alqaa\b/, 'Fa alqaa')
   // Split before a real word: 7:150 ٱبْنَ أُمَّ, 30:6 وَلَـٰكِنَّ أَكْثَرَ
-  fixed = fixed.replace(/\b[Qq]aalab ?na umma\b/g, 'qaalabna umma')
+  fixed = fixed.replace(/\b([Qq])aalab ?na umma\b/g, '$1aalabna umma')
   // 37:165 لَنَحْنُ ٱلصَّآفُّونَ, 110:1 نَصْرُ ٱللَّهِ
   fixed = fixed.replace(/\blanah nus\b/gi, 'lanahnus')
   fixed = fixed.replace(/\bnas rullahi\b/gi, 'nasrul laahi')
@@ -975,7 +978,7 @@ export const fixRomanText = (text) => {
   fixed = fixed.replace(/\bwastash hidoo\b/gi, 'wastash-hidoo')
   fixed = fixed.replace(/\btabarra al\b/gi, "tabarra'al")
   fixed = fixed.replace(/\b([Ww])amra a/g, "$1amra'a")
-  fixed = fixed.replace(/\b(ulaaa|malaaa|shurakaaa) '/gi, "$1'")
+  fixed = fixed.replace(/\b(ulaaa|malaaa|shurakaaa|ahwaaa) '/gi, "$1'")
   fixed = fixed.replace(/\bshai an/gi, "shai'an")
   fixed = fixed.replace(/\b(\w*yu) min(oo|oon|u)\b/gi, "$1'min$2")
   // General hamza rule: none of these syllables is ever a standalone Arabic word, so a
@@ -986,6 +989,14 @@ export const fixRomanText = (text) => {
   // apostrophe in "ba'da idh" / "taba'ta ahwaaa'ahum" as a boundary and corrupt them.
   fixed = fixed.replace(/(^|\s)(ra|sa|ta|ka|da|ba|ja|za|qa|kha|sha|tha|dha) ([aeiou])/gi, "$1$2'$3")
   fixed = fixed.replace(/\byu '/gi, "yu'")
+  // Splits/joins verified against the Arabic:
+  // ٱئْتِنَا after hamzat-wasl (6:71 ٱلْهُدَى ٱئْتِنَا, 7:77 يَـٰصَـٰلِحُ ٱئْتِنَا) — "tinaa" is never a word
+  fixed = fixed.replace(/([a-z])' (tinaaa?)\b/gi, "$1'$2")
+  // 19:5 وَكَانَتِ ٱمْرَأَتِى — second half of the imra'at join above
+  fixed = fixed.replace(/\bkaana timra'/gi, "kaanatimra'")
+  // 5:41 ٱلْـَٔاخِرَةِ عَذَابٌ, 2:166 ٱلَّذِينَ ٱتُّبِعُوا۟
+  fixed = fixed.replace(/\bAakhirati'adhaabun\b/gi, "Aakhirati 'adhaabun")
+  fixed = fixed.replace(/\bladheenat tubi'oo\b/gi, "ladheenattubi'oo")
   const out = fixed.replace(/[a-zA-Z']+/g, word => {
     const lower = word.toLowerCase()
     // Check general word corrections first
