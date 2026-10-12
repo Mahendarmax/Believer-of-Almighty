@@ -3,7 +3,7 @@
 //
 //   node scripts/verify-roman-telugu.mjs
 import { fixRomanText } from '../src/data/quranData.js'
-import { romanToTelugu } from '../src/utils/teluguTransliteration.js'
+import { romanToTelugu, romanToTeluguRecited } from '../src/utils/teluguTransliteration.js'
 
 // Written as an escape so the invisible character survives copy/paste.
 const ZWNJ = '‌'
@@ -54,6 +54,8 @@ const teluguCases = [
   ['A1 tanween', 'nooranw wa', 'నూరన్ వ'],
   ['A1 tanween', "diyaaa'anw", 'దియాఅన్'],
   ['A1 tanween', 'qaleelanw', 'ఖలీలన్'],
+  ['A1 tanween -ny', 'liqawminy yattaqoon', 'లిఖౌమిన్ యత్తఖూన్'],
+  ['A1 noon-sakinah -ny', 'many yashaaa', 'మన్ యషా'],
   ['A2 word-initial ay', 'aydeehim', 'ఐదీహిమ్'],
   ['A2 word-initial aw', 'awliyaaa', 'ఔలియా'],
   ['A2 standalone aw', 'aw', 'ఔ'],
@@ -96,6 +98,27 @@ for (const [name, input, expected] of teluguCases) {
   const ok = got === expected
   if (!ok) fail++
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${name.padEnd(26)} ${input.padEnd(30)} → ${show(got)}`)
+  if (!ok) console.log(`      expected: ${show(expected)}`)
+}
+
+// Recited (tajweed) line: noon-sakinah / tanween rules across word boundaries only
+const recitedCases = [
+  ['idghām → و', 'hudanw wa', 'హుదవ్ వ'],
+  ['idghām → ي', 'liqawminy yattaqoon', 'లిఖౌమియ్ యత్తఖూన్'],
+  ['idghām → و (noon sakinah)', 'min waliyyin', 'మివ్ వలియ్యిన్'],
+  ['idghām → م', "min maa'in", 'మిమ్ మాఇన్'],
+  ['idghām → ر', 'min rabbihim', 'మిర్ రబ్బిహిమ్'],
+  ['iqlāb → ب', "min ba'di", 'మిమ్ బది'],
+  ['word-internal نْ untouched', 'dunyaa', `దున్${ZWNJ}యా`],
+  ['izhār untouched', 'min aayaati', 'మిన్ ఆయాతి'],
+]
+
+console.log('\n=== romanToTeluguRecited ===')
+for (const [name, input, expected] of recitedCases) {
+  const got = romanToTeluguRecited(input)
+  const ok = got === expected
+  if (!ok) fail++
+  console.log(`${ok ? 'PASS' : 'FAIL'}  ${name.padEnd(28)} ${input.padEnd(22)} → ${show(got)}`)
   if (!ok) console.log(`      expected: ${show(expected)}`)
 }
 

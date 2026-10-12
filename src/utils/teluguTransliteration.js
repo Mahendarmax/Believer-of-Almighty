@@ -98,6 +98,21 @@ export function romanToTelugu(text) {
   }).join('')
 }
 
+// "As recited" variant. The orthographic line above shows each word as written in
+// the mushaf; this applies the noon-sakinah / tanween rules that exist only in
+// connected speech and are therefore never written:
+//   idghām into و ي م  — hudan wa → hudaw-wa, man ya → may-ya, min maa → mim-maa
+//   idghām into ل ر    — min rabbihim → mir-rabbihim
+//   iqlāb before ب     — min ba'di → mim-ba'di
+// All of these apply only across a word boundary, so word-internal نْ (dunyaa,
+// sinwaan, bunyaan) is untouched. Ikhfā and ghunnah have no Telugu representation
+// and are left as plain న్.
+export function romanToTeluguRecited(text) {
+  return romanToTelugu(text)
+    .replace(/న్([ -])([వయమలర])/g, '$2్$1$2')
+    .replace(/న్([ -])బ/g, 'మ్$1బ')
+}
+
 function transliterateSegment(text) {
   const lower = text.toLowerCase()
   let result = ''
@@ -172,9 +187,10 @@ function transliterateSegment(text) {
         // conjuncts (e.g. కుల్లి, అన్న, తవద్దు, ఉమ్మీ).
         if (!vowelMatched) {
           const nextChar = i < lower.length ? lower[i] : ''
-          // Tanween written as a silent trailing 'w' (qaleelanw, shai'anw, nooranw):
-          // render న్ and drop the w.
-          if (roman === 'n' && nextChar === 'w' && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
+          // Tanween / noon-sakinah idghām hint written as a silent trailing glide
+          // (qaleelanw, nooranw wa, liqawminy yattaqoon, many yashaaa'): render న్
+          // and drop the glide. Word-final "nw"/"ny" is never a real cluster in Arabic.
+          if (roman === 'n' && (nextChar === 'w' || nextChar === 'y') && (i + 1 >= lower.length || !isLetter(lower[i + 1]))) {
             result += telugu + VIRAMA
             i++
             matched = true

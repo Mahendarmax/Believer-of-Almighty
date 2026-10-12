@@ -796,6 +796,21 @@
   line-height: 1.85;
 }
 
+/* Optional "as recited" line under the Telugu transliteration (Settings → Recitation Line) */
+.vc-recited {
+  margin-top: 6px;
+  color: var(--accent-dim);
+}
+
+.vc-recited-tag {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-right: 8px;
+  color: var(--accent-dim);
+}
+
 /* Translation */
 .vc-translation {
   padding-top: 14px;

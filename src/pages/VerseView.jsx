@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
-import { romanToTelugu } from '../utils/teluguTransliteration'
+import { romanToTelugu, romanToTeluguRecited } from '../utils/teluguTransliteration'
 import AudioPlayer from '../components/AudioPlayer'
 import './VerseView.css'
 
@@ -307,7 +307,7 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter, showRecitation }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [shareToast, setShareToast] = useState(null)
@@ -430,6 +430,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
 
   // Memoize Telugu transliteration to avoid recomputing on every render
   const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
+  // Recited form is only shown when the setting is on AND it actually differs from the written form
+  const teluguRecited = useMemo(() => {
+    if (!showRecitation || !verse.roman) return null
+    const recited = romanToTeluguRecited(verse.roman)
+    return recited !== teluguTranslit ? recited : null
+  }, [showRecitation, verse.roman, teluguTranslit])
 
   return (
     <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''} ${isActive ? 'vv-verse-active' : ''} ${isSurahPlaying && !isActive ? 'vv-verse-dimmed' : ''}`} id={`verse-${verse.number}`}>
@@ -523,6 +529,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
             <p className="vc-telugu" style={{ fontSize: `${fontSize}px` }}>
               {teluguTranslit || '\u2014'}
             </p>
+            {teluguRecited && (
+              <p className="vc-telugu vc-recited" style={{ fontSize: `${fontSize - 1}px` }}>
+                <span className="vc-recited-tag">\u0c2a\u0c20\u0c28\u0c02</span>
+                {teluguRecited}
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -557,7 +569,7 @@ function VerseView() {
   const { number } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead, clearLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter } = useSettings()
+  const { showArabic, fontSize, updateLastRead, clearLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter, showRecitation } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -976,6 +988,7 @@ function VerseView() {
                 onToggleFav={handleToggleFav}
                 transliteration={transliteration}
                 reciter={reciter}
+                showRecitation={showRecitation}
               />
             ))}
             {visibleCount < verses.length && (
