@@ -120,7 +120,8 @@ ReciterPicker.displayName = 'ReciterPicker'
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, bgImage, setBgImage, theme, setTheme } = useSettings()
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, bgImage, setBgImage, theme, setTheme, showRecitation, toggleRecitation } = useSettings()
+  const [showReciteInfo, setShowReciteInfo] = useState(false)
 
   // Quick Verse Lookup state
   const [qvSurah, setQvSurah] = useState('')
@@ -527,6 +528,67 @@ const Home = React.memo(function Home() {
             <span className="translit-btn-example">{transliteration === 'telugu' ? 'ఇంగ్లీష్ + తెలుగు పక్కపక్కన' : 'English + Telugu side by side'}</span>
           </button>
         </div>
+
+        {/* Recitation line (tajweed) — only relevant when a Telugu line is shown */}
+        {(transliteration === 'telugu' || transliteration === 'both') && (
+          <>
+            <div className="recite-row">
+              <button
+                className={`recite-switch ${showRecitation ? 'active' : ''}`}
+                onClick={toggleRecitation}
+                role="switch"
+                aria-checked={showRecitation}
+                aria-label="Show recitation line"
+              >
+                <span className="recite-switch-knob" />
+              </button>
+              <div className="recite-row-text">
+                <span className="recite-row-title">
+                  {transliteration === 'telugu' ? 'పఠన రూపం చూపించు' : 'Show recitation line'}
+                </span>
+                <span className="recite-row-sub">
+                  {transliteration === 'telugu'
+                    ? 'తజ్వీద్ ప్రకారం పదాలు కలిసే చోట రెండవ తెలుగు పంక్తి'
+                    : 'Second Telugu line where tajweed joins words (hudan wa → hudaw-wa)'}
+                </span>
+              </div>
+              <button
+                className={`recite-info-btn ${showReciteInfo ? 'active' : ''}`}
+                onClick={() => setShowReciteInfo(v => !v)}
+                aria-label="What is the difference between written and recited form?"
+                aria-expanded={showReciteInfo}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 16v-4M12 8h.01"/>
+                </svg>
+              </button>
+            </div>
+            {showReciteInfo && (
+              <div className="recite-info">
+                <div className="recite-info-block">
+                  <h4>{transliteration === 'telugu' ? 'లిఖిత రూపం' : 'Written form'} <span>{transliteration === 'telugu' ? 'Written' : 'లిఖిత రూపం'}</span></h4>
+                  <p>{transliteration === 'telugu'
+                    ? 'ఖురాన్‌లో ఉన్నట్లే ప్రతి పదం. ఇది ప్రధాన తెలుగు పంక్తి.'
+                    : 'Each word exactly as it appears in the Quran text. This is the main Telugu line.'}</p>
+                  <p className="recite-info-example">హుద<strong>న్</strong> వ మౌఇధతుల్</p>
+                </div>
+                <div className="recite-info-block">
+                  <h4>{transliteration === 'telugu' ? 'పఠన రూపం' : 'Recited form'} <span>{transliteration === 'telugu' ? 'Recited' : 'పఠన రూపం'}</span></h4>
+                  <p>{transliteration === 'telugu'
+                    ? 'ఖారీ పదాల మధ్య శబ్దాలను ఎలా కలుపుతారో (తజ్వీద్). చివరి న్ తర్వాత వ, య, మ, ల, ర వస్తే అందులో కలుస్తుంది; బ ముందు మ్ అవుతుంది.'
+                    : 'How a reciter joins sounds between words (tajweed). A final న్ merges into a following వ, య, మ, ల or ర, and becomes మ్ before బ.'}</p>
+                  <p className="recite-info-example">హుద<strong>వ్</strong> వ మౌఇధతుల్</p>
+                </div>
+                <p className="recite-info-note">
+                  {transliteration === 'telugu'
+                    ? 'రెండు రూపాలు వేరుగా ఉన్న ఆయతుల్లోనే పఠన పంక్తి కనిపిస్తుంది. ఖచ్చితమైన ఉచ్ఛారణ కోసం ఆడియో వినండి.'
+                    : 'The recited line appears only on verses where the two differ. Telugu letters cannot show nasalisation or vowel length — follow the audio for exact pronunciation.'}
+                </p>
+              </div>
+            )}
+          </>
+        )}
       </section>
 
 
