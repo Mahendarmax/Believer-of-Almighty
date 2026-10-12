@@ -528,10 +528,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
               {verse.roman || '\u2014'}
             </p>
             {romanRecited && (
-              <p className="vc-roman vc-recited" style={{ fontSize: `${fontSize - 1}px` }}>
-                <span className="vc-recited-tag">Recited</span>
-                {romanRecited}
-              </p>
+              <div className="vc-recited">
+                <span className="vc-label">Recited</span>
+                <p className="vc-roman vc-recited-text" style={{ fontSize: `${fontSize}px` }}>
+                  {romanRecited}
+                </p>
+              </div>
             )}
           </div>
         )}
@@ -542,10 +544,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
               {teluguTranslit || '\u2014'}
             </p>
             {teluguRecited && (
-              <p className="vc-telugu vc-recited" style={{ fontSize: `${fontSize - 1}px` }}>
-                <span className="vc-recited-tag">{'\u0c2a\u0c20\u0c28\u0c02 \u00b7 Recited'}</span>
-                {teluguRecited}
-              </p>
+              <div className="vc-recited">
+                <span className="vc-label">Recited <span className="vc-label-telugu">{'(\u0c2a\u0c20\u0c28\u0c02)'}</span></span>
+                <p className="vc-telugu vc-recited-text" style={{ fontSize: `${fontSize}px` }}>
+                  {teluguRecited}
+                </p>
+              </div>
             )}
           </div>
         )}

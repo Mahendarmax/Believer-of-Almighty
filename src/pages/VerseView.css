@@ -796,18 +796,27 @@
   line-height: 1.85;
 }
 
-/* Optional "as recited" line under the Telugu transliteration (Settings → Recitation Line) */
+/* Optional "Recited" block under each transliteration (Home → Show recitation line).
+   Same heading style as the column label, separated by a dashed rule and a clear gap. */
 .vc-recited {
-  margin-top: 6px;
-  color: var(--accent-dim);
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
 }
 
-.vc-recited-tag {
-  font-size: 0.66rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 700;
-  margin-right: 8px;
+.vc-recited .vc-label {
+  margin-bottom: 8px;
+}
+
+.vc-label-telugu {
+  font-family: 'Noto Sans Telugu', sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.vc-recited-text {
   color: var(--accent-dim);
 }
 
