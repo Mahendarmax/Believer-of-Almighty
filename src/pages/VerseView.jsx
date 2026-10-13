@@ -475,6 +475,22 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
         <div className="vc-number">
           <span>{verse.number}</span>
         </div>
+        {/* Speed / repeat for this verse — shown once it has been played */}
+        {playingVerse === verse.number && (
+          <div className="vc-practice" role="group" aria-label={`Practice controls for verse ${verse.number}`}>
+            <div className="vc-practice-group">
+              <span className="vc-practice-label">Speed</span>
+              <button className={`vc-practice-btn ${playbackRate === 1 ? 'active' : ''}`} onClick={() => setPlaybackRate(1)}>1×</button>
+              <button className={`vc-practice-btn ${playbackRate === 0.75 ? 'active' : ''}`} onClick={() => setPlaybackRate(0.75)}>0.75×</button>
+            </div>
+            <div className="vc-practice-group">
+              <span className="vc-practice-label">Repeat</span>
+              <button className={`vc-practice-btn ${repeatMode === 'off' ? 'active' : ''}`} onClick={() => setRepeatMode('off')}>Off</button>
+              <button className={`vc-practice-btn ${repeatMode === '3' ? 'active' : ''}`} onClick={() => setRepeatMode('3')}>3×</button>
+              <button className={`vc-practice-btn ${repeatMode === 'inf' ? 'active' : ''}`} onClick={() => setRepeatMode('inf')} aria-label="Repeat forever">∞</button>
+            </div>
+          </div>
+        )}
         <div className="vc-actions">
           <button
             className={`vc-action-btn bookmark-btn ${isBookmarked ? 'active' : ''}`}
@@ -540,23 +556,6 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
         </div>
         {shareToast && <span className="vc-share-toast">{shareToast}</span>}
       </div>
-
-      {/* Speed / repeat for this verse — shown once it has been played */}
-      {playingVerse === verse.number && (
-        <div className="vc-practice" role="group" aria-label={`Practice controls for verse ${verse.number}`}>
-          <div className="vc-practice-group">
-            <span className="vc-practice-label">Speed</span>
-            <button className={`vc-practice-btn ${playbackRate === 1 ? 'active' : ''}`} onClick={() => setPlaybackRate(1)}>1×</button>
-            <button className={`vc-practice-btn ${playbackRate === 0.75 ? 'active' : ''}`} onClick={() => setPlaybackRate(0.75)}>0.75×</button>
-          </div>
-          <div className="vc-practice-group">
-            <span className="vc-practice-label">Repeat</span>
-            <button className={`vc-practice-btn ${repeatMode === 'off' ? 'active' : ''}`} onClick={() => setRepeatMode('off')}>Off</button>
-            <button className={`vc-practice-btn ${repeatMode === '3' ? 'active' : ''}`} onClick={() => setRepeatMode('3')}>3×</button>
-            <button className={`vc-practice-btn ${repeatMode === 'inf' ? 'active' : ''}`} onClick={() => setRepeatMode('inf')} aria-label="Repeat forever">∞</button>
-          </div>
-        </div>
-      )}
 
       {/* Arabic text */}
       {showArabic && verse.arabic && (

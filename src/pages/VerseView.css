@@ -228,61 +228,109 @@
   color: var(--text-muted);
 }
 
-/* Per-verse practice controls (speed / repeat), under the card header */
+/* Per-verse practice controls (speed / repeat), inline in the card header
+   between the verse number and the action buttons */
 .vc-practice {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  flex: 1;
+  min-width: 0;
   gap: 6px 18px;
-  margin: -4px 0 14px;
-  padding: 8px 12px;
-  background: rgba(184, 134, 11, 0.06);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  background: linear-gradient(180deg, #fffaf0, #fff4d6);
+  border: 1.5px solid #e9a800;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 10px rgba(233, 168, 0, 0.18);
 }
 
 .vc-practice-group {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
 .vc-practice-label {
   font-size: 0.66rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--text-muted);
-  margin-right: 2px;
+  letter-spacing: 0.8px;
+  color: #8a5a00;
 }
 
-.vc-practice-btn {
-  min-width: 36px;
-  padding: 4px 9px;
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: #1a1005;
+/* Segmented control: buttons sit inside one pill, active segment is solid gold */
+.vc-practice-group .vc-practice-btn {
+  min-width: 44px;
+  padding: 5px 12px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #5c3a10;
   background: transparent;
-  border: 1.5px solid #1a1005;
-  border-radius: var(--radius-sm);
+  border: 1.5px solid #e9a800;
+  border-right-width: 0;
+  border-radius: 0;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
 
-.vc-practice-btn.active {
-  background: #1a1005;
-  color: #fffdf7;
+.vc-practice-group .vc-practice-btn + .vc-practice-btn {
+  margin-left: -8px;
+}
+
+.vc-practice-group .vc-practice-btn:first-of-type {
+  border-radius: 999px 0 0 999px;
+}
+
+.vc-practice-group .vc-practice-btn:last-of-type {
+  border-right-width: 1.5px;
+  border-radius: 0 999px 999px 0;
+}
+
+.vc-practice-btn:hover {
+  background: rgba(233, 168, 0, 0.14);
+}
+
+.vc-practice-btn.active,
+.vc-practice-btn.active:hover {
+  background: #e9a800;
+  color: #1a1005;
+}
+
+/* Narrow screens: drop the practice strip onto its own line under number + actions */
+@media (max-width: 640px) {
+  .vc-header {
+    flex-wrap: wrap;
+  }
+  .vc-practice {
+    order: 3;
+    flex-basis: 100%;
+    margin-top: 6px;
+    justify-content: space-between;
+    gap: 6px 10px;
+  }
+  .vc-practice-group .vc-practice-btn {
+    min-width: 38px;
+    padding: 4px 9px;
+    font-size: 0.72rem;
+  }
 }
 
 /* Word-by-word follow-along + tajweed colour hints */
 .vc-word {
-  border-radius: 4px;
-  transition: background 0.12s;
+  border-radius: 6px;
+  transition: background 0.1s, color 0.1s, box-shadow 0.1s;
 }
 
 .vc-word.active {
-  background: rgba(184, 134, 11, 0.28);
-  box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.28);
+  background: #f2b705;
+  color: #1a1005;
+  box-shadow: 0 0 0 4px #f2b705, 0 2px 10px rgba(242, 183, 5, 0.55);
+}
+
+/* Arabic is large and bold, so give it a slightly deeper gold and a dark underline bar */
+.vc-arabic .vc-word.active {
+  background: #e9a800;
+  box-shadow: 0 0 0 5px #e9a800, inset 0 -3px 0 #1a1005;
 }
 
 .vc-tajweed {
@@ -689,7 +737,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 20px;
   position: relative;
 }
 
@@ -722,8 +771,19 @@
 .vc-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   flex-shrink: 0;
+  padding: 3px 4px;
+  background: rgba(212, 164, 74, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+/* Play button sits apart from the four icon actions */
+.vc-actions .verse-audio {
+  margin-left: 4px;
+  padding-left: 8px;
+  border-left: 1px solid var(--border);
 }
 
 .vc-action-btn {
