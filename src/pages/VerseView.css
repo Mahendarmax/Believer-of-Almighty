@@ -771,22 +771,11 @@
 .vc-actions {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   flex-shrink: 0;
-  padding: 3px 4px;
-  background: #faf3e3;
-  border: 1.5px solid #1a1005;
-  border-radius: 999px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Play button sits apart from the four icon actions */
-.vc-actions .verse-audio {
-  margin-left: 4px;
-  padding-left: 8px;
-  border-left: 1.5px solid #1a1005;
-}
-
+/* Each action is its own outlined cream circle, dark icon for contrast */
 .vc-action-btn {
   width: 34px;
   height: 34px;
@@ -795,14 +784,16 @@
   justify-content: center;
   border-radius: 50%;
   transition: var(--transition);
-  color: #d4a44a;
-  background: transparent;
+  color: #1a1005;
+  background: #faf3e3;
+  border: 1.5px solid #1a1005;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .vc-action-btn:hover {
-  background: rgba(212, 164, 74, 0.12);
-  color: #f0c05a;
-  transform: scale(1.1);
+  background: rgba(184, 134, 11, 0.14);
+  color: #1a1005;
+  transform: scale(1.08);
 }
 
 .bookmark-btn:hover {
@@ -811,8 +802,8 @@
 }
 
 .bookmark-btn.active {
-  color: var(--accent);
-  background: rgba(212, 164, 74, 0.12);
+  color: #fffdf7;
+  background: var(--accent);
 }
 
 /* Verse blink when bookmarked */
