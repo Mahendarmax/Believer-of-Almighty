@@ -3,8 +3,9 @@ import { createPortal } from 'react-dom'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { getSurahVerses, surahs, getSurahByNumber, fetchBismillah, getVerseAudioUrl } from '../data/quranData'
 import { useSettings } from '../context/SettingsContext'
-import { romanToTelugu, romanToTeluguRecited } from '../utils/teluguTransliteration'
-import { romanToRecited } from '../utils/recitation'
+import { romanToTeluguRecited } from '../utils/teluguTransliteration'
+import { romanToRecited, romanToRecitedTokens, splitWordTokens } from '../utils/recitation'
+import { fetchVerseTimings, activeWordAt, hasWordTimings } from '../utils/verseTimings'
 import AudioPlayer from '../components/AudioPlayer'
 import './VerseView.css'
 
@@ -308,7 +309,7 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter, showRecitation }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter, playbackRate, repeatMode }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [shareToast, setShareToast] = useState(null)
@@ -318,13 +319,13 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
     if (downloading) return
     setDownloading(true)
     try {
-      const teluguRoman = verse.roman ? romanToTelugu(verse.roman) : ''
+      const teluguRoman = verse.roman ? romanToTeluguRecited(verse.roman) : ''
       const dataUrl = await renderVerseImage({
         surahNumber,
         surahName: transliteration === 'telugu' ? (surahNameTelugu || surahName) : surahName,
         verseNumber: verse.number,
         arabic: verse.arabic || '',
-        roman: (transliteration === 'english' || transliteration === 'both') ? (verse.roman || '') : '',
+        roman: (transliteration === 'english' || transliteration === 'both') ? romanToRecited(verse.roman) : '',
         teluguRoman: (transliteration === 'telugu' || transliteration === 'both') ? teluguRoman : '',
         telugu: (transliteration === 'telugu' || transliteration === 'both') ? (verse.telugu || '') : '',
         english: (transliteration === 'english' || transliteration === 'both') ? (verse.translation || '') : '',
@@ -370,12 +371,12 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
       if (transliteration === 'telugu' || transliteration === 'both') {
         lines.push('')
         if (transliteration === 'both') lines.push(`- తెలుగు లిప్యంతరీకరణ:`)
-        lines.push(romanToTelugu(verse.roman))
+        lines.push(romanToTeluguRecited(verse.roman))
       }
       if (transliteration === 'english' || transliteration === 'both') {
         lines.push('')
         if (transliteration === 'both') lines.push(`- Transliteration:`)
-        lines.push(verse.roman)
+        lines.push(romanToRecited(verse.roman))
       }
     }
 
@@ -429,19 +430,31 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
     }
   }, [surahName, surahNumber, verse, transliteration])
 
-  // Memoize Telugu transliteration to avoid recomputing on every render
-  const teluguTranslit = useMemo(() => verse.roman ? romanToTelugu(verse.roman) : null, [verse.roman])
-  // Recited forms are only shown when the setting is on AND they actually differ from the written form
-  const teluguRecited = useMemo(() => {
-    if (!showRecitation || !verse.roman) return null
-    const recited = romanToTeluguRecited(verse.roman)
-    return recited !== teluguTranslit ? recited : null
-  }, [showRecitation, verse.roman, teluguTranslit])
-  const romanRecited = useMemo(() => {
-    if (!showRecitation || !verse.roman) return null
-    const recited = romanToRecited(verse.roman)
-    return recited !== verse.roman ? recited : null
-  }, [showRecitation, verse.roman])
+  // Transliterations are shown as recited (tajweed), split into word tokens so
+  // individual words can be highlighted; memoized to avoid recomputing on every render
+  const romanTokens = useMemo(() => romanToRecitedTokens(verse.roman), [verse.roman])
+  const teluguTokens = useMemo(() => splitWordTokens(romanToTeluguRecited(verse.roman)), [verse.roman])
+  const arabicWords = useMemo(() => verse.arabic ? verse.arabic.trim().split(/\s+/) : [], [verse.arabic])
+
+  // Word-by-word follow-along: timings are fetched on first play (see verseTimings.js)
+  const [timing, setTiming] = useState(null)
+  const [activeWord, setActiveWord] = useState(-1)
+  const timingRef = useRef(null)
+  const resolveSource = useCallback(async () => {
+    const t = await fetchVerseTimings(surahNumber, verse.number, reciter)
+    timingRef.current = t
+    setTiming(t)
+    return t ? { url: t.url } : null
+  }, [surahNumber, verse.number, reciter])
+  const handleTime = useCallback((sec) => {
+    const idx = sec == null ? -1 : activeWordAt(timingRef.current?.segments, sec)
+    setActiveWord(prev => (prev === idx ? prev : idx))
+  }, [])
+  // Only highlight a line when its word count matches the Arabic word count the timings refer to
+  const wordCount = timing?.wordCount || 0
+  const hlArabic = wordCount > 0 && arabicWords.length === wordCount
+  const hlRoman = wordCount > 0 && romanTokens.filter(t => !t.sep).length === wordCount
+  const hlTelugu = wordCount > 0 && teluguTokens.filter(t => !t.sep).length === wordCount
 
   return (
     <div ref={cardRef} className={`verse-card ${justBookmarked ? 'verse-bookmarked' : ''} ${isActive ? 'vv-verse-active' : ''} ${isSurahPlaying && !isActive ? 'vv-verse-dimmed' : ''}`} id={`verse-${verse.number}`}>
@@ -504,9 +517,13 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
           </button>
           <AudioPlayer
             audioUrl={getVerseAudioUrl(surahNumber, verse.number, reciter)}
+            resolveSource={resolveSource}
             verseNumber={verse.number}
             isGlobalPlaying={playingVerse}
             onPlay={onPlay}
+            playbackRate={playbackRate}
+            repeatMode={repeatMode}
+            onTimeUpdate={handleTime}
           />
         </div>
         {shareToast && <span className="vc-share-toast">{shareToast}</span>}
@@ -515,7 +532,16 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
       {/* Arabic text */}
       {showArabic && verse.arabic && (
         <div className="vc-arabic">
-          <p dir="rtl">{verse.arabic}</p>
+          <p dir="rtl">
+            {hlArabic
+              ? arabicWords.map((w, i) => (
+                  <React.Fragment key={i}>
+                    <span className={`vc-word${i === activeWord ? ' active' : ''}`}>{w}</span>
+                    {i < arabicWords.length - 1 ? ' ' : ''}
+                  </React.Fragment>
+                ))
+              : verse.arabic}
+          </p>
         </div>
       )}
 
@@ -525,32 +551,24 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
           <div className="vc-col">
             <span className="vc-label">Transliteration</span>
             <p className="vc-roman" style={{ fontSize: `${fontSize}px` }}>
-              {verse.roman || '\u2014'}
+              {romanTokens.length === 0 ? '\u2014' : romanTokens.map((tok, i) => tok.sep
+                ? tok.text
+                : (
+                  <span key={i} className={`vc-word${hlRoman && tok.idx === activeWord ? ' active' : ''}`}>
+                    {tok.parts.map((p, j) => p.hl ? <span key={j} className="vc-tajweed">{p.t}</span> : p.t)}
+                  </span>
+                ))}
             </p>
-            {romanRecited && (
-              <div className="vc-recited">
-                <span className="vc-label">Recited</span>
-                <p className="vc-roman vc-recited-text" style={{ fontSize: `${fontSize}px` }}>
-                  {romanRecited}
-                </p>
-              </div>
-            )}
           </div>
         )}
         {(transliteration === 'telugu' || transliteration === 'both') && (
           <div className="vc-col">
             <span className="vc-label">{transliteration === 'both' ? 'తెలుగు లిప్యంతరీకరణ' : 'Telugu Transliteration'}</span>
             <p className="vc-telugu" style={{ fontSize: `${fontSize}px` }}>
-              {teluguTranslit || '\u2014'}
+              {teluguTokens.length === 0 ? '\u2014' : teluguTokens.map((tok, i) => tok.sep
+                ? tok.text
+                : <span key={i} className={`vc-word${hlTelugu && tok.idx === activeWord ? ' active' : ''}`}>{tok.text}</span>)}
             </p>
-            {teluguRecited && (
-              <div className="vc-recited">
-                <span className="vc-label">Recited <span className="vc-label-telugu">{'(\u0c2a\u0c20\u0c28\u0c02)'}</span></span>
-                <p className="vc-telugu vc-recited-text" style={{ fontSize: `${fontSize}px` }}>
-                  {teluguRecited}
-                </p>
-              </div>
-            )}
           </div>
         )}
       </div>
@@ -585,7 +603,7 @@ function VerseView() {
   const { number } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead, clearLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter, showRecitation } = useSettings()
+  const { showArabic, fontSize, updateLastRead, clearLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter, playbackRate, setPlaybackRate, repeatMode, setRepeatMode } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -852,6 +870,7 @@ function VerseView() {
       setPlayingVerse(ayahNum)
       const url = getVerseAudioUrl(surahNumber, ayahNum, reciter)
       const audio = new Audio(url)
+      audio.playbackRate = playbackRate
       playlist.audio = audio
       audio.addEventListener('ended', () => playNextVerse(ayahNum + 1))
       audio.addEventListener('error', () => {
@@ -867,7 +886,7 @@ function VerseView() {
     }
 
     playNextVerse(startAyah)
-  }, [surahNumber, reciter, surah])
+  }, [surahNumber, reciter, surah, playbackRate])
 
   const handleStopSurah = useCallback(() => {
     if (versePlaylistRef.current) {
@@ -966,6 +985,27 @@ function VerseView() {
         </button>
       </div>
 
+      {/* Practice controls — apply to per-verse playback */}
+      <div className="vv-practice" role="group" aria-label="Practice controls">
+        <div className="vv-practice-group">
+          <span className="vv-practice-label">Speed</span>
+          <button className={`vv-practice-btn ${playbackRate === 1 ? 'active' : ''}`} onClick={() => setPlaybackRate(1)}>1×</button>
+          <button className={`vv-practice-btn ${playbackRate === 0.75 ? 'active' : ''}`} onClick={() => setPlaybackRate(0.75)}>0.75×</button>
+        </div>
+        <div className="vv-practice-group">
+          <span className="vv-practice-label">Repeat</span>
+          <button className={`vv-practice-btn ${repeatMode === 'off' ? 'active' : ''}`} onClick={() => setRepeatMode('off')}>Off</button>
+          <button className={`vv-practice-btn ${repeatMode === '3' ? 'active' : ''}`} onClick={() => setRepeatMode('3')}>3×</button>
+          <button className={`vv-practice-btn ${repeatMode === 'inf' ? 'active' : ''}`} onClick={() => setRepeatMode('inf')} aria-label="Repeat forever">∞</button>
+        </div>
+        <p className="vv-practice-hint">
+          {hasWordTimings(reciter)
+            ? 'Words light up as the reciter reads them.'
+            : 'Word highlight needs Husary, Alafasy, Minshawi, Abdul Basit, Sudais, Shuraym, Shatri or Rifai — pick one on the Home page.'}
+          {transliteration !== 'telugu' && <> <span className="vc-tajweed">Coloured</span> letters change sound when recited (tajweed).</>}
+        </p>
+      </div>
+
       {/* Bismillah */}
       {bismillah && (
         <div className="vv-bismillah">
@@ -1004,7 +1044,8 @@ function VerseView() {
                 onToggleFav={handleToggleFav}
                 transliteration={transliteration}
                 reciter={reciter}
-                showRecitation={showRecitation}
+                playbackRate={playbackRate}
+                repeatMode={repeatMode}
               />
             ))}
             {visibleCount < verses.length && (

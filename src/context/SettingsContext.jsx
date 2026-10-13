@@ -31,8 +31,9 @@ export const SettingsProvider = ({ children }) => {
   const [reciter, setReciter] = useState(() => loadSetting('reciter', 'ar.yasserdussary'))
   const [theme, setTheme] = useState(() => loadSetting('theme', 'normal'))
   const [bgImage, setBgImage] = useState(() => loadSetting('bgImage', 'first-theme'))
-  // Optional second Telugu line showing the recited (tajweed) form where it differs
-  const [showRecitation, setShowRecitation] = useState(() => loadSetting('showRecitation', false))
+  // Verse audio practice controls: speed (1 | 0.75) and repeat ('off' | '3' | 'inf')
+  const [playbackRate, setPlaybackRate] = useState(() => loadSetting('playbackRate', 1))
+  const [repeatMode, setRepeatMode] = useState(() => loadSetting('repeatMode', 'off'))
 
   // Debounced localStorage writes — batch rapid changes (e.g. font size)
   const saveTimers = useRef({})
@@ -50,7 +51,8 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => { debouncedSave('reciter', reciter, 0) }, [reciter, debouncedSave])
   useEffect(() => { debouncedSave('theme', theme, 0) }, [theme, debouncedSave])
   useEffect(() => { debouncedSave('bgImage', bgImage, 0) }, [bgImage, debouncedSave])
-  useEffect(() => { debouncedSave('showRecitation', showRecitation, 0) }, [showRecitation, debouncedSave])
+  useEffect(() => { debouncedSave('playbackRate', playbackRate, 0) }, [playbackRate, debouncedSave])
+  useEffect(() => { debouncedSave('repeatMode', repeatMode, 0) }, [repeatMode, debouncedSave])
 
   // Apply theme to document root
   useEffect(() => {
@@ -58,7 +60,6 @@ export const SettingsProvider = ({ children }) => {
   }, [theme])
 
   const toggleArabic = useCallback(() => setShowArabic(prev => !prev), [])
-  const toggleRecitation = useCallback(() => setShowRecitation(prev => !prev), [])
   const increaseFontSize = useCallback(() => setFontSize(prev => Math.min(28, prev + 1)), [])
   const decreaseFontSize = useCallback(() => setFontSize(prev => Math.max(12, prev - 1)), [])
 
@@ -93,8 +94,9 @@ export const SettingsProvider = ({ children }) => {
     reciter, setReciter,
     theme, setTheme,
     bgImage, setBgImage,
-    showRecitation, toggleRecitation,
-  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, clearLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter, theme, bgImage, showRecitation, toggleRecitation])
+    playbackRate, setPlaybackRate,
+    repeatMode, setRepeatMode,
+  }), [showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, lastRead, updateLastRead, clearLastRead, favorites, toggleFavorite, isFavorite, transliteration, reciter, theme, bgImage, playbackRate, repeatMode])
 
   return (
     <SettingsContext.Provider value={value}>

@@ -220,6 +220,78 @@
   gap: 12px;
 }
 
+/* Practice controls (speed / repeat) under the surah nav */
+.vv-practice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  background: #fffdf7;
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-md);
+}
+
+.vv-practice-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vv-practice-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin-right: 2px;
+}
+
+.vv-practice-btn {
+  min-width: 40px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1a1005;
+  background: transparent;
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.vv-practice-btn.active {
+  background: #1a1005;
+  color: #fffdf7;
+}
+
+.vv-practice-hint {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Word-by-word follow-along + tajweed colour hints */
+.vc-word {
+  border-radius: 4px;
+  transition: background 0.12s;
+}
+
+.vc-word.active {
+  background: rgba(184, 134, 11, 0.28);
+  box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.28);
+}
+
+.vc-tajweed {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+
 /* Reciter selector */
 .vv-reciter-bar {
   position: relative;
@@ -794,30 +866,6 @@
   font-family: 'Noto Sans Telugu', sans-serif;
   color: #000000;
   line-height: 1.85;
-}
-
-/* Optional "Recited" block under each transliteration (Home → Show recitation line).
-   Same heading style as the column label, separated by a dashed rule and a clear gap. */
-.vc-recited {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px dashed var(--border);
-}
-
-.vc-recited .vc-label {
-  margin-bottom: 8px;
-}
-
-.vc-label-telugu {
-  font-family: 'Noto Sans Telugu', sans-serif;
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 600;
-  margin-left: 4px;
-}
-
-.vc-recited-text {
-  color: var(--accent-dim);
 }
 
 /* Translation */

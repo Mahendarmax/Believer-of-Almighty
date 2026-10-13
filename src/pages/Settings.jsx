@@ -1,16 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
 import './Settings.css'
 
 function Settings() {
   const navigate = useNavigate()
-  const { showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize, showRecitation, toggleRecitation } = useSettings()
-
-  const [showRecitationInfo, setShowRecitationInfo] = useState(false)
+  const { showArabic, toggleArabic, fontSize, increaseFontSize, decreaseFontSize } = useSettings()
 
   const handleBack = useCallback(() => navigate(-1), [navigate])
-  const toggleRecitationInfo = useCallback(() => setShowRecitationInfo(prev => !prev), [])
 
   return (
     <div className="settings-page">
@@ -40,53 +37,6 @@ function Settings() {
             <span className="toggle-track" />
           </label>
         </div>
-
-        {/* Recitation line */}
-        <div className="set-item">
-          <div className="set-item-info">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="24" height="24">
-              <path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
-            </svg>
-            <div>
-              <h3>Recitation Line</h3>
-              <p>Telugu as recited (tajweed), shown where it differs from the written form • పఠన రూపం</p>
-            </div>
-          </div>
-          <div className="set-controls">
-            <button
-              className={`set-info-btn ${showRecitationInfo ? 'active' : ''}`}
-              onClick={toggleRecitationInfo}
-              aria-label="What is the difference between written and recited form?"
-              aria-expanded={showRecitationInfo}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 16v-4M12 8h.01"/>
-              </svg>
-            </button>
-            <label className="toggle">
-              <input type="checkbox" checked={showRecitation} onChange={toggleRecitation} />
-              <span className="toggle-track" />
-            </label>
-          </div>
-        </div>
-        {showRecitationInfo && (
-          <div className="set-info-panel">
-            <div className="set-info-row">
-              <h4>Written form <span>లిఖిత రూపం</span></h4>
-              <p>Each word exactly as it appears in the Quran text. This is the main Telugu line.</p>
-              <p className="set-info-example">హుద<strong>న్</strong> వ మౌఇధతుల్</p>
-            </div>
-            <div className="set-info-row">
-              <h4>Recited form <span>పఠన రూపం</span></h4>
-              <p>How a reciter joins sounds between words (tajweed). A final <strong>న్</strong> merges into a following వ, య, మ, ల or ర, and becomes మ్ before బ.</p>
-              <p className="set-info-example">హుద<strong>వ్</strong> వ మౌఇధతుల్</p>
-            </div>
-            <p className="set-info-note">
-              The recited line appears only on verses where the two differ. Telugu letters cannot show nasalisation or vowel length — follow the audio for exact pronunciation.
-            </p>
-          </div>
-        )}
 
         {/* Font Size */}
         <div className="set-item">

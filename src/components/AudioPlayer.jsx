@@ -1,16 +1,45 @@
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react'
 import './AudioPlayer.css'
 
-// Per-verse audio player component
-const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) => {
+// Per-verse audio player component.
+//   resolveSource — optional async () => ({ url }) tried before `audioUrl`
+//                   (used to swap in a file that has word timings)
+//   playbackRate  — 1 or 0.75
+//   repeatMode    — 'off' | '3' | 'inf'
+//   onTimeUpdate  — (seconds | null) while playing; null when stopped
+const AudioPlayer = memo(({ audioUrl, resolveSource, verseNumber, isGlobalPlaying, onPlay, playbackRate = 1, repeatMode = 'off', onTimeUpdate }) => {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [pending, setPending] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [duration, setDuration] = useState(0)
   const [error, setError] = useState(false)
   const audioRef = useRef(null)
   const animFrameRef = useRef(null)
+  const playsRef = useRef(0)
+
+  // Latest props in refs so the long-lived audio listeners never go stale
   const audioUrlRef = useRef(audioUrl)
   audioUrlRef.current = audioUrl
+  const resolveSourceRef = useRef(resolveSource)
+  resolveSourceRef.current = resolveSource
+  const repeatRef = useRef(repeatMode)
+  repeatRef.current = repeatMode
+  const onTimeRef = useRef(onTimeUpdate)
+  onTimeRef.current = onTimeUpdate
+
+  const stopTicking = useCallback(() => {
+    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+    animFrameRef.current = null
+    onTimeRef.current?.(null)
+  }, [])
+
+  const disposeAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.src = ''
+      audioRef.current = null
+    }
+    stopTicking()
+  }, [stopTicking])
 
   // Stop when another verse starts playing
   useEffect(() => {
@@ -18,48 +47,42 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
       audioRef.current?.pause()
       setIsPlaying(false)
       setProgress(0)
+      stopTicking()
     }
-  }, [isGlobalPlaying, verseNumber, isPlaying])
+  }, [isGlobalPlaying, verseNumber, isPlaying, stopTicking])
 
   // Reset audio element when URL changes (e.g. reciter switch)
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current.src = ''
-      audioRef.current = null
-    }
+    disposeAudio()
     setIsPlaying(false)
+    setPending(false)
     setProgress(0)
-    setDuration(0)
     setError(false)
-    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
-  }, [audioUrl])
+  }, [audioUrl, disposeAudio])
+
+  // Apply speed changes to a live element
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.playbackRate = playbackRate
+  }, [playbackRate])
 
   // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current.src = ''
-        audioRef.current = null
-      }
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
-    }
-  }, [])
+  useEffect(() => disposeAudio, [disposeAudio])
 
   const updateProgress = useCallback(() => {
-    if (audioRef.current && !audioRef.current.paused) {
-      const pct = (audioRef.current.currentTime / audioRef.current.duration) * 100
-      setProgress(pct)
+    const audio = audioRef.current
+    if (audio && !audio.paused) {
+      setProgress((audio.currentTime / audio.duration) * 100 || 0)
+      onTimeRef.current?.(audio.currentTime)
       animFrameRef.current = requestAnimationFrame(updateProgress)
     }
   }, [])
 
   const handleToggle = useCallback(async () => {
+    if (pending) return
     if (isPlaying) {
       audioRef.current?.pause()
       setIsPlaying(false)
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+      stopTicking()
       return
     }
 
@@ -68,30 +91,52 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
     // Notify parent that this verse is now playing
     onPlay(verseNumber)
 
-    // Always use the latest URL from ref
-    const url = audioUrlRef.current
-
     if (!audioRef.current) {
-      const audio = new Audio(url)
-      audioRef.current = audio
+      // Prefer a timed source when one is available; fall back to the plain URL
+      let url = audioUrlRef.current
+      if (resolveSourceRef.current) {
+        setPending(true)
+        try {
+          const src = await resolveSourceRef.current()
+          if (src?.url) url = src.url
+        } catch { /* fall back */ }
+        setPending(false)
+      }
 
-      audio.addEventListener('loadedmetadata', () => {
-        setDuration(audio.duration)
-      })
+      const audio = new Audio(url)
+      audio.playbackRate = playbackRate
+      audioRef.current = audio
+      playsRef.current = 0
+
       audio.addEventListener('ended', () => {
+        playsRef.current += 1
+        const mode = repeatRef.current
+        const again = mode === 'inf' || (mode !== 'off' && playsRef.current < Number(mode))
+        if (again && audioRef.current === audio) {
+          audio.currentTime = 0
+          audio.play().then(() => {
+            animFrameRef.current = requestAnimationFrame(updateProgress)
+          }).catch(() => {})
+          return
+        }
         setIsPlaying(false)
         setProgress(0)
-        if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+        stopTicking()
       })
       audio.addEventListener('error', () => {
         setIsPlaying(false)
         setProgress(0)
         setError(true)
+        stopTicking()
         audioRef.current = null
       })
     }
 
     try {
+      if (audioRef.current.ended) {
+        audioRef.current.currentTime = 0
+        playsRef.current = 0
+      }
       await audioRef.current.play()
       setIsPlaying(true)
       animFrameRef.current = requestAnimationFrame(updateProgress)
@@ -100,12 +145,12 @@ const AudioPlayer = memo(({ audioUrl, verseNumber, isGlobalPlaying, onPlay }) =>
       setError(true)
       audioRef.current = null
     }
-  }, [isPlaying, verseNumber, onPlay, updateProgress])
+  }, [isPlaying, pending, verseNumber, onPlay, updateProgress, stopTicking, playbackRate])
 
   return (
     <div className={`verse-audio ${isPlaying ? 'playing' : ''} ${error ? 'audio-error' : ''}`}>
       <button
-        className={`audio-btn ${isPlaying ? 'active' : ''} ${error ? 'error' : ''}`}
+        className={`audio-btn ${isPlaying ? 'active' : ''} ${error ? 'error' : ''} ${pending ? 'pending' : ''}`}
         onClick={handleToggle}
         title={error ? 'Audio unavailable — tap to retry' : isPlaying ? 'Pause' : 'Play verse audio'}
         aria-label={error ? `Retry verse ${verseNumber}` : isPlaying ? `Pause verse ${verseNumber}` : `Play verse ${verseNumber}`}

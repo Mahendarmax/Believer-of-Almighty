@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../context/SettingsContext'
 import { RECITERS, surahs, getSurahVerses, getVerseAudioUrl } from '../data/quranData'
-import { romanToTelugu } from '../utils/teluguTransliteration'
+import { romanToTelugu, romanToTeluguRecited } from '../utils/teluguTransliteration'
+import { romanToRecited } from '../utils/recitation'
 import AudioPlayer from '../components/AudioPlayer'
 import './Home.css'
 
@@ -120,8 +121,7 @@ ReciterPicker.displayName = 'ReciterPicker'
 
 const Home = React.memo(function Home() {
   const navigate = useNavigate()
-  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, bgImage, setBgImage, theme, setTheme, showRecitation, toggleRecitation } = useSettings()
-  const [showReciteInfo, setShowReciteInfo] = useState(false)
+  const { lastRead, favorites, transliteration, setTransliteration, reciter, setReciter, showArabic, fontSize, bgImage, setBgImage, theme, setTheme } = useSettings()
 
   // Quick Verse Lookup state
   const [qvSurah, setQvSurah] = useState('')
@@ -528,97 +528,6 @@ const Home = React.memo(function Home() {
             <span className="translit-btn-example">{transliteration === 'telugu' ? 'ఇంగ్లీష్ + తెలుగు పక్కపక్కన' : 'English + Telugu side by side'}</span>
           </button>
         </div>
-
-        {/* Recitation line (tajweed) — applies to both Roman English and Telugu lines */}
-        {(
-          <>
-            <div className="recite-row">
-              <button
-                className={`recite-switch ${showRecitation ? 'active' : ''}`}
-                onClick={toggleRecitation}
-                role="switch"
-                aria-checked={showRecitation}
-                aria-label="Show recitation line"
-              >
-                <span className="recite-switch-knob" />
-              </button>
-              <div className="recite-row-text">
-                <span className="recite-row-title">
-                  {transliteration === 'telugu' ? 'పఠన రూపం చూపించు' : 'Show recitation line'}
-                </span>
-                <span className="recite-row-sub">
-                  {transliteration === 'telugu'
-                    ? <>పదాలు కలిసే చోట రెండవ పంక్తి. ఉదా: <em>హుదన్ వ</em> → <em>హుదవ్ వ</em></>
-                    : <>Second line showing how words join when recited. Example: <em className="recite-roman">hudan wa</em> → <em className="recite-roman">hudaw wa</em></>}
-                </span>
-              </div>
-              <button
-                className={`recite-info-btn ${showReciteInfo ? 'active' : ''}`}
-                onClick={() => setShowReciteInfo(v => !v)}
-                aria-expanded={showReciteInfo}
-              >
-                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-                  <circle cx="12" cy="12" r="11" fill="currentColor"/>
-                  <circle cx="12" cy="7.2" r="1.6" fill="var(--recite-info-fg, #fff)"/>
-                  <rect x="10.6" y="10.2" width="2.8" height="8" rx="1.4" fill="var(--recite-info-fg, #fff)"/>
-                </svg>
-                <span>{transliteration === 'telugu' ? 'ఇది ఏమిటి?' : "What's this?"}</span>
-              </button>
-            </div>
-            {showReciteInfo && (
-              <div className="recite-info">
-                <h4 className="recite-info-title">
-                  {transliteration === 'telugu' ? 'ఒకే ఆయత్ — రెండు రూపాలు' : 'Same verse — two ways to show it'}
-                </h4>
-
-                <div className="recite-info-compare">
-                  <div className="recite-info-card">
-                    <div className="recite-info-card-head">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/>
-                      </svg>
-                      <span>{transliteration === 'telugu' ? 'రాసినట్లు' : 'As written'}</span>
-                    </div>
-                    <p className="recite-info-example">హుద<strong>న్</strong> వ</p>
-                    <p className="recite-info-example-roman">huda<strong>n</strong> wa</p>
-                    <p>{transliteration === 'telugu'
-                      ? 'ఖురాన్‌లో పదం ఎలా ఉందో అలాగే. ఎప్పుడూ ఒకేలా ఉంటుంది.'
-                      : 'The word exactly as it is in the Quran. Always looks the same.'}</p>
-                  </div>
-
-                  <div className="recite-info-arrow" aria-hidden="true">→</div>
-
-                  <div className="recite-info-card recite-info-card-recited">
-                    <div className="recite-info-card-head">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
-                        <path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
-                      </svg>
-                      <span>{transliteration === 'telugu' ? 'వినిపించినట్లు' : 'As you hear it'}</span>
-                    </div>
-                    <p className="recite-info-example">హుద<strong>వ్</strong> వ</p>
-                    <p className="recite-info-example-roman">huda<strong>w</strong> wa</p>
-                    <p>{transliteration === 'telugu'
-                      ? 'ఖారీ చదివేటప్పుడు రెండు పదాలు కలిసిపోతాయి. ఆడియోలో ఇదే వినిపిస్తుంది.'
-                      : 'How it sounds when a reciter joins the two words. This matches the audio.'}</p>
-                  </div>
-                </div>
-
-                <div className="recite-info-rule">
-                  <span className="recite-info-rule-label">{transliteration === 'telugu' ? 'నియమం' : 'The rule'}</span>
-                  <p>{transliteration === 'telugu'
-                    ? <>పదం చివర <strong>న్</strong> ఉండి, తర్వాతి పదం <strong>వ, య, మ, ల, ర</strong>తో మొదలైతే — ఆ న్ శబ్దం ఆ అక్షరంలో కలిసిపోతుంది. <strong>బ</strong> ముందు అది <strong>మ్</strong> అవుతుంది.</>
-                    : <>When a word ends in <strong className="recite-roman">n</strong> and the next word starts with <strong className="recite-roman">w, y, m, l</strong> or <strong className="recite-roman">r</strong>, the n sound melts into that letter. Before <strong className="recite-roman">b</strong> it becomes <strong className="recite-roman">m</strong>. Same for Telugu: <strong>న్</strong> → <strong>వ్ య్ మ్ ల్ ర్</strong>, and <strong>మ్</strong> before <strong>బ</strong>.</>}</p>
-                </div>
-
-                <p className="recite-info-note">
-                  {transliteration === 'telugu'
-                    ? 'ఆడియోతో పాటు చదివేవారికి ఇది ఉపయోగం. శబ్దం మారే ఆయతుల్లోనే రెండవ పంక్తి కనిపిస్తుంది.'
-                    : 'Turn this on if you read along with the audio. The second line only shows up where the sound actually changes.'}
-                </p>
-              </div>
-            )}
-          </>
-        )}
       </section>
 
 
@@ -745,13 +654,13 @@ const Home = React.memo(function Home() {
                 {(transliteration === 'english' || transliteration === 'both') && qvData.verse.roman && (
                   <div className="qv-modal-block">
                     <span className="qv-modal-label">Transliteration</span>
-                    <p className="qv-modal-roman">{qvData.verse.roman}</p>
+                    <p className="qv-modal-roman">{romanToRecited(qvData.verse.roman)}</p>
                   </div>
                 )}
                 {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.roman && (
                   <div className="qv-modal-block">
                     <span className="qv-modal-label">{transliteration === 'both' ? 'తెలుగు లిప్యంతరీకరణ' : 'తెలుగు'}</span>
-                    <p className="qv-modal-telugu">{romanToTelugu(qvData.verse.roman)}</p>
+                    <p className="qv-modal-telugu">{romanToTeluguRecited(qvData.verse.roman)}</p>
                   </div>
                 )}
                 {(transliteration === 'telugu' || transliteration === 'both') && qvData.verse.telugu && (

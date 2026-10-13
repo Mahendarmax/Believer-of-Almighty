@@ -33,6 +33,11 @@
   50% { box-shadow: 0 0 0 8px rgba(184, 134, 11, 0); }
 }
 
+.audio-btn.pending {
+  opacity: 0.55;
+  cursor: progress;
+}
+
 .audio-btn.error {
   background: rgba(239, 68, 68, 0.12);
   color: #ef4444;
