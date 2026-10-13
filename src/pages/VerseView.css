@@ -238,7 +238,7 @@
   min-width: 0;
   gap: 6px 18px;
   padding: 6px 12px;
-  background: var(--bg-card);
+  background: #faf3e3;
   border: 1.5px solid #1a1005;
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -293,7 +293,7 @@
 .vc-practice-btn.active,
 .vc-practice-btn.active:hover {
   background: var(--accent);
-  color: #ffffff;
+  color: #fffdf7;
 }
 
 /* Narrow screens: drop the practice strip onto its own line under number + actions */
@@ -774,7 +774,7 @@
   gap: 4px;
   flex-shrink: 0;
   padding: 3px 4px;
-  background: var(--bg-card);
+  background: #faf3e3;
   border: 1.5px solid #1a1005;
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
