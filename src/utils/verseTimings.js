@@ -26,15 +26,14 @@ export function hasWordTimings(reciterId) {
   return QDC_RECITER[reciterId] != null
 }
 
-// Rows come as [word, start, end] or [word, ?, start, end] depending on data age.
+// Rows come as [segmentIndex, wordPosition, startMs, endMs] (current API) or the
+// older [wordPosition, startMs, endMs]. wordPosition is 1-based.
 function normalizeSegments(rows) {
   if (!Array.isArray(rows)) return []
   const out = []
   for (const r of rows) {
     if (!Array.isArray(r) || r.length < 3) continue
-    const word = r[0]
-    let start = r[1], end = r[2]
-    if (r.length >= 4 && !(end > start)) { start = r[2]; end = r[3] }
+    const [word, start, end] = r.length >= 4 ? [r[1], r[2], r[3]] : [r[0], r[1], r[2]]
     if (Number.isFinite(word) && Number.isFinite(start) && Number.isFinite(end) && end > start) {
       out.push({ word, start, end })
     }

@@ -309,8 +309,11 @@ const ScrollToTop = memo(() => {
 ScrollToTop.displayName = 'ScrollToTop'
 
 // Single verse card
-const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter, playbackRate, repeatMode }) => {
+const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showArabic, fontSize, playingVerse, isActive, isSurahPlaying, onPlay, onBookmark, isFav, onToggleFav, transliteration, isBookmarked, reciter }) => {
   const [justBookmarked, setJustBookmarked] = useState(false)
+  // Per-verse practice controls: speed (1 | 0.75) and repeat ('off' | '3' | 'inf')
+  const [playbackRate, setPlaybackRate] = useState(1)
+  const [repeatMode, setRepeatMode] = useState('off')
   const [downloading, setDownloading] = useState(false)
   const [shareToast, setShareToast] = useState(null)
   const cardRef = useRef(null)
@@ -434,7 +437,16 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
   // individual words can be highlighted; memoized to avoid recomputing on every render
   const romanTokens = useMemo(() => romanToRecitedTokens(verse.roman), [verse.roman])
   const teluguTokens = useMemo(() => splitWordTokens(romanToTeluguRecited(verse.roman)), [verse.roman])
-  const arabicWords = useMemo(() => verse.arabic ? verse.arabic.trim().split(/\s+/) : [], [verse.arabic])
+  // Arabic tokens: stand-alone pause marks (ۚ ۗ ۖ …) are rendered but not counted as words
+  const arabicTokens = useMemo(() => {
+    if (!verse.arabic) return []
+    let idx = 0
+    return verse.arabic.trim().split(/\s+/).map(text => {
+      const isWord = /[ء-يٱ-ۓ]/.test(text)
+      return { text, idx: isWord ? idx++ : -1 }
+    })
+  }, [verse.arabic])
+  const arabicWordCount = useMemo(() => arabicTokens.filter(t => t.idx >= 0).length, [arabicTokens])
 
   // Word-by-word follow-along: timings are fetched on first play (see verseTimings.js)
   const [timing, setTiming] = useState(null)
@@ -452,7 +464,7 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
   }, [])
   // Only highlight a line when its word count matches the Arabic word count the timings refer to
   const wordCount = timing?.wordCount || 0
-  const hlArabic = wordCount > 0 && arabicWords.length === wordCount
+  const hlArabic = wordCount > 0 && arabicWordCount === wordCount
   const hlRoman = wordCount > 0 && romanTokens.filter(t => !t.sep).length === wordCount
   const hlTelugu = wordCount > 0 && teluguTokens.filter(t => !t.sep).length === wordCount
 
@@ -529,15 +541,32 @@ const VerseCard = memo(({ verse, surahNumber, surahName, surahNameTelugu, showAr
         {shareToast && <span className="vc-share-toast">{shareToast}</span>}
       </div>
 
+      {/* Speed / repeat for this verse — shown once it has been played */}
+      {playingVerse === verse.number && (
+        <div className="vc-practice" role="group" aria-label={`Practice controls for verse ${verse.number}`}>
+          <div className="vc-practice-group">
+            <span className="vc-practice-label">Speed</span>
+            <button className={`vc-practice-btn ${playbackRate === 1 ? 'active' : ''}`} onClick={() => setPlaybackRate(1)}>1×</button>
+            <button className={`vc-practice-btn ${playbackRate === 0.75 ? 'active' : ''}`} onClick={() => setPlaybackRate(0.75)}>0.75×</button>
+          </div>
+          <div className="vc-practice-group">
+            <span className="vc-practice-label">Repeat</span>
+            <button className={`vc-practice-btn ${repeatMode === 'off' ? 'active' : ''}`} onClick={() => setRepeatMode('off')}>Off</button>
+            <button className={`vc-practice-btn ${repeatMode === '3' ? 'active' : ''}`} onClick={() => setRepeatMode('3')}>3×</button>
+            <button className={`vc-practice-btn ${repeatMode === 'inf' ? 'active' : ''}`} onClick={() => setRepeatMode('inf')} aria-label="Repeat forever">∞</button>
+          </div>
+        </div>
+      )}
+
       {/* Arabic text */}
       {showArabic && verse.arabic && (
         <div className="vc-arabic">
           <p dir="rtl">
             {hlArabic
-              ? arabicWords.map((w, i) => (
+              ? arabicTokens.map((tok, i) => (
                   <React.Fragment key={i}>
-                    <span className={`vc-word${i === activeWord ? ' active' : ''}`}>{w}</span>
-                    {i < arabicWords.length - 1 ? ' ' : ''}
+                    <span className={`vc-word${tok.idx >= 0 && tok.idx === activeWord ? ' active' : ''}`}>{tok.text}</span>
+                    {i < arabicTokens.length - 1 ? ' ' : ''}
                   </React.Fragment>
                 ))
               : verse.arabic}
@@ -603,7 +632,7 @@ function VerseView() {
   const { number } = useParams()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { showArabic, fontSize, updateLastRead, clearLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter, playbackRate, setPlaybackRate, repeatMode, setRepeatMode } = useSettings()
+  const { showArabic, fontSize, updateLastRead, clearLastRead, lastRead, favorites, isFavorite, toggleFavorite, transliteration, reciter } = useSettings()
 
   const [verses, setVerses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -870,7 +899,6 @@ function VerseView() {
       setPlayingVerse(ayahNum)
       const url = getVerseAudioUrl(surahNumber, ayahNum, reciter)
       const audio = new Audio(url)
-      audio.playbackRate = playbackRate
       playlist.audio = audio
       audio.addEventListener('ended', () => playNextVerse(ayahNum + 1))
       audio.addEventListener('error', () => {
@@ -886,7 +914,7 @@ function VerseView() {
     }
 
     playNextVerse(startAyah)
-  }, [surahNumber, reciter, surah, playbackRate])
+  }, [surahNumber, reciter, surah])
 
   const handleStopSurah = useCallback(() => {
     if (versePlaylistRef.current) {
@@ -985,26 +1013,12 @@ function VerseView() {
         </button>
       </div>
 
-      {/* Practice controls — apply to per-verse playback */}
-      <div className="vv-practice" role="group" aria-label="Practice controls">
-        <div className="vv-practice-group">
-          <span className="vv-practice-label">Speed</span>
-          <button className={`vv-practice-btn ${playbackRate === 1 ? 'active' : ''}`} onClick={() => setPlaybackRate(1)}>1×</button>
-          <button className={`vv-practice-btn ${playbackRate === 0.75 ? 'active' : ''}`} onClick={() => setPlaybackRate(0.75)}>0.75×</button>
-        </div>
-        <div className="vv-practice-group">
-          <span className="vv-practice-label">Repeat</span>
-          <button className={`vv-practice-btn ${repeatMode === 'off' ? 'active' : ''}`} onClick={() => setRepeatMode('off')}>Off</button>
-          <button className={`vv-practice-btn ${repeatMode === '3' ? 'active' : ''}`} onClick={() => setRepeatMode('3')}>3×</button>
-          <button className={`vv-practice-btn ${repeatMode === 'inf' ? 'active' : ''}`} onClick={() => setRepeatMode('inf')} aria-label="Repeat forever">∞</button>
-        </div>
-        <p className="vv-practice-hint">
-          {hasWordTimings(reciter)
-            ? 'Words light up as the reciter reads them.'
-            : 'Word highlight needs Husary, Alafasy, Minshawi, Abdul Basit, Sudais, Shuraym, Shatri or Rifai — pick one on the Home page.'}
-          {transliteration !== 'telugu' && <> <span className="vc-tajweed">Coloured</span> letters change sound when recited (tajweed).</>}
+      {/* Word-by-word highlight only works with reciters quran.com has timings for */}
+      {!hasWordTimings(reciter) && (
+        <p className="vv-timing-hint">
+          Word highlight needs Husary, Alafasy, Minshawi, Abdul Basit, Sudais, Shuraym, Shatri or Rifai — pick one on the Home page.
         </p>
-      </div>
+      )}
 
       {/* Bismillah */}
       {bismillah && (
@@ -1044,8 +1058,6 @@ function VerseView() {
                 onToggleFav={handleToggleFav}
                 transliteration={transliteration}
                 reciter={reciter}
-                playbackRate={playbackRate}
-                repeatMode={repeatMode}
               />
             ))}
             {visibleCount < verses.length && (
