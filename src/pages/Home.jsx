@@ -441,6 +441,12 @@ const Home = React.memo(function Home() {
           <span className="action-meta">{COUNTS.duas} {transliteration === 'telugu' ? 'దుఆలు' : 'Duas'}</span>
         </button>
 
+        <button className="action-card hadith-action-card" onClick={() => navigate('/hadith')}>
+          <h3>{transliteration === 'telugu' ? 'హదీసులు' : 'Hadith'}</h3>
+          {transliteration !== 'telugu' && <p>హదీసులు</p>}
+          <span className="action-meta">{transliteration === 'telugu' ? 'బుఖారీ, ముస్లిం & మరిన్ని — వెతకండి' : 'Bukhari, Muslim & more — searchable'}</span>
+        </button>
+
         <button className="action-card dosdonts-action-card" onClick={() => navigate('/dos-and-donts')}>
           <h3>{transliteration === 'telugu' ? 'ఆదేశాలు & నిషేధాలు' : "Dos and Don'ts in Islam"}</h3>
           {transliteration !== 'telugu' && <p>ఆదేశాలు & నిషేధాలు</p>}

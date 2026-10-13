@@ -13,6 +13,7 @@ const ParahView = lazy(() => import('./pages/ParahView'))
 const Favorites = lazy(() => import('./pages/Favorites'))
 const NamazSurahs = lazy(() => import('./pages/NamazSurahs'))
 const Duas = lazy(() => import('./pages/Duas'))
+const Hadith = lazy(() => import('./pages/Hadith'))
 const DosAndDonts = lazy(() => import('./pages/DosAndDonts'))
 const AsmaUlHusna = lazy(() => import('./pages/AsmaUlHusna'))
 const TasbihCounter = lazy(() => import('./pages/TasbihCounter'))
@@ -98,6 +99,7 @@ function App() {
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/namaz" element={<NamazSurahs />} />
                 <Route path="/duas" element={<Duas />} />
+                <Route path="/hadith" element={<Hadith />} />
                 <Route path="/dos-and-donts" element={<DosAndDonts />} />
                 <Route path="/names-of-allah" element={<AsmaUlHusna />} />
                 <Route path="/tasbih" element={<TasbihCounter />} />

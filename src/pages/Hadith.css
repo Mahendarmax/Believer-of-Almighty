@@ -1,0 +1,330 @@
+/* Hadith page — HadeethEnc browser (topics → sub-topics → hadith cards) */
+.hd-page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.hd-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0 14px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(180deg, var(--bg-primary) 80%, transparent 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.hd-back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.hd-back:hover {
+  background: var(--bg-card);
+  transform: translateX(-2px);
+}
+
+.hd-title-group { flex: 1; min-width: 0; }
+
+.hd-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.hd-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Search bar */
+.hd-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  height: 46px;
+  margin-bottom: 16px;
+  background: #faf3e3;
+  border: 1.5px solid #1a1005;
+  border-radius: 999px;
+  color: var(--accent-dim);
+}
+
+.hd-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.hd-search input::placeholder { color: var(--text-muted); opacity: 0.7; }
+.hd-search input::-webkit-search-cancel-button { display: none; }
+
+.hd-search-clear {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid #1a1005;
+  background: transparent;
+  color: #1a1005;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Topic grid */
+.hd-topics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.hd-topic {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px;
+  text-align: left;
+  background: rgba(255, 253, 247, 0.88);
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.hd-topic:hover { transform: translateY(-2px); background: var(--bg-card); }
+
+.hd-topic-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.hd-topic-count {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-dim);
+}
+
+/* Sub-topic chips (also used for category search results) */
+.hd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.hd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1a1005;
+  background: #faf3e3;
+  border: 1.5px solid #1a1005;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.hd-chip:hover { background: rgba(184, 134, 11, 0.14); }
+
+.hd-chip span {
+  font-size: 0.68rem;
+  color: var(--accent-dim);
+}
+
+/* Hadith cards */
+.hd-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hd-card {
+  background: rgba(255, 253, 247, 0.88);
+  border: 1.5px solid #1a1005;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.hd-card-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.hd-card-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.hd-chevron { flex-shrink: 0; color: var(--accent); transition: transform 0.25s; }
+.hd-chevron.open { transform: rotate(180deg); }
+
+.hd-card.expanded { border-color: var(--accent); }
+.hd-direct { margin-bottom: 16px; }
+
+/* Expanded body */
+.hd-detail {
+  padding: 4px 16px 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hd-arabic {
+  font-family: 'Amiri', serif;
+  font-size: 1.45rem;
+  line-height: 2.1;
+  color: #000000;
+  text-align: right;
+  padding-top: 12px;
+}
+
+.hd-block { display: flex; flex-direction: column; gap: 4px; }
+
+.hd-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent-dim);
+}
+
+.hd-intro {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.hd-text {
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.hd-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hd-source, .hd-grade {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1.5px solid #1a1005;
+}
+
+.hd-source { background: #faf3e3; color: #1a1005; }
+.hd-grade { background: var(--accent); color: #fffdf7; border-color: var(--accent); }
+
+.hd-explain p, .hd-hints li {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.hd-explain {
+  padding: 12px 14px;
+  background: rgba(184, 134, 11, 0.06);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.hd-hints ul { padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+
+/* States */
+.hd-more {
+  align-self: center;
+  margin-top: 6px;
+  padding: 10px 22px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a1005;
+  background: #faf3e3;
+  border: 1.5px solid #1a1005;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.hd-more:hover { background: var(--accent); color: #fffdf7; }
+
+.hd-empty, .hd-error, .hd-detail-error {
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.hd-error, .hd-detail-error { color: #b42318; }
+
+.hd-detail-loading { display: flex; justify-content: center; padding: 20px; }
+
+.hd-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(212, 164, 74, 0.15);
+  border-top-color: #d4a44a;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.hd-credit {
+  margin-top: 28px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .hd-page { padding: 0 14px 70px; }
+  .hd-header { gap: 10px; padding: 16px 0 12px; }
+  .hd-back { width: 36px; height: 36px; }
+  .hd-title { font-size: 1.15rem; }
+  .hd-subtitle { font-size: 0.7rem; }
+  .hd-topics { grid-template-columns: 1fr; }
+  .hd-arabic { font-size: 1.3rem; }
+}
+
+@media (min-width: 1200px) {
+  .hd-page { max-width: 900px; }
+}
