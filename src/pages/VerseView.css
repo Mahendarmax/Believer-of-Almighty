@@ -238,10 +238,10 @@
   min-width: 0;
   gap: 6px 18px;
   padding: 6px 12px;
-  background: linear-gradient(180deg, #ffffff, #f1faf4);
-  border: 1.5px solid #9ed4b0;
-  border-radius: var(--radius-md);
-  box-shadow: 0 2px 10px rgba(46, 158, 91, 0.14);
+  background: var(--bg-card);
+  border: 1.5px solid #1a1005;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .vc-practice-group {
@@ -255,7 +255,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: #1f6b3a;
+  color: var(--accent-dim);
 }
 
 /* Segmented control: buttons sit inside one pill, active segment is solid gold */
@@ -264,9 +264,9 @@
   padding: 5px 12px;
   font-size: 0.76rem;
   font-weight: 700;
-  color: #1f6b3a;
-  background: #ffffff;
-  border: 1.5px solid #9ed4b0;
+  color: #1a1005;
+  background: transparent;
+  border: 1.5px solid #1a1005;
   border-right-width: 0;
   border-radius: 0;
   cursor: pointer;
@@ -287,13 +287,12 @@
 }
 
 .vc-practice-btn:hover {
-  background: #e6f5eb;
+  background: rgba(184, 134, 11, 0.1);
 }
 
 .vc-practice-btn.active,
 .vc-practice-btn.active:hover {
-  background: #2e9e5b;
-  border-color: #2e9e5b;
+  background: var(--accent);
   color: #ffffff;
 }
 
@@ -775,16 +774,17 @@
   gap: 4px;
   flex-shrink: 0;
   padding: 3px 4px;
-  background: #ffffff;
-  border: 1.5px solid #9ed4b0;
+  background: var(--bg-card);
+  border: 1.5px solid #1a1005;
   border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* Play button sits apart from the four icon actions */
 .vc-actions .verse-audio {
   margin-left: 4px;
   padding-left: 8px;
-  border-left: 1px solid #c9e8d4;
+  border-left: 1.5px solid #1a1005;
 }
 
 .vc-action-btn {
